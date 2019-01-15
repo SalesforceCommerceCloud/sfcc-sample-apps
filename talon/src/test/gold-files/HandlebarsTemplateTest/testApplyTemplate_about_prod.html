@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Red Cross: Disaster Relief</title>
+    <script src="/base/talon/framework/latest/prod/talon.js"></script>
+<script type="text/javascript">
+    Talon.configProvider.register({
+        getBasePath() {
+            return "/base";
+        },
+        getMode() {
+            return "prod";
+        },
+        getLocale() {
+            return "fr";
+        }
+    });
+
+    Talon.themeService.setTheme({"name":"disaster-artist","label":"Disaster Artist","branding":"branding.json","themeLayouts":{"hero":{"view":"heroLayout"},"default":{"view":"headerAndFooter"},"login":{"view":"fullLayout"}}});
+Talon.themeService.setViewToThemeLayoutMap({"faq":"headerAndFooter","about":"headerAndFooter","confirmation":"headerAndFooter","error":"headerAndFooter","login":"fullLayout","customPerf":"headerAndFooter","home":"heroLayout"});
+Talon.routingService.registerRoutes([{"name":"home","path":"/","isRoot":true,"view":"home"},{"name":"confirmation","path":"/confirmation","view":"confirmation"},{"name":"about","path":"/about","view":"about"},{"name":"community_flashhelp_customlwc_perf","path":"/community_flashhelp_customlwc_perf","view":"customPerf"},{"name":"community_user_login","path":"/login","view":"login"},{"name":"faq","path":"/faq","isDefault":false,"view":"faq"},{"name":"error","path":"/error","isDefault":true,"view":"error"}]);
+Talon.brandingService.setBrandingProperties({"--lwc-header-image":"url(/assets/img/harvey-relief-titlebar-1920x703.jpg)","--lwc-company-logo":"url(/assets/img/logo_red_cross.png)","--lwc-header-background-color":"#f8f8f8","--lwc-footer-background-color":"#f8f8f8"});
+</script>
+<script src="/base/talon/view/latest/prod/fr/headerAndFooter.js"></script>
+<script src="/base/talon/view/latest/prod/fr/about.js"></script>
+
+    <link rel="stylesheet" href="/base/assets/styles/salesforce-lightning-design-system.min.css?123" />
+    <link rel="stylesheet" href="/base/assets/styles/styles.css?123" />
+</head>
+
+<body id="main">
+    <script type="text/javascript">
+    const container = document.getElementById("main");
+    Talon.componentService.createElement("talon/app")
+        .then(element => {
+            container.appendChild(element);
+        });
+    </script>
+</body> 
+
+</html>

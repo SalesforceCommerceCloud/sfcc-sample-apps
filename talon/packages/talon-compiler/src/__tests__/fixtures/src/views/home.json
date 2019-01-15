@@ -1,0 +1,8 @@
+{
+    "name": "home",
+    "label": "Home",
+    "themeLayoutType": "inner",
+    "component": {
+        "name": "x/home"
+    }
+}

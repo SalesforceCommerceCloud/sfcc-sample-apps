@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`talon/routerLink renders correctly 1`] = `
+<talon-router-link>
+  #shadow-root(open)
+    <a
+      href="/home"
+    >
+      Home
+    </a>
+</talon-router-link>
+`;

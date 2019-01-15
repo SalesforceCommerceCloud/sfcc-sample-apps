@@ -1,0 +1,8 @@
+{
+    "name": "confirmation",
+    "label": "Confirmation",
+    "themeLayoutType": "default",
+    "component": {
+        "name": "commerce/confirmation"
+    }
+}

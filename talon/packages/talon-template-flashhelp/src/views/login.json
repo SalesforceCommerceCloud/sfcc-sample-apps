@@ -1,0 +1,8 @@
+{
+    "name": "login",
+    "label": "Login",
+    "themeLayoutType": "login",
+    "component": {
+        "name": "community_flashhelp/loginForm"
+    }
+}

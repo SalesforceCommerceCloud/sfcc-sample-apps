@@ -1,0 +1,7 @@
+{
+    "name": "fullLayout",
+    "label": "Full Layout",
+    "component": {
+        "name": "community_flashhelp/fullLayout"
+    }
+}

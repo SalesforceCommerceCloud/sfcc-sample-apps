@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`commerce/about renders correctly 1`] = `
+<commerce-about>
+  #shadow-root(open)
+    <div
+      class="slds-align_absolute-center slds-text-heading_large"
+      style="height: 5rem;"
+    >
+      About
+    </div>
+</commerce-about>
+`;

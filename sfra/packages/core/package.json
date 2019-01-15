@@ -1,0 +1,22 @@
+{
+  "name": "@sfra/core",
+  "version": "0.0.9",
+  "description": "sfra core",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx rollup -c",
+    "pub": "npm run build; npm pack; npm publish -f"
+  },
+  "author": "Jason Cooper",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-external-helpers": "^7.2.0",
+    "@babel/preset-env": "^7.2.3",
+    "@babel/preset-es2015": "^7.0.0-beta.53",
+    "babelrc-rollup": "^3.0.0",
+    "rollup": "^1.1.0",
+    "rollup-plugin-babel": "^4.3.0"
+  }
+}

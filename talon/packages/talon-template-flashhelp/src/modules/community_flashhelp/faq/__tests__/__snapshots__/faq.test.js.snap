@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`community_flashhelp/faq renders correctly 1`] = `
+<community_flashhelp-faq>
+  #shadow-root(open)
+    <div
+      class="slds-align_absolute-center slds-text-heading_large"
+      style="height: 5rem;"
+    >
+      FAQ
+    </div>
+</community_flashhelp-faq>
+`;

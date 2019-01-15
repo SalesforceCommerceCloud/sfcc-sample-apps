@@ -1,0 +1,80 @@
+.navbar {
+    min-height: 50px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+}
+
+.navbar-header {
+    display:flex;
+    align-items: center;
+}
+
+.navbar-logo {
+    margin-top: 4px;
+}
+
+.navbar-title {
+    flex-grow: 1;
+}
+
+.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
+    color: #5e5e5e;
+    background-color: transparent;
+}
+
+.navbar-default {
+    background-color: var(--lwc-header-background-color);
+    border-color: #e7e7e7;
+    font-size: 18px;
+}
+
+.navbar-default .navbar-brand {
+   color: #777;
+}
+
+.navbar-logo {
+    height: 50px;
+    font-size: 18px;
+    min-width: 170px;
+    background-image: var(--lwc-company-logo);
+    background-repeat:no-repeat;
+    background-size:auto 90%;
+    cursor: pointer;
+}
+
+.navbar-brand:hover, .navbar-brand:focus {
+    text-decoration: none;
+}
+
+@media (min-width: 768px) {
+    .navbar>.container .navbar-brand, .navbar>.container-fluid .navbar-brand {
+        margin-left: -15px;
+    }
+}
+
+.navbar-fixed-top {
+    top: 0;
+    border-width: 0 0 1px;
+    position: fixed;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+    transform: translate3d(0,0,0);
+}
+
+.icon-shopping-cart {
+    text-align: center;
+    font-size: 12px;
+    width: 24px;
+    height: 24px;
+    line-height: 20.4px;
+}
+
+.icon-label {
+    padding-left: 10px;
+}
+
+.container-fluid>.navbar-header {
+    margin-right: 0;
+    margin-left: 0;
+}

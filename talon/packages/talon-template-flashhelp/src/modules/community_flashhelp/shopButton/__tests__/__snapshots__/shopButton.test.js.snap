@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`community_flashhelp/shopButton renders correctly 1`] = `
+<community_flashhelp-shop-button>
+  #shadow-root(open)
+    <a
+      href="https://www.redcross.org/store"
+      style="text-decoration: none;"
+      target="_blank"
+    >
+      <span
+        style="font-size: 14px; color: rgb(225, 27, 34); font-weight: bold; line-height: 24px;"
+      >
+        <i
+          class="fas fa-shopping-cart"
+        />
+        <span
+          class="icon-label"
+        >
+          Shop the Red Cross Store
+        </span>
+      </span>
+    </a>
+</community_flashhelp-shop-button>
+`;

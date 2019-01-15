@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`talon-context uses default config 1`] = `
+Object {
+  "basePath": "",
+  "indexHtml": "__tests__/fixtures/src/index.html",
+  "labelsJson": "__tests__/fixtures/src/labels.json",
+  "locale": "en_US",
+  "modulesSrcDir": "__tests__/fixtures/src/modules",
+  "outputDir": "__tests__/fixtures/dist",
+  "routesJson": "__tests__/fixtures/src/routes.json",
+  "srcDir": "__tests__/fixtures/src",
+  "templateDir": "__tests__/fixtures",
+  "themeJson": "__tests__/fixtures/src/theme.json",
+  "viewsDir": "__tests__/fixtures/src/views",
+}
+`;

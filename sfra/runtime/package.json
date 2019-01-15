@@ -1,0 +1,21 @@
+{
+  "name": "runtime",
+  "version": "1.0.0",
+  "description": "",
+  "main": "runtime.js",
+  "scripts": {},
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  },
+  "dependencies": {
+    "@sfra/core": "0.0.9",
+    "@sfra/logger": "0.0.1",
+    "@sfra/wishlist": "0.0.1",
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "@babel/register": "^7.0.0",
+    "express": "^4.16.4"
+  }
+}

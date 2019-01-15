@@ -1,0 +1,27 @@
+{
+    "name": "headerAndFooter",
+    "label": "Default Header and Footer",
+    "component": {
+        "name": "commerce/threeRow",
+        "regions": [
+            {
+                "name": "header",
+                "label": "Header",
+                "components": [
+                    {
+                        "name": "commerce/header"
+                    }
+                ]
+            },
+            {
+                "name": "footer",
+                "label": "Footer",
+                "components": [
+                    {
+                        "name": "commerce/footer"
+                    }
+                ]
+            }
+        ]
+    }
+}

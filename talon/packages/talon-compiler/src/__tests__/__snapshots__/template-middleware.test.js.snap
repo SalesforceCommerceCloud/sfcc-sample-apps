@@ -1,0 +1,147 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`template-middleware generateHTML generates HTML in dev mode 1`] = `
+"<script src=\\"/basePath/talon/framework/latest/dev/talon.js\\"></script>
+<script type=\\"text/javascript\\">
+    Talon.configProvider.register({
+        getBasePath() {
+            return \\"/basePath\\";
+        },
+        getMode() {
+            return \\"dev\\";
+        },
+        getLocale() {
+            return \\"en_US\\";
+        }
+    });
+
+    Talon.themeService.setTheme({\\"themeLayouts\\":{\\"inner\\":{\\"view\\":\\"themeLayoutInner\\"},\\"default\\":{\\"view\\":\\"themeLayoutDefault\\"}}});
+Talon.themeService.setViewToThemeLayoutMap({\\"home\\":\\"themeLayoutInner\\",\\"myPage\\":\\"themeLayoutInner\\",\\"error\\":\\"themeLayoutDefault\\"});
+Talon.routingService.registerRoutes([{\\"name\\":\\"home\\",\\"path\\":\\"/\\",\\"isRoot\\":true,\\"view\\":\\"home\\"},{\\"name\\":\\"my-page\\",\\"path\\":\\"/my-page\\",\\"view\\":\\"myPage\\"},{\\"name\\":\\"error\\",\\"path\\":\\"/error\\",\\"isDefault\\":true,\\"view\\":\\"error\\"}]);
+Talon.brandingService.setBrandingProperties({});
+</script>
+<script src=\\"/basePath/talon/view/latest/dev/en_US/themeLayoutInner.js\\"></script>
+<script src=\\"/basePath/talon/view/latest/dev/en_US/myPage.js\\"></script>
+
+
+<script type=\\"text/javascript\\">
+    const container = document.getElementById(\\"main\\");
+    Talon.componentService.createElement(\\"talon/app\\")
+        .then(element => {
+            container.appendChild(element);
+        });
+    </script>
+
+Base path: /basePath
+Version key: 1"
+`;
+
+exports[`template-middleware generateHTML generates HTML in prod mode 1`] = `
+"<script src=\\"/basePath/talon/framework/latest/prod/talon.js\\"></script>
+<script type=\\"text/javascript\\">
+    Talon.configProvider.register({
+        getBasePath() {
+            return \\"/basePath\\";
+        },
+        getMode() {
+            return \\"prod\\";
+        },
+        getLocale() {
+            return \\"en_US\\";
+        }
+    });
+
+    Talon.themeService.setTheme({\\"themeLayouts\\":{\\"inner\\":{\\"view\\":\\"themeLayoutInner\\"},\\"default\\":{\\"view\\":\\"themeLayoutDefault\\"}}});
+Talon.themeService.setViewToThemeLayoutMap({\\"home\\":\\"themeLayoutInner\\",\\"myPage\\":\\"themeLayoutInner\\",\\"error\\":\\"themeLayoutDefault\\"});
+Talon.routingService.registerRoutes([{\\"name\\":\\"home\\",\\"path\\":\\"/\\",\\"isRoot\\":true,\\"view\\":\\"home\\"},{\\"name\\":\\"my-page\\",\\"path\\":\\"/my-page\\",\\"view\\":\\"myPage\\"},{\\"name\\":\\"error\\",\\"path\\":\\"/error\\",\\"isDefault\\":true,\\"view\\":\\"error\\"}]);
+Talon.brandingService.setBrandingProperties({});
+</script>
+<script src=\\"/basePath/talon/view/latest/prod/en_US/themeLayoutInner.js\\"></script>
+<script src=\\"/basePath/talon/view/latest/prod/en_US/myPage.js\\"></script>
+
+
+<script type=\\"text/javascript\\">
+    const container = document.getElementById(\\"main\\");
+    Talon.componentService.createElement(\\"talon/app\\")
+        .then(element => {
+            container.appendChild(element);
+        });
+    </script>
+
+Base path: /basePath
+Version key: 1"
+`;
+
+exports[`template-middleware generateHTML includes UIDs 1`] = `
+"<script src=\\"/basePath/talon/framework/[dev uid for framework://talon]/dev/talon.js\\"></script>
+<script type=\\"text/javascript\\">
+    Talon.configProvider.register({
+        getBasePath() {
+            return \\"/basePath\\";
+        },
+        getMode() {
+            return \\"dev\\";
+        },
+        getLocale() {
+            return \\"en_US\\";
+        }
+    });
+
+    Talon.themeService.setTheme({\\"themeLayouts\\":{\\"inner\\":{\\"view\\":\\"themeLayoutInner\\"},\\"default\\":{\\"view\\":\\"themeLayoutDefault\\"}}});
+Talon.themeService.setViewToThemeLayoutMap({\\"home\\":\\"themeLayoutInner\\",\\"myPage\\":\\"themeLayoutInner\\",\\"error\\":\\"themeLayoutDefault\\"});
+Talon.routingService.registerRoutes([{\\"name\\":\\"home\\",\\"path\\":\\"/\\",\\"isRoot\\":true,\\"view\\":\\"home\\"},{\\"name\\":\\"my-page\\",\\"path\\":\\"/my-page\\",\\"view\\":\\"myPage\\"},{\\"name\\":\\"error\\",\\"path\\":\\"/error\\",\\"isDefault\\":true,\\"view\\":\\"error\\"}]);
+Talon.brandingService.setBrandingProperties({});
+Talon.moduleRegistry.setResourceUids({\\"framework://talon\\":\\"[dev uid for framework://talon]\\",\\"view://home@en_US\\":\\"[dev uid for view://home@en_US]\\",\\"view://themeLayoutInner@en_US\\":\\"[dev uid for view://themeLayoutInner@en_US]\\"});
+</script>
+<script src=\\"/basePath/talon/view/[dev uid for view://themeLayoutInner@en_US]/dev/en_US/themeLayoutInner.js\\"></script>
+<script src=\\"/basePath/talon/view/[dev uid for view://home@en_US]/dev/en_US/home.js\\"></script>
+
+
+<script type=\\"text/javascript\\">
+    const container = document.getElementById(\\"main\\");
+    Talon.componentService.createElement(\\"talon/app\\")
+        .then(element => {
+            container.appendChild(element);
+        });
+    </script>
+
+Base path: /basePath
+Version key: 1"
+`;
+
+exports[`template-middleware templateMiddleware send HTML 1`] = `
+"<script src=\\"/basePath/talon/framework/[dev uid for framework://talon]/dev/talon.js\\"></script>
+<script type=\\"text/javascript\\">
+    Talon.configProvider.register({
+        getBasePath() {
+            return \\"/basePath\\";
+        },
+        getMode() {
+            return \\"dev\\";
+        },
+        getLocale() {
+            return \\"en_US\\";
+        }
+    });
+
+    Talon.themeService.setTheme({\\"themeLayouts\\":{\\"inner\\":{\\"view\\":\\"themeLayoutInner\\"},\\"default\\":{\\"view\\":\\"themeLayoutDefault\\"}}});
+Talon.themeService.setViewToThemeLayoutMap({\\"home\\":\\"themeLayoutInner\\",\\"myPage\\":\\"themeLayoutInner\\",\\"error\\":\\"themeLayoutDefault\\"});
+Talon.routingService.registerRoutes([{\\"name\\":\\"home\\",\\"path\\":\\"/\\",\\"isRoot\\":true,\\"view\\":\\"home\\"},{\\"name\\":\\"my-page\\",\\"path\\":\\"/my-page\\",\\"view\\":\\"myPage\\"},{\\"name\\":\\"error\\",\\"path\\":\\"/error\\",\\"isDefault\\":true,\\"view\\":\\"error\\"}]);
+Talon.brandingService.setBrandingProperties({});
+Talon.moduleRegistry.setResourceUids({\\"framework://talon\\":\\"[dev uid for framework://talon]\\",\\"view://themeLayoutInner@en_US\\":\\"[dev uid for view://themeLayoutInner@en_US]\\",\\"view://myPage@en_US\\":\\"[dev uid for view://myPage@en_US]\\"});
+</script>
+<script src=\\"/basePath/talon/view/[dev uid for view://themeLayoutInner@en_US]/dev/en_US/themeLayoutInner.js\\"></script>
+<script src=\\"/basePath/talon/view/[dev uid for view://myPage@en_US]/dev/en_US/myPage.js\\"></script>
+
+
+<script type=\\"text/javascript\\">
+    const container = document.getElementById(\\"main\\");
+    Talon.componentService.createElement(\\"talon/app\\")
+        .then(element => {
+            container.appendChild(element);
+        });
+    </script>
+
+Base path: /basePath
+Version key: 1"
+`;

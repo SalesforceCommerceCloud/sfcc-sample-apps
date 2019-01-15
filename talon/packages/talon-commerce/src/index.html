@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Salesforce Headless Commerce with LWC and Talon</title>
+    {{ talonInit context }}
+
+    <link rel="manifest" href="{{ basePath }}/assets/manifest.json?{{ versionKey }}">
+    <link rel="shortcut icon" href="{{ basePath }}/assets/favicon.ico?{{ versionKey }}">
+
+    <link rel="stylesheet" href="{{ basePath }}/assets/css/global.css?{{ versionKey }}">
+    <link rel="stylesheet" href="{{ basePath }}/assets/css/search.css?{{ versionKey }}">
+    <link rel="stylesheet" href="{{ basePath }}/assets/css/homePage.css?{{ versionKey }}">
+
+</head>
+
+<body id="main">
+    {{ talonApp "main" }}
+</body> 
+
+</html>

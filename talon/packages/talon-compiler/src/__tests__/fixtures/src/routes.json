@@ -1,0 +1,19 @@
+[
+    {
+        "name": "home",
+        "path": "/",
+        "isRoot": true,
+        "view": "home"
+    },
+    {
+        "name": "my-page",
+        "path": "/my-page",
+        "view": "myPage"
+    },
+    {
+        "name": "error",
+        "path": "/error",
+        "isDefault": true,
+        "view": "error"
+    }
+]

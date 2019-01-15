@@ -1,0 +1,338 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`compiler-service buildResourceContents adds a module to the module registry 1`] = `"Talon.moduleRegistry.addModule(null, 'hello', function() { };);"`;
+
+exports[`compiler-service buildResourceContents adds multiple modules to the module registry 1`] = `
+"Talon.moduleRegistry.addModule(null, 'foo', function() { };);
+Talon.moduleRegistry.addModule(null, 'bar', function() { };);
+Talon.moduleRegistry.addModule(null, 'baz', function() { };);
+"
+`;
+
+exports[`compiler-service buildResourceContents bundles dev and prod modes separately 1`] = `
+Object {
+  "dev": "Talon.moduleRegistry.addModule(null, 'foo', function() { };);
+Talon.moduleRegistry.addModule(null, 'bar', function() { };);
+Talon.moduleRegistry.addModule(null, 'baz', function() { };);
+",
+  "prod": "Talon.moduleRegistry.addModule(null, 'blah', someProdStuff() { }
+",
+}
+`;
+
+exports[`compiler-service buildResourceContents conditionally adds to module registry based on amd define method 1`] = `
+"export function whatever() { console.log(\\"whatever\\"); };
+Talon.moduleRegistry.addModule(null, 'bar', function() { };);
+Talon.moduleRegistry.addModule(null, 'baz', function() { };);
+"
+`;
+
+exports[`compiler-service compile includes dependencies 1`] = `
+Object {
+  "x/cmp1": Array [
+    Object {
+      "code": "define('x/cmp1', ['lwc'], function (lwc) {
+
+    function stylesheet(hostSelector, shadowSelector, nativeShadow) {
+      return \`
+
+\${nativeShadow ? (\\":host {color: red;}\\") : (hostSelector + \\" {color: red;}\\")}
+\`;
+    }
+    var stylesheets = [stylesheet];
+
+    function tmpl($api, $cmp, $slotset, $ctx) {
+      const {
+        t: api_text,
+        h: api_element
+      } = $api;
+
+      return [api_element(\\"h2\\", {
+        key: 2
+      }, [api_text(\\"Cmp 1\\")])];
+    }
+
+    var _tmpl = lwc.registerTemplate(tmpl);
+
+    if (stylesheets) {
+      tmpl.stylesheets = {
+        stylesheets,
+        hostAttribute: \\"x-cmp1_cmp1-host\\",
+        shadowAttribute: \\"x-cmp1_cmp1\\"
+      };
+    }
+
+    class Cmp1 extends lwc.LightningElement {}
+
+    var cmp1 = lwc.registerComponent(Cmp1, {
+      tmpl: _tmpl
+    });
+
+    return cmp1;
+
+});
+",
+      "diagnostics": Array [
+        Object {
+          "code": 1001,
+          "filename": undefined,
+          "level": 2,
+          "location": undefined,
+          "message": "LWC1001: Error in module resolution: 'lwc' is imported by cmp1.js, but could not be resolved – treating it as an external dependency",
+        },
+        Object {
+          "code": 1001,
+          "filename": undefined,
+          "level": 2,
+          "location": undefined,
+          "message": "LWC1001: Error in module resolution: 'lwc' is imported by cmp1.html, but could not be resolved – treating it as an external dependency",
+        },
+      ],
+      "map": null,
+      "metadata": Object {
+        "importLocations": Array [
+          Object {
+            "location": Object {
+              "length": 3,
+              "start": 19,
+            },
+            "name": "lwc",
+          },
+        ],
+      },
+      "outputConfig": Object {
+        "compat": false,
+        "env": Object {},
+        "format": "amd",
+        "minify": false,
+        "mode": "dev",
+        "sourcemap": false,
+      },
+    },
+    Object {
+      "code": "define(\\"x/cmp1\\",[\\"lwc\\"],function(a){function b(a){const{t:b,h:c}=a;return[c(\\"h2\\",{key:2},[b(\\"Cmp 1\\")])]}var c=[function(a,b,c){return\`\${c?void 0:\\":host,\\"+a+\\"{color: red;}\\"}\`}],d=a.registerTemplate(b);c&&(b.stylesheets={stylesheets:c,hostAttribute:\\"x-cmp1_cmp1-host\\",shadowAttribute:\\"x-cmp1_cmp1\\"});class e extends a.LightningElement{}var f=a.registerComponent(e,{tmpl:d});return f});
+",
+      "diagnostics": Array [
+        Object {
+          "code": 1001,
+          "filename": undefined,
+          "level": 2,
+          "location": undefined,
+          "message": "LWC1001: Error in module resolution: 'lwc' is imported by cmp1.js, but could not be resolved – treating it as an external dependency",
+        },
+        Object {
+          "code": 1001,
+          "filename": undefined,
+          "level": 2,
+          "location": undefined,
+          "message": "LWC1001: Error in module resolution: 'lwc' is imported by cmp1.html, but could not be resolved – treating it as an external dependency",
+        },
+      ],
+      "map": null,
+      "metadata": Object {
+        "importLocations": Array [
+          Object {
+            "location": Object {
+              "length": 5,
+              "start": 17,
+            },
+            "name": "\\"lwc\\"",
+          },
+        ],
+      },
+      "outputConfig": Object {
+        "compat": false,
+        "env": Object {},
+        "format": "amd",
+        "minify": true,
+        "mode": "prod",
+        "sourcemap": false,
+      },
+    },
+  ],
+  "x/home": Array [
+    Object {
+      "code": "define('x/home', ['x/cmp1', 'lwc', '@salesforce/label/home.welcome', 'lightning/configProvider'], function (_xCmp1, lwc, welcomeLabel, configProvider) {
+
+    function tmpl($api, $cmp, $slotset, $ctx) {
+      const {
+        d: api_dynamic,
+        h: api_element,
+        c: api_custom_element
+      } = $api;
+
+      return [api_element(\\"h1\\", {
+        key: 2
+      }, [api_dynamic($cmp.title)]), api_custom_element(\\"x-cmp1\\", _xCmp1, {
+        key: 3
+      }, [])];
+    }
+
+    var _tmpl = lwc.registerTemplate(tmpl);
+
+    class Home extends lwc.LightningElement {
+      get title() {
+        return welcomeLabel;
+      }
+
+    }
+
+    var home = lwc.registerComponent(Home, {
+      tmpl: _tmpl
+    });
+
+    return home;
+
+});
+",
+      "diagnostics": Array [
+        Object {
+          "code": 1001,
+          "filename": undefined,
+          "level": 2,
+          "location": undefined,
+          "message": "LWC1001: Error in module resolution: 'lwc' is imported by home.js, but could not be resolved – treating it as an external dependency",
+        },
+        Object {
+          "code": 1001,
+          "filename": undefined,
+          "level": 2,
+          "location": undefined,
+          "message": "LWC1001: Error in module resolution: '@salesforce/label/home.welcome' is imported by home.js, but could not be resolved – treating it as an external dependency",
+        },
+        Object {
+          "code": 1001,
+          "filename": undefined,
+          "level": 2,
+          "location": undefined,
+          "message": "LWC1001: Error in module resolution: 'lightning/configProvider' is imported by home.js, but could not be resolved – treating it as an external dependency",
+        },
+        Object {
+          "code": 1001,
+          "filename": undefined,
+          "level": 2,
+          "location": undefined,
+          "message": "LWC1001: Error in module resolution: 'x/cmp1' is imported by home.html, but could not be resolved – treating it as an external dependency",
+        },
+        Object {
+          "code": 1001,
+          "filename": undefined,
+          "level": 2,
+          "location": undefined,
+          "message": "LWC1001: Error in module resolution: 'lwc' is imported by home.html, but could not be resolved – treating it as an external dependency",
+        },
+      ],
+      "map": null,
+      "metadata": Object {
+        "importLocations": Array [],
+      },
+      "outputConfig": Object {
+        "compat": false,
+        "env": Object {},
+        "format": "amd",
+        "minify": false,
+        "mode": "dev",
+        "sourcemap": false,
+      },
+    },
+    Object {
+      "code": "define(\\"x/home\\",[\\"x/cmp1\\",\\"lwc\\",\\"@salesforce/label/home.welcome\\",\\"lightning/configProvider\\"],function(a,b,c){var d=b.registerTemplate(function(b,c){const{d:d,h:e,c:f}=b;return[e(\\"h1\\",{key:2},[d(c.title)]),f(\\"x-cmp1\\",a,{key:3},[])]});class e extends b.LightningElement{get title(){return c}}var f=b.registerComponent(e,{tmpl:d});return f});
+",
+      "diagnostics": Array [
+        Object {
+          "code": 1001,
+          "filename": undefined,
+          "level": 2,
+          "location": undefined,
+          "message": "LWC1001: Error in module resolution: 'lwc' is imported by home.js, but could not be resolved – treating it as an external dependency",
+        },
+        Object {
+          "code": 1001,
+          "filename": undefined,
+          "level": 2,
+          "location": undefined,
+          "message": "LWC1001: Error in module resolution: '@salesforce/label/home.welcome' is imported by home.js, but could not be resolved – treating it as an external dependency",
+        },
+        Object {
+          "code": 1001,
+          "filename": undefined,
+          "level": 2,
+          "location": undefined,
+          "message": "LWC1001: Error in module resolution: 'lightning/configProvider' is imported by home.js, but could not be resolved – treating it as an external dependency",
+        },
+        Object {
+          "code": 1001,
+          "filename": undefined,
+          "level": 2,
+          "location": undefined,
+          "message": "LWC1001: Error in module resolution: 'x/cmp1' is imported by home.html, but could not be resolved – treating it as an external dependency",
+        },
+        Object {
+          "code": 1001,
+          "filename": undefined,
+          "level": 2,
+          "location": undefined,
+          "message": "LWC1001: Error in module resolution: 'lwc' is imported by home.html, but could not be resolved – treating it as an external dependency",
+        },
+      ],
+      "map": null,
+      "metadata": Object {
+        "importLocations": Array [],
+      },
+      "outputConfig": Object {
+        "compat": false,
+        "env": Object {},
+        "format": "amd",
+        "minify": true,
+        "mode": "prod",
+        "sourcemap": false,
+      },
+    },
+  ],
+}
+`;
+
+exports[`compiler-service compileTemplate returns the right compiled modules 1`] = `
+Object {
+  "x/foo": Array [
+    Object {
+      "code": "define('x/foo', function () {
+
+	console.log(\\"foo\\");
+
+});
+",
+      "diagnostics": Array [],
+      "map": null,
+      "metadata": Object {
+        "importLocations": Array [],
+      },
+      "outputConfig": Object {
+        "compat": false,
+        "env": Object {},
+        "format": "amd",
+        "minify": false,
+        "mode": "dev",
+        "sourcemap": false,
+      },
+    },
+    Object {
+      "code": "define(\\"x/foo\\",function(){console.log(\\"foo\\")});
+",
+      "diagnostics": Array [],
+      "map": null,
+      "metadata": Object {
+        "importLocations": Array [],
+      },
+      "outputConfig": Object {
+        "compat": false,
+        "env": Object {},
+        "format": "amd",
+        "minify": true,
+        "mode": "prod",
+        "sourcemap": false,
+      },
+    },
+  ],
+}
+`;

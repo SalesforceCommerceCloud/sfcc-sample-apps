@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`resolver getModuleEntries includes sub directories 1`] = `
+Object {
+  "cmp2.css": ":host {
+    color: green;
+}",
+  "cmp2.js": "import { LightningElement } from 'lwc';
+import tmpl from './templates/tmpl.html';
+
+export default class Cmp2 extends LightningElement {
+    render() {
+        return tmpl;
+    }
+}",
+  "templates/tmpl.html": "<template>
+    <h2>Cmp 2</h2>
+</template>",
+}
+`;

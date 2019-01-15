@@ -1,0 +1,27 @@
+{
+    "name": "headerAndFooter",
+    "label": "Default Header and Footer",
+    "component": {
+        "name": "community_flashhelp/threeRow",
+        "regions": [
+            {
+                "name": "header",
+                "label": "Header",
+                "components": [
+                    {
+                        "name": "community_flashhelp/header"
+                    }
+                ]
+            },
+            {
+                "name": "footer",
+                "label": "Footer",
+                "components": [
+                    {
+                        "name": "community_flashhelp/footer"
+                    }
+                ]
+            }
+        ]
+    }
+}

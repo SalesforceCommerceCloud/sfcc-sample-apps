@@ -1,0 +1,26 @@
+{
+    "name": "home",
+    "label": "Home",
+    "themeLayoutType": "hero",
+    "component": {
+        "name": "community_flashhelp/twoRow",
+        "regions": [
+            {
+                "name": "title",
+                "label": "Title Content",
+                "components": [
+                    
+                ]
+            },
+            {
+                "name": "main",
+                "label": "Main Content",
+                "components": [
+                    {
+                        "name": "community_flashhelp/form"
+                    }
+                ]
+            }
+        ]
+    }
+}

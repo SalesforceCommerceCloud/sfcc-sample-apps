@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`talon/app renders no theme layout 1`] = `
+<talon-app>
+  #shadow-root(open)
+</talon-app>
+`;
+
+exports[`talon/app renders the theme layout 1`] = `
+<talon-app>
+  #shadow-root(open)
+    Theme Layout
+</talon-app>
+`;

@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`handlebars-helpers talonApp returns script tags for other theme layout component 1`] = `
+"<script type=\\"text/javascript\\">
+    const container = document.getElementById(\\"01234\\");
+    Talon.componentService.createElement(\\"talon/app\\")
+        .then(element => {
+            container.appendChild(element);
+        });
+    </script>"
+`;
+
+exports[`handlebars-helpers talonApp returns script tags for theme layout component 1`] = `
+"<script type=\\"text/javascript\\">
+    const container = document.getElementById(\\"01234\\");
+    Talon.componentService.createElement(\\"talon/app\\")
+        .then(element => {
+            container.appendChild(element);
+        });
+    </script>"
+`;
+
+exports[`handlebars-helpers talonInit returns script tags for talon init 1`] = `
+"<script src=\\"/test/talon/framework/latest/prod/talon.js\\"></script>
+<script type=\\"text/javascript\\">
+    Talon.configProvider.register({
+        getBasePath() {
+            return \\"/test\\";
+        },
+        getMode() {
+            return \\"prod\\";
+        },
+        getLocale() {
+            return \\"fr\\";
+        }
+    });
+
+    Talon.themeService.setTheme({\\"themeLayouts\\":{\\"inner\\":{\\"view\\":\\"themeLayoutInner\\"},\\"default\\":{\\"view\\":\\"themeLayoutDefault\\"}}});
+Talon.themeService.setViewToThemeLayoutMap({\\"home\\":\\"themeLayoutInner\\",\\"myPage\\":\\"themeLayoutInner\\",\\"error\\":\\"themeLayoutInner\\"});
+Talon.routingService.registerRoutes([{\\"name\\":\\"home\\",\\"path\\":\\"/\\",\\"isRoot\\":true,\\"view\\":\\"home\\"},{\\"name\\":\\"my-page\\",\\"path\\":\\"/my-page\\",\\"view\\":\\"myPage\\"},{\\"name\\":\\"error\\",\\"path\\":\\"/error\\",\\"isDefault\\":true,\\"view\\":\\"error\\"}]);
+Talon.brandingService.setBrandingProperties({\\"SomeImage\\":\\"url(i.imgur.com/JCOQkSWg.jpg)\\",\\"SomeMisc\\":\\"misc data\\"});
+</script>
+<script src=\\"/test/talon/view/latest/prod/fr/themeLayoutInner.js\\"></script>
+<script src=\\"/test/talon/view/latest/prod/fr/home.js\\"></script>
+"
+`;

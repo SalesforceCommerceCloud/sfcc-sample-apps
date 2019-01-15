@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`community_flashhelp/footer renders correctly 1`] = `
+<community_flashhelp-footer>
+  #shadow-root(open)
+    <footer
+      class="footer"
+    >
+      <div
+        class="container-fluid slds-text-align_center"
+      >
+        <p>
+          <span>
+            <small>
+              © 2018 The American National Red Cross
+            </small>
+          </span>
+        </p>
+        <span>
+          <small>
+            For more information, please visit redcross.org or cruzrojaamericana.org
+          </small>
+        </span>
+        <div
+          class="slds-align_absolute-center"
+        >
+          <ul
+            class="slds-list_horizontal slds-has-inline-block-links_space"
+          >
+            <li>
+              <talon-router-link>
+                #shadow-root(open)
+                  <a
+                    href="/base/"
+                  >
+                    Home
+                  </a>
+              </talon-router-link>
+            </li>
+            <li>
+              <talon-router-link>
+                #shadow-root(open)
+                  <a
+                    href="/base/about"
+                  >
+                    About
+                  </a>
+              </talon-router-link>
+            </li>
+            <li>
+              <talon-router-link>
+                #shadow-root(open)
+                  <a
+                    href="/base/faq"
+                  >
+                    FAQ
+                  </a>
+              </talon-router-link>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+</community_flashhelp-footer>
+`;

@@ -1,0 +1,23 @@
+core:
+  # codeline of //app/main/core to test against
+  codeline: main
+  # core modules that need to be updated on the core pom/xml
+  modules:
+    ui-communities-talon:
+      optional_history_file: null
+      # maven property name for the module's version
+      properties_name: ui-communities-talon.version
+  # execute tests that are part of the ftest labels
+  ftest_labels: [~ignore,talon.itest]
+  # execute both A and B run,
+  # where A run is with your staged artifact
+  #   and B run is without updating core pom.xml with the version of your artifact
+  ab_enabled: true
+
+  # this is a timeout for SFCI to stop polling
+  # unit is minutes
+  # pending is the time SFCI waits when autobuild is waiting to be allocated resource
+  # running is the time SFCI waits when itests are in-progress or RUNNING state
+  timeout:
+    pending: 90
+    running: 240

@@ -1,0 +1,25 @@
+[
+    {
+        "name": "home",
+        "path": "/",
+        "isRoot": true,
+        "view": "home"
+    },
+    {
+        "name": "search",
+        "path": "/search/:query",
+        "isRoot": false,
+        "view": "search"
+    },
+    {
+        "name": "about",
+        "path": "/about",
+        "view": "about"
+    },
+    {
+        "name": "error",
+        "path": "/error",
+        "isDefault": true,
+        "view": "error"
+    }
+]

@@ -1,0 +1,7 @@
+{
+    "name": "themeLayoutInner",
+    "label": "Inner Theme Layout",
+    "component": {
+        "name": "x/themeLayoutInner"
+    }
+}

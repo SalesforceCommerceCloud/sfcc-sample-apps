@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`talon/routerContainer renders no route 1`] = `
+<talon-router-container>
+  #shadow-root(open)
+</talon-router-container>
+`;
+
+exports[`talon/routerContainer renders route 1`] = `
+<talon-router-container>
+  #shadow-root(open)
+    About
+</talon-router-container>
+`;

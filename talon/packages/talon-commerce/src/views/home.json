@@ -1,0 +1,19 @@
+{
+    "name": "homeCommerce",
+    "label": "Home Commerce",
+    "themeLayoutType": "commerce",
+    "component": {
+        "name": "commerce/oneRow",
+        "regions": [
+            {
+                "name": "main",
+                "label": "Main Content",
+                "components": [
+                    {
+                        "name": "commerce/home"
+                    }
+                ]
+            }
+        ]
+    }
+}

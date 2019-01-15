@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`view-template-generator javascript generates the right javascript 1`] = `
+"import html from './defaultView.html'
+    export default html"
+`;
+
+exports[`view-template-generator template generates the right theme layout view html 1`] = `
+"<template>
+  <x-foo>
+    <x-header label=\\"Header Label\\" class=\\"header\\" slot=\\"header\\"></x-header>
+    <x-left-side slot=\\"header\\">
+      <x-logo slot=\\"left-side\\"></x-logo>
+    </x-left-side><span slot=\\"customHeader\\"></span>
+    <x-footer size=\\"50\\" slot=\\"footer\\"></x-footer>
+    <talon-router-container></talon-router-container>
+  </x-foo>
+</template>"
+`;
+
+exports[`view-template-generator template generates the right view html 1`] = `
+"<template>
+  <x-foo>
+    <x-header label=\\"Header Label\\" class=\\"header\\" slot=\\"header\\"></x-header>
+    <x-left-side slot=\\"header\\">
+      <x-logo slot=\\"left-side\\"></x-logo>
+    </x-left-side><span slot=\\"customHeader\\"></span>
+    <x-footer size=\\"50\\" slot=\\"footer\\"></x-footer>
+  </x-foo>
+</template>"
+`;

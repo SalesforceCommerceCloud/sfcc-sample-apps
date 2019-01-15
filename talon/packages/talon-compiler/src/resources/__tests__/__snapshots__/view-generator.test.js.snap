@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`view-generator generates view resource 1`] = `
+"{
+   \\"descriptor\\": \\"view://community_flashhelp/about\\",
+   \\"contents\\": {
+      \\"dev\\": \\"dev code\\",
+      \\"prod\\": \\"prod code\\"
+   },
+   \\"uids\\": {
+      \\"dev\\": \\"da01e4f4d2\\",
+      \\"prod\\": \\"1279a97f1e\\"
+   }
+}"
+`;

@@ -1,0 +1,36 @@
+{
+    "name": "heroLayout",
+    "label": "Hero Layout",
+    "component": {
+        "name": "commerce/heroLayout",
+        "regions": [
+            {
+                "name": "header",
+                "label": "Header",
+                "components": [
+                    {
+                        "name": "commerce/header"
+                    }
+                ]
+            },
+            {
+                "name": "hero",
+                "label": "Hero Jumbotron",
+                "components": [
+                    {
+                        "name": "commerce/hero"
+                    }
+                ]
+            },
+            {
+                "name": "footer",
+                "label": "Footer",
+                "components": [
+                    {
+                        "name": "commerce/footer"
+                    }
+                ]
+            }
+        ]
+    }
+}

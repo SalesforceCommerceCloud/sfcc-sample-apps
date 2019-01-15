@@ -1,0 +1,8 @@
+{
+    "name": "myPage",
+    "label": "My Page",
+    "themeLayoutType": "inner",
+    "component": {
+        "name": "x/myPage"
+    }
+}

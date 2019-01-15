@@ -1,0 +1,8 @@
+{
+	"devDependencies": {
+		"lerna": "^2.11.0"
+	},
+	"dependencies": {
+		"completion": "^1.0.1"
+	}
+}

@@ -1,0 +1,12 @@
+[
+    {
+        "name": "SomeImage",
+        "type": "Image",
+        "value": "i.imgur.com/JCOQkSWg.jpg"
+    },
+    {
+        "name": "SomeMisc",
+        "type": "Misc",
+        "value": "misc data"
+    }
+]

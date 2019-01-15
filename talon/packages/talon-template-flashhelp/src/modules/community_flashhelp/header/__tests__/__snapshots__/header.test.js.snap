@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`community_flashhelp/header renders correctly 1`] = `
+<community_flashhelp-header>
+  #shadow-root(open)
+    <div
+      class="navbar navbar-default navbar-fixed-top"
+    >
+      <div
+        class="container-fluid"
+      >
+        <div
+          class="navbar-header"
+        >
+          <div
+            class="navbar-logo"
+          />
+          <div
+            class="navbar-title"
+          >
+            <span
+              class="hidden-xs hidden-sm"
+            >
+              Immediate Assistance Program
+            </span>
+          </div>
+          <div
+            class="navbar-right"
+          >
+            <community_flashhelp-shop-button>
+              #shadow-root(open)
+                <a
+                  href="https://www.redcross.org/store"
+                  style="text-decoration: none;"
+                  target="_blank"
+                >
+                  <span
+                    style="font-size: 14px; color: rgb(225, 27, 34); font-weight: bold; line-height: 24px;"
+                  >
+                    <i
+                      class="fas fa-shopping-cart"
+                    />
+                    <span
+                      class="icon-label"
+                    >
+                      Shop the Red Cross Store
+                    </span>
+                  </span>
+                </a>
+            </community_flashhelp-shop-button>
+          </div>
+        </div>
+      </div>
+    </div>
+</community_flashhelp-header>
+`;

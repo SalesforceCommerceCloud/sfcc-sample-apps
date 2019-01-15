@@ -1,0 +1,16 @@
+{
+    "name": "talon-integration",
+    "version": "0.0.1",
+    "scripts": {
+        "local": "jest --runInBand"
+    },
+    "devDependencies": {
+        "expect-puppeteer": "^3.4.0",
+        "faker": "^4.1.0",
+        "jest": "^23.5.0",
+        "jest-puppeteer": "^3.4.0",
+        "puppeteer": "^1.7.0",
+        "talon-common": "^0.0.1",
+        "talon-template-flashhelp": "^0.0.1"
+    }
+}

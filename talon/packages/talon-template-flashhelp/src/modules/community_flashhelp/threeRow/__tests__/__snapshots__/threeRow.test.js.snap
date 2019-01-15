@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`community_flashhelp/threeRow renders correctly 1`] = `
+<community_flashhelp-three-row>
+  #shadow-root(open)
+    <slot
+      name="header"
+    />
+    <slot />
+    <slot
+      name="footer"
+    />
+</community_flashhelp-three-row>
+`;
