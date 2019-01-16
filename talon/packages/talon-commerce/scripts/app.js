@@ -9,11 +9,9 @@ require( 'colors' );
 
 //import * as sfra from '../../../../sfra-core/index';
 
-const sfra = require('../../../../sfra-core/src/sfra-core');
-
 // I've provided a Logger
-//import LogService;  // logger
-//import registry;    // which  is a registry
+// import LogService;  // logger
+// import registry;    // which  is a registry
 
 //registry.getExtension(Symbol('payment'));
 
