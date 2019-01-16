@@ -12,7 +12,7 @@
     "start": "yarn build:components && concurrently \"yarn serve\" \"yarn build:resources --watch\""
   },
   "devDependencies": {
-    "@lwc-platform/sfdc-lwc-compiler": "0.33.26",
+    "@lwc-platform/sfdc-lwc-compiler": "0.33.9",
     "@salesforce-ux/design-system": "^2.6.1",
     "colors": "^1.3.2",
     "compression": "^1.7.3",
@@ -22,9 +22,9 @@
     "faker": "^4.1.0",
     "jest": "^23.5.0",
     "lwc-components-lightning": "1.0.13-alpha",
-    "lwc-engine": "0.33.26",
-    "lwc-jest-preset": "0.33.26",
-    "lwc-module-resolver": "0.33.26",
+    "lwc-engine": "0.33.9",
+    "lwc-jest-preset": "0.33.9",
+    "lwc-module-resolver": "0.33.9",
     "mkdirp": "^0.5.1",
     "talon-compiler": "^0.0.1",
     "talon-framework": "^0.0.1"

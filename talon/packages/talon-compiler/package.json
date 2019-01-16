@@ -11,7 +11,7 @@
     "build": "cross-env rollup -c ./scripts/rollup.config.js"
   },
   "devDependencies": {
-    "@lwc-platform/sfdc-lwc-compiler": "0.33.26",
+    "@lwc-platform/sfdc-lwc-compiler": "0.33.9",
     "babel-jest": "^23.0.1",
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
@@ -26,7 +26,7 @@
     "hasha": "^3.0.0",
     "jest": "^23.5.0",
     "line-column": "^1.0.2",
-    "lwc-module-resolver": "0.33.26",
+    "lwc-module-resolver": "0.33.9",
     "memfs": "^2.9.4",
     "mkdirp": "^0.5.1",
     "pretty": "^2.0.0",
