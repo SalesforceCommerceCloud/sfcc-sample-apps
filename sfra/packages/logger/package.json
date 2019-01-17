@@ -10,7 +10,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@sfra/core": "0.0.5"
+    "@sfra/core": "^0.0.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",

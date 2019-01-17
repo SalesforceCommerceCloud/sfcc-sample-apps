@@ -4,14 +4,14 @@ var core = require('@sfra/core');
 
 // SFRA Core Extension module
 
-class WishList {
+class Wishlist {
     constructor() {
     }
 }
 
 // TODO: ensure this isn't already registered?
 core.core.registerExtension('wishlist', function() {
-    return new WishList();
+    return new Wishlist();
 });
 
-module.exports = WishList;
+module.exports = Wishlist;

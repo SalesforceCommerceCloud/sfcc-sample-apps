@@ -1,6 +1,6 @@
 {
   "name": "@sfra/core",
-  "version": "0.0.9",
+  "version": "0.0.1",
   "description": "sfra core",
   "main": "index.js",
   "scripts": {

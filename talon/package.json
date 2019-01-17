@@ -43,6 +43,6 @@
     "packages/*"
   ],
   "engines": {
-    "yarn": "1.9.4"
+    "yarn": "^1.9.4"
   }
 }

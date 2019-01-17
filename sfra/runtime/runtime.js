@@ -25,6 +25,6 @@ app.get('/', function (req, res) {
     console.log('core.getService(logger)', core.getService('logger'));
 
     res.send(`SFRA `);
-})
+});
 
 app.listen(3000, () => console.log('Example SFRA runtime listening on port 3000!'));
