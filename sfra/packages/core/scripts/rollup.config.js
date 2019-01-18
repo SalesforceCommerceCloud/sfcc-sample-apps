@@ -1,5 +1,4 @@
 // Rollup plugins
-import babel from 'rollup-plugin-babel';
 
 module.exports = {
   input: 'src/core.js',
