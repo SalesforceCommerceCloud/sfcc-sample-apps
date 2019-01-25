@@ -8,7 +8,6 @@ class Logger {
 
 }
 
-// TODO: ensure this isn't already registered?
 core.core.registerService('logger', function(){
     return new Logger();
 });

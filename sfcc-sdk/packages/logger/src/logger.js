@@ -6,7 +6,6 @@ export default class Logger {
 
 }
 
-// TODO: ensure this isn't already registered?
 core.registerService('logger', function(){
     return new Logger();
 });

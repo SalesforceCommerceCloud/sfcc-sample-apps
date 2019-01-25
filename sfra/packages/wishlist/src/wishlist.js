@@ -6,7 +6,6 @@ export default class Wishlist {
     }
 }
 
-// TODO: ensure this isn't already registered?
 core.registerExtension('wishlist', function() {
     return new Wishlist();
 });

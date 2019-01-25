@@ -9,7 +9,6 @@ class Wishlist {
     }
 }
 
-// TODO: ensure this isn't already registered?
 core.core.registerExtension('wishlist', function() {
     return new Wishlist();
 });
