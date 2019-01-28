@@ -1,5 +1,5 @@
 // SFRA Core Extension module
-import {core} from '@sfra/core';
+import {core} from '@sfcc/core';
 
 export default class Wishlist {
     constructor() {

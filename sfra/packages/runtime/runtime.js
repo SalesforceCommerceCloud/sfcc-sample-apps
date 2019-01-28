@@ -2,9 +2,11 @@ import express from 'express'
 
 const app = express()
 
-import {core} from '@sfra/core';
+// Core
+import {core} from '@sfcc/core';
+import '@sfcc/logger';
 
-import '@sfra/logger';
+// SFRA
 import '@sfra/wishlist';
 
 // respond with "hello world" when a GET request is made to the homepage
