@@ -1,0 +1,18 @@
+{
+  "name": "@sfra/productapi",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "cross-env rollup -c ./scripts/rollup.config.js",
+    "clean": "rm ./sfra-*.tgz; rm index.js",
+    "pub": "npm run build; npm pack; npm publish -f"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@sfcc/core": "0.0.1",
+    "cross-env": "5.2.0",
+    "rollup": "1.1.0"
+  }
+}
