@@ -1,12 +1,8 @@
-# SFRA vNext Spike
+# SFRA Next Spike
 
 We are working on The Salesforce Commerce Cloud Storefront Reference Architecture with Lightning Web Components.
 
-- `sfra`: The runtime core/modules
-- `talon`: The reference app based on `Talon` which imports the `@sfra/core` and `@sfra/[modules]`
+- `sfcc` mono-repo: The runtime core shared code (non-storefront specific).
+- `sfra`: mono-repo: The runtime storefront extensions and services and storefront BFFs.
+- `talon`: The reference app based on `Talon` which imports the `@sfcc/core` and `@sfra/[modules]`.
 
-##### To run in folder `sfra`...
-- 1 start verdaccio
-- 2 build and publish @sfra/core
-- 3 build and publish @sfra/[modules]
-- 4 start the runtime: `node start.js`
