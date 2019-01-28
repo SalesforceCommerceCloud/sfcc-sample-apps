@@ -30,6 +30,9 @@ class Core {
     registerService(name, service) {
         console.log('registerService()', service, this.timestamp);
 
+        if (this._factoryServices[name]) {
+            throw new Error(`Service,'${name}', already registered`);
+        }
         this._factoryServices[name] = service;
     }
 
@@ -55,7 +58,7 @@ class Core {
      */
     getService(serviceName) {
         let services = [];
-        return this._services[serviceName] = this._services[serviceName] || new this._factoryServices[serviceName];
+        return this._services[serviceName] = this._services[serviceName] || new this._factoryServices[serviceName]();
     }
 
     /**
@@ -65,8 +68,22 @@ class Core {
      * @return {*}
      */
     getExtension(extensionName) {
-        // TODO: Should we initialize extensions or return the factory methods.
+        // TODO: Should we initialize extensions or return the factory methods?
         return this._factoryExtensions[extensionName];
+    }
+
+    /**
+     * API ???
+     * @param query
+     */
+    fetch (query) {
+        // api strategy goes here
+        let api = this.getService('api');
+        if (api) {
+            api.fetch(query).then( (res) => {
+                return res.json();
+            });
+        }
     }
 
     constructor() {

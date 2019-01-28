@@ -1,16 +1,15 @@
 {
-  "name": "@sfra/logger",
+  "name": "@sfcc/api",
   "version": "0.0.1",
-  "description": "",
+  "description": "sfcc backend for frontend api service",
   "main": "index.js",
   "scripts": {
     "build": "cross-env rollup -c ./scripts/rollup.config.js",
     "pub": "npm run build; npm pack; npm publish -f"
   },
-  "author": "",
+  "author": "Jason Cooper",
   "license": "MIT",
   "dependencies": {
-    "@sfra/core": "0.0.1",
     "cross-env": "5.2.0",
     "rollup": "1.1.0"
   }

@@ -1,7 +1,7 @@
 {
-  "name": "@sfra/core",
+  "name": "@sfcc/logger",
   "version": "0.0.1",
-  "description": "sfra core",
+  "description": "sfcc default logger",
   "main": "index.js",
   "scripts": {
     "build": "cross-env rollup -c ./scripts/rollup.config.js",
@@ -10,6 +10,7 @@
   "author": "Jason Cooper",
   "license": "MIT",
   "dependencies": {
+    "@sfcc/core": "0.0.1",
     "cross-env": "5.2.0",
     "rollup": "1.1.0"
   }
