@@ -60,3 +60,7 @@ typings/
 
 # next.js build output
 .next
+
+# build index.js files
+sfcc/packages/*/index.js
+sfra/packages/*/index.js
