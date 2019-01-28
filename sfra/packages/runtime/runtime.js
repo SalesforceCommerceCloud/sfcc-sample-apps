@@ -12,7 +12,7 @@ import '@sfra/wishlist';
 // respond with "hello world" when a GET request is made to the homepage
 app.get('/', function (req, res) {
 
-    let wishlistFactories = core.getExtension('wishlist');
+    let wishlistFactories = core.getExtension('wishlist') || [];
 
     console.log('core.getExtension(wishlist)', wishlistFactories);
 

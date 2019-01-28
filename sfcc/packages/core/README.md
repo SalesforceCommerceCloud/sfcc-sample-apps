@@ -1,1 +1,1 @@
-#### sfcc-sdk/core
+#### @sfcc/core

@@ -1,7 +1,7 @@
-## @sfcc-sdk
+## @sfcc
 
 #### Temporary development solution to use Verdaccio as local npm repo
-`npm config set @sfra:registry http://localhost:4873`
+`npm config set @sfcc:registry http://localhost:4873`
 
 #### This project is a Monorepo (work in progress)
 

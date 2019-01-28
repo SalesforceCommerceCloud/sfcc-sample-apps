@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "cross-env rollup -c ./scripts/rollup.config.js",
+    "clean": "rm ./sfcc-*.tgz; rm index.js",
     "pub": "npm run build; npm pack; npm publish -f"
   },
   "author": "Jason Cooper",
