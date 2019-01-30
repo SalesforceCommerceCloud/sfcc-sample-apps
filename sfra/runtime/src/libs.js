@@ -1,3 +1,9 @@
-import * as apolloLinkRest from 'apollo-link-rest';
+import gql from 'graphql-tag';
+import ApolloClient from "apollo-boost";
 
-console.log(apolloLinkRest);
+
+function test() {
+    console.log('hello', ApolloClient, gql);
+}
+
+test();
