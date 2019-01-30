@@ -1,6 +1,8 @@
 import color from 'colors';
 import express from 'express'
 import {ApolloServer} from 'apollo-server-express';
+import path from 'path';
+
 
 //
 // Create Express App
@@ -43,7 +45,7 @@ app.get('/', function (req, res) {
 
     console.log('core.getService(logger)', core.getService('logger'));
 
-    res.send(`SFRA `);
+    res.sendFile(path.join(__dirname + '/index.html'));
 });
 
 const apolloServer = new ApolloServer({

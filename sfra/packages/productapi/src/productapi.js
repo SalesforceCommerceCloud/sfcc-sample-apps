@@ -6,7 +6,7 @@ export default class ProductAPI {
     }
 }
 
-core.registerService('productapi', function () {
-    return new Productapi();
+core.registerExtension('productapi', function () {
+    return new ProductAPI();
 });
 
