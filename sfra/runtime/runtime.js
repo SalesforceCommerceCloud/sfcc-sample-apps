@@ -28,6 +28,8 @@ const resolvers = {
     }
 };
 
+app.use('/public', express.static(__dirname + '/public'));
+
 // respond with "hello world" when a GET request is made to the homepage
 app.get('/', function (req, res) {
 
@@ -45,7 +47,7 @@ app.get('/', function (req, res) {
 
     console.log('core.getService(logger)', core.getService('logger'));
 
-    res.sendFile(path.join(__dirname + '/index.html'));
+    res.sendFile(path.join(__dirname + '/public/index.html'));
 });
 
 const apolloServer = new ApolloServer({
