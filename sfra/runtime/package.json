@@ -5,7 +5,7 @@
   "main": "runtime.js",
   "scripts": {
     "build": "cross-env rollup -c ./scripts/rollup.config.js",
-    "serve": "node start.js",
+    "serve": "node start.js"
   },
   "author": "",
   "license": "ISC",
