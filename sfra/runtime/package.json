@@ -6,7 +6,6 @@
   "scripts": {
     "build": "cross-env rollup -c ./scripts/rollup.config.js",
     "serve": "node start.js",
-    "start": "concurrently --kill-others \"npm build --watch\" \"npm serve\""
   },
   "author": "",
   "license": "ISC",
