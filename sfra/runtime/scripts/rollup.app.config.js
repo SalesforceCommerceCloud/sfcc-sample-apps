@@ -22,6 +22,11 @@ const plugins = [
 module.exports = [ {
     input,
     output: {
+        globals: [
+            {
+                'ApolloClient': 'ApolloClient'
+            }
+        ],
         file: output,
         format: 'iife',
     },
