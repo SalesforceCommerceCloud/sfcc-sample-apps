@@ -29,10 +29,14 @@ export default class CoreGraphQL {
         const expressApp = core.getService('express');
 
         if (expressApp) {
+
+            // TODO: do we need to defer this until all API extensions are loaded.
+            // TODO: unsure we can change schema or resolvers after ApolloServer is created and registered with express middleware.
             this.apolloServer = new ApolloServer({
                 typeDefs: schema,
                 resolvers: resolvers
             });
+
             this.apolloServer.applyMiddleware({app: expressApp, path: '/graphql'});
 
             core.logger.log(' CoreGraphQL apolloServer middleware applied to express!');

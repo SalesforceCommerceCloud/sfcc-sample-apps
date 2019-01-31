@@ -1,5 +1,7 @@
 {
   "scripts": {
+    "build": "lerna run build --stream",
+    "pub": "lerna run pub --stream",
     "test": "jest",
     "integration": "jest -c integration.test.js"
   },

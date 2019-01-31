@@ -3,16 +3,7 @@
 //
 class Core {
 
-    // SFRA Core is the core application registry
-    // Config/Env Data
-    // Site
-    // SFRA Specific
-    //      Look into SFRA hooks
-    //      Look into Services (payment service)
-
-    // need list of default services
-
-    // singletons (log service)
+    // singletons (logger, etc)
     get services() {
         return this._services;
     }
@@ -57,6 +48,7 @@ class Core {
      * @param key The specific extension(s) to instantiate. If undefined Otherwise instantiate all.
      */
     initializeExtensions(key) {
+        console.log('initializeExtensions(key)', key);
         const keys = (key) ? [key] : Object.keys(this._factoryExtensions);
         keys.forEach(key => {
             this.getExtension(key).forEach( extension => {
@@ -87,22 +79,7 @@ class Core {
      * @return {*}
      */
     getExtension(extensionName) {
-        // TODO: Should we initialize extensions or return the factory methods?
         return this._factoryExtensions[extensionName];
-    }
-
-    /**
-     * API ???
-     * @param query
-     */
-    fetch (query) {
-        // api strategy goes here
-        let api = this.getService('api');
-        if (api) {
-            api.fetch(query).then( (res) => {
-                return res.json();
-            });
-        }
     }
 
     constructor() {
@@ -116,7 +93,7 @@ class Core {
         // Factory maps for services and extensions
         this._factoryServices = {};
         this._factoryExtensions = {};
-        console.log('Create the SFRACore Registry instance.');
+        console.log('Create the Core instance used to register services and extensions.');
     }
 }
 
