@@ -1,7 +1,7 @@
 {
-  "name": "@sfcc/apiconfig",
+  "name": "@sfcc/core-graphql",
   "version": "0.0.1",
-  "description": "sfcc backend for frontend api service",
+  "description": "sfcc default core graphql",
   "main": "index.js",
   "scripts": {
     "build": "cross-env rollup -c ./scripts/rollup.config.js",
@@ -11,8 +11,10 @@
   "author": "Jason Cooper",
   "license": "MIT",
   "dependencies": {
-    "@sfcc/core": "^0.0.1",
+    "@sfcc/core": "0.0.1",
+    "apollo-server": "^2.3.3",
     "cross-env": "5.2.0",
+    "graphql-tag": "^2.10.1",
     "rollup": "1.1.0"
   }
 }

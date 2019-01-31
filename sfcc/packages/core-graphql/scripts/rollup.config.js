@@ -1,6 +1,6 @@
 
 module.exports = {
-  input: 'src/productapi.js',
+  input: 'src/core-graphql.js',
   output: {
     file: 'index.js',
     format: 'cjs'

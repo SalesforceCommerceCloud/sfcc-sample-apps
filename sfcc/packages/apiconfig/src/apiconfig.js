@@ -12,13 +12,8 @@ export default class APIConfig {
         // We would like to use the core Logger if available.
         // Default to console.log() otherwise.
         //
-        const logger = this.core.getService('logger');
-        console.log('logger', logger);
-        this.logger = logger || {
-            log: () => console.log(arguments)
-        };
-
-        this.logger.log('APIConfig.constructor()', core);
+        this.logger = this.core.getService('logger');
+        this.logger.log('APIConfig.constructor(core)');
     }
 
     /**

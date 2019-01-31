@@ -52,6 +52,21 @@ class Core {
     }
 
     /**
+     * Creates instances from registered extensions factories
+     *
+     * @param key The specific extension(s) to instantiate. If undefined Otherwise instantiate all.
+     */
+    initializeExtensions(key) {
+        const keys = (key) ? [key] : Object.keys(this._factoryExtensions);
+        keys.forEach(key => {
+            this.getExtension(key).forEach( extension => {
+                // instantiate extension
+                extension();
+            })
+        })
+    }
+
+    /**
      * Getting service[s] will lazily instantiate the service.
      * @param serviceName
      * @return {*}
@@ -59,6 +74,10 @@ class Core {
     getService(serviceName) {
         let services = [];
         return this._services[serviceName] = this._services[serviceName] || new this._factoryServices[serviceName]();
+    }
+
+    get logger() {
+        return this.getService('logger') || console;
     }
 
     /**
