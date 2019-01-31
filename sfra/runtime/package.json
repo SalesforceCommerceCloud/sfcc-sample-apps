@@ -21,6 +21,7 @@
     "@babel/register": "^7.0.0",
     "@sfcc/core": "^0.0.1",
     "@sfcc/logger": "^0.0.1",
+    "@sfcc/apiconfig": "^0.0.1",
     "@sfra/wishlist": "0.0.1",
     "apollo-boost": "^0.1.27",
     "apollo-client": "^2.4.12",

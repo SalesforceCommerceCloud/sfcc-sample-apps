@@ -1,5 +1,5 @@
 {
-  "name": "@sfcc/api",
+  "name": "@sfcc/apiconfig",
   "version": "0.0.1",
   "description": "sfcc backend for frontend api service",
   "main": "index.js",
