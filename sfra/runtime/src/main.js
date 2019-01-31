@@ -9,4 +9,3 @@ import {ApolloClient} from 'ApolloClient';
 //     container.appendChild(element);
 // }
 
-console.log(ApolloClient)

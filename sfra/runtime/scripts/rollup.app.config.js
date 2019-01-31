@@ -24,7 +24,8 @@ module.exports = [ {
     output: {
         globals: [
             {
-                'ApolloClient': 'ApolloClient'
+                'ApolloClient': 'ApolloClient',
+                'gql': 'gql'
             }
         ],
         file: output,

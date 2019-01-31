@@ -3,10 +3,11 @@ import ApolloClient from "apollo-boost";
 
 // EXPOSE ApolloClient as a global.
 // Since lwc rollup compiler cannot handle graphql *.mjs files
-window.ApolloClient = ApolloClient
+window.ApolloClient = ApolloClient;
+window.gql = gql;
 
 function test() {
-    console.log('hello', ApolloClient, gql);
+    console.log('ApolloClient provided by libs.js');
 }
 
 test();
