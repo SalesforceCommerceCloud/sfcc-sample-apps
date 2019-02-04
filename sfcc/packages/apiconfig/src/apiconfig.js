@@ -1,18 +1,18 @@
-// make export singleton
-
 import {core} from '@sfcc/core';
+import {LOGGER_KEY} from "@sfcc/core";
+
+export const API_CONFIG_KEY = Symbol('API_CONFIG_KEY');
 
 export default class APIConfig {
 
     constructor(core) {
-        this.core = core;
         this.config = {};
 
         //
         // We would like to use the core Logger if available.
         // Default to console.log() otherwise.
         //
-        this.logger = this.core.getService('logger');
+        this.logger = core.getService(LOGGER_KEY);
         this.logger.log('APIConfig.constructor(core)');
     }
 
@@ -29,7 +29,12 @@ export default class APIConfig {
     }
 }
 
-core.registerService('api-config', function(){
-    const api = new APIConfig(core);
-    return api;
+// TODO: Experimental pattern. Should/Could we use Object.defineProperty for services.
+Object.defineProperty(core, 'serviceAPIConfig', {
+    value: () => core.getService(API_CONFIG_KEY),
+    writable: false
+});
+
+core.registerService(API_CONFIG_KEY, function () {
+    return new APIConfig(core);
 });

@@ -2,6 +2,10 @@ import {ApolloServer, gql} from 'apollo-server-express';
 
 import {core} from '@sfcc/core';
 
+export const CORE_GRAPHQL_KEY = Symbol('core-graphql');
+export const EXPRESS_KEY = Symbol('express');
+
+
 // TODO: SAMPLE. Override and Extend TBD ------------------------------------------------
 export const schema = gql`
     type Query {
@@ -26,7 +30,7 @@ export default class CoreGraphQL {
 
         core.logger.log('CoreGraphQL.constructor(core)');
 
-        const expressApp = core.getService('express');
+        const expressApp = core.getService(EXPRESS_KEY);
 
         if (expressApp) {
 
@@ -55,6 +59,7 @@ export default class CoreGraphQL {
 
 }
 
-core.registerService('core-graphql', function () {
+core.registerService(CORE_GRAPHQL_KEY, function () {
     return new CoreGraphQL(core);
 });
+

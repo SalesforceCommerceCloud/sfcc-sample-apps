@@ -1,6 +1,10 @@
 //
 // SFRA Core Code
 //
+
+export const LOGGER_KEY = Symbol('logger');
+export const API_KEY = Symbol('api');
+
 class Core {
 
     // singletons (logger, etc)
@@ -69,7 +73,7 @@ class Core {
     }
 
     get logger() {
-        return this.getService('logger') || console;
+        return this.getService(LOGGER_KEY) || console;
     }
 
     /**

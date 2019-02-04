@@ -2,25 +2,35 @@
 
 import {core} from '@sfcc/core';
 
+import {LOGGER_KEY} from '@sfcc/core';
+export {LOGGER_KEY};
+
 export default class Logger {
 
     constructor(core) {
-        this.core = core;
     }
 
     log() {
         console.log(arguments);
     }
 
-    log() {
+    info() {
         console.info(arguments);
     }
 
     debug() {
         console.debug(arguments);
     }
+
+    warn() {
+        console.warn(arguments);
+    }
+
+    error() {
+        console.error(arguments);
+    }
 }
 
-core.registerService('logger', function () {
+core.registerService(LOGGER_KEY, function () {
     return new Logger(core);
 });
