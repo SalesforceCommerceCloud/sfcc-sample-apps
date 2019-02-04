@@ -2,8 +2,8 @@
 // SFRA Core Code
 //
 
-export const LOGGER_KEY = Symbol('logger');
-export const API_KEY = Symbol('api');
+export const LOGGER_KEY = Symbol('Logger Service');
+export const API_EXTENSIONS_KEY = Symbol('API Extensions');
 
 class Core {
 
@@ -14,7 +14,7 @@ class Core {
 
     // multi-values
     get extensions() {
-        return this._extensions;
+        return this._factoryExtensions;
     }
 
     /**
@@ -22,28 +22,28 @@ class Core {
      * @param name
      * @param service
      */
-    registerService(name, service) {
-        console.log('registerService()', service, this.timestamp);
+    registerService(key, service) {
+        this.logger.log(`registerService(${key.toString()})`);
 
-        if (this._factoryServices[name]) {
-            throw new Error(`Service,'${name}', already registered`);
+        if (this._factoryServices[key]) {
+            throw new Error(`Service,'${key}', already registered`);
         }
-        this._factoryServices[name] = service;
+        this._factoryServices[key] = service;
     }
 
     /**
-     * Extensions can have multiple entries per extension name.
+     * Extensions can have multiple entries per extension key.
      * e.g. extensions['payment'] = [fakePayment, paypal, applePay];
-     * @param name
+     * @param key
      * @param extension
      */
-    registerExtension(name, extension) {
-        console.log('registerExtension()', name, extension, this.timestamp);
+    registerExtension(key, extension) {
+        this.logger.log(`registerExtension(${key.toString()})`);
 
-        if (!this._factoryExtensions[name]) {
-            this._factoryExtensions[name] = [];
+        if (!this._factoryExtensions[key]) {
+            this._factoryExtensions[key] = [];
         }
-        this._factoryExtensions[name].push(extension);
+        this._factoryExtensions[key].push(extension);
     }
 
     /**
@@ -52,43 +52,60 @@ class Core {
      * @param key The specific extension(s) to instantiate. If undefined Otherwise instantiate all.
      */
     initializeExtensions(key) {
-        console.log('initializeExtensions(key)', key);
-        const keys = (key) ? [key] : Object.keys(this._factoryExtensions);
+        this.logger.log(`initializeExtensions(${key.toString()})`);
+
+        const keys = (key) ? [key] : Object.getOwnPropertySymbols(this._factoryExtensions);
+
         keys.forEach(key => {
-            this.getExtension(key).forEach( extension => {
+            if (key && !!this._extensions[key]) {
+                const msg = `Error: ${key.toString()} extensions already initialized`;
+                core.logger.error(msg);
+                throw new Error(msg);
+            }
+            this._extensions[key] = [];
+            this.getExtension(key).forEach(extension => {
                 // instantiate extension
-                extension();
+                this._extensions[key].push(extension());
             })
         })
     }
 
     /**
      * Getting service[s] will lazily instantiate the service.
-     * @param serviceName
+     * @param servicekey
      * @return {*}
      */
-    getService(serviceName) {
-        let services = [];
-        return this._services[serviceName] = this._services[serviceName] || new this._factoryServices[serviceName]();
+    getService(key) {
+        if (this._services[key]) {
+            return this._services[key];
+        } else if (this._factoryServices[key]) {
+            return new this._factoryServices[key]();
+        } else if ( key === LOGGER_KEY ){
+            // A logger isn't registered yet
+            return console;
+        } else {
+            throw new Error(`Service ${key.toString()} does not exist`);
+
+        }
     }
 
     get logger() {
-        return this.getService(LOGGER_KEY) || console;
+        return this.getService(LOGGER_KEY);
     }
 
     /**
      * Getting extension[s] will return extensions' factories.
      * (Yes plural and possessive)
-     * @param extensionName
+     * @param extensionKey
      * @return {*}
      */
-    getExtension(extensionName) {
-        return this._factoryExtensions[extensionName];
+    getExtension(key) {
+        return this._factoryExtensions[key];
     }
 
     constructor() {
         // just to debug
-        this.timestamp = new Date().getTime();
+        this.INSTANCE = 'Core Instance: ' + new Date().getTime();
 
         // Instance maps for services and extensions
         this._services = {};
@@ -97,7 +114,7 @@ class Core {
         // Factory maps for services and extensions
         this._factoryServices = {};
         this._factoryExtensions = {};
-        console.log('Create the Core instance used to register services and extensions.');
+        this.logger.log('Create the Core instance used to register services and extensions.');
     }
 }
 

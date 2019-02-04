@@ -6,22 +6,24 @@ import '@sfcc/logger';
 import '@sfcc/apiconfig';
 import '@sfcc/core-graphql';
 
+import * as API_CONFIG_DATA from './src/config/api'; // Our Application Specific API Configuration
+
 //
 // SFRA Extensions/Services
 //
 import '@sfra/wishlist';
 import '@sfra/productapi';
+//import '@sfra/categoryapi';
+//import '@sfra/contentapi';
 
 //
 // Import Keys needed to access core services end extensions
 //
 import {CORE_GRAPHQL_KEY, EXPRESS_KEY} from '@sfcc/core-graphql';
-import {LOGGER_KEY, API_KEY} from '@sfcc/core';
+import {LOGGER_KEY, API_EXTENSIONS_KEY} from '@sfcc/core';
 import {API_CONFIG_KEY} from "@sfcc/apiconfig";
 import {WISHLIST_KEY} from "@sfra/wishlist";
 
-// Load This Application Specific API Configuration
-import * as API_CONFIG_DATA from './config-api';
 
 class SFRADemoApp {
 
@@ -33,8 +35,8 @@ class SFRADemoApp {
         // Need to set api config data before any API extensions are instantiated.
         // Provide api configuration data to core for Ecom host, paths, auth, etc...
         //
-        let apiConfig = core.getService(API_CONFIG_KEY);
-        apiConfig.config = config;
+        this.apiConfig = core.getService(API_CONFIG_KEY);
+        this.apiConfig.config = config;
     }
 
     set expressApplication(expressApp) {
@@ -50,9 +52,15 @@ class SFRADemoApp {
     start() {
         //
         // Any registered APIs are extensions and should be created after apiConfig data has been set.
-        // Starts extensions which should automatically provide any registered bff/apollo services
+        // Starts extensions which should automatically provide any registered bff/apollo services.
+        // Note: omit parameter 'API_EXTENSIONS_KEY' to initialize all extensions.
         //
-        core.initializeExtensions(API_KEY);
+        core.initializeExtensions(API_EXTENSIONS_KEY);
+
+        //
+        // Start Apollo/GraphQL and register Apollo with Express Middleware
+        //
+        core.getService(CORE_GRAPHQL_KEY).start();
 
         this.status();
     }
@@ -62,9 +70,13 @@ class SFRADemoApp {
         core.logger.log('Is Express Registered?', !!core.getService(EXPRESS_KEY));
         core.logger.log('Is GraphQL Registered?', !!core.getService(CORE_GRAPHQL_KEY));
 
+        Object.getOwnPropertySymbols(core.services).forEach(key => {
+            core.logger.log(`Registered Core Service: ${key.toString()}.`);
+        });
 
-        core.logger.log('Core Services', core.services);
-        core.logger.log('Core Extensions', core.extensions);
+        Object.getOwnPropertySymbols(core.extensions).forEach(key => {
+            core.logger.log(`Registered Core Extensions: ${key.toString()}. ${core.getExtension(key).length} Extensions Registered.`);
+        });
     }
 }
 

@@ -1,8 +1,6 @@
 // make export singleton
 
-import {core} from '@sfcc/core';
-
-import {LOGGER_KEY} from '@sfcc/core';
+import {core, LOGGER_KEY} from '@sfcc/core';
 export {LOGGER_KEY};
 
 export default class Logger {
@@ -10,24 +8,24 @@ export default class Logger {
     constructor(core) {
     }
 
-    log() {
-        console.log(arguments);
+    log(...args) {
+        console.log(args);
     }
 
-    info() {
-        console.info(arguments);
+    info(...args) {
+        console.info(args);
     }
 
-    debug() {
-        console.debug(arguments);
+    debug(...args) {
+        console.debug(args);
     }
 
-    warn() {
-        console.warn(arguments);
+    warn(...args) {
+        console.warn(args);
     }
 
-    error() {
-        console.error(arguments);
+    error(...args) {
+        console.error(args);
     }
 }
 

@@ -1,7 +1,7 @@
 import {core} from '@sfcc/core';
 import {LOGGER_KEY} from "@sfcc/core";
 
-export const API_CONFIG_KEY = Symbol('API_CONFIG_KEY');
+export const API_CONFIG_KEY = Symbol('API Configuration Service');
 
 export default class APIConfig {
 
@@ -29,11 +29,11 @@ export default class APIConfig {
     }
 }
 
-// TODO: Experimental pattern. Should/Could we use Object.defineProperty for services.
-Object.defineProperty(core, 'serviceAPIConfig', {
-    value: () => core.getService(API_CONFIG_KEY),
-    writable: false
-});
+// TODO: Optional pattern to extend core. Should/Could we use Object.defineProperty for services?
+// Object.defineProperty(core, 'serviceAPIConfig', {
+//     value: () => core.getService(API_CONFIG_KEY),
+//     writable: false
+// });
 
 core.registerService(API_CONFIG_KEY, function () {
     return new APIConfig(core);

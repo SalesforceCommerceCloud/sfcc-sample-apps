@@ -2,6 +2,7 @@
   "scripts": {
     "build": "lerna run build --stream",
     "pub": "lerna run pub --stream",
+    "clean": "lerna run clean --stream",
     "test": "jest",
     "integration": "jest -c integration.test.js"
   },

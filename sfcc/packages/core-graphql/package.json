@@ -11,6 +11,7 @@
   "author": "Jason Cooper",
   "license": "MIT",
   "dependencies": {
+    "@sfcc/apiconfig": "^0.0.1",
     "@sfcc/core": "0.0.1",
     "apollo-server": "^2.3.3",
     "cross-env": "5.2.0",
