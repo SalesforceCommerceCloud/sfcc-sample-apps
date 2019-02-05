@@ -24,6 +24,8 @@ export default class ProductAPI {
 core.registerExtension(API_EXTENSIONS_KEY, function () {
     const productAPI = new ProductAPI(core);
 
+    // TODO: makesure resolvers have api config passed in somehow
+
     // TODO: FIX hard assign: need strategy here to extend schema/resolvers and ensure uniqueness
 
     core.getService(API_CONFIG_KEY).config.schema = schema;
