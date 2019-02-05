@@ -4,7 +4,7 @@
   "description": "",
   "main": "runtime.js",
   "scripts": {
-    "clean": "./cleanup.sh; npm i",
+    "clean": "./cleanup.sh;",
     "doit": "npm run build; npm run serve",
     "build": "npm run build:lib; npm run build:app",
     "build:lib": "cross-env rollup -c ./scripts/rollup.libs.config.js",

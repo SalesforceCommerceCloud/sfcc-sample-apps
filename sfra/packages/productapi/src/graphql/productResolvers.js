@@ -1,4 +1,5 @@
 import * as rp from 'request-promise';
+import Product from './models/Product';
 
 const getProduct = (productId) => {
     const OCAPI_CLIENT_ID=`aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa`;
@@ -17,7 +18,7 @@ const getProduct = (productId) => {
             })
         ])
         .then(([product]) => {
-            resolve({ product });
+            resolve(product);
         })
         .catch((err) => {
             reject(err);
@@ -25,16 +26,14 @@ const getProduct = (productId) => {
     });
 }
 
-// ------------ HOW TO QUERY WITH A PARAM ---------------
-// ------------ CONSTRUCT A WHOLE OBJECT WITH DETAILS OF PRODUCT ----------
-
 export const resolvers = {
     Query: {
         product: (_, {id}) => {
-            const productString = getProduct(id).then((product) => {
-                return JSON.stringify(product);
+            const productModel = getProduct(id).then((product) => {
+                console.log("---- Received Product from OCAPI ----");
+                return new Product(product);
             });
-            return productString;
+            return productModel;
         }
     }
 };

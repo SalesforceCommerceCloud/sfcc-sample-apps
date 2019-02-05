@@ -1,26 +1,11 @@
 import {ApolloServer, gql} from 'apollo-server-express';
+import { makeExecutableSchema } from 'graphql-tools';
 
 import {core, API_EXTENSIONS_KEY} from '@sfcc/core';
 import {API_CONFIG_KEY} from "@sfcc/apiconfig";
 
 export const CORE_GRAPHQL_KEY = Symbol('Core GraphQL with Apollo');
 export const EXPRESS_KEY = Symbol('Node Express');
-
-
-// TODO: SAMPLE. Override and Extend TBD ------------------------------------------------
-export const schema = gql`
-    type Query {
-        none(id: String!): String
-    }
-`;
-
-export const resolvers = {
-    Query: {
-        none: () => {
-            return {none: null};
-        }
-    }
-};
 
 /**
  * Core GraphQL and Apollo Server services - requires express to be registered.
@@ -34,7 +19,8 @@ export default class CoreGraphQL {
     start() {
         core.logger.log('Start CoreGraphQL');
         const expressApp = core.getService(EXPRESS_KEY);
-        const apiConfig = core.getService(API_CONFIG_KEY);
+        const apiConfig = core.getService(API_CONFIG_KEY).config;
+        console.log(apiConfig);
 
         if (expressApp) {
             const apiPath = (apiConfig) ? apiConfig.API_PATH : '/graphql';
@@ -42,12 +28,17 @@ export default class CoreGraphQL {
                 core.logger.warn(`No APIConfig API_PATH provided; Apollo using default path '/graphql`);
             }
 
-            // TODO: do we need to defer this until all API extensions are loaded.
-            // TODO: unsure we can change schema or resolvers after ApolloServer is created and registered with express middleware.
-            this.apolloServer = new ApolloServer({
-                typeDefs: schema, // TODO: from api config
-                resolvers: resolvers // TODO: from api config
+            // Ensure API Extensions are initialized
+            core.initializeExtensions(API_EXTENSIONS_KEY);
+
+            const resolvers = Object.assign({}, apiConfig.resolvers);
+
+            const schema = makeExecutableSchema({
+              typeDefs: [ apiConfig.schema ],
+              resolvers: resolvers
             });
+
+            this.apolloServer = new ApolloServer({schema});
 
             this.apolloServer.applyMiddleware({app: expressApp, path: apiPath});
             core.logger.log(' CoreGraphQL apolloServer middleware applied to express!');

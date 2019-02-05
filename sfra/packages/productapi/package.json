@@ -12,8 +12,9 @@
   "license": "MIT",
   "dependencies": {
     "@sfcc/core": "^0.0.1",
-    "@sfcc/core-graphql":  "^0.0.1",
+    "@sfcc/core-graphql": "^0.0.1",
     "cross-env": "5.2.0",
+    "request-promise": "^4.2.2",
     "rollup": "1.1.0"
   }
 }

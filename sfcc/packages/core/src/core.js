@@ -79,7 +79,8 @@ class Core {
         if (this._services[key]) {
             return this._services[key];
         } else if (this._factoryServices[key]) {
-            return new this._factoryServices[key]();
+            // create the service instance
+            return this._services[key] = new this._factoryServices[key]();
         } else if ( key === LOGGER_KEY ){
             // A logger isn't registered yet
             return console;

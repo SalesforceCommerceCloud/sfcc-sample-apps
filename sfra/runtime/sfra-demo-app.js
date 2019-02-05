@@ -37,6 +37,9 @@ class SFRADemoApp {
         //
         this.apiConfig = core.getService(API_CONFIG_KEY);
         this.apiConfig.config = config;
+
+        console.log(this.apiConfig.config)
+
     }
 
     set expressApplication(expressApp) {
@@ -55,7 +58,7 @@ class SFRADemoApp {
         // Starts extensions which should automatically provide any registered bff/apollo services.
         // Note: omit parameter 'API_EXTENSIONS_KEY' to initialize all extensions.
         //
-        core.initializeExtensions(API_EXTENSIONS_KEY);
+        //core.initializeExtensions(API_EXTENSIONS_KEY);
 
         //
         // Start Apollo/GraphQL and register Apollo with Express Middleware

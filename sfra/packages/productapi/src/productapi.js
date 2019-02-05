@@ -3,11 +3,8 @@ import {core, API_EXTENSIONS_KEY} from '@sfcc/core';
 import {API_CONFIG_KEY} from "@sfcc/apiconfig";
 import {CORE_GRAPHQL_KEY} from "@sfcc/core-graphql";
 
-// TODO: Apollo/GraphQL for product configured here!
-// Object.assign(core.getService(API_CONFIG_KEY).config.schema, {
-//     // TODO: graphql schema here
-// });
-
+import {schema} from './graphql/productSchema';
+import {resolvers} from './graphql/productResolvers';
 
 export default class ProductAPI {
     constructor(core) {
@@ -27,11 +24,12 @@ export default class ProductAPI {
 core.registerExtension(API_EXTENSIONS_KEY, function () {
     const productAPI = new ProductAPI(core);
 
-    productAPI.config = core.getService(API_CONFIG_KEY).config;
+    // TODO: FIX hard assign: need strategy here to extend schema/resolvers and ensure uniqueness
 
-    // Object.assign(core.getService(API_CONFIG_KEY).config.schema, {
-    //     // TODO: graphql schema here
-    // });
+    core.getService(API_CONFIG_KEY).config.schema = schema;
+    core.getService(API_CONFIG_KEY).config.resolvers = resolvers;
+
+    core.logger.log('config', core.getService(API_CONFIG_KEY).config);
 
     return productAPI;
 });
