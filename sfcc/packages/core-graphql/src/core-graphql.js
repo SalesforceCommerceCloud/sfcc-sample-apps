@@ -16,18 +16,12 @@ export const schemaFactory = {
         `;
         return [schema, ...typeDef];
     },
-    getResolvers: (config, resolversArray) => {
+    getResolvers: (resolversArray) => {
         let resolvers = {}
         resolversArray.forEach((resolver) => {
             Object.assign(resolvers, resolver)
-            console.log("===============");
-            console.log(JSON.stringify(resolver));
-            console.log("===============");
         });
         return resolvers;
-    },
-    getResolvers2: (config, resolversArray) => {
-
     }
 }
 

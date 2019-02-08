@@ -27,7 +27,7 @@ core.registerExtension(API_EXTENSIONS_KEY, function () {
     let config = core.getService(API_CONFIG_KEY).config;
     
     config.schema = schemaFactory.getSchema([typeDef]);
-    config.resolvers = schemaFactory.getResolvers(config, [resolver]); // sending resolvers as an array for extensibility and appendibility
+    config.resolvers = schemaFactory.getResolvers([resolver]); // sending resolvers as an array for extensibility and appendibility
 
     core.logger.log('config', core.getService(API_CONFIG_KEY).config);
 
