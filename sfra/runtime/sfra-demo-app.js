@@ -6,7 +6,7 @@ import '@sfcc/logger';
 import '@sfcc/apiconfig';
 import '@sfcc/core-graphql';
 
-import * as API_CONFIG_DATA from './src/config/api'; // Our Application Specific API Configuration
+import API_CONFIG_DATA from './src/config/api'; // Our Application Specific API Configuration
 
 //
 // SFRA Extensions/Services

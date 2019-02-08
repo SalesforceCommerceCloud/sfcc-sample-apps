@@ -3,8 +3,8 @@ import {core, API_EXTENSIONS_KEY} from '@sfcc/core';
 import {API_CONFIG_KEY} from "@sfcc/apiconfig";
 import {CORE_GRAPHQL_KEY} from "@sfcc/core-graphql";
 
-import {schema} from './graphql/productSchema';
-import {resolvers} from './graphql/productResolvers';
+import {getSchema} from './schema';
+import {getResolvers} from './graphql/productResolvers';
 
 export default class ProductAPI {
     constructor(core) {
@@ -24,12 +24,10 @@ export default class ProductAPI {
 core.registerExtension(API_EXTENSIONS_KEY, function () {
     const productAPI = new ProductAPI(core);
 
-    // TODO: makesure resolvers have api config passed in somehow
+    let config = core.getService(API_CONFIG_KEY).config;
+    config.schema = getSchema();
+    config.resolvers = getResolvers(config);
 
-    // TODO: FIX hard assign: need strategy here to extend schema/resolvers and ensure uniqueness
-
-    core.getService(API_CONFIG_KEY).config.schema = schema;
-    core.getService(API_CONFIG_KEY).config.resolvers = resolvers;
 
     core.logger.log('config', core.getService(API_CONFIG_KEY).config);
 

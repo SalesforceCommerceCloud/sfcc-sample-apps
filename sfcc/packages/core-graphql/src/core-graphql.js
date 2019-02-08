@@ -32,9 +32,8 @@ export default class CoreGraphQL {
             core.initializeExtensions(API_EXTENSIONS_KEY);
 
             const resolvers = Object.assign({}, apiConfig.resolvers);
-
             const schema = makeExecutableSchema({
-              typeDefs: [ apiConfig.schema ],
+              typeDefs: apiConfig.schema,
               resolvers: resolvers
             });
 

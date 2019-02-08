@@ -1,5 +1,7 @@
-export const schema = `
-    type Query {
+import { gql } from 'apollo-server-core';
+
+export const productTypeDef = gql`
+    extend type Query {
         product(id: String!): Product
     }
 
