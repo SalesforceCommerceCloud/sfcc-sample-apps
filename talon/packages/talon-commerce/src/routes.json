@@ -12,6 +12,12 @@
         "view": "search"
     },
     {
+        "name": "product",
+        "path": "/product/:id",
+        "isRoot": false,
+        "view": "product"
+    },
+    {
         "name": "about",
         "path": "/about",
         "view": "about"

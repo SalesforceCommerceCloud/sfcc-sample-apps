@@ -19,7 +19,7 @@ export default class SearchBar extends LightningElement {
 
     routeSubHandler( view ) {
         setTimeout( () => {
-            const queryParam = window.location.pathname.split( '/' )[ 2 ];
+            const queryParam = window.location.pathname.split( '/search/' )[ 1 ];
 
             this.query = queryParam || '';
         })

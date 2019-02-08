@@ -92,7 +92,7 @@ export default class Search extends LightningElement {
             const url = window.location.pathname;
 
             // get query from param
-            const queryParam = url.split('/')[2];
+            const queryParam = url.split('/search/')[1];
 
             this.query = '' + queryParam;
 

@@ -2,8 +2,14 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <title>Salesforce Headless Commerce with LWC and Talon</title>
+
+    <script>
+        window.process = window.process || {env: {DEBUG: undefined}}
+    </script>
+    <script src="{{ basePath }}/assets/js/libs.js?{{ versionKey }}"></script>
+
     {{ talonInit context }}
 
     <link rel="manifest" href="{{ basePath }}/assets/manifest.json?{{ versionKey }}">
@@ -13,10 +19,11 @@
     <link rel="stylesheet" href="{{ basePath }}/assets/css/search.css?{{ versionKey }}">
     <link rel="stylesheet" href="{{ basePath }}/assets/css/homePage.css?{{ versionKey }}">
 
+
 </head>
 
 <body id="main">
-    {{ talonApp "main" }}
-</body> 
+{{ talonApp "main" }}
+</body>
 
 </html>
