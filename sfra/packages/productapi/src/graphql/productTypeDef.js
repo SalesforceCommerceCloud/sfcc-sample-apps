@@ -1,6 +1,6 @@
 import { gql } from 'apollo-server-core';
 
-export const productTypeDef = gql`
+export const typeDef = gql`
     extend type Query {
         product(id: String!): Product
     }

@@ -7,6 +7,30 @@ import {API_CONFIG_KEY} from "@sfcc/apiconfig";
 export const CORE_GRAPHQL_KEY = Symbol('Core GraphQL with Apollo');
 export const EXPRESS_KEY = Symbol('Node Express');
 
+export const schemaFactory = {
+    getSchema: (typeDef) => {
+        let schema = gql`
+            type Query {
+                _empty: String
+            }
+        `;
+        return [schema, ...typeDef];
+    },
+    getResolvers: (config, resolversArray) => {
+        let resolvers = {}
+        resolversArray.forEach((resolver) => {
+            Object.assign(resolvers, resolver)
+            console.log("===============");
+            console.log(JSON.stringify(resolver));
+            console.log("===============");
+        });
+        return resolvers;
+    },
+    getResolvers2: (config, resolversArray) => {
+
+    }
+}
+
 /**
  * Core GraphQL and Apollo Server services - requires express to be registered.
  */
@@ -30,14 +54,14 @@ export default class CoreGraphQL {
 
             // Ensure API Extensions are initialized
             core.initializeExtensions(API_EXTENSIONS_KEY);
-
-            const resolvers = Object.assign({}, apiConfig.resolvers);
+            console.log("========================");
+            console.log(JSON.stringify(apiConfig.resolvers));
             const schema = makeExecutableSchema({
               typeDefs: apiConfig.schema,
-              resolvers: resolvers
+              resolvers: apiConfig.resolvers
             });
 
-            this.apolloServer = new ApolloServer({schema});
+            this.apolloServer = new ApolloServer({ schema });
 
             this.apolloServer.applyMiddleware({app: expressApp, path: apiPath});
             core.logger.log(' CoreGraphQL apolloServer middleware applied to express!');
