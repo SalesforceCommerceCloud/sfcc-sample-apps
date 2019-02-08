@@ -1,5 +1,5 @@
 import {ApolloServer, gql} from 'apollo-server-express';
-import { makeExecutableSchema } from 'graphql-tools';
+import {makeExecutableSchema} from 'graphql-tools';
 
 import {core, API_EXTENSIONS_KEY} from '@sfcc/core';
 import {API_CONFIG_KEY} from "@sfcc/apiconfig";
@@ -16,10 +16,11 @@ export const schemaFactory = {
         `;
         return [schema, ...typeDef];
     },
-    getResolvers: (resolversArray) => {
+    getResolvers: (config, resolversArray) => {
         let resolvers = {}
         resolversArray.forEach((resolver) => {
-            Object.assign(resolvers, resolver)
+            const resolverInst = resolver(config); // instantiate factory
+            Object.assign(resolvers, resolverInst)
         });
         return resolvers;
     }
@@ -32,6 +33,24 @@ export default class CoreGraphQL {
 
     constructor(core) {
         core.logger.log('CoreGraphQL.constructor(core)');
+        this._schema = {};
+        this._resolvers = {};
+    }
+
+    set schema(schema) {
+        this._schema = schema;
+    }
+
+    get schema() {
+        return this._schema;
+    }
+
+    set resolvers(resolvers) {
+        this._resolvers = resolvers;
+    }
+
+    get resolvers() {
+        return this._resolvers;
     }
 
     start() {
@@ -47,14 +66,25 @@ export default class CoreGraphQL {
             }
 
             // Ensure API Extensions are initialized
-            core.initializeExtensions(API_EXTENSIONS_KEY);
+            // Aggregate schemas and resolvers
+            const apis = core.getExtension(API_EXTENSIONS_KEY);
+            apis.forEach(apiFactory => {
+                const api = apiFactory(config);
 
-            const schema = makeExecutableSchema({
-                typeDefs: apiConfig.schema,
-                resolvers: apiConfig.resolvers
+                // TODO: this below needs to be changed to an extend vs overwrite
+                this.schema = api.schema; // TODO: needs to be extend
+                this.resolvers = api.getResolvers(config); // TODO: might be an array push
             });
 
-            this.apolloServer = new ApolloServer({ schema });
+            // TODO: after schema/resolvers aggregation from api extensions - get finalized schema/resolvers for apollo
+            // code here
+
+            const schema = makeExecutableSchema({
+                typeDefs: this.schema,
+                resolvers: this.resolvers
+            });
+
+            this.apolloServer = new ApolloServer({schema});
 
             this.apolloServer.applyMiddleware({app: expressApp, path: apiPath});
             core.logger.log(' CoreGraphQL apolloServer middleware applied to express!');
