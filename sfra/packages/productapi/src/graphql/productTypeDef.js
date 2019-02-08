@@ -8,5 +8,6 @@ export const typeDef = gql`
     type Product {
         id: String!
         name: String!
+        price: Float!
     }
 `;

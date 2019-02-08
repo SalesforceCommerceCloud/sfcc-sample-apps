@@ -48,11 +48,10 @@ export default class CoreGraphQL {
 
             // Ensure API Extensions are initialized
             core.initializeExtensions(API_EXTENSIONS_KEY);
-            console.log("========================");
-            console.log(JSON.stringify(apiConfig.resolvers));
+
             const schema = makeExecutableSchema({
-              typeDefs: apiConfig.schema,
-              resolvers: apiConfig.resolvers
+                typeDefs: apiConfig.schema,
+                resolvers: apiConfig.resolvers
             });
 
             this.apolloServer = new ApolloServer({ schema });
