@@ -8,10 +8,13 @@
     "build:components": "generateTemplateResources .",
     "build:resources": "node scripts/copy-resources.js",
     "build": "yarn build:components && yarn build:resources",
-    "serve": "node scripts/server.js",
+    "serve": "node scripts/start.js",
     "start": "yarn build:components && concurrently \"yarn serve\" \"yarn build:resources --watch\""
   },
   "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "@babel/register": "^7.0.0",
     "@lwc-platform/sfdc-lwc-compiler": "0.33.9",
     "@salesforce-ux/design-system": "^2.6.1",
     "colors": "^1.3.2",
@@ -30,8 +33,19 @@
     "talon-framework": "^0.0.1"
   },
   "dependencies": {
-    "apollo-server": "^2.2.5",
-    "apollo-server-express": "^2.2.5",
-    "graphql": "^14.0.2"
+    "@sfcc/core": "^0.0.1",
+    "@sfcc/core-graphql": "^0.0.1",
+    "@sfcc/logger": "^0.0.1",
+    "@sfcc/apiconfig": "^0.0.1",
+    "@sfra/wishlist": "0.0.1",
+    "@sfra/productapi": "0.0.1",
+    "apollo-boost": "^0.1.27",
+    "apollo-client": "^2.4.12",
+    "apollo-server": "^2.3.2",
+    "apollo-server-express": "^2.3.2",
+    "graphql": "0.13.1",
+    "graphql-tag": "^2.10.1",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2"
   }
 }
