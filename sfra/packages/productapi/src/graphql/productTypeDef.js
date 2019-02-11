@@ -9,5 +9,11 @@ export const typeDef = gql`
         id: String!
         name: String!
         price: Float!
+        currency: String!
+        page_description: String!
+        long_description: String!
+        short_description: String!
+        primary_category_id: String!
+        image: String!
     }
 `;
