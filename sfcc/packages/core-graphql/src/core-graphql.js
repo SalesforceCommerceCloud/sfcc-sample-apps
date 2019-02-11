@@ -7,23 +7,13 @@ import {API_CONFIG_KEY} from "@sfcc/apiconfig";
 export const CORE_GRAPHQL_KEY = Symbol('Core GraphQL with Apollo');
 export const EXPRESS_KEY = Symbol('Node Express');
 
-export const schemaFactory = {
-    getSchema: (typeDef) => {
-        let schema = gql`
-            type Query {
-                _empty: String
-            }
-        `;
-        return [schema, ...typeDef];
-    },
-    getResolvers: (config, resolversArray) => {
-        let resolvers = {}
-        resolversArray.forEach((resolver) => {
-            const resolverInst = resolver(config); // instantiate factory
-            Object.assign(resolvers, resolverInst)
-        });
-        return resolvers;
-    }
+export const resolverFactory = (config, resolversArray) => {
+    let combinedResolvers = {};
+    resolversArray.forEach((resolver) => {
+        const resolverInst = resolver(config); // instantiate factory
+        Object.assign(combinedResolvers, resolverInst)
+    });
+    return combinedResolvers;
 }
 
 /**
@@ -33,16 +23,21 @@ export default class CoreGraphQL {
 
     constructor(core) {
         core.logger.log('CoreGraphQL.constructor(core)');
-        this._schema = {};
-        this._resolvers = {};
+        this._typeDef =
+            gql`
+                type Query {
+                    _empty: String
+                }
+            `;
+        this._resolvers = { Query: {} };
     }
 
-    set schema(schema) {
-        this._schema = schema;
+    set typeDef(typeDef) {
+        this._typeDef = typeDef;
     }
 
-    get schema() {
-        return this._schema;
+    get typeDef() {
+        return this._typeDef;
     }
 
     set resolvers(resolvers) {
@@ -69,22 +64,17 @@ export default class CoreGraphQL {
             // Aggregate schemas and resolvers
             const apis = core.getExtension(API_EXTENSIONS_KEY);
             apis.forEach(apiFactory => {
-                const api = apiFactory(config);
-
-                // TODO: this below needs to be changed to an extend vs overwrite
-                this.schema = api.schema; // TODO: needs to be extend
-                this.resolvers = api.getResolvers(config); // TODO: might be an array push
+                const api = apiFactory();
+                this.typeDef = [this.typeDef, ...api.typeDefs]
+                Object.assign(this.resolvers.Query, api.getResolvers(apiConfig));
             });
 
-            // TODO: after schema/resolvers aggregation from api extensions - get finalized schema/resolvers for apollo
-            // code here
-
             const schema = makeExecutableSchema({
-                typeDefs: this.schema,
+                typeDefs: this.typeDef,
                 resolvers: this.resolvers
             });
 
-            this.apolloServer = new ApolloServer({schema});
+            this.apolloServer = new ApolloServer({ schema });
 
             this.apolloServer.applyMiddleware({app: expressApp, path: apiPath});
             core.logger.log(' CoreGraphQL apolloServer middleware applied to express!');

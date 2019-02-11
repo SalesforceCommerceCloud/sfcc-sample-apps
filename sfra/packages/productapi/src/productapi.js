@@ -1,6 +1,6 @@
 // SFRA Core Extension module
 import {core, API_EXTENSIONS_KEY} from '@sfcc/core';
-import {CORE_GRAPHQL_KEY, schemaFactory} from "@sfcc/core-graphql";
+import { resolverFactory } from "@sfcc/core-graphql";
 
 import {typeDef} from './graphql/productTypeDef';
 import {resolver} from './graphql/productResolvers';
@@ -11,12 +11,12 @@ export default class ProductAPI {
         this.core.logger.log('ProductAPI.constructor(core)')
     }
 
-    get schema() {
-        schemaFactory.getSchema([typeDef]);
+    get typeDefs() {
+        return [typeDef];
     }
 
     getResolvers(config) {
-        return schemaFactory.getResolvers(config,[resolver]);
+        return resolverFactory(config,[resolver]);
     }
 
 }

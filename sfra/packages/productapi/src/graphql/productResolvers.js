@@ -21,16 +21,13 @@ const getProduct = (config, productId) => {
 }
 
 export const resolver = (config) => {
-
     return {
-        Query: {
-            product: (_, {id}) => {
-                const productModel = getProduct(config, id).then((product) => {
-                    console.log("---- Received Product from OCAPI ----");
-                    return new Product(product);
-                });
-                return productModel;
-            }
+        product: (_, {id}) => {
+            const productModel = getProduct(config, id).then((product) => {
+                console.log("---- Received Product from API ----");
+                return new Product(product);
+            });
+            return productModel;
         }
     }
 }
