@@ -1,19 +1,15 @@
 <template>
       <div key={product.product_id} class='product-tile' onclick={productDetail}>
         <div class='image-container'>
-          <!--<Link to={'/product/' + product.product_id}>-->
-            <!--<img class='tile-image' src={image.dis_base_link + '?sw=400&sh=400'} alt={image.alt} />-->
-          <!--</Link>-->
-          <a><img class='tile-image' src={product.image.dis_base_link} alt={product.image.alt} /></a>
+          <!--<a><img class='tile-image' src={product.image.dis_base_link} alt={product.image.alt} /></a>-->
         </div>
         <div class='tile-body'>
           <div class='color-swatches'></div>
           <div class='pdp-link'>
-            <!--<Link to={'/product/' + product.product_id}>{product.product_name}</Link>-->
             <a href="#">{product.product_name}</a>
           </div>
           <div class='price'>
-              <commerce-productprice product={product} ></commerce-productprice>
+              <!--<commerce-productprice product={product} ></commerce-productprice>-->
           </div>
           <div class='row tile-body-footer'>
             <div class='ratings col-xs-12 col-sm-6'>
