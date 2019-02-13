@@ -15,5 +15,12 @@ export const typeDef = gql`
         short_description: String!
         primary_category_id: String!
         image: String!
+        images(allImages: Boolean = true, size: String = "large"): [Image!]
+    }
+
+    type Image {
+        title: String!
+        alt: String!
+        link: String!
     }
 `;
