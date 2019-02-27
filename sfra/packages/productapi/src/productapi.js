@@ -2,8 +2,7 @@
 import {core, API_EXTENSIONS_KEY} from '@sfcc/core';
 import { resolverFactory } from "@sfcc/core-graphql";
 
-import {typeDef} from './graphql/productTypeDef';
-import {resolver} from './graphql/productResolvers';
+import {productDetailsTypeDef, productDetailsResolver, productSearchTypeDef, productSearchResolver} from './api/index';
 
 export default class ProductAPI {
     constructor(core) {
@@ -12,11 +11,11 @@ export default class ProductAPI {
     }
 
     get typeDefs() {
-        return [typeDef];
+        return [productDetailsTypeDef, productSearchTypeDef];
     }
 
     getResolvers(config) {
-        return resolverFactory(config,[resolver]);
+        return resolverFactory(config,[productDetailsResolver, productSearchResolver]);
     }
 
 }
