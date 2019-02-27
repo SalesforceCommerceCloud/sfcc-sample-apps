@@ -33,35 +33,12 @@ export default class Search extends LightningElement {
 
         console.log(this.query)
         console.log( '===============================' );
-        console.log( 'refinements from API', json.refinements );
+        console.log( 'API', json.hits);
         console.log( '===============================' );
 
-        // TODO: this.refinements is used for render
-        // TODO: However json.refinements isn't returned from API when enough are already selected.
-        // TODO: We will need to hide any non selected refinements in this case
-
-        // need to decorate any selected refinements
-        Object.keys( this.selectedRefinements ).forEach( refinement => {
-            this.selectedRefinements[ refinement ].forEach( value => {
-
-                const curRefinement = json.refinements.filter( ref => {
-                    return ref.attribute_id === refinement;
-                } );
-
-                if (curRefinement && curRefinement.length === 1 && curRefinement[ 0 ].values) {
-                    curRefinement[ 0 ].values.forEach( newValue => {
-                        if (newValue.value === value) {
-                            newValue.isSelected = true;
-                        }
-                    } )
-                }
-            } )
-        } );
 
         this.products = json.hits || []
-        this.refinements = (this.products.length) ? json.refinements : [];
         this.loading = false;
-
     };
 
     constructor() {
