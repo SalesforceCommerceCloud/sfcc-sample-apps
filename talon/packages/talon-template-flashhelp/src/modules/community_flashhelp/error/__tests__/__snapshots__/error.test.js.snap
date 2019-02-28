@@ -1,8 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`community_flashhelp/error renders correctly 1`] = `
-<community_flashhelp-error>
-  #shadow-root(open)
-    Error
-</community_flashhelp-error>
-`;

@@ -1,8 +1,0 @@
-{
-    "name": "faq",
-    "label": "Frequently Asked Questions",
-    "themeLayoutType": "default",
-    "component": {
-        "name": "community_flashhelp/faq"
-    }
-}

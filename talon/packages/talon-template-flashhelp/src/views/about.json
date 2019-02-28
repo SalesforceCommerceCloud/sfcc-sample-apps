@@ -1,8 +1,0 @@
-{
-    "name": "about",
-    "label": "About",
-    "themeLayoutType": "default",
-    "component": {
-        "name": "community_flashhelp/about"
-    }
-}
