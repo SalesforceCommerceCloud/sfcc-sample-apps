@@ -39,6 +39,7 @@ export default class Search extends LightningElement {
 
         this.products = json.hits || []
         this.loading = false;
+
     };
 
     constructor() {
@@ -96,24 +97,6 @@ export default class Search extends LightningElement {
     connectedCallback() {
         console.log( 'ProductSearchResults.connectedCallback()' )
     }
-
-    /**
-     * re-render when going from /search/x to /search/y
-     *
-     * @param {} prevProps
-     */
-    // componentDidUpdate(prevProps) {
-    //   if (prevProps.match && prevProps.match.params.query
-    //     && this.props.match && this.props.match.params.query
-    //     && (prevProps.match.params.query !== this.props.match.params.query)) {
-    //     // Search anew! That includes resetting refinements and sort rule
-    //     this.fetchProducts(this.props.match.params.query, {});
-    //     this.setState({
-    //       selectedRefinements: {},
-    //       sortRule: 'best-matches'
-    //     });
-    //   }
-    // }
 
     /**
      * Handles a refinement click
