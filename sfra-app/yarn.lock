@@ -1602,56 +1602,56 @@
   version "2.8.3"
   resolved "https://nexus.soma.salesforce.com/nexus/content/groups/npm-all/@salesforce-ux/design-system/-/design-system-2.8.3.tgz#8dafc0319a85150889920487ebcbba550b565823"
 
-"@sfcc/apiconfig@^0.0.1", "@sfcc/apiconfig@^0.0.2":
-  version "0.0.2"
-  resolved "http://localhost:4873/@sfcc%2fapiconfig/-/apiconfig-0.0.2.tgz#d1b330ff7aac3c3d31e4aa5a0c1aeb661c715880"
+"@sfcc/apiconfig@^0.0.1":
+  version "0.0.1"
+  resolved "http://localhost:4873/@sfcc%2fapiconfig/-/apiconfig-0.0.1.tgz#858354b94dfc00d643399d06a7970d94998c6226"
   dependencies:
-    "@sfcc/core" "^0.0.2"
+    "@sfcc/core" "^0.0.1"
     cross-env "5.2.0"
     rollup "1.1.0"
 
-"@sfcc/core-graphql@0.0.2", "@sfcc/core-graphql@^0.0.1":
-  version "0.0.2"
-  resolved "http://localhost:4873/@sfcc%2fcore-graphql/-/core-graphql-0.0.2.tgz#2af610e51595fda61831dc1199721a0c08bc6a9b"
+"@sfcc/core-graphql@^0.0.1":
+  version "0.0.1"
+  resolved "http://localhost:4873/@sfcc%2fcore-graphql/-/core-graphql-0.0.1.tgz#0cab6348af746e408c9ecb37e6760eaed139e9c8"
   dependencies:
-    "@sfcc/apiconfig" "^0.0.2"
-    "@sfcc/core" "^0.0.2"
+    "@sfcc/apiconfig" "^0.0.1"
+    "@sfcc/core" "0.0.1"
     apollo-server "^2.3.3"
     cross-env "5.2.0"
     graphql-tag "^2.10.1"
     graphql-tools "^4.0.4"
     rollup "1.1.0"
 
-"@sfcc/core@0.0.2", "@sfcc/core@^0.0.1", "@sfcc/core@^0.0.2":
-  version "0.0.2"
-  resolved "http://localhost:4873/@sfcc%2fcore/-/core-0.0.2.tgz#001bc7e150142d375c450ca4050ea8b2ff53a64f"
+"@sfcc/core@0.0.1", "@sfcc/core@^0.0.1":
+  version "0.0.1"
+  resolved "http://localhost:4873/@sfcc%2fcore/-/core-0.0.1.tgz#16cba4ff65efb7aa738f229d9846bb489103b9a8"
   dependencies:
     cross-env "5.2.0"
     rollup "1.1.0"
 
 "@sfcc/logger@^0.0.1":
-  version "0.0.2"
-  resolved "http://localhost:4873/@sfcc%2flogger/-/logger-0.0.2.tgz#bb9ecdcaf0306bc59a48faf513ba6665da75323b"
+  version "0.0.1"
+  resolved "http://localhost:4873/@sfcc%2flogger/-/logger-0.0.1.tgz#9b33beeaec927ad3ceea26c9154de40f6006f14c"
   dependencies:
-    "@sfcc/core" "^0.0.2"
+    "@sfcc/core" "0.0.1"
     cross-env "5.2.0"
     rollup "1.1.0"
 
 "@sfra/productapi@0.0.1":
-  version "0.0.2"
-  resolved "http://localhost:4873/@sfra%2fproductapi/-/productapi-0.0.2.tgz#25a5882b75bef563c2e44fa0ef9cf62309721164"
+  version "0.0.1"
+  resolved "http://localhost:4873/@sfra%2fproductapi/-/productapi-0.0.1.tgz#fa39f7f10ee2b9d6b91f15cecbc924a22ffa60d9"
   dependencies:
-    "@sfcc/core" "0.0.2"
-    "@sfcc/core-graphql" "0.0.2"
+    "@sfcc/core" "^0.0.1"
+    "@sfcc/core-graphql" "^0.0.1"
     cross-env "5.2.0"
     request-promise "^4.2.2"
     rollup "1.1.0"
 
 "@sfra/wishlist@0.0.1":
-  version "0.0.2"
-  resolved "http://localhost:4873/@sfra%2fwishlist/-/wishlist-0.0.2.tgz#fb2bb537723aee74a6602adf46ef722c3a2b8d51"
+  version "0.0.1"
+  resolved "http://localhost:4873/@sfra%2fwishlist/-/wishlist-0.0.1.tgz#8079ebf929bcb41d4d10efdc3be8ab25e5f34c8b"
   dependencies:
-    "@sfcc/core" "0.0.2"
+    "@sfcc/core" "0.0.1"
     cross-env "5.2.0"
     rollup "1.1.0"
 
