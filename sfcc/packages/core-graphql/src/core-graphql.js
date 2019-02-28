@@ -98,4 +98,3 @@ export default class CoreGraphQL {
 core.registerService(CORE_GRAPHQL_KEY, function () {
     return new CoreGraphQL(core);
 });
-

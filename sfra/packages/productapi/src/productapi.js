@@ -11,10 +11,12 @@ export default class ProductAPI {
     }
 
     get typeDefs() {
+        core.logger.log('ProductAPI.typeDefs()', productDetailsTypeDef, productSearchTypeDef);
         return [productDetailsTypeDef, productSearchTypeDef];
     }
 
     getResolvers(config) {
+        core.logger.log('ProductAPI.getResolvers()', config);
         return resolverFactory(config,[productDetailsResolver, productSearchResolver]);
     }
 
