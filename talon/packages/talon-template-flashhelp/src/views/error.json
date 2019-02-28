@@ -1,8 +1,0 @@
-{
-    "name": "error",
-    "label": "Error",
-    "themeLayoutType": "default",
-    "component": {
-        "name": "community_flashhelp/error"
-    }
-}
