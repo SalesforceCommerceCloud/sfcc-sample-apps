@@ -33,11 +33,11 @@ export default class Search extends LightningElement {
 
         console.log(this.query)
         console.log( '===============================' );
-        console.log( 'API', json.hits);
+        console.log( 'API', json.data.productSearch);
         console.log( '===============================' );
 
 
-        this.products = json.hits || []
+        this.products = json.data.productSearch || []
         this.loading = false;
 
     };

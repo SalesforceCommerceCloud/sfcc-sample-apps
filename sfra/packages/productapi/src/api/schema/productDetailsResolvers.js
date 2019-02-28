@@ -1,5 +1,5 @@
 import * as rp from 'request-promise';
-import Product from './models/Product';
+import Product from '../models/Product';
 
 const getProduct = (config, productId) => {
     const URL_PARAMS = `&expand=availability,images,prices,variations&all_images=true`;

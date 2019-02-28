@@ -42,25 +42,31 @@ register(productsByQuery, (eventTarget) => {
                             productSearch(query: "${ query }") {
                                 name
                                 id
+                                image {
+                                    link
+                                }
                             }
                         }
                      `
                     }).then(result => {
-                        console.log(result.data.product);
-                        //return result.data.product;
+                        console.log(result);
+                        return result;
                     }).catch((error) => {
                         console.log(error);
+                        return {
+                            error
+                        };
                         // TODO: this is dummy test data
-                        return [
-                            {
-                                name: 'Modern Dress Shirt',
-                                id: '74974310M'
-                            },
-                            {
-                                name: 'Denim Shirt Jacket',
-                                id: '25564426M'
-                            }
-                        ];
+                        // return [
+                        //     {
+                        //         name: 'Modern Dress Shirt',
+                        //         id: '74974310M'
+                        //     },
+                        //     {
+                        //         name: 'Denim Shirt Jacket',
+                        //         id: '25564426M'
+                        //     }
+                        // ];
                     });
 
                     /*
@@ -104,7 +110,7 @@ register(productsByQuery, (eventTarget) => {
             // This will update the component data.
             productsOrPromise.then((data) => {
                 console.log("Resolve Product Loaded, data", data);
-                eventTarget.dispatchEvent(new ValueChangedEvent(Object.assign({ error: undefined }, {hits: data})));
+                eventTarget.dispatchEvent(new ValueChangedEvent(Object.assign({ error: undefined }, data)));
             }, (error) => {
                 console.log("Reject Load Product, error", error);
                 eventTarget.dispatchEvent(new ValueChangedEvent({ data: undefined, error }));
@@ -113,7 +119,7 @@ register(productsByQuery, (eventTarget) => {
             // From cached data dispatch the wire-service value change event.
             // This will update the component data
             console.log("Cached Product Loaded, data", productsOrPromise);
-            eventTarget.dispatchEvent(new ValueChangedEvent(Object.assign({ error: undefined }, { hits: productsOrPromise })));
+            eventTarget.dispatchEvent(new ValueChangedEvent(Object.assign({ error: undefined }, productsOrPromise )));
         }
     }
 

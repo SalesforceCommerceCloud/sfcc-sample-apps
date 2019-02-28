@@ -1,7 +1,7 @@
 // Product Details
-export {typeDef as productDetailsTypeDef} from './graphql/productDetailsTypeDef';
-export {resolver as productDetailsResolver} from './graphql/productDetailsResolvers';
+export {typeDef as productDetailsTypeDef} from './schema/productDetailsTypeDef';
+export {resolver as productDetailsResolver} from './schema/productDetailsResolvers';
 
 // Product Search
-export {typeDef as productSearchTypeDef} from './graphql/productSearchTypeDef';
-export {resolver as productSearchResolver} from './graphql/productSearchResolvers';
+export {typeDef as productSearchTypeDef} from './schema/productSearchTypeDef';
+export {resolver as productSearchResolver} from './schema/productSearchResolvers';

@@ -11,12 +11,20 @@ export default class ProductAPI {
     }
 
     get typeDefs() {
+        core.logger.log('===========================');
+        core.logger.log('===========================');
         core.logger.log('ProductAPI.typeDefs()', productDetailsTypeDef, productSearchTypeDef);
+        core.logger.log('===========================');
+        core.logger.log('===========================');
         return [productDetailsTypeDef, productSearchTypeDef];
     }
 
     getResolvers(config) {
+        core.logger.log('===========================');
+        core.logger.log('===========================');
         core.logger.log('ProductAPI.getResolvers()', config);
+        core.logger.log('===========================');
+        core.logger.log('===========================');
         return resolverFactory(config,[productDetailsResolver, productSearchResolver]);
     }
 

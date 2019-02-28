@@ -1,5 +1,5 @@
 import * as rp from 'request-promise';
-import SearchResultProduct from './models/SearchResultProduct';
+import SearchResultProduct from '../models/SearchResultProduct';
 
 const searchProduct = (config, query) => {
     const URL_PARAMS = `expand=images,prices`;
