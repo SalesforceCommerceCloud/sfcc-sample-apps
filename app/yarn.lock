@@ -1637,7 +1637,7 @@
     cross-env "5.2.0"
     rollup "1.1.0"
 
-"@sfra/productapi@0.0.1":
+"@sfcc-dev/sfra-productapi@0.0.1":
   version "0.0.1"
   resolved "http://localhost:4873/@sfra%2fproductapi/-/productapi-0.0.1.tgz#bf98c4a3b25292e9ca48ae81d2dc95aa98fe2626"
   dependencies:
@@ -1647,7 +1647,7 @@
     request-promise "^4.2.2"
     rollup "1.1.0"
 
-"@sfra/wishlist@0.0.1":
+"@sfcc-dev/sfra-wishlist@0.0.1":
   version "0.0.1"
   resolved "http://localhost:4873/@sfra%2fwishlist/-/wishlist-0.0.1.tgz#bf74affb102bac2919b5a8e55b1730b1352720af"
   dependencies:

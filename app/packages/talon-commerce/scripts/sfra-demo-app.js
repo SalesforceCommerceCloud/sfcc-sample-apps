@@ -22,7 +22,7 @@ import '@sfra/productapi';
 import {CORE_GRAPHQL_KEY, EXPRESS_KEY} from '@sfcc/core-graphql';
 import {LOGGER_KEY, API_EXTENSIONS_KEY} from '@sfcc/core';
 import {API_CONFIG_KEY} from "@sfcc-dev/apiconfig";
-import {WISHLIST_KEY} from "@sfra/wishlist";
+import {WISHLIST_KEY} from "@sfcc-dev/sfra-wishlist";
 
 
 class SFRADemoApp {
