@@ -11,7 +11,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@sfcc/core": "0.0.1",
+    "@sfcc-dev/core": "0.0.1",
     "cross-env": "5.2.0",
     "rollup": "1.1.0"
   }

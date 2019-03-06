@@ -1,6 +1,6 @@
 // SFRA Core Extension module
 import {core, API_EXTENSIONS_KEY} from '@sfcc/core';
-import { resolverFactory } from "@sfcc/core-graphql";
+import { resolverFactory } from "@sfcc-dev/core-graphql";
 
 import {productDetailsTypeDef, productDetailsResolver, productSearchTypeDef, productSearchResolver} from './api/index';
 

@@ -1602,38 +1602,38 @@
   version "2.8.3"
   resolved "https://nexus.soma.salesforce.com/nexus/content/groups/npm-all/@salesforce-ux/design-system/-/design-system-2.8.3.tgz#8dafc0319a85150889920487ebcbba550b565823"
 
-"@sfcc/apiconfig@^0.0.1":
+"@sfcc-dev/apiconfig@^0.0.1":
   version "0.0.1"
   resolved "http://localhost:4873/@sfcc%2fapiconfig/-/apiconfig-0.0.1.tgz#8ba3d34866ebc575deab15cb84bf288b48524e94"
   dependencies:
-    "@sfcc/core" "^0.0.1"
+    "@sfcc-dev/core" "^0.0.1"
     cross-env "5.2.0"
     rollup "1.1.0"
 
-"@sfcc/core-graphql@^0.0.1":
+"@sfcc-dev/core-graphql@^0.0.1":
   version "0.0.1"
   resolved "http://localhost:4873/@sfcc%2fcore-graphql/-/core-graphql-0.0.1.tgz#ad94ce363603bc3dcfef2321bb929f1d321677dc"
   dependencies:
-    "@sfcc/apiconfig" "^0.0.1"
-    "@sfcc/core" "0.0.1"
+    "@sfcc-dev/apiconfig" "^0.0.1"
+    "@sfcc-dev/core" "0.0.1"
     apollo-server "^2.3.3"
     cross-env "5.2.0"
     graphql-tag "^2.10.1"
     graphql-tools "^4.0.4"
     rollup "1.1.0"
 
-"@sfcc/core@0.0.1", "@sfcc/core@^0.0.1":
+"@sfcc-dev/core@0.0.1", "@sfcc-dev/core@^0.0.1":
   version "0.0.1"
   resolved "http://localhost:4873/@sfcc%2fcore/-/core-0.0.1.tgz#16cba4ff65efb7aa738f229d9846bb489103b9a8"
   dependencies:
     cross-env "5.2.0"
     rollup "1.1.0"
 
-"@sfcc/logger@^0.0.1":
+"@sfcc-dev/logger@^0.0.1":
   version "0.0.1"
   resolved "http://localhost:4873/@sfcc%2flogger/-/logger-0.0.1.tgz#5c8d71a66883ff5da38a4dae4719c913afeb7ba7"
   dependencies:
-    "@sfcc/core" "0.0.1"
+    "@sfcc-dev/core" "0.0.1"
     cross-env "5.2.0"
     rollup "1.1.0"
 
@@ -1641,8 +1641,8 @@
   version "0.0.1"
   resolved "http://localhost:4873/@sfra%2fproductapi/-/productapi-0.0.1.tgz#bf98c4a3b25292e9ca48ae81d2dc95aa98fe2626"
   dependencies:
-    "@sfcc/core" "^0.0.1"
-    "@sfcc/core-graphql" "^0.0.1"
+    "@sfcc-dev/core" "^0.0.1"
+    "@sfcc-dev/core-graphql" "^0.0.1"
     cross-env "5.2.0"
     request-promise "^4.2.2"
     rollup "1.1.0"
@@ -1651,7 +1651,7 @@
   version "0.0.1"
   resolved "http://localhost:4873/@sfra%2fwishlist/-/wishlist-0.0.1.tgz#bf74affb102bac2919b5a8e55b1730b1352720af"
   dependencies:
-    "@sfcc/core" "0.0.1"
+    "@sfcc-dev/core" "0.0.1"
     cross-env "5.2.0"
     rollup "1.1.0"
 

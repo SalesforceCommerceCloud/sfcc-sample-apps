@@ -1,5 +1,5 @@
 import {core} from '@sfcc/core';
-import {LOGGER_KEY} from "@sfcc/core";
+import {LOGGER_KEY} from "@sfcc-dev/core";
 
 export const API_CONFIG_KEY = Symbol('API Configuration Service');
 

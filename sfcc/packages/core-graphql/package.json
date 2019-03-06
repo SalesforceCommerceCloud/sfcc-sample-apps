@@ -1,5 +1,5 @@
 {
-  "name": "@sfcc/core-graphql",
+  "name": "@sfcc-dev/core-graphql",
   "version": "0.0.1",
   "description": "sfcc default core graphql",
   "main": "index.js",
@@ -11,8 +11,8 @@
   "author": "Jason Cooper",
   "license": "MIT",
   "dependencies": {
-    "@sfcc/apiconfig": "^0.0.1",
-    "@sfcc/core": "0.0.1",
+    "@sfcc-dev/apiconfig": "^0.0.1",
+    "@sfcc-dev/core": "0.0.1",
     "apollo-server": "^2.3.3",
     "cross-env": "5.2.0",
     "graphql-tag": "^2.10.1",

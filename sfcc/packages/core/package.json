@@ -1,5 +1,5 @@
 {
-  "name": "@sfcc/core",
+  "name": "@sfcc-dev/core",
   "version": "0.0.1",
   "description": "sfcc core registry",
   "main": "index.js",
