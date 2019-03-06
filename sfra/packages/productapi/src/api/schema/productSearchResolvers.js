@@ -1,36 +1,54 @@
-import * as requestPromise from 'request-promise';
-import SearchResultProduct from '../models/SearchResultProduct';
+import * as rp from 'request-promise';
+//import SearchResultProduct from '../models/SearchResultProduct';
+import SearchResult from '../models/SearchResult';
 
-const searchProduct = (config, query) => {
-    const URL_PARAMS = `expand=images,,prices`;
-    const SEARCH_URL = `${ config.BASE_URL }/product_search?client_id=${ config.APP_API_CLIENT_ID }&q=${ query }&${ URL_PARAMS }`
+const processFilterParams = (filterParams) => {
+    let filterParamQuery = '';
+    let refinementNumber = 0;
+    filterParams.forEach((filter) => {
+        if (filter.id === 'sort') {
+            filterParamQuery = `${filterParamQuery}&${filter.id}=${filter.value}`;
+        } else {
+            refinementNumber++;
+            filterParamQuery = `${filterParamQuery}&refine_${refinementNumber}=${filter.id}=${filter.value}`;
+        }
+    });
+    return filterParamQuery;
+}
+
+const searchProduct = (config, query, filterParams) => {
+    const URL_PARAMS = `expand=images,prices,variations`;
+    const URL_FILTER_PARAMS = filterParams ? processFilterParams(filterParams) : null;
+    let searchUrl = `${config.BASE_URL}/product_search?client_id=${config.APP_API_CLIENT_ID}&q=${query}&${URL_PARAMS}`
+    if (URL_FILTER_PARAMS) {
+        searchUrl = searchUrl + URL_FILTER_PARAMS;
+    }
     console.log('---- GETTING PRODUCT SEARCH RESULTS ---- ');
-    console.log('---- URL ---- ' + SEARCH_URL);
+    console.log('---- URL ---- ' + searchUrl);
     return new Promise((resolve, reject) => {
         Promise.all([
-            requestPromise.get({
-                uri: SEARCH_URL,
+            rp.get({
+                uri: searchUrl,
                 json: true
             })
-        ]).then(([ searchResult ]) => {
+        ]).then(([searchResult]) => {
             resolve(searchResult);
         }).catch((err) => {
             reject(err);
         });
     });
-};
+}
 
 export const resolver = (config) => {
     return {
-        productSearch: (_, { query }) => {
-            const hits = searchProduct(config, query).then((searchResult) => {
+        productSearch: (_, {query, filterParams}) => {
+            const result = searchProduct(config, query, filterParams).then((searchResult) => {
                 console.log("---- Received Search Results from API ----");
-                console.log(searchResult.refinements);
-                return searchResult.hits.map((product) => new SearchResultProduct(product));
+                return new SearchResult(searchResult, filterParams);
             });
             console.log("==================");
-            console.log(hits);
-            return hits;
+            console.log(result);
+            return result;
         }
     }
-};
+}
