@@ -2,6 +2,7 @@ import color from 'colors';
 import express from 'express'
 import path from 'path';
 
+import {core} from "@sfcc-dev/core";
 
 let app = express();
 
