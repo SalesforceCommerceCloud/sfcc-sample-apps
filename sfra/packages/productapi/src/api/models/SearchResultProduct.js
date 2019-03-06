@@ -8,6 +8,9 @@ class SearchResultProduct {
         this.name = product.product_name;
         this.price = product.price;
         this.image = new Image(product.image);
+        Object.assign(this, product);
+        console.log(product);
     }
 }
+
 export default SearchResultProduct;

@@ -1,8 +1,7 @@
 #!/bin/bash
 
-#echo Build and Publish all
-cd sfra-app
+#echo Build and Start App
+cd app
 yarn
 yarn build
 yarn start:commerce
-
