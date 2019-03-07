@@ -1,10 +1,10 @@
 //
 // SFCC Core registry and core extensions/services
 //
-import {core} from '@sfcc/core';
-import '@sfcc/logger';
-import '@sfcc/apiconfig';
-import '@sfcc/core-graphql';
+import {core} from '@sfcc-dev/core';
+import '@sfcc-dev/logger';
+import '@sfcc-dev/apiconfig';
+import '@sfcc-dev/core-graphql';
 
 import API_CONFIG_DATA from './api'; // Our Application Specific API Configuration
 
@@ -19,9 +19,9 @@ import '@sfra/productapi';
 //
 // Import Keys needed to access core services end extensions
 //
-import {CORE_GRAPHQL_KEY, EXPRESS_KEY} from '@sfcc/core-graphql';
-import {LOGGER_KEY, API_EXTENSIONS_KEY} from '@sfcc/core';
-import {API_CONFIG_KEY} from "@sfcc/apiconfig";
+import {CORE_GRAPHQL_KEY, EXPRESS_KEY} from '@sfcc-dev/core-graphql';
+import {LOGGER_KEY, API_EXTENSIONS_KEY} from '@sfcc-dev/core';
+import {API_CONFIG_KEY} from "@sfcc-dev/apiconfig";
 import {WISHLIST_KEY} from "@sfra/wishlist";
 
 

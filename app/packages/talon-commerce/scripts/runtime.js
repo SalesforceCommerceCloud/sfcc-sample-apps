@@ -3,7 +3,7 @@ import express from 'express'
 import path from 'path';
 
 import compression from 'compression';
-import {resourceMiddleware, templateMiddleware, startContext} from 'talon-compiler';
+import {resourceMiddleware, templateMiddleware, startContext} from '@sfcc-dev/talon-compiler';
 
 const templateDir = path.resolve(__dirname, '..');
 const publicDir = `${templateDir}/dist/public/`;

@@ -1,1 +1,1 @@
-#### @sfcc/core
+#### @sfcc-dev/core

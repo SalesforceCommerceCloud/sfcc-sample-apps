@@ -1,7 +1,7 @@
 import { createElement as engineCreateElement } from 'lwc';
 import { getModule } from 'talon/moduleRegistry';
 import { logError } from 'talon/logger';
-import { moduleSpecifierToElementName } from 'talon-common';
+import { moduleSpecifierToElementName } from '@sfcc-dev/talon-common';
 
 
 export async function createElement(name) {

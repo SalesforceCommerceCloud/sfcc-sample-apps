@@ -1,12 +1,12 @@
 {
-  "name": "talon-common",
-  "version": "0.0.1",
+  "name": "@sfcc-dev/talon-common",
+  "version": "0.0.2",
   "main": "dist/cjs.js",
   "module": "dist/es.js",
   "scripts": {
     "clean": "rm -rf dist",
     "test": "jest",
-    "build": "cross-env rollup -c ./scripts/rollup.config.js"
+    "build": "rollup -c ./scripts/rollup.config.js"
   },
   "devDependencies": {
     "babel-jest": "^23.4.2",

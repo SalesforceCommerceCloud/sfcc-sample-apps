@@ -2,7 +2,7 @@ import * as lwc from 'lwc-engine';
 import { assert, autoBind } from "talon/utils";
 import { getBasePath, getMode, getLocale } from "talon/configProvider";
 import { style } from "talon/brandingService";
-import { getResourceUrl, getViewModuleFullyQualifiedName } from 'talon-common';
+import { getResourceUrl, getViewModuleFullyQualifiedName } from '@sfcc-dev/talon-common';
 import { getApexInvoker } from "talon/apexUtils";
 
 /**

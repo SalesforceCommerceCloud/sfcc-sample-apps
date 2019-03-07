@@ -1,5 +1,5 @@
 {
-  "name": "talon-compiler",
+  "name": "@sfcc-dev/talon-compiler",
   "version": "0.0.1",
   "main": "src/index.js",
   "bin": {
@@ -32,8 +32,8 @@
     "pretty": "^2.0.0",
     "rollup": "^0.66.6",
     "rollup-plugin-babel": "^3.0.4",
-    "talon-common": "^0.0.1",
-    "talon-framework": "^0.0.1",
+    "talon-common": "^0.0.2",
+    "talon-framework": "^0.0.2",
     "tmp": "^0.0.33",
     "toposort": "^2.0.2",
     "touch": "^3.1.0",

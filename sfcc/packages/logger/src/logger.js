@@ -1,6 +1,6 @@
 // make export singleton
 
-import {core, LOGGER_KEY} from '@sfcc/core';
+import {core, LOGGER_KEY} from '@sfcc-dev/core';
 export {LOGGER_KEY};
 
 export default class Logger {

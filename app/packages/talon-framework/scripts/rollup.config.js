@@ -10,7 +10,7 @@ import hash from 'rollup-plugin-hash';
 import babel from '@babel/core';
 import minify from 'babel-preset-minify';
 
-import { getOutputConfigs, getResourceUrl } from 'talon-common';
+import { getOutputConfigs, getResourceUrl } from '@sfcc-dev/talon-common';
 
 const PROD_MODES = ['prod', 'prod_compat'];
 const ROOT = path.resolve(__dirname, '..');

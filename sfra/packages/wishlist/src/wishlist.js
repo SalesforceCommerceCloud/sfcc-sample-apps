@@ -1,5 +1,5 @@
 // SFRA Core Extension module
-import {core} from '@sfcc/core';
+import {core} from '@sfcc-dev/core';
 
 export const WISHLIST_KEY = Symbol('Wishlist Extension');
 

@@ -1,7 +1,7 @@
 import {ApolloServer, gql} from 'apollo-server-express';
 import {makeExecutableSchema} from 'graphql-tools';
 
-import {core, API_EXTENSIONS_KEY} from '@sfcc/core';
+import {core, API_EXTENSIONS_KEY} from '@sfcc-dev/core';
 import {API_CONFIG_KEY} from "@sfcc-dev/apiconfig";
 
 export const CORE_GRAPHQL_KEY = Symbol('Core GraphQL with Apollo');

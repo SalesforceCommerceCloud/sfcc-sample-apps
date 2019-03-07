@@ -1,1 +1,1 @@
-#### @sfcc/logger
+#### @sfcc-dev/logger
