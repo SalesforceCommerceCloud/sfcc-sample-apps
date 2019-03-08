@@ -1,59 +1,55 @@
-import { makePostRequest, makeGetRequest } from './requests';
+import { getResourceReferenceFromAuraMethod } from 'talon-connect-gen';
+import makeRequest from './requests';
 
-export default function apiCall(controller, options) {
-    const endpointParams = controller.split(".");
-    const controllerClass = endpointParams[0];
-    const action = endpointParams[1];
+export default async function apiCall(endpoint, params) {
+    const [controller, action] = endpoint.split(".");
 
-    Object.assign(options, { controller: controllerClass });
-
-    switch (controllerClass) {
-        case "RecordUiController":
-            return handleRecordUi(action, options);
-        case "ApexActionController":
-            return handleApexAction(action, options);
-        default:
-            return Promise.reject(`Unsupported wire service controller: ${controllerClass}`);
+    // handle Apex calls
+    if (controller === "ApexActionController") {
+        return handleApexAction(action, params);
     }
-}
 
-function handleRecordUi(action, options) {
-    if (action === "getRecordWithFields") {
-        return getRecordWithFields(options);
-    } else if (action === "getRecordUis") {
-        return getRecordUis(options);
+    // handle UI API calls
+    // get the UI API reference using the Aura controller and method name
+    const uiApiReference = getResourceReferenceFromAuraMethod(endpoint);
+    if (uiApiReference) {
+        return handleUiApiCall(uiApiReference, params);
     }
-    return Promise.reject(`Unsupported ${options.controller} action: ${action}`);
+
+    throw new Error(`Unsupported controller action: ${controller}.${action}`);
 }
 
-function getRecordWithFields(options) {
-    const fieldsQs = options.optionalFields.join(",");
-    return makeGetRequest(`api/${options.controller}/getRecordsWithFields/${options.recordId}?fields=${fieldsQs}`)
-            .then(response => {
-                if (response.hasErrors) {
-                    return Promise.reject("There are errors");
-                }
+async function handleUiApiCall({ urlPath, urlPathParamNames, verb: method, inputRepresentation }, params) {
+    const remainingParams = (params && { ...params }) || {};
 
-                return response.results[0].result;
-            });
+    // replace the path params
+    let path = urlPathParamNames.reduce((currentPath, paramName) => {
+        const value = remainingParams[paramName];
+        delete remainingParams[paramName];
+        return currentPath.replace('${' + paramName + '}', encodeURIComponent(value));
+    }, urlPath);
+
+    // get the POST/PATCH body
+    let body;
+    if ((method === 'POST' || method === 'PATCH') && remainingParams[inputRepresentation]) {
+        body = remainingParams[inputRepresentation];
+        delete remainingParams[inputRepresentation];
+    }
+
+    // add the rest as query params
+    if (Object.keys(remainingParams).length) {
+        path += '?' + Object.entries(remainingParams).map(([key, val]) => `${encodeURIComponent(key)}=${encodeURIComponent(val)}`).join('&');
+    }
+
+    // fetch!
+    return makeRequest({ path, method, body });
 }
 
-function getRecordUis(options) {
-    const recordIds = options.recordIds.join(",");
-    return makeGetRequest(`api/${options.controller}/getRecordUis/${recordIds}`)
-            .catch(error => Promise.reject(error))
-            .then(response => Promise.resolve(response));
-}
-
-function handleApexAction(action, options) {
+async function handleApexAction(action, params) {
     if (action === "execute") {
-        return executeApexAction(options);
+        const { returnValue } = await makeRequest({ path: `/apex/${action}`, method: 'POST', body: params });
+        return returnValue;
     }
-    return Promise.reject(`Unsupported ${options.controller} action: ${action}`);
-}
 
-function executeApexAction(options) {
-    return makePostRequest(`api/${options.controller}/execute`, options)
-            .catch(error => Promise.reject(error))
-            .then(response => response.returnValue);
+    throw new Error(`Unsupported Apex action: ${action}`);
 }

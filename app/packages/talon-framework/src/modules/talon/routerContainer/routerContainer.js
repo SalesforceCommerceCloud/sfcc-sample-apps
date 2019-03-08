@@ -4,9 +4,9 @@ import { getTemplate } from 'talon/moduleRegistry';
 import defaultHtml from './routerContainer.html';
 
 export default class RouterContainer extends LightningElement {
-    @track state = {
-        template: defaultHtml
-    };
+    @track template = defaultHtml;
+    @track attributes;
+    @track routeParams = {};
 
     /**
      * Subscribe to route changes
@@ -21,12 +21,14 @@ export default class RouterContainer extends LightningElement {
     }
 
     render() {
-        return this.state.template;
+        return this.template;
     }
 
-    setRoute({ view }) {
+    setRoute({ view }, params = {}) {
         getTemplate(view).then(tmpl => {
-            this.state.template = tmpl;
+            this.template = tmpl.html;
+            this.routeParams = params;
+            this.attributes = tmpl.attributes(this);
         });
     }
 

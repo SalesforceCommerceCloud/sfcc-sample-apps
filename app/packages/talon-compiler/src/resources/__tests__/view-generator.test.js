@@ -1,13 +1,14 @@
 import ViewGenerator from '../view-generator';
 import { startTestContext, endTestContext } from 'test-talon-context';
-import { compileTemplate, sortDependencies, buildResourceContents } from '../../compiler/compiler-service';
+import { compile } from '../../compiler/compiler-service';
 import { getView } from '../../metadata/metadata-service';
-import view from '../../__tests__/fixtures/src/views/about.json';
+import view from '../../__tests__/fixtures/src/views/home.json';
 
 jest.mock('../../compiler/compiler-service');
 jest.mock('../../metadata/metadata-service');
 
 beforeEach(() => {
+    jest.clearAllMocks();
     return startTestContext();
 });
 
@@ -22,27 +23,23 @@ describe('view-generator', () => {
         return view;
     });
 
-    compileTemplate.mockImplementation(() => {
+    compile.mockImplementation(() => {
         return Promise.resolve({
-            compiledModules: {
-                [view.component.name]: {"dev": "dev code", "prod": "prod code"}
-            },
-            requiredLabels: [],
-            graph: [[undefined, view.component.name]]
+            "dev": "dev code",
+            "prod": "prod code"
         });
     });
 
-    sortDependencies.mockImplementation(() => {
-        return [view.component.name];
-    });
-
-    buildResourceContents.mockImplementation(() => {
-        return { "dev": "dev code", "prod": "prod code" };
-    });
-
     it('generates view resource', async () => {
-        return generator.get('view://community_flashhelp/about').then((staticResource) => {
+        return generator.get('view://x/home').then((staticResource) => {
             expect(JSON.stringify(staticResource, null, 3)).toMatchSnapshot();
+        });
+    });
+
+    it('compiles virtual modules', async () => {
+        return generator.get('view://x/home').then(() => {
+            expect(compile.mock.calls).toHaveLength(1);
+            expect(compile.mock.calls[0][2]).toMatchSnapshot();
         });
     });
 });

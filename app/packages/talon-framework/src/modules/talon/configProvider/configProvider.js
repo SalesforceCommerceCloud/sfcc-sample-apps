@@ -1,4 +1,5 @@
 import localizationService from 'talon/localizationService';
+import { getQueryStringParameterByName } from "talon/utils";
 
 /**
  * This pattern is used to configure the framework (base path, etc...)
@@ -11,18 +12,21 @@ export function register(providerImpl) {
     if (!configProvider) {
         configProvider = providerImpl;
     } else {
-        throw new Error(
-            'ConfigProvider can only be set once at initilization time'
-        );
+        throw new Error('ConfigProvider can only be set once at initilization time');
     }
 }
 
 export function getBasePath() {
-    return configProvider && configProvider.getBasePath();
+    return (configProvider && configProvider.getBasePath()) || '';
 }
 
 export function getMode() {
     return configProvider && configProvider.getMode();
+}
+
+export function getLwcFallback() {
+    const lwcFallback = getQueryStringParameterByName('talon.lwc.fallback');
+    return lwcFallback && lwcFallback.toLowerCase().trim() === 'false' ? false : true;
 }
 
 export function getLocale() {
@@ -157,4 +161,15 @@ export function getToken() {
     return null;
 }
 
-export default { register, getBasePath, getMode, getLocale, getLocalizationService, getPathPrefix, getToken };
+export function getUser() {
+    return configProvider && configProvider.getUser();
+}
+
+export function getFormFactor() {
+    // TODO issue #216
+    return 'DESKTOP';
+}
+
+export function getIconSvgTemplates() {
+    return configProvider && configProvider.iconSvgTemplates;
+}

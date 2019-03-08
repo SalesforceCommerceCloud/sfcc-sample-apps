@@ -20,14 +20,17 @@ module.exports = {
         commonjs(),
         babel({
             "presets": [[
-                "env",
+                "@babel/preset-env",
                 {
                     "modules": false,
-                    "browsers": ["ie < 8"],
-                    "debug": false
+                    "targets": {
+                        "ie": "7"
+                    }
                 }
             ]],
-            "plugins": ["external-helpers", "transform-object-rest-spread"],
+            "plugins": [
+                "@babel/plugin-proposal-object-rest-spread"
+            ],
             "comments": false
         })
     ],

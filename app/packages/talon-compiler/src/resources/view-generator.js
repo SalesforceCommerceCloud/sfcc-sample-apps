@@ -1,10 +1,11 @@
 const { getViewModuleName, parseResourceDescriptor, VIEW_NAMESPACE } = require('talon-common');
-const { log } = require('../utils/log');
+const { log } = console;
 const { template, javascript } = require('../views/view-template-generator');
 const { getView } = require('../metadata/metadata-service');
-const { sortDependencies, buildResourceContents, compileTemplate } = require('../compiler/compiler-service');
+const { compile } = require('../compiler/compiler-service');
 const { computeResourceIds } = require("../utils/resource");
 const StaticResource = require('../resources/static-resource');
+const { getContext } = require('../context/context-service');
 
 /**
  * Generator for view resources.
@@ -23,17 +24,19 @@ class ViewGenerator {
         const view = getView(viewName);
 
         // generate a template HTML based on the view metadata
-        const viewModuleName = getViewModuleName(viewName);
-        const generatedTemplate = template(view.component, !view.themeLayoutType);
-        const generatedJavascript = javascript(viewModuleName);
+        const moduleName = getViewModuleName(viewName);
+        const moduleId = `${VIEW_NAMESPACE}/${moduleName}`;
+        const { html: generatedTemplate, attributes } = template(view.component, !view.themeLayoutType, getContext().isPreview);
+        const generatedJavascript = javascript(moduleName, attributes);
+
+        // pass the generated javascript and HTML as virtual modules to the compiler
+        const virtualModules = {};
+        virtualModules[`./${moduleId}/${moduleName}.js`] = generatedJavascript;
+        virtualModules[`./${moduleId}/${moduleName}.html`] = generatedTemplate;
 
         // compile the generated template in order to get its dependencies
-        return compileTemplate(VIEW_NAMESPACE, viewModuleName, generatedTemplate, generatedJavascript).then(({graph, compiledModules, requiredLabels}) => {
-            const dependencies = sortDependencies({graph, compiledModules});
-
-            const contents = buildResourceContents(dependencies, requiredLabels);
+        return compile(`./${moduleId}/${moduleName}.js`, moduleId, virtualModules).then(contents => {
             const uids = computeResourceIds(contents);
-
             return new StaticResource({ descriptor, contents, uids });
         });
     }

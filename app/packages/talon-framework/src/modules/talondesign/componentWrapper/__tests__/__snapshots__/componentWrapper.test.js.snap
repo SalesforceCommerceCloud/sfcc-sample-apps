@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`talondesign/componentWrapper renders 1`] = `
+<talondesign-component-wrapper>
+  #shadow-root(open)
+    <div
+      class="ui-widget ui-interactions-component"
+      data-allow-delete="true"
+      data-allow-move="true"
+      data-allow-select="true"
+      data-component-label="My Label!"
+      data-fqn="foo"
+      data-item-id="blah-blah-blah"
+    >
+      <div
+        class="actualNode"
+      />
+      <div
+        class="elementProxyContainer"
+      />
+    </div>
+</talondesign-component-wrapper>
+`;

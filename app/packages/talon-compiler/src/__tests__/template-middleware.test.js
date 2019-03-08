@@ -17,12 +17,23 @@ afterEach(() => {
 });
 
 describe('template-middleware', () => {
+    const testSourceNonce = "T3stVa1ue";
+
     describe('generateHTML', () => {
+        const testPath = '/my-page';
+
         getOutputConfigs().forEach(({ mode }) => {
             it(`generates HTML in ${mode} mode`, async () => {
-                return generateHTML(mode, '/my-page').then(html => {
+                return generateHTML(mode, testPath).then(html => {
                     expect(html).toMatchSnapshot();
                 });
+            });
+        });
+
+        it('generates HTML with script-src nonce', () => {
+            return generateHTML('dev', testPath, testSourceNonce).then(html => {
+                expect(html.match(/nonce="T3stVa1ue"/g)).toHaveLength(2);
+                expect(html).toMatchSnapshot();
             });
         });
 
@@ -53,7 +64,10 @@ describe('template-middleware', () => {
             };
 
             const res = {
-                send: jest.fn()
+                send: jest.fn(),
+                locals : {
+                    nonce: testSourceNonce
+                }
             };
 
             function next(err) {

@@ -1,32 +1,39 @@
 {
-  "name": "@sfcc-dev/talon-framework",
-  "version": "0.0.2",
+  "name": "talon-framework",
+  "version": "0.0.1",
   "scripts": {
     "clean": "rm -rf dist",
     "test": "jest",
-    "build": "cross-env rollup -c ./scripts/rollup.config.js"
+    "test:debug": "node --inspect-brk ./node_modules/.bin/jest --runInBand",
+    "build:compat": "cross-env rollup -c ./scripts/rollup.config.compat.js",
+    "build:framework": "cross-env rollup -c ./scripts/rollup.config.framework.js",
+    "build:designtime": "cross-env rollup -c ./scripts/rollup.config.designtime.js",
+    "build": "yarn build:compat && yarn build:designtime && yarn build:framework"
   },
   "devDependencies": {
-    "@babel/core": "^7.1.2",
-    "babel-preset-minify": "^0.5.0",
+    "@lwc/compiler": "0.35.7",
+    "@lwc/engine": "0.35.7",
+    "@lwc/jest-preset": "0.35.7",
+    "@lwc/module-resolver": "0.35.7",
+    "@lwc/rollup-plugin": "0.35.7",
+    "@lwc/wire-service": "0.35.7",
     "cross-env": "^5.1.6",
-    "jest": "^23.5.0",
-    "jsonfile": "^4.0.0",
-    "@lwc/compiler": "0.33.17",
-    "@lwc/engine": "0.33.17",
-    "@lwc/jest-preset": "0.33.17",
-    "@lwc/module-resolver": "0.33.17",
-    "@lwc/wire-service": "0.33.17",
+    "es5-proxy-compat": "^0.21.2",
+    "gzip-size": "^5.0.0",
+    "jest": "^24.1.0",
     "page": "^1.8.6",
+    "path-to-regexp": "^2.4.0",
+    "pretty-bytes": "^5.1.0",
     "rollup": "^0.66.6",
+    "rollup-plugin-alias": "^1.5.1",
+    "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-commonjs": "^9.1.3",
+    "rollup-plugin-compat": "0.21.2",
     "rollup-plugin-hash": "^1.3.0",
-    "@lwc/rollup-plugin": "0.33.17",
     "rollup-plugin-node-resolve": "^3.3.0",
-    "rollup-plugin-strip": "^1.1.1",
-    "@sfcc-dev/talon-common": "^0.0.2"
-  },
-  "dependencies": {
-    "rollup-plugin-commonjs": "^9.2.0"
+    "rollup-plugin-terser": "^4.0.2",
+    "talon-common": "^0.0.1",
+    "talon-connect-gen": "0.0.4",
+    "whatwg-fetch": "^3.0.0"
   }
 }

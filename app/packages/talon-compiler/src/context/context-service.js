@@ -11,6 +11,10 @@ const TalonContext = require('./talon-context');
 const { log } = console;
 
 class ContextService {
+    constructor() {
+        this.onContextClosedCallbacks = [];
+    }
+
     /**
      * Start the Talon context and computes the template version key
      * based on the given configuration by computing a hash for srcDir
@@ -19,8 +23,8 @@ class ContextService {
      * @public
      * @param {Object} config The template configuration
      * @param {string} config.templateDir Required, the template module directory
+     * @param {string} [config.talonConfigJson] The talon.conf.json file path
      * @param {string} [config.srcDir] Source directory, used to compute the template versio key
-     * @param {string} [config.modulesSrcDir] Where to get the template LCM modules from
      * @param {string} [config.indexHtml] The index.html file path
      * @param {string} [config.routesJson] The routes.json file path
      * @param {string} [config.labelsJson] The labels.json file path
@@ -28,11 +32,19 @@ class ContextService {
      * @param {string} [config.outputDir] Output dir where resources will be written
      * @param {string} [config.locale] The locale to use
      * @param {string} [config.basePath] The base path to use in branding properties URL values
+     * @param {string} [config.isPreview] Determines whether the context is design time
      */
     async startContext(config) {
         assert(!this.currentContext, "Context already started");
 
         const context = this.currentContext = new TalonContext(config);
+
+        if (config.versionKey) {
+            // version key is already specified,
+            // we must be in a worker
+            context.versionKey = config.versionKey;
+            return context;
+        }
 
         return folderHash(context.srcDir).then(observable => {
             this.folderHashSubscription = observable.subscribe({
@@ -71,12 +83,22 @@ class ContextService {
      */
     endContext() {
         assert(this.currentContext, "Context not started");
-        this.folderHashSubscription.unsubscribe();
-        this.folderHashSubscription = null;
+
+        if (this.folderHashSubscription) {
+            this.folderHashSubscription.unsubscribe();
+            this.folderHashSubscription = null;
+        }
+
         this.currentContext = null;
+
+        this.onContextClosedCallbacks.forEach(c => c.call());
+    }
+
+    onContextClosed(callback) {
+        this.onContextClosedCallbacks.push(callback);
     }
 }
 
 const instance = autoBind(new ContextService());
-const { startContext, getContext, endContext } = instance;
-module.exports = { startContext, getContext, endContext, ContextService };
+const { startContext, getContext, endContext, onContextClosed } = instance;
+module.exports = { startContext, getContext, endContext, onContextClosed, ContextService };

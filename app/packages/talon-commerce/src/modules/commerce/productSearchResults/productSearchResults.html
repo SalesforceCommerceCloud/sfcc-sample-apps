@@ -42,12 +42,12 @@
 
                     <aside>
                       <div class='refinements'>
-                        <!--<template for:each={refinements} for:item="refinement">-->
-                          <!--<commerce-refinement-->
-                            <!--key={refinement.label}-->
-                            <!--refinement={refinement}>-->
-                          <!--</commerce-refinement>-->
-                        <!--</template>-->
+                        <template for:each={refinements} for:item="refinement">
+                          <commerce-refinement
+                            key={refinement.label}
+                            refinement={refinement}>
+                          </commerce-refinement>
+                        </template>
                       </div>
                     </aside>
                   </div>

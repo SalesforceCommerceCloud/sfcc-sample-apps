@@ -1,6 +1,7 @@
 const { parseResourceDescriptor } = require('talon-common');
 const FrameworkResourceHandler = require('../resources/framework-resource-handler');
 const ViewResourceHandler = require('../resources/view-resource-handler');
+const ComponentResourceHandler = require('../resources/component-resource-handler');
 const { assert } = require('../utils/assert');
 
 /**
@@ -10,7 +11,8 @@ class ResourceService {
     constructor() {
         this.setResourceHandlers(
             new FrameworkResourceHandler(),
-            new ViewResourceHandler()
+            new ViewResourceHandler(),
+            new ComponentResourceHandler()
         );
     }
 

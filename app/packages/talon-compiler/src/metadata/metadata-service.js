@@ -1,20 +1,7 @@
-const { getContext } = require('../context/context-service');
-const fs = require('../utils/filesystem');
 const { dirname } = require('path');
-const LoadingCache = require('../utils/loading-cache');
-
-const cache = new LoadingCache();
-
-function readFile(path) {
-    const { versionKey } = getContext();
-    return cache.get(`${path}@${versionKey}`, () => {
-        return fs.readFileSync(path, 'utf8');
-    });
-}
-
-function readJsonFile(path) {
-    return JSON.parse(readFile(path));
-}
+const { getContext } = require('../context/context-service');
+const { readFile, readJsonFile } = require('../utils/files');
+const { getCanonicalBrandingProperty } = require('./process-branding');
 
 /**
  * Get all the context template routes
@@ -52,19 +39,12 @@ function getHTML() {
  * Get all the context template branding properties
  */
 function getBrandingProperties() {
-    const { themeJson, basePath } = getContext();
+    const { themeJson } = getContext();
     const theme = getTheme();
     const dir = dirname(themeJson);
     const brandingProperties = (theme && theme.branding && readJsonFile(`${dir}/${theme.branding}`)) || [];
-
-    // add base path to Image branding properties
-    return brandingProperties.map(({name, type, value}) => {
-        return {
-            name,
-            type,
-            value: type === 'Image' ? (basePath + value) : value
-        };
-    }) || {};
+    // Fix any declarative values that need massaging to work off-core
+    return brandingProperties.map(prop => getCanonicalBrandingProperty(prop));
 }
 
 function getView(viewName) {
@@ -73,4 +53,23 @@ function getView(viewName) {
     return readJsonFile(file);
 }
 
-module.exports = { getRoutes, getTheme, getBrandingProperties, getLabels, getHTML, getView };
+function getAllViews(routes = getRoutes(), theme = getTheme()) {
+    // using `[].concat(routes)` allows the caller to pass either a single route (the current route for example)
+    // or an array of routes
+    const routesArr = [].concat(routes || []);
+
+    // get all route views
+    const routeViewNames = routesArr.filter(route => route.view).map(route => route.view);
+    const routeViews = routeViewNames.map(getView);
+
+    // get all the theme layout views
+    const themeLayoutViewNames = routeViews.filter(view => view.themeLayoutType).map(view => view.themeLayoutType).filter(themeLayoutType => {
+        return theme.themeLayouts[themeLayoutType] && theme.themeLayouts[themeLayoutType].view;
+    }).map(themeLayoutType => theme.themeLayouts[themeLayoutType].view);
+
+    // filter out unique views
+    const allUniqueViewNames = [...new Set(routeViewNames.concat(themeLayoutViewNames))];
+    return allUniqueViewNames.map(getView);
+}
+
+module.exports = { getRoutes, getTheme, getBrandingProperties, getLabels, getHTML, getView, getAllViews };

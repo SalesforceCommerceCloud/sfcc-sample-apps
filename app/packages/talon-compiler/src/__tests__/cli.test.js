@@ -1,18 +1,23 @@
 const main = require('../cli');
 const { startContext, endContext } = require('../context/context-service');
 const metadataService = require('../metadata/metadata-service');
+const validate = require('../metadata/metadata-validation');
 const routesService = require('../routes/route-service');
 const resourceService = require('../resources/resource-service');
 
 jest.mock('../context/context-service', () => {
     const context = {
-        locale: Symbol("mockLocale")
+        locale: Symbol("mockLocale"),
+        isPreview: false
     };
     return {
         async startContext() {
             return context;
         },
-        endContext: jest.fn()
+        endContext: jest.fn(),
+        getContext() {
+            return context;
+        },
     };
 });
 
@@ -29,10 +34,13 @@ jest.mock('../metadata/metadata-service', () => {
     };
 });
 
+jest.mock('../metadata/metadata-validation', () => {
+    return jest.fn(() => Promise.resolve());
+});
+
 jest.mock('../routes/route-service', () => {
     const descriptors = ["descriptor1", "descriptor2"];
     return {
-        validateRoutes: jest.fn(),
         getRoutesResources: jest.fn(() => {
             return descriptors;
         })
@@ -80,22 +88,19 @@ describe('cli', () => {
                 expect(endContext).toHaveBeenCalledTimes(1);
             });
         });
-        it('validates routes', async () => {
+        it('validates all metadata', async () => {
             return main().then(() => {
-                const routes = metadataService.getRoutes();
-
-                expect(routesService.validateRoutes).toHaveBeenCalledTimes(1);
-                expect(routesService.validateRoutes).toHaveBeenCalledWith(routes);
+                expect(validate).toHaveBeenCalledTimes(1);
             });
         });
         it('gets routes resource descriptors', async () => {
             return main().then(async () => {
                 const routes = metadataService.getRoutes();
                 const theme = metadataService.getTheme();
-                const { locale } = await startContext();
+                const { locale, isPreview } = await startContext();
 
                 expect(routesService.getRoutesResources).toHaveBeenCalledTimes(1);
-                expect(routesService.getRoutesResources).toHaveBeenCalledWith(routes, theme, locale);
+                expect(routesService.getRoutesResources).toHaveBeenCalledWith(routes, theme, locale, isPreview);
             });
         });
         it('gets resources', async () => {
@@ -113,6 +118,13 @@ describe('cli', () => {
 
                 expect(resourceService.get).toHaveBeenCalledTimes(1);
                 expect(resourceService.get).toHaveBeenCalledWith(descriptors[0]);
+            });
+        });
+        it('gets a single resource from descriptor', async () => {
+            const descriptor = "aType://aName";
+            return main({ descriptor }).then(async () => {
+                expect(resourceService.get).toHaveBeenCalledTimes(1);
+                expect(resourceService.get).toHaveBeenCalledWith(descriptor);
             });
         });
     });

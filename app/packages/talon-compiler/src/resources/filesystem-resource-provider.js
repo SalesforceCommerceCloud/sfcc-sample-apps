@@ -2,9 +2,11 @@ const mkdirp = require('mkdirp');
 const path = require('path');
 const { getResourceUrl } = require('talon-common');
 const fs = require('../utils/filesystem');
-const { log } = require('../utils/log');
+const { log } = console;
 const { getContext } = require('../context/context-service');
 const StaticResource = require('./static-resource');
+const { promisify } = require('util');
+const stream = require('stream');
 
 require('colors');
 
@@ -51,29 +53,19 @@ class FileSystemResourceProvider {
         const { contents, uids } = staticResource;
 
         // write the resource to disk
-        await Promise.all(Object.entries(contents).map(([mode, content]) => {
-            return new Promise((resolve, reject) => {
-                const uid = uids[mode];
-                const url = getResourceUrl(descriptor, mode, uid);
-                const outputFile = `${outputDir}/${RESOURCE_DIR}${url}`;
+        await Promise.all(Object.entries(contents).map(([mode]) => {
+            const uid = uids[mode];
+            const url = getResourceUrl(descriptor, mode, uid);
+            const outputFile = `${outputDir}/${RESOURCE_DIR}${url}`;
 
-                // create output dir
-                mkdirp.sync(path.dirname(outputFile));
+            // create output dir
+            mkdirp.sync(path.dirname(outputFile));
 
-                // write
-                log(`Writing ${outputFile}...`.dim);
-                const stream = fs.createWriteStream(outputFile);
-                stream.on('open', () => {
-                    stream.write(content);
-                    stream.end();
-                });
-
-                stream.on('error', err => {
-                    log(`Failed to write ${outputFile}: ${err}`.red);
-                    reject(err);
-                });
-                stream.on('finish', () => resolve(mode));
-            });
+            // write
+            log(`Writing ${outputFile}...`.dim);
+            const pipeline = promisify(stream.pipeline);
+            const write = fs.createWriteStream(outputFile);
+            return pipeline(staticResource.getReadableStream(mode), write);
         }));
 
         // add this resource uids to the map resources.json file in the output dir

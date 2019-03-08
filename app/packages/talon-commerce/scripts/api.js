@@ -13,14 +13,4 @@ export default {
     resolvers: {}
 };
 
-// export default {
-//   content: `${BASE_URL}content/($CONTENT_IDs)?client_id=${APP_API_CLIENT_ID}`,
-//   search: `${BASE_URL}product_search?client_id=${APP_API_CLIENT_ID}`,
-//   category: `${BASE_URL}categories/$CATEGORY_ID?client_id=${APP_API_CLIENT_ID}`,
-//   product: `${BASE_URL}products/$PRODUCT_ID?client_id=${APP_API_CLIENT_ID}`,
-//   customerauth: `${BASE_URL}customers/auth?client_id=${APP_API_CLIENT_ID}`,
-//   baskets: `${BASE_URL}baskets/$BASKET_ID/$METHOD?client_id=${APP_API_CLIENT_ID}`
-// };
-
-
 

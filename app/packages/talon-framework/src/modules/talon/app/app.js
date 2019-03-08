@@ -5,9 +5,10 @@ import { getThemeLayoutByView } from 'talon/themeService';
 import defaultHtml from './app.html';
 
 export default class App extends LightningElement {
-    @track state = {
-        template: defaultHtml
-    };
+    @track template = defaultHtml;
+    @track attributes;
+    themeLayout;
+    @track routeParams = {};
 
     /**
      * Subscribe to route changes
@@ -20,17 +21,23 @@ export default class App extends LightningElement {
     }
 
     render() {
-        return this.state.template;
+        return this.template;
     }
 
-    setRoute({ view }) {
+    setRoute({ view }, params = {}) {
         const themeLayout = getThemeLayoutByView(view);
+
         // only fetch a new template if it's necessary
-        if (this.state.themeLayout !== themeLayout) {
+        if (this.themeLayout !== themeLayout) {
             getTemplate(themeLayout).then(tmpl => {
-                this.state.template = tmpl;
-                this.state.themeLayout = themeLayout;
+                this.template = tmpl.html;
+                this.themeLayout = themeLayout;
+                this.routeParams = params;
+                this.attributes = tmpl.attributes(this);
             });
+        } else {
+            // update any route params
+            this.routeParams = params;
         }
     }
 

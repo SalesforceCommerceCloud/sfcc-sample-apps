@@ -3,29 +3,34 @@
         "name": "home",
         "path": "/",
         "isRoot": true,
-        "view": "home"
+        "view": "home",
+        "label": "Home"
     },
     {
         "name": "search",
         "path": "/search/:query",
         "isRoot": false,
-        "view": "search"
+        "view": "search",
+        "label": "Search"
     },
     {
         "name": "product",
-        "path": "/product/:id",
+        "path": "/product/:pid",
         "isRoot": false,
-        "view": "product"
+        "view": "product",
+        "label": "Product"
     },
     {
         "name": "about",
         "path": "/about",
-        "view": "about"
+        "view": "about",
+        "label": "About"
     },
     {
         "name": "error",
         "path": "/error",
         "isDefault": true,
-        "view": "error"
+        "view": "error",
+        "label": "Error"
     }
 ]

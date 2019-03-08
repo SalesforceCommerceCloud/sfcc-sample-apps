@@ -1,9 +1,10 @@
-// TODO enable compat modes when fixing https://git.soma.salesforce.com/communities/talon/issues/51
 const OUTPUT_CONFIGS = [
-    { mode: 'dev', compat: false, minify: false, format: 'amd' },
-    { mode: 'prod', compat: false, minify: true, format: 'amd' },
-    // { mode: 'compat', compat: true, minify: false, format: 'amd' },
-    // { mode: 'prod_compat', compat: true, minify: true, format: 'amd' }
+    { mode: 'dev',               target: 'es2017',     minify: false,     env: 'development' },
+    { mode: 'compat',            target: 'es5',        minify: false,     env: 'development' },
+    { mode: 'prod',              target: 'es2017',     minify: true,      env: 'production' },
+    { mode: 'prod_compat',       target: 'es5',        minify: true,      env: 'production' },
+    { mode: 'prod_debug',        target: 'es2017',     minify: false,     env: 'production' },
+    { mode: 'prod_debug_compat', target: 'es5',        minify: false,     env: 'production' }
 ];
 
 /**
@@ -18,9 +19,11 @@ const OUTPUT_CONFIGS = [
  * @throws If the specified mode does mot match
  *          any output config
  */
-export function getOutputConfigs(mode) {
+export function getOutputConfigs(modes) {
+    modes = [].concat(modes || []);
+
     const outputConfigs = OUTPUT_CONFIGS.filter(outputConfig => {
-        return outputConfig.mode === mode || !mode;
+        return modes.includes(outputConfig.mode) || modes.length === 0;
     });
 
     // using first output config (dev) as the default

@@ -1,6 +1,6 @@
 {
-    "name": "homeCommerce",
-    "label": "Home Commerce",
+    "name": "home",
+    "label": "Home",
     "themeLayoutType": "commerce",
     "component": {
         "name": "commerce/oneRow",

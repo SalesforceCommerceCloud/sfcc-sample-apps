@@ -1,6 +1,6 @@
 const { getContext } = require('./context/context-service');
 const { getOutputConfigs } = require('talon-common');
-const { log } = require('./utils/log');
+const { log } = console;
 const { stripPrefix } = require('./utils/string');
 const Handlebars = require('handlebars');
 const LoadingCache = require('./utils/loading-cache');
@@ -22,21 +22,26 @@ const templatesCache = new LoadingCache();
  * 3. generate and return the HTML for the current route
  *
  */
-async function generateHTML(mode, path) {
-    const { locale, basePath, versionKey } = getContext();
+async function generateHTML(mode, path, sourceNonce) {
+    const { locale, basePath, versionKey, isPreview } = getContext();
     const routes = metadataService.getRoutes();
     const theme = metadataService.getTheme();
     const currentRoute = routeService.getRouteMatchingPath(routes, path);
 
+    // Since we don't support authentication off-core yet we just hardcode this here for now.
+    const user = {
+        isGuest: true
+    };
+
     // Get the descriptors of the resources the current route depend on.
     // These are the resources required to load the current route.
     // We'll make sure they are generated so that we can build URLs that include UIDs
-    const currentRouteResources = routeService.getRoutesResources(currentRoute, theme, locale);
+    const currentRouteResources = routeService.getRoutesResources(currentRoute, theme, locale, isPreview);
 
     // Get the descriptors of all the resources for all the routes.
     // We'll send to the client the UIDs of the resources that have already be generated
     // and ignore the ones that have not been generated yet.
-    const allResources = routeService.getRoutesResources(routes, theme, locale);
+    const allResources = routeService.getRoutesResources(routes, theme, locale, isPreview);
 
     // get a map of all the views and their theme layouts
     const viewToThemeLayoutMap = routeService.getViewToThemeLayoutMap(routes, theme);
@@ -64,9 +69,10 @@ async function generateHTML(mode, path) {
 
     // apply the Handlebars template
     return template({
-        context: { routes, currentRoute, theme, brandingProperties, mode, basePath, locale, resources, viewToThemeLayoutMap },
+        context: { routes, currentRoute, theme, brandingProperties, mode, basePath, locale, resources, viewToThemeLayoutMap, sourceNonce, isPreview, user },
         basePath,
-        versionKey
+        versionKey,
+        sourceNonce
     });
 }
 
@@ -90,7 +96,7 @@ function templateMiddleware() {
             const path = stripPrefix(req.originalUrl.split("?")[0], basePath);
             return path;
         }).then(path => {
-            return generateHTML(mode, path);
+            return generateHTML(mode, path, res.locals && res.locals.nonce);
         }).then(html => {
             res.send(html);
         }).catch(err => {

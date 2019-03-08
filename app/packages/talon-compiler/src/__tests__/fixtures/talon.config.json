@@ -1,0 +1,11 @@
+{
+    "rollup": {
+        "external": ["a", "b"],
+        "output": {
+            "globals": {
+                "b": "B",
+                "c": "C"
+            }
+        }
+    }
+}

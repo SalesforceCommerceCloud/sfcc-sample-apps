@@ -1,6 +1,6 @@
 {
-    "name": "searchCommerce",
-    "label": "Search Commerce",
+    "name": "search",
+    "label": "Search",
     "themeLayoutType": "commerce",
     "component": {
         "name": "commerce/oneRow",

@@ -7,7 +7,7 @@ jest.mock('lwc', () => ({
 }));
 
 jest.mock('talon/moduleRegistry', () => ({
-    async getModule(name) {
+    async getComponent(name) {
         return `module(${name})`;
     }
 }));
@@ -25,7 +25,8 @@ describe('talon/componentService', () => {
             expect(el).toEqual({
                 sel: 'moduleSpecifierToElementName(my-module)',
                 options: {
-                    is: 'module(my-module)'
+                    is: 'module(my-module)',
+                    fallback: true
                 }
             });
         });

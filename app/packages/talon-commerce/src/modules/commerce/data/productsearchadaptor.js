@@ -39,13 +39,30 @@ register(productsByQuery, (eventTarget) => {
                     return client.query({
                         query: window.gql`
                         {
-                            productSearch(query: "${ query }") {
-                                name
+                          productSearch(query: "${ query }") {
+                                productHits {
                                 id
+                                name
+                                price
                                 image {
-                                    link
+                                  title
+                                  link
+                                  alt
                                 }
-                            }
+                              }
+                                refinements {
+                                values {
+                                  label
+                                  value
+                                }
+                                label
+                                attributeId
+                              }
+                              currentFilters {
+                                id
+                                value
+                              }
+                          }
                         }
                      `
                     }).then(result => {

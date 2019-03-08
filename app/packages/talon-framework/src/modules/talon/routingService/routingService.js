@@ -1,8 +1,9 @@
 import { getBasePath } from "talon/configProvider";
-import { assert, autoBind, getQueryStringParameterByName } from "talon/utils";
+import { assert, autoBind, getDefinedValues, getQueryStringParameters, mapToQueryString } from "talon/utils";
 import { getThemeLayoutByView } from "talon/themeService";
+import pathToRegexp from 'path-to-regexp';
 
-const WHITELISTED_PARAMETERS = ['mode'];
+const WHITELISTED_PARAMETERS = ['mode', 'talon.lwc.fallback'];
 
 /**
  * Routing service class.
@@ -18,6 +19,8 @@ export class RoutingService {
     routesByName = {};
     observers = new Set();
     currentRoute;
+    currentParams = {};
+    currentQueryParams = {};
 
     /**
      * Register a set of routes and start the router.
@@ -61,26 +64,37 @@ export class RoutingService {
      * The returned URL will include any whitelisted parameters
      * specified in the current URL.
      *
-     * TODO handle route parameters
-     *
      * @param {string} name - The route name
+     * @param {object} routeParams - The route params
+     * @param {object} queryParams - The query params
      */
-    getRouteUrl(name) {
+    getRouteUrl(name, routeParams = {}, queryParams = {}) {
         assert(this.routesByName[name], `Unknown route: ${name}`);
 
-        const routeUrl = getBasePath() + (this.routesByName[name] || {}).path;
+        let routeUrl = getBasePath() + (this.routesByName[name] || {}).path;
+        routeUrl = this.injectRouteParams(routeUrl, routeParams);
 
         // add present whitelisted parameters to the route URL
-        const params = WHITELISTED_PARAMETERS.reduce((acc, param) => {
-            const value = getQueryStringParameterByName(param);
-            return (value && acc.concat([param + '=' + encodeURIComponent(value)])) || acc;
-        }, []);
+        const stickyQueryParams = WHITELISTED_PARAMETERS.reduce((acc, param) => {
+            if (this.currentQueryParams[param]) {
+                acc[param] = this.currentQueryParams[param];
+            }
+            return acc;
+        }, {});
+        // the requested query params override any current whitelisted params
+        const combinedQueryParams = Object.assign({}, stickyQueryParams, queryParams);
 
-        if (Object.keys(params).length > 0) {
-            return routeUrl + '?' + params.join('&');
+        if (Object.keys(combinedQueryParams).length > 0) {
+            return routeUrl + "?" + mapToQueryString(combinedQueryParams, true);
         }
 
         return routeUrl;
+    }
+
+    injectRouteParams(path, params = {}) {
+        // TODO handle path-to-regexp failure (issue #304)
+        const toPath = pathToRegexp.compile(path);
+        return toPath(params);
     }
 
     /**
@@ -96,43 +110,36 @@ export class RoutingService {
     /**
      * Callback invoked by the router when route has changed.
      *
-     * This will either reload the whole page if the current and target
-     * theme layouts are different, or notify the observers if not.
+     * Makes sure to get the relevant information for all observers
      *
      * @param {string} name the target route name
+     * @param {string} routeContext the route context
      */
-    onRouteChange(name) {
+    onRouteChange(name, routeContext = {}) {
         const route = this.routesByName[name];
 
         // the app container and the router container so that it can create and render
         // the page component and the theme layout
         this.currentRoute = route;
         this.themeLayout = getThemeLayoutByView(route.view);
+
+        this.currentQueryParams = getQueryStringParameters(routeContext.querystring || '');
+        const currentRouteParams = getDefinedValues(routeContext.params || {});
+        // Route params always take precedence over query string params
+        this.currentParams = Object.assign({}, this.currentQueryParams, currentRouteParams);
         this.observers.forEach(observer => {
-            observer.next(route);
+            observer.next(route, this.currentParams);
         });
     }
 
     /**
      * Navigates to the route with the given name.
      *
-     * TODO handle route parameters
-     *
      * @param {string} name - The route name
+     * @param {object} params - Any route params to pass in
      */
-    navigateToRoute(name, params) {
-        let path;
-        const route = this.getRouteUrl(name).split('/:');
-
-        path = route[0];
-
-        if ( params && route.length > 0 ) {
-            Object.keys(params).forEach((key) => {
-                path += `/${params[key]}`;
-            });
-        }
-
-        this.router.show(path);
+    navigateToRoute(name, params = {}, queryParams = {}) {
+        this.router.show(this.getRouteUrl(name, params, queryParams));
     }
 
     /**
@@ -156,7 +163,7 @@ export class RoutingService {
      */
     subscribe(observer) {
         if (this.currentRoute) {
-            observer.next(this.currentRoute);
+            observer.next(this.currentRoute, this.currentParams);
         }
 
         this.observers.add(observer);

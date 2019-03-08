@@ -1,7 +1,7 @@
 const { assert } = require('./utils/assert');
 const { getContext } = require('./context/context-service');
 const { getResourceUrl, parseUrl, resourceDescriptorToString, RESOURCE_TYPES } = require('talon-common');
-const { log } = require('./utils/log');
+const { log } = console;
 const { stripPrefix } = require('./utils/string');
 const resourceService = require('./resources/resource-service');
 

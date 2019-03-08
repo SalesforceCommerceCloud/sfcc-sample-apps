@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`framework-resources framework://talon[compat] gzipped size 1`] = `173584`;
+
+exports[`framework-resources framework://talon[compat] hash 1`] = `"98f1ff361c7f5a5615b16834fedfb4a5"`;
+
+exports[`framework-resources framework://talon[compat] size 1`] = `871350`;
+
+exports[`framework-resources framework://talon[dev] gzipped size 1`] = `93288`;
+
+exports[`framework-resources framework://talon[dev] hash 1`] = `"925ff05709bab5cb59f7afd403e419dd"`;
+
+exports[`framework-resources framework://talon[dev] size 1`] = `464534`;
+
+exports[`framework-resources framework://talon[prod] gzipped size 1`] = `32962`;
+
+exports[`framework-resources framework://talon[prod] hash 1`] = `"304e9971b037c38e621f886d3b815a05"`;
+
+exports[`framework-resources framework://talon[prod] size 1`] = `107620`;
+
+exports[`framework-resources framework://talon[prod_compat] gzipped size 1`] = `72629`;
+
+exports[`framework-resources framework://talon[prod_compat] hash 1`] = `"c377646cc1c9b993469cf4782f47b3f0"`;
+
+exports[`framework-resources framework://talon[prod_compat] size 1`] = `259077`;
+
+exports[`framework-resources framework://talon[prod_debug] gzipped size 1`] = `79286`;
+
+exports[`framework-resources framework://talon[prod_debug] hash 1`] = `"744717a8d4fef0f2a485bf76ec491bea"`;
+
+exports[`framework-resources framework://talon[prod_debug] size 1`] = `390481`;
+
+exports[`framework-resources framework://talon[prod_debug_compat] gzipped size 1`] = `158941`;
+
+exports[`framework-resources framework://talon[prod_debug_compat] hash 1`] = `"775826863e2bcd2ed14d19e28ff9008e"`;
+
+exports[`framework-resources framework://talon[prod_debug_compat] size 1`] = `791877`;
+
+exports[`framework-resources framework://talondesign[compat] gzipped size 1`] = `185`;
+
+exports[`framework-resources framework://talondesign[compat] hash 1`] = `"cf2c0bcabd4c9bfe22ba5281ff8ea06b"`;
+
+exports[`framework-resources framework://talondesign[compat] size 1`] = `380`;
+
+exports[`framework-resources framework://talondesign[dev] gzipped size 1`] = `185`;
+
+exports[`framework-resources framework://talondesign[dev] hash 1`] = `"cf2c0bcabd4c9bfe22ba5281ff8ea06b"`;
+
+exports[`framework-resources framework://talondesign[dev] size 1`] = `380`;
+
+exports[`framework-resources framework://talondesign[prod] gzipped size 1`] = `128`;
+
+exports[`framework-resources framework://talondesign[prod] hash 1`] = `"542ec47ab1eb6ba70b6a17b0010bee51"`;
+
+exports[`framework-resources framework://talondesign[prod] size 1`] = `139`;
+
+exports[`framework-resources framework://talondesign[prod_compat] gzipped size 1`] = `128`;
+
+exports[`framework-resources framework://talondesign[prod_compat] hash 1`] = `"542ec47ab1eb6ba70b6a17b0010bee51"`;
+
+exports[`framework-resources framework://talondesign[prod_compat] size 1`] = `139`;
+
+exports[`framework-resources framework://talondesign[prod_debug] gzipped size 1`] = `185`;
+
+exports[`framework-resources framework://talondesign[prod_debug] hash 1`] = `"cf2c0bcabd4c9bfe22ba5281ff8ea06b"`;
+
+exports[`framework-resources framework://talondesign[prod_debug] size 1`] = `380`;
+
+exports[`framework-resources framework://talondesign[prod_debug_compat] gzipped size 1`] = `185`;
+
+exports[`framework-resources framework://talondesign[prod_debug_compat] hash 1`] = `"cf2c0bcabd4c9bfe22ba5281ff8ea06b"`;
+
+exports[`framework-resources framework://talondesign[prod_debug_compat] size 1`] = `380`;

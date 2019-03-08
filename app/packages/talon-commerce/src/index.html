@@ -11,6 +11,10 @@
     <script src="{{ basePath }}/assets/js/libs.js?{{ versionKey }}"></script>
 
     {{ talonInit context }}
+    <!-- Your custom scripts here -->
+    {{ talonViews context }}
+
+    <script type="text/javascript" nonce="{{ sourceNonce }}">console.log("This script should NOT be blocked by CSP");</script>
 
     <link rel="manifest" href="{{ basePath }}/assets/manifest.json?{{ versionKey }}">
     <link rel="shortcut icon" href="{{ basePath }}/assets/favicon.ico?{{ versionKey }}">
@@ -23,7 +27,7 @@
 </head>
 
 <body id="main">
-{{ talonApp "main" }}
+{{ talonApp context "main" }}
 </body>
 
 </html>

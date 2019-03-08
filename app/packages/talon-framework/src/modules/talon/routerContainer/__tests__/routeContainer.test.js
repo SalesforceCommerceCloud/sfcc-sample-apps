@@ -6,7 +6,7 @@ import { default as mockAbout } from './fixtures/aboutTemplate';
 jest.mock('talon/moduleRegistry', () => {
     return {
         getTemplate: () => {
-            return Promise.resolve(mockAbout);
+            return Promise.resolve({html: mockAbout.html, attributes: mockAbout.attributes});
         }
     };
 });
@@ -44,13 +44,36 @@ describe('talon/routerContainer', () => {
         const observer = subscribe.mock.calls[0][0];
         observer.next({ view: "about" });
 
-        return Promise.resolve().then(() => {
-            return new Promise(resolve => {
-                window.requestAnimationFrame(resolve);
+        return new Promise(window.requestAnimationFrame)
+            .then(() => {
+                expect(element).toMatchSnapshot();
             });
-        }).then(() => {
-            expect(element).toMatchSnapshot();
-        });
+    });
+
+    it('renders route with empty route params', () => {
+        const element = createElement('talon-router-container', { is: RouterContainer });
+        document.body.appendChild(element);
+
+        const observer = subscribe.mock.calls[0][0];
+        observer.next({ view: "about" }, {});
+
+        return new Promise(window.requestAnimationFrame)
+            .then(() => {
+                expect(element).toMatchSnapshot();
+            });
+    });
+
+    it('renders route with route params', () => {
+        const element = createElement('talon-router-container', { is: RouterContainer });
+        document.body.appendChild(element);
+
+        const observer = subscribe.mock.calls[0][0];
+        observer.next({ view: "about" }, {recordId: "ABC123"});
+
+        return new Promise(window.requestAnimationFrame)
+            .then(() => {
+                expect(element).toMatchSnapshot();
+            });
     });
 
     it('subscribes to route changes', async () => {

@@ -1,6 +1,6 @@
 {
-    "name": "productCommerce",
-    "label": "Product Commerce",
+    "name": "product",
+    "label": "Product",
     "themeLayoutType": "commerce",
     "component": {
         "name": "commerce/oneRow",

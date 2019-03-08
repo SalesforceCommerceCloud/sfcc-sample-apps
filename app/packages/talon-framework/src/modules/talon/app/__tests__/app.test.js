@@ -17,7 +17,7 @@ beforeEach(() => {
     });
 
     getThemeLayoutByView.mockReturnValue("themeLayout");
-    getTemplate.mockReturnValue(Promise.resolve(mockTemplate));
+    getTemplate.mockReturnValue(Promise.resolve({html: mockTemplate.html, attributes: mockTemplate.attributes}));
 });
 
 jest.mock('talon/moduleRegistry', () => {
@@ -39,22 +39,6 @@ jest.mock('talon/routingService', () => {
 });
 
 describe('talon/app', () => {
-    it('renders the theme layout', () => {
-        const element = createElement('talon-app', { is: App });
-        document.body.appendChild(element);
-
-        const observer = subscribe.mock.calls[0][0];
-        observer.next({ view: "inner" });
-
-        return Promise.resolve().then(() => {
-            return new Promise(resolve => {
-                window.requestAnimationFrame(resolve);
-            });
-        }).then(() => {
-            expect(element).toMatchSnapshot();
-        });
-    });
-
     it('renders no theme layout', async () => {
         const element = createElement('talon-app', { is: App });
         document.body.appendChild(element);
@@ -62,21 +46,77 @@ describe('talon/app', () => {
         expect(element).toMatchSnapshot();
     });
 
-    it('does not fetch the template if the theme layout hasnt changed', async () => {
+    it('renders the theme layout', () => {
         const element = createElement('talon-app', { is: App });
         document.body.appendChild(element);
 
         const observer = subscribe.mock.calls[0][0];
         observer.next({ view: "inner" });
 
+        return new Promise(window.requestAnimationFrame)
+            .then(() => {
+                expect(element).toMatchSnapshot();
+            });
+    });
+
+    it('renders the theme layout with empty route params', () => {
+        const element = createElement('talon-app', { is: App });
+        document.body.appendChild(element);
+
+        const observer = subscribe.mock.calls[0][0];
+        observer.next({ view: "inner" }, {});
+
+        return new Promise(window.requestAnimationFrame)
+            .then(() => {
+                expect(element).toMatchSnapshot();
+            });
+    });
+
+    it('renders the theme layout with route params', () => {
+        const element = createElement('talon-app', { is: App });
+        document.body.appendChild(element);
+
+        const observer = subscribe.mock.calls[0][0];
+        observer.next({ view: "inner" }, {recordId: "ABC123"});
+
+        return new Promise(window.requestAnimationFrame)
+            .then(() => {
+                expect(element).toMatchSnapshot();
+            });
+    });
+
+    it('does not fetch the template if the theme layout hasnt changed', async () => {
+        const element = createElement('talon-app', { is: App });
+        document.body.appendChild(element);
+
+        const observer = subscribe.mock.calls[0][0];
+        observer.next({ view: "inner" }, {recordId: "ABC123"});
+
         return Promise.resolve().then(() => {
             expect(getTemplate).toHaveBeenCalledTimes(1);
-            return new Promise(resolve => {
-                observer.next({ view: "inner" });
-                window.requestAnimationFrame(resolve);
-            }).then(() => {
-                expect(getTemplate).toHaveBeenCalledTimes(1);
-            });
+            observer.next({ view: "inner" }, {recordId: "ABC123"});
+            return new Promise(window.requestAnimationFrame)
+                .then(() => {
+                    expect(getTemplate).toHaveBeenCalledTimes(1);
+                });
+        });
+    });
+
+    it('route params are updated even if the theme layout hasnt changed', async () => {
+        const element = createElement('talon-app', { is: App });
+        document.body.appendChild(element);
+
+        const observer = subscribe.mock.calls[0][0];
+        observer.next({ view: "inner" }, {recordId: "ABC123"});
+
+        return Promise.resolve().then(() => {
+            expect(getTemplate).toHaveBeenCalledTimes(1);
+            observer.next({ view: "inner" }, {recordId: "FOOBAR"});
+            return new Promise(window.requestAnimationFrame)
+                .then(() => {
+                    expect(getTemplate).toHaveBeenCalledTimes(1);
+                    expect(element).toMatchSnapshot();
+                });
         });
     });
 
@@ -94,5 +134,23 @@ describe('talon/app', () => {
 
         const { unsubscribe } = subscribe.mock.results[0].value;
         expect(unsubscribe).toHaveBeenCalledTimes(1);
+    });
+
+    it('sets the right route params when theme layout changes', () => {
+        const element = createElement('talon-app', { is: App });
+        document.body.appendChild(element);
+
+        const observer = subscribe.mock.calls[0][0];
+        observer.next({ view: "inner" }, {recordId: "ABC123"});
+
+        return Promise.resolve().then(() => {
+            expect(getTemplate).toHaveBeenCalledTimes(1);
+            observer.next({ view: "default" }, {recordId: "FOOBAR"});
+            return new Promise(window.requestAnimationFrame)
+                .then(() => {
+                    expect(getTemplate).toHaveBeenCalledTimes(1);
+                    expect(element).toMatchSnapshot();
+                });
+        });
     });
 });

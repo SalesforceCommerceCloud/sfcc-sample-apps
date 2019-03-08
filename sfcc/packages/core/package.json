@@ -1,6 +1,6 @@
 {
   "name": "@sfcc-dev/core",
-  "version": "0.0.4",
+  "version": "0.0.4-sfra-alpha-1",
   "description": "sfcc core registry",
   "main": "index.js",
   "scripts": {

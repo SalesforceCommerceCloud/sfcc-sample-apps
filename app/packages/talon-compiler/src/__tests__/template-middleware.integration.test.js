@@ -23,8 +23,9 @@ const { getOutputConfigs } = require('talon-common');
 jest.unmock('mkdirp');
 
 const templateDir = path.resolve(__dirname, 'fixtures');
-const routes = require('./fixtures/src/routes.json');
+const route = require('./fixtures/src/routes.json')[0];
 const basePath = '/test';
+const sourceNonce = "T3stVa1ue";
 
 // create a temporary dir to write resources
 const outputDir = tmp.dirSync({
@@ -43,12 +44,12 @@ afterEach(() => {
     endContext();
 });
 
+jest.setTimeout(process.env.JEST_TIMEOUT || 30000);
+
 describe('template-middleware [integration]', () => {
-    routes.forEach(route => {
-        getOutputConfigs().forEach(({ mode }) => {
-            it(`generates ${route.name} route HTML in ${mode} mode`, async () => {
-                return generateHTML(mode, route.path);
-            });
+    getOutputConfigs().forEach(({ mode }) => {
+        it(`generates ${route.name} route HTML in ${mode} mode`, async () => {
+            return generateHTML(mode, route.path, sourceNonce);
         });
     });
 });

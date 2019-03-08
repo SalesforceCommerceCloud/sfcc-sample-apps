@@ -1,13 +1,15 @@
 const { resourceDescriptorToString, RESOURCE_TYPES } = require('talon-common');
-const validateRoutes = require('./validate-routes');
-const { getView } = require('../metadata/metadata-service');
+const { getView, getAllViews } = require('../metadata/metadata-service');
 const TALON_RESOURCES = require('talon-framework/dist/resources.json');
 const TALON_RESOURCE_DESCRIPTORS = [...Object.keys(TALON_RESOURCES)];
+const pathToRegexp = require('path-to-regexp');
 
 // TODO remove
 const IGNORED_RESOURCES = [
     "view://customPerf"
 ];
+
+const DESIGNTIME_RESOURCE = "framework://talondesign";
 
 /**
  * Get the resources the given routes depend on.
@@ -16,31 +18,9 @@ const IGNORED_RESOURCES = [
  * @returns an array containing the resource descriptors
  *          the given routes depend on
  */
-function getRoutesResources(routes, theme, locale) {
-    // using `[].concat(routes)` allows the caller to pass either a single route (the current route for example)
-    // or an array of routes
-    const routesArr = [].concat(routes || []);
-
-    // get theme layouts by type from theme
-    const themeLayoutViews = {};
-
-    Object.entries(theme.themeLayouts).forEach(([type, themeLayout]) => {
-        themeLayoutViews[type] = themeLayout.view;
-    });
-
-    // add the view resources for each route
-    const routeViewDescriptors = routesArr.filter(route => route.view).reduce((acc, route) => {
-        const results = [];
-        results.push(route.view);
-
-        const { themeLayoutType } = getView(route.view);
-
-        if (themeLayoutViews[themeLayoutType]) {
-            results.push(themeLayoutViews[themeLayoutType]);
-        }
-        return acc.concat(results);
-    }, []).map(view => {
-        return resourceDescriptorToString({ type: RESOURCE_TYPES.VIEW, name: view, locale });
+function getRoutesResources(routes, theme, locale, isPreview = false) {
+    const routeViewDescriptors = getAllViews(routes, theme).map(view => {
+        return resourceDescriptorToString({ type: RESOURCE_TYPES.VIEW, name: view.name, locale });
     });
 
     //
@@ -49,10 +29,14 @@ function getRoutesResources(routes, theme, locale) {
         ...routeViewDescriptors
     ];
 
-    // remove duplicates and filter out ignored resources
-    return [...new Set(resources)].filter(resourceDescriptor => {
-        return !IGNORED_RESOURCES.includes(resourceDescriptor.split('@')[0]);
+    // remove duplicates and filter resources
+    const result = [...new Set(resources)].filter(resourceDescriptor => {
+        const isDesigntimeResourceIgnored = !isPreview && DESIGNTIME_RESOURCE === resourceDescriptor;
+        const isResourceIgnored = IGNORED_RESOURCES.includes(resourceDescriptor.split('@')[0]);
+        return !isDesigntimeResourceIgnored && !isResourceIgnored;
     });
+
+    return result;
 }
 
 /**
@@ -63,7 +47,10 @@ function getRoutesResources(routes, theme, locale) {
  * @returns {Object} The route matching the given path, or the default route
  */
 function getRouteMatchingPath(routes, path) {
-    const currentRoute = path && routes.find(route => path === route.path);
+    const currentRoute = path && routes.find(route => {
+        const regexp = pathToRegexp(route.path, []);
+        return regexp.test(path);
+    });
     return currentRoute || routes.find(route => route.isDefault);
 }
 
@@ -80,4 +67,4 @@ function getViewToThemeLayoutMap(routes, theme) {
     return viewToThemeLayoutMap;
 }
 
-module.exports = { getRoutesResources, getRouteMatchingPath, validateRoutes, getViewToThemeLayoutMap };
+module.exports = { getRoutesResources, getRouteMatchingPath, getViewToThemeLayoutMap };

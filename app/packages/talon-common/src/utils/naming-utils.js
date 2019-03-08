@@ -33,9 +33,22 @@ export function moduleSpecifierToElementName(moduleSpecifier) {
 
     let parts = moduleSpecifier.split('/');
     parts = parts.reduce((acc, part) => {
-        // thanks https://gist.github.com/nblackburn/875e6ff75bc8ce171c758bf75f304707
-        acc.push(part.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase());
+        acc.push(convertToKebabCase(part));
         return acc;
     }, []);
     return parts.join("-");
+}
+
+/**
+ * Converts an LWC module specifier (e.g. community_flashhelp/shopButton) to an id like
+ * community_flashhelpshopbutton
+ */
+export function moduleSpecifierToId(moduleSpecifier) {
+    const str = moduleSpecifier.replace("/", "");
+    return str.toLowerCase();
+}
+
+export function convertToKebabCase(str) {
+    // thanks https://gist.github.com/nblackburn/875e6ff75bc8ce171c758bf75f304707
+    return str.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
 }

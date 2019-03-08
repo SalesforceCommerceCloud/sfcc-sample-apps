@@ -1,13 +1,14 @@
 const { assert } = require('../utils/assert');
 const { checkDirsExist, checkFilesExist } = require('../utils/preconditions');
+const { isRenderDesignTime } = require('../utils/process-env');
 
 /**
  * Returns the default template config for a given template module dir.
  */
 function defaultConfig(templateDir) {
     return {
+        talonConfigJson:`${templateDir}/talon.config.json`,
         srcDir:         `${templateDir}/src`,
-        modulesSrcDir:  `${templateDir}/src/modules`,
         viewsDir:       `${templateDir}/src/views`,
         indexHtml:      `${templateDir}/src/index.html`,
         routesJson:     `${templateDir}/src/routes.json`,
@@ -15,7 +16,8 @@ function defaultConfig(templateDir) {
         themeJson:      `${templateDir}/src/theme.json`,
         outputDir:      `${templateDir}/dist`,
         locale:         `en_US`,
-        basePath:       ``
+        basePath:       ``,
+        isPreview:      isRenderDesignTime()
     };
 }
 
@@ -41,13 +43,13 @@ class TalonContext {
     constructor(config) {
         // create the context using passed options and default config,
         const { templateDir } = config;
-        const { srcDir, modulesSrcDir, viewsDir, outputDir, indexHtml, routesJson, themeJson, labelsJson, locale, basePath } = {
+        const { talonConfigJson, srcDir, viewsDir, outputDir, indexHtml, routesJson, themeJson, labelsJson, locale, basePath, isPreview } = {
             ...defaultConfig(templateDir),
             ...config
         };
 
         // filter the properties, we don't want to use everything that might be passed in options
-        const props = { templateDir, srcDir, modulesSrcDir, viewsDir, outputDir, indexHtml, routesJson, themeJson, labelsJson, locale, basePath };
+        const props = { templateDir, talonConfigJson, srcDir, viewsDir, outputDir, indexHtml, routesJson, themeJson, labelsJson, locale, basePath, isPreview };
 
         validateContext(props);
 
@@ -58,7 +60,7 @@ class TalonContext {
     }
 
     get(obj, prop) {
-        assert(prop in obj || prop === 'then', `Invalid context property: ${typeof prop === 'symbol' ? '<Symbol>' : prop}`);
+        assert(prop in obj || prop === 'then' || prop === 'toJSON', `Invalid context property: ${typeof prop === 'symbol' ? '<Symbol>' : prop}`);
         return obj[prop];
     }
 }

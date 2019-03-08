@@ -11,8 +11,7 @@ import API_CONFIG_DATA from './api'; // Our Application Specific API Configurati
 //
 // SFRA Extensions/Services
 //
-import '@sfra/wishlist';
-import '@sfra/productapi';
+import '@sfcc-dev/sfra-productapi';
 //import '@sfra/categoryapi';
 //import '@sfra/contentapi';
 
@@ -22,8 +21,6 @@ import '@sfra/productapi';
 import {CORE_GRAPHQL_KEY, EXPRESS_KEY} from '@sfcc-dev/core-graphql';
 import {LOGGER_KEY, API_EXTENSIONS_KEY} from '@sfcc-dev/core';
 import {API_CONFIG_KEY} from "@sfcc-dev/apiconfig";
-import {WISHLIST_KEY} from "@sfcc-dev/sfra-wishlist";
-
 
 class SFRADemoApp {
 

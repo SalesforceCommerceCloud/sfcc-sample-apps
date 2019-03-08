@@ -1,8 +1,10 @@
 import { ModuleRegistry } from "talon/moduleRegistry";
 import { register as registerConfigProvider } from "talon/configProvider";
-import * as lwc from 'lwc-engine';
+import { getViewModuleFullyQualifiedName } from "talon-common";
+import * as lwc from '@lwc/engine';
 
-jest.mock('lwc-engine');
+jest.mock('@lwc/engine');
+jest.mock('talon-connect-gen', () => ({}), { virtual: true });
 
 registerConfigProvider({
     getBasePath() {
@@ -135,7 +137,7 @@ describe('talon/moduleRegistry', () => {
             }
 
             expect(addFakeSalesforceModule)
-                .toThrowError('Cannot resolve module \'fake\'');
+                .toThrowError('Cannot resolve dependency \'@salesforce/fake/namespace\'');
         });
 
         it('cannot resolve unsupported scope dependency', async () => {
@@ -144,7 +146,7 @@ describe('talon/moduleRegistry', () => {
             }
 
             expect(addFakeSalesforceModule)
-                .toThrowError('Cannot resolve module \'@fake\'');
+                .toThrowError('Cannot resolve dependency \'@fake/scope\'');
         });
 
         it('cannot resolve unsupported module dependency', async () => {
@@ -170,19 +172,47 @@ describe('talon/moduleRegistry', () => {
 
             expect(testCircularModule.b()).toBe('ab');
         });
+
+        it('supports modules with no default export', async () => {
+            moduleRegistry.addModule(null, 'test-exports-module', ['exports'], (exports) => {
+                exports.a = 1;
+                exports.b = 2;
+            });
+
+            const testExportsModule = await moduleRegistry.getModule('test-exports-module');
+
+            expect(testExportsModule).toEqual({
+                a: 1,
+                b: 2
+            });
+        });
     });
     describe('getTemplate', () => {
         it('return a template', () => {
             const myModule = {};
-            moduleRegistry.addModule(null, 'my-module', () => myModule);
-            expect(moduleRegistry.getTemplate('my-module')).toBeTruthy();
+            const moduleName = 'my-module';
+            const fullyQualifiedModuleName = getViewModuleFullyQualifiedName(moduleName);
+            moduleRegistry.addModule(null, fullyQualifiedModuleName, () => myModule);
+            return expect(moduleRegistry.getTemplate(moduleName)).resolves.toBe(myModule);
+        });
+    });
+    describe('getComponent', () => {
+        it('returns a component', () => {
+            const cmp1 = {};
+            moduleRegistry.addModule(null, 'x/cmp1', () => cmp1);
+            return expect(moduleRegistry.getComponent('x/cmp1')).resolves.toBe(cmp1);
+        });
+        it('gets component from server', () => {
+            moduleRegistry.getComponent('x/cmp1');
+            expect(document.body.firstChild.tagName).toBe('SCRIPT');
+            expect(document.body.firstChild.src).toBe('https://localhost/base/talon/component/latest/dev/fr/x/cmp1.js');
         });
     });
     describe('getModuleIfPresent', () => {
         it('return a present module', () => {
             const myModule = {};
             moduleRegistry.addModule(null, 'my-module', () => myModule);
-            expect(moduleRegistry.getModuleIfPresent('my-module')).toBeTruthy();
+            expect(moduleRegistry.getModuleIfPresent('my-module')).toBe(myModule);
         });
     });
     describe('setResourceUids', () => {

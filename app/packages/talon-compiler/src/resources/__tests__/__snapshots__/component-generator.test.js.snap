@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`component-generator generates component resource 1`] = `
+"{
+   \\"descriptor\\": \\"component://x/cmp1\\",
+   \\"contents\\": {
+      \\"dev\\": \\"dev code x/cmp1\\",
+      \\"prod\\": \\"prod code x/cmp1\\"
+   },
+   \\"uids\\": {
+      \\"dev\\": \\"4ca02f735e\\",
+      \\"prod\\": \\"c8f94971a1\\"
+   }
+}"
+`;

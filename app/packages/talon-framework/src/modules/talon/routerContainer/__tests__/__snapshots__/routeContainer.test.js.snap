@@ -9,6 +9,30 @@ exports[`talon/routerContainer renders no route 1`] = `
 exports[`talon/routerContainer renders route 1`] = `
 <talon-router-container>
   #shadow-root(open)
-    About
+    About: 
+     
+    Hello
+     
+</talon-router-container>
+`;
+
+exports[`talon/routerContainer renders route with empty route params 1`] = `
+<talon-router-container>
+  #shadow-root(open)
+    About: 
+     
+    Hello
+     
+</talon-router-container>
+`;
+
+exports[`talon/routerContainer renders route with route params 1`] = `
+<talon-router-container>
+  #shadow-root(open)
+    About: 
+    ABC123
+     
+    Hello
+     
 </talon-router-container>
 `;

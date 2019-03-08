@@ -1,19 +1,16 @@
 import { createElement as engineCreateElement } from 'lwc';
-import { getModule } from 'talon/moduleRegistry';
-import { logError } from 'talon/logger';
-import { moduleSpecifierToElementName } from '@sfcc-dev/talon-common';
+import { getComponent } from 'talon/moduleRegistry';
+import { moduleSpecifierToElementName } from 'talon-common';
+import { getLwcFallback } from 'talon/configProvider';
 
 
 export async function createElement(name) {
     return new Promise((resolve) => {
-        getModule(name)
+        getComponent(name)
             .then(ctor => {
                 const customElementName = moduleSpecifierToElementName(name);
-                const customElement = engineCreateElement(customElementName, { is: ctor });
+                const customElement = engineCreateElement(customElementName, { is: ctor, fallback: getLwcFallback() });
                 resolve(customElement);
-            })
-            .catch(error => {
-                logError(error);
             });
     });
 }

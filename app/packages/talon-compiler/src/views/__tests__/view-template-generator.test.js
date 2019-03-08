@@ -22,7 +22,8 @@ const defaultView = {
                                 name: "left-side",
                                 components: [
                                     {
-                                        name: "x/logo"
+                                        name: "x/logo",
+                                        attributes: {}
                                     }
                                 ]
                             }
@@ -39,7 +40,9 @@ const defaultView = {
                     {
                         name: "x/footer",
                         attributes: {
-                            size: "50"
+                            label: "Label",
+                            number: -3.14,
+                            recordId: "{!recordId}",
                         }
                     }
                 ]
@@ -51,17 +54,40 @@ const defaultView = {
 describe("view-template-generator", () => {
     describe("template", () => {
         it("generates the right view html", () => {
-            expect(template(defaultView.component, false)).toMatchSnapshot();
+            const generatedComponent = template(defaultView.component, false);
+            expect(generatedComponent.html).toMatchSnapshot();
+        });
+        it("generates the right view attributes", () => {
+            const generatedComponent = template(defaultView.component, false);
+            expect(generatedComponent.attributes).toMatchSnapshot();
+        });
+        it("generates the right theme layout view html", () => {
+            const generatedComponent = template(defaultView.component, true);
+            expect(generatedComponent.html).toMatchSnapshot();
+        });
+        it("generates the right theme layout view attributes", () => {
+            const generatedComponent = template(defaultView.component, true);
+            expect(generatedComponent.attributes).toMatchSnapshot();
         });
 
-        it("generates the right theme layout view html", () => {
-            expect(template(defaultView.component, true)).toMatchSnapshot();
+        it("generates the right view html for designtime", () => {
+            expect(template(defaultView.component, false, true)).toMatchSnapshot();
+        });
+
+        it("generates the right theme layout view html for designtime", () => {
+            expect(template(defaultView.component, true, true)).toMatchSnapshot();
         });
     });
 
     describe("javascript", () => {
         it("generates the right javascript", () => {
-            expect(javascript(defaultView.name)).toMatchSnapshot();
+            const mockAttributesVal = "MOCK_GENERATED_ATTRIBUTES_JS";
+            const generatedJavascript = javascript(defaultView.name, mockAttributesVal);
+            expect(generatedJavascript).toMatchSnapshot();
+        });
+        it("generates the right javascript with no attributes", () => {
+            const generatedJavascript = javascript(defaultView.name);
+            expect(generatedJavascript).toMatchSnapshot();
         });
     });
 });

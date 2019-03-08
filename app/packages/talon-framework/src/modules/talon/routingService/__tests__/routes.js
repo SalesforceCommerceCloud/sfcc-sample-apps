@@ -4,6 +4,8 @@ export const PAGE1_ROUTE = "page1";
 export const PAGE1_ROUTE_PATH = "/page1";
 export const PAGE2_THEME2_ROUTE = "page2";
 export const PAGE2_THEME2_ROUTE_PATH = "/page2-theme2";
+export const PAGE3_ROUTE = "page-with-params";
+export const PAGE3_ROUTE_PATH = "/users/:user/:action?/:display?";
 export const DEFAULT_ROUTE = "default";
 export const DEFAULT_ROUTE_PATH = "/default";
 export const VIEW0 = "view0";
@@ -26,6 +28,11 @@ export default [
     {
         name: PAGE2_THEME2_ROUTE,
         path: PAGE2_THEME2_ROUTE_PATH,
+        view: VIEW2
+    },
+    {
+        name: PAGE3_ROUTE,
+        path: PAGE3_ROUTE_PATH,
         view: VIEW2
     },
     {

@@ -1,12 +1,15 @@
 [
     {
-        "name": "SomeImage",
-        "type": "Image",
-        "value": "i.imgur.com/JCOQkSWg.jpg"
+        "name": "SomeProperty",
+        "value": "some value"
     },
     {
         "name": "SomeMisc",
-        "type": "Misc",
         "value": "misc data"
+    },
+    {
+        "name": "MySelfie",
+        "value": "/all/the/angles.jpg",
+        "type": "Image"
     }
 ]

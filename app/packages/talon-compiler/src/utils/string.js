@@ -7,7 +7,7 @@
  *           if it does not start with the prefix
  */
 function stripPrefix(str, prefix) {
-    if (str && prefix && str.indexOf(prefix) === 0) {
+    if (str && prefix && str.startsWith(prefix)) {
         return str.substring(prefix.length);
     }
 

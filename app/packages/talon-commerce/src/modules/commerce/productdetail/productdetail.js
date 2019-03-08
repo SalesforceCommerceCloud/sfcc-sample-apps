@@ -17,16 +17,10 @@ export default class ProductDetail extends LightningElement {
         } );
     }
 
-    routeSubHandler(view) {
-        // TODO: need better way to get param from routingService
-
-        // Defer for now
-        setTimeout( () => {
-            // get pid from param
-            const url = window.location.pathname;
-            const pid = url.split( '/product/' )[1];
-            this.pid = '' + pid;
-        } )
+    routeSubHandler(view, params) {
+        if ( params && params.pid ) {
+            this.pid = params.pid;
+        }
     }
 }
 
