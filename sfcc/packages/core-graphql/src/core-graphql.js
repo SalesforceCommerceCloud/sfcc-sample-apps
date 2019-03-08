@@ -24,11 +24,11 @@ export default class CoreGraphQL {
     constructor(core) {
         core.logger.log('CoreGraphQL.constructor(core)');
         this._typeDef =
-            gql`
+            [gql`
                 type Query {
                     _empty: String
                 }
-            `;
+            `];
         this._resolvers = { Query: {} };
     }
 
@@ -65,9 +65,15 @@ export default class CoreGraphQL {
             const apis = core.getExtension(API_EXTENSIONS_KEY);
             apis.forEach(apiFactory => {
                 const api = apiFactory();
-                this.typeDef = [this.typeDef, ...api.typeDefs]
+                this.typeDef = [...this.typeDef, ...api.typeDefs]
                 Object.assign(this.resolvers.Query, api.getResolvers(apiConfig));
             });
+
+            console.log("*******************************");
+            console.log("*******************************");
+            console.log(this.typeDef);
+            console.log("*******************************");
+            console.log("*******************************");
 
             const schema = makeExecutableSchema({
                 typeDefs: this.typeDef,

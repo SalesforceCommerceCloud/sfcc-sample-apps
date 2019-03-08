@@ -13,8 +13,8 @@ import API_CONFIG_DATA from './src/config/api'; // Our Application Specific API 
 //
 import '@sfra/wishlist';
 import '@sfra/productapi';
+import '@sfra/contentapi';
 //import '@sfra/categoryapi';
-//import '@sfra/contentapi';
 
 //
 // Import Keys needed to access core services end extensions
