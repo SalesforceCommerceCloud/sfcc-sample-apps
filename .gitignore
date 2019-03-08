@@ -64,3 +64,5 @@ typings/
 # build index.js files
 sfcc/packages/*/index.js
 sfra/packages/*/index.js
+
+*.iml
