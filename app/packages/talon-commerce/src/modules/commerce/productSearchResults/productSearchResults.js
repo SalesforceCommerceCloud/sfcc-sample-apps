@@ -36,7 +36,6 @@ export default class Search extends LightningElement {
         console.log('API', (json.data && json.data.productSearch) ? json.data.productSearch : 'no results or query');
         console.log('===============================');
 
-
         if (json.data && json.data.productSearch) {
             this.products = json.data.productSearch.productHits || [];
             this.refinements = json.data.productSearch.refinements || [];
@@ -150,7 +149,6 @@ export default class Search extends LightningElement {
                 this.sortRule = option;
             }
         });
-
     }
 
     newSortRule = (event) => {
@@ -171,7 +169,6 @@ export default class Search extends LightningElement {
         })
     }
 
-
     resetRefinements = () => {
         this.selectedRefinements = {};
         this.sortRule = this.sortOptions[0];
@@ -181,99 +178,4 @@ export default class Search extends LightningElement {
         console.log('ProductSearchResults renderedCallback()');
     }
 
-    //
-    // render() {
-    //   const sortOptions = [
-    //     { id: 'best-matches', label: 'Best Matches' },
-    //     { id: 'price-low-to-high', label: 'Price Low To High' },
-    //     { id: 'price-high-to-low', label: 'Price High to Low' },
-    //     { id: 'product-name-ascending', label: 'Product Name A - Z' },
-    //     { id: 'product-name-descending', label: 'Product Name Z - A' },
-    //     { id: 'most-popular', label: 'Most Popular' },
-    //     { id: 'top-sellers', label: 'Top Sellers' }
-    //   ];
-    //
-    //   return (
-    //     <div className='container search-results'>
-    //       <div className='row search-nav'></div>
-    //       <div className='row'>
-    //         <div className='tab-content col-12'>
-    //           <div className='tab-pane container active' id='product-search-results' aria-expanded='true'>
-    //             <div className='row grid-header'>
-    //               <div className='result-count text-center col-12 col-md-9 col-sm-6 order-sm-2'>
-    //                 <p>
-    //                   <span>{this.state.products.length} Results for </span>
-    //                   <span className='search-keywords'>{match.params.query || ''}</span>
-    //                 </p>
-    //               </div>
-    //               <div className='col-6 col-sm-3 order-sm-1'>
-    //                 <select className='custom-select'
-    //                   name='sort-order'
-    //                   value={this.state.sortRule}
-    //                   onChange={this.newSortRule}>
-    //                   {sortOptions.map(sortOption => (
-    //                     <option key={sortOption.id}
-    //                       className={sortOption.id}
-    //                       value={sortOption.id}
-    //                       label={sortOption.label}>
-    //                     </option>
-    //                   ))}
-    //                 </select>
-    //               </div>
-    //             </div>
-    //
-    //             {this.state.products.length > 0 &&
-    //               <div className='row'>
-    //                 <div className='refinement-bar col-md-3'>
-    //                   <div className='secondary-bar col-12 offset-sm-4 offset-md-0 col-sm-4 col-md-12'>
-    //                     <div className='reset btn btn-block btn-outline-primary'
-    //                       onClick={this.resetRefinements}>
-    //                       Reset
-    //                     </div>
-    //                   </div>
-    //
-    //                   <aside>
-    //                     <div className='refinements'>
-    //                       {this.state.refinements.map(refinement => (
-    //                         <Refinement
-    //                           key={refinement.label}
-    //                           refinement={refinement}
-    //                           toggleRefinement={this.toggleRefinement}
-    //                           selectedValues={
-    //                             this.state.selectedRefinements[refinement.attribute_id]
-    //                           }
-    //                         />
-    //                       ))}
-    //                     </div>
-    //                   </aside>
-    //                 </div>
-    //
-    //                 <div className='col-sm-12 col-md-9'>
-    //                   <div className='container'>
-    //                     <ProductList products={this.state.products} />
-    //                   </div>
-    //                 </div>
-    //               </div>
-    //             }
-    //           </div>
-    //         </div>
-    //         <div className={'lmask' + (!this.state.loading ? ' js-hidden' : '')} />
-    //       </div>
-    //     </div>
-    //   );
-    // }
 }
-
-// Search.propTypes = {
-//   history: PropTypes.shape({
-//     push: PropTypes.func.isRequired
-//   }).isRequired,
-//   match: PropTypes.shape({
-//     params: PropTypes.shape({
-//       query: PropTypes.string
-//     }).isRequired,
-//   }).isRequired,
-//   staticContext: PropTypes.shape({
-//     initData: PropTypes.array.isRequired
-//   })
-// };

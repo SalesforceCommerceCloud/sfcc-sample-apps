@@ -19,6 +19,31 @@ register(productsByQuery, (eventTarget) => {
         }
 
         const query = options.query;
+        const selectedRefinements = options.selectedRefinements;
+        const sort = options.sortRule && options.sortRule.id ? `{ id: "sort", value: "${ options.sortRule.id }"}` : '';
+
+        let filters = '';
+        Object.keys(selectedRefinements).forEach(key => {
+            let values = '';
+            if (selectedRefinements[key].length) {
+                selectedRefinements[key].forEach(value => {
+                    values += `${ value }|`
+                });
+                values = values.slice(0, -1);
+                filters += `{ id: "${ key }", value: "${ values }"},`;
+            }
+        });
+
+        if (sort.length) {
+            filters += `${sort}`;
+        } else {
+            filters = filters.slice(0,-1);
+        }
+
+        if (filters.length) {
+            filters = `, filterParams: [ ${ filters } ]`;
+        }
+
         if (!!options.query === false) {
             return [];
         } else {
@@ -31,15 +56,14 @@ register(productsByQuery, (eventTarget) => {
                 let params = { query: query };
 
                 try {
-                    // TODO: read from api config
                     var client = new window.ApolloClient({
-                        uri: "http://localhost:3000/api"
+                        uri: "/api"
                     });
 
                     return client.query({
                         query: window.gql`
                         {
-                          productSearch(query: "${ query }") {
+                          productSearch(query: "${ query }" ${ filters }) {
                                 productHits {
                                 id
                                 name
@@ -73,33 +97,7 @@ register(productsByQuery, (eventTarget) => {
                         return {
                             error
                         };
-                        // TODO: this is dummy test data
-                        // return [
-                        //     {
-                        //         name: 'Modern Dress Shirt',
-                        //         id: '74974310M'
-                        //     },
-                        //     {
-                        //         name: 'Denim Shirt Jacket',
-                        //         id: '25564426M'
-                        //     }
-                        // ];
                     });
-
-                    /*
-                    return fetchSearchResults( query, selectedRefinements, sortRule && sortRule.id ? sortRule.id : null )
-                        .then( json => {
-                            console.log( 'Fetched', json );
-                            const p = products[ localCacheKey ] = json;
-                            return p;
-                        })
-                        .catch( e => {   // eslint-disable-line no-unused-vars
-                            this.setState( {
-                                loading: false
-                            } );
-                        });
-                        */
-
                 } catch (e) {
                     return null;
                 }
@@ -136,7 +134,7 @@ register(productsByQuery, (eventTarget) => {
             // From cached data dispatch the wire-service value change event.
             // This will update the component data
             console.log("Cached Product Loaded, data", productsOrPromise);
-            eventTarget.dispatchEvent(new ValueChangedEvent(Object.assign({ error: undefined }, productsOrPromise )));
+            eventTarget.dispatchEvent(new ValueChangedEvent(Object.assign({ error: undefined }, productsOrPromise)));
         }
     }
 

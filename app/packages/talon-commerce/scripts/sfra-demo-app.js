@@ -12,8 +12,8 @@ import API_CONFIG_DATA from './api'; // Our Application Specific API Configurati
 // SFRA Extensions/Services
 //
 import '@sfcc-dev/sfra-productapi';
+import '@sfcc-dev/sfra-contentapi';
 //import '@sfra/categoryapi';
-//import '@sfra/contentapi';
 
 //
 // Import Keys needed to access core services end extensions

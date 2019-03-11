@@ -1,4 +1,4 @@
-import {LightningElement, api, track} from 'lwc'
+import { LightningElement, api, track } from 'lwc'
 
 // import PropTypes from 'prop-types';
 
@@ -26,20 +26,20 @@ export default class Refinement extends LightningElement {
         if (ref && ref.values && ref.values.length) {
             ref.values.forEach(refValue => {
                 const isColor = ref.attributeId === 'c_refinementColor';
-                console.log('======= ',refValue.value);
+                console.log('======= ', refValue.value);
                 const isSelected = refValue.isSelected || false; // TODO <<<<<<<<<
-                const checkStateClasses = `fa ${isSelected ? 'fa-check-circle' : 'fa-circle-o'}`;
-                const color = refValue.value.toLowerCase();
+                const checkStateClasses = `fa ${ isSelected ? 'fa-check-circle' : 'fa-circle-o' }`;
+                const color = refValue.label.toLowerCase();
                 let newObj = {
                     label: refValue.label,
-                    title: `Refine by ${ref.label}: ${refValue.label}`,
+                    title: `Refine by ${ ref.label }: ${ refValue.label }`,
                     key: ref.label + refValue.value,
                     labelLowerClass: ref.label.toLowerCase() + '-attribute',
                     isSelected,
                     isColor,
-                    toggleRefinement: () => { this.toggleRefinement(ref.attributeId, color); },
+                    toggleRefinement: () => this.toggleRefinement(ref.attributeId, refValue.label),
                     checkStateClasses,
-                    colorClassNames: !isColor ? '' : `swatch-circle-${color} swatch-circle color-value swatch-mark ${isSelected?'selected':''}`
+                    colorClassNames: !isColor ? '' : `swatch-circle-${ color } swatch-circle color-value swatch-mark ${ isSelected ? 'selected' : '' }`
                 };
                 newRef.values.push(newObj);
             })
@@ -51,7 +51,7 @@ export default class Refinement extends LightningElement {
         super();
     }
 
-    toggleRefinement(refinement, value ) {
+    toggleRefinement(refinement, value) {
         // const refinement = event.currentTarget.getAttribute('data-refinement');
         // const value = event.currentTarget.getAttribute('data-value');
 

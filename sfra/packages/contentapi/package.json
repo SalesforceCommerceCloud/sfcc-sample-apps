@@ -1,22 +1,20 @@
 {
-  "name": "@sfcc-dev/core-graphql",
+  "name": "@sfcc-dev/sfra-contentapi",
   "version": "0.0.4-sfra-alpha-4",
-  "description": "sfcc default core graphql",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "build": "cross-env rollup -c ./scripts/rollup.config.js",
-    "clean": "rm ./sfcc-*.tgz; rm index.js",
+    "clean": "rm ./sfra-*.tgz; rm index.js",
     "pub": "npm run build; npm pack; npm publish -f"
   },
-  "author": "Jason Cooper",
+  "author": "",
   "license": "MIT",
   "dependencies": {
-    "@sfcc-dev/apiconfig": "0.0.4-sfra-alpha-4",
     "@sfcc-dev/core": "0.0.4-sfra-alpha-4",
-    "apollo-server": "^2.3.3",
+    "@sfcc-dev/core-graphql": "0.0.4-sfra-alpha-4",
     "cross-env": "5.2.0",
-    "graphql-tag": "^2.10.1",
-    "graphql-tools": "^4.0.4",
+    "request-promise": "^4.2.2",
     "rollup": "1.1.0"
   }
 }
