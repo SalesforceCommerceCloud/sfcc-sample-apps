@@ -1878,57 +1878,57 @@
   version "2.8.3"
   resolved "https://nexus.soma.salesforce.com/nexus/content/groups/npm-all/@salesforce-ux/design-system/-/design-system-2.8.3.tgz#8dafc0319a85150889920487ebcbba550b565823"
 
-"@sfcc-dev/apiconfig@0.0.5-sfra-alpha-1":
-  version "0.0.5-sfra-alpha-1"
-  resolved "http://npm.lwcjs.org/@sfcc-dev/apiconfig/-/@sfcc-dev/apiconfig-0.0.5-sfra-alpha-1/c30c2c08b5f7fe9c21a09e67cdb6325804a702eb.tgz#c30c2c08b5f7fe9c21a09e67cdb6325804a702eb"
+"@sfcc-dev/apiconfig@0.0.5-sfra-alpha-2":
+  version "0.0.5-sfra-alpha-2"
+  resolved "http://npm.lwcjs.org/@sfcc-dev/apiconfig/-/@sfcc-dev/apiconfig-0.0.5-sfra-alpha-2/c30c2c08b5f7fe9c21a09e67cdb6325804a702eb.tgz#c30c2c08b5f7fe9c21a09e67cdb6325804a702eb"
   dependencies:
-    "@sfcc-dev/core" "0.0.5-sfra-alpha-1"
+    "@sfcc-dev/core" "0.0.5-sfra-alpha-2"
     cross-env "5.2.0"
     rollup "1.1.0"
 
-"@sfcc-dev/core-graphql@0.0.5-sfra-alpha-1":
-  version "0.0.5-sfra-alpha-1"
-  resolved "http://npm.lwcjs.org/@sfcc-dev/core-graphql/-/@sfcc-dev/core-graphql-0.0.5-sfra-alpha-1/02ebd952fcbf419bbef0533df6f8bf1e9961d2af.tgz#02ebd952fcbf419bbef0533df6f8bf1e9961d2af"
+"@sfcc-dev/core-graphql@0.0.5-sfra-alpha-2":
+  version "0.0.5-sfra-alpha-2"
+  resolved "http://npm.lwcjs.org/@sfcc-dev/core-graphql/-/@sfcc-dev/core-graphql-0.0.5-sfra-alpha-2/02ebd952fcbf419bbef0533df6f8bf1e9961d2af.tgz#02ebd952fcbf419bbef0533df6f8bf1e9961d2af"
   dependencies:
-    "@sfcc-dev/apiconfig" "0.0.5-sfra-alpha-1"
-    "@sfcc-dev/core" "0.0.5-sfra-alpha-1"
+    "@sfcc-dev/apiconfig" "0.0.5-sfra-alpha-2"
+    "@sfcc-dev/core" "0.0.5-sfra-alpha-2"
     apollo-server "^2.3.3"
     cross-env "5.2.0"
     graphql-tag "^2.10.1"
     graphql-tools "^4.0.4"
     rollup "1.1.0"
 
-"@sfcc-dev/core@0.0.5-sfra-alpha-1":
-  version "0.0.5-sfra-alpha-1"
-  resolved "http://npm.lwcjs.org/@sfcc-dev/core/-/@sfcc-dev/core-0.0.5-sfra-alpha-1/9de4baec66f20e4394f4cb171baa23443ddc71b1.tgz#9de4baec66f20e4394f4cb171baa23443ddc71b1"
+"@sfcc-dev/core@0.0.5-sfra-alpha-2":
+  version "0.0.5-sfra-alpha-2"
+  resolved "http://npm.lwcjs.org/@sfcc-dev/core/-/@sfcc-dev/core-0.0.5-sfra-alpha-2/9de4baec66f20e4394f4cb171baa23443ddc71b1.tgz#9de4baec66f20e4394f4cb171baa23443ddc71b1"
   dependencies:
     cross-env "5.2.0"
     rollup "1.1.0"
 
-"@sfcc-dev/logger@0.0.5-sfra-alpha-1":
-  version "0.0.5-sfra-alpha-1"
-  resolved "http://npm.lwcjs.org/@sfcc-dev/logger/-/@sfcc-dev/logger-0.0.5-sfra-alpha-1/8f381dbc68d432c1153e073149e529788e9d897d.tgz#8f381dbc68d432c1153e073149e529788e9d897d"
+"@sfcc-dev/logger@0.0.5-sfra-alpha-2":
+  version "0.0.5-sfra-alpha-2"
+  resolved "http://npm.lwcjs.org/@sfcc-dev/logger/-/@sfcc-dev/logger-0.0.5-sfra-alpha-2/8f381dbc68d432c1153e073149e529788e9d897d.tgz#8f381dbc68d432c1153e073149e529788e9d897d"
   dependencies:
-    "@sfcc-dev/core" "0.0.5-sfra-alpha-1"
+    "@sfcc-dev/core" "0.0.5-sfra-alpha-2"
     cross-env "5.2.0"
     rollup "1.1.0"
 
-"@sfcc-dev/sfra-contentapi@0.0.5-sfra-alpha-1":
-  version "0.0.5-sfra-alpha-1"
-  resolved "http://npm.lwcjs.org/@sfcc-dev/sfra-contentapi/-/@sfcc-dev/sfra-contentapi-0.0.5-sfra-alpha-1/3fc3de330e784a113cd35c92f9faac11651c9a8c.tgz#3fc3de330e784a113cd35c92f9faac11651c9a8c"
+"@sfcc-dev/sfra-contentapi@0.0.5-sfra-alpha-2":
+  version "0.0.5-sfra-alpha-2"
+  resolved "http://npm.lwcjs.org/@sfcc-dev/sfra-contentapi/-/@sfcc-dev/sfra-contentapi-0.0.5-sfra-alpha-2/3fc3de330e784a113cd35c92f9faac11651c9a8c.tgz#3fc3de330e784a113cd35c92f9faac11651c9a8c"
   dependencies:
-    "@sfcc-dev/core" "0.0.5-sfra-alpha-1"
-    "@sfcc-dev/core-graphql" "0.0.5-sfra-alpha-1"
+    "@sfcc-dev/core" "0.0.5-sfra-alpha-2"
+    "@sfcc-dev/core-graphql" "0.0.5-sfra-alpha-2"
     cross-env "5.2.0"
     request-promise "^4.2.2"
     rollup "1.1.0"
 
-"@sfcc-dev/sfra-productapi@0.0.5-sfra-alpha-1":
-  version "0.0.5-sfra-alpha-1"
-  resolved "http://npm.lwcjs.org/@sfcc-dev/sfra-productapi/-/@sfcc-dev/sfra-productapi-0.0.5-sfra-alpha-1/663562648ef0c3ced3c81e87c5d5dc899e4fcc8a.tgz#663562648ef0c3ced3c81e87c5d5dc899e4fcc8a"
+"@sfcc-dev/sfra-productapi@0.0.5-sfra-alpha-2":
+  version "0.0.5-sfra-alpha-2"
+  resolved "http://npm.lwcjs.org/@sfcc-dev/sfra-productapi/-/@sfcc-dev/sfra-productapi-0.0.5-sfra-alpha-2/663562648ef0c3ced3c81e87c5d5dc899e4fcc8a.tgz#663562648ef0c3ced3c81e87c5d5dc899e4fcc8a"
   dependencies:
-    "@sfcc-dev/core" "0.0.5-sfra-alpha-1"
-    "@sfcc-dev/core-graphql" "0.0.5-sfra-alpha-1"
+    "@sfcc-dev/core" "0.0.5-sfra-alpha-2"
+    "@sfcc-dev/core-graphql" "0.0.5-sfra-alpha-2"
     cross-env "5.2.0"
     request-promise "^4.2.2"
     rollup "1.1.0"
