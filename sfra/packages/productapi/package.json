@@ -1,6 +1,6 @@
 {
   "name": "@sfcc-dev/sfra-productapi",
-  "version": "0.0.4-sfra-alpha-5",
+  "version": "0.0.5-sfra-alpha-1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -11,8 +11,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@sfcc-dev/core": "0.0.4-sfra-alpha-5",
-    "@sfcc-dev/core-graphql": "0.0.4-sfra-alpha-5",
+    "@sfcc-dev/core": "0.0.5-sfra-alpha-1",
+    "@sfcc-dev/core-graphql": "0.0.5-sfra-alpha-1",
     "cross-env": "5.2.0",
     "request-promise": "^4.2.2",
     "rollup": "1.1.0"

@@ -32,12 +32,12 @@
     "uuidv4": "^2.0.0"
   },
   "dependencies": {
-    "@sfcc-dev/core": "0.0.4-sfra-alpha-5",
-    "@sfcc-dev/core-graphql": "0.0.4-sfra-alpha-5",
-    "@sfcc-dev/logger": "0.0.4-sfra-alpha-5",
-    "@sfcc-dev/apiconfig": "0.0.4-sfra-alpha-5",
-    "@sfcc-dev/sfra-productapi": "0.0.4-sfra-alpha-5",
-    "@sfcc-dev/sfra-contentapi": "0.0.4-sfra-alpha-5",
+    "@sfcc-dev/core": "0.0.5-sfra-alpha-1",
+    "@sfcc-dev/core-graphql": "0.0.5-sfra-alpha-1",
+    "@sfcc-dev/logger": "0.0.5-sfra-alpha-1",
+    "@sfcc-dev/apiconfig": "0.0.5-sfra-alpha-1",
+    "@sfcc-dev/sfra-productapi": "0.0.5-sfra-alpha-1",
+    "@sfcc-dev/sfra-contentapi": "0.0.5-sfra-alpha-1",
     "apollo-boost": "^0.1.27",
     "apollo-client": "^2.4.12",
     "apollo-server": "^2.3.2",
