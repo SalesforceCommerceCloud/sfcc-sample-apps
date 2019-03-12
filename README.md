@@ -4,5 +4,5 @@ We are working on The Salesforce Commerce Cloud Storefront Reference Architectur
 
 - `sfcc` mono-repo: The runtime core shared code (non-storefront specific).
 - `sfra`: mono-repo: The runtime storefront extensions and services and storefront BFFs.
-- `sfra-app`: The reference app based on `Talon` which imports the `@sfcc-dev/core` and `@sfra/[modules]`.
+- `app`: The reference app based on `Talon` which imports the `@sfcc-dev/core` and `@sfra/[modules]`.
 
