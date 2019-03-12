@@ -1878,57 +1878,57 @@
   version "2.8.3"
   resolved "https://nexus.soma.salesforce.com/nexus/content/groups/npm-all/@salesforce-ux/design-system/-/design-system-2.8.3.tgz#8dafc0319a85150889920487ebcbba550b565823"
 
-"@sfcc-dev/apiconfig@0.0.4-sfra-alpha-4":
-  version "0.0.4-sfra-alpha-4"
-  resolved "https://registry.yarnpkg.com/@sfcc-dev/apiconfig/-/apiconfig-0.0.4-sfra-alpha-4.tgz#61c232dc178caa3ee0bacf70354e743d37fd3b21"
+"@sfcc-dev/apiconfig@0.0.4-sfra-alpha-5":
+  version "0.0.4-sfra-alpha-5"
+  resolved "https://registry.yarnpkg.com/@sfcc-dev/apiconfig/-/apiconfig-0.0.4-sfra-alpha-5.tgz#61c232dc178caa3ee0bacf70354e743d37fd3b21"
   dependencies:
-    "@sfcc-dev/core" "0.0.4-sfra-alpha-4"
+    "@sfcc-dev/core" "0.0.4-sfra-alpha-5"
     cross-env "5.2.0"
     rollup "1.1.0"
 
-"@sfcc-dev/core-graphql@0.0.4-sfra-alpha-4":
-  version "0.0.4-sfra-alpha-4"
-  resolved "https://registry.yarnpkg.com/@sfcc-dev/core-graphql/-/core-graphql-0.0.4-sfra-alpha-4.tgz#c025420d03d2737791b7f36b99404416c422e7f7"
+"@sfcc-dev/core-graphql@0.0.4-sfra-alpha-5":
+  version "0.0.4-sfra-alpha-5"
+  resolved "https://registry.yarnpkg.com/@sfcc-dev/core-graphql/-/core-graphql-0.0.4-sfra-alpha-5.tgz#c025420d03d2737791b7f36b99404416c422e7f7"
   dependencies:
-    "@sfcc-dev/apiconfig" "0.0.4-sfra-alpha-4"
-    "@sfcc-dev/core" "0.0.4-sfra-alpha-4"
+    "@sfcc-dev/apiconfig" "0.0.4-sfra-alpha-5"
+    "@sfcc-dev/core" "0.0.4-sfra-alpha-5"
     apollo-server "^2.3.3"
     cross-env "5.2.0"
     graphql-tag "^2.10.1"
     graphql-tools "^4.0.4"
     rollup "1.1.0"
 
-"@sfcc-dev/core@0.0.4-sfra-alpha-4":
-  version "0.0.4-sfra-alpha-4"
-  resolved "https://registry.yarnpkg.com/@sfcc-dev/core/-/core-0.0.4-sfra-alpha-4.tgz#b8897770cd224169631c6aafd6ec98a5efe346ce"
+"@sfcc-dev/core@0.0.4-sfra-alpha-5":
+  version "0.0.4-sfra-alpha-5"
+  resolved "https://registry.yarnpkg.com/@sfcc-dev/core/-/core-0.0.4-sfra-alpha-5.tgz#b8897770cd224169631c6aafd6ec98a5efe346ce"
   dependencies:
     cross-env "5.2.0"
     rollup "1.1.0"
 
-"@sfcc-dev/logger@0.0.4-sfra-alpha-4":
-  version "0.0.4-sfra-alpha-4"
-  resolved "https://registry.yarnpkg.com/@sfcc-dev/logger/-/logger-0.0.4-sfra-alpha-4.tgz#f1deffdc231161db48949027d716ee6508683717"
+"@sfcc-dev/logger@0.0.4-sfra-alpha-5":
+  version "0.0.4-sfra-alpha-5"
+  resolved "https://registry.yarnpkg.com/@sfcc-dev/logger/-/logger-0.0.4-sfra-alpha-5.tgz#f1deffdc231161db48949027d716ee6508683717"
   dependencies:
-    "@sfcc-dev/core" "0.0.4-sfra-alpha-4"
+    "@sfcc-dev/core" "0.0.4-sfra-alpha-5"
     cross-env "5.2.0"
     rollup "1.1.0"
 
-"@sfcc-dev/sfra-contentapi@0.0.4-sfra-alpha-4":
-  version "0.0.4-sfra-alpha-4"
-  resolved "https://registry.yarnpkg.com/@sfcc-dev/sfra-contentapi/-/sfra-contentapi-0.0.4-sfra-alpha-4.tgz#4e2e898715e1e57c964af12d6e9960edb2cb3a8a"
+"@sfcc-dev/sfra-contentapi@0.0.4-sfra-alpha-5":
+  version "0.0.4-sfra-alpha-5"
+  resolved "https://registry.yarnpkg.com/@sfcc-dev/sfra-contentapi/-/sfra-contentapi-0.0.4-sfra-alpha-5.tgz#4e2e898715e1e57c964af12d6e9960edb2cb3a8a"
   dependencies:
-    "@sfcc-dev/core" "0.0.4-sfra-alpha-4"
-    "@sfcc-dev/core-graphql" "0.0.4-sfra-alpha-4"
+    "@sfcc-dev/core" "0.0.4-sfra-alpha-5"
+    "@sfcc-dev/core-graphql" "0.0.4-sfra-alpha-5"
     cross-env "5.2.0"
     request-promise "^4.2.2"
     rollup "1.1.0"
 
-"@sfcc-dev/sfra-productapi@0.0.4-sfra-alpha-4":
-  version "0.0.4-sfra-alpha-4"
-  resolved "https://registry.yarnpkg.com/@sfcc-dev/sfra-productapi/-/sfra-productapi-0.0.4-sfra-alpha-4.tgz#2116b93fce72aee23c603e807452447af459ff8b"
+"@sfcc-dev/sfra-productapi@0.0.4-sfra-alpha-5":
+  version "0.0.4-sfra-alpha-5"
+  resolved "https://registry.yarnpkg.com/@sfcc-dev/sfra-productapi/-/sfra-productapi-0.0.4-sfra-alpha-5.tgz#2116b93fce72aee23c603e807452447af459ff8b"
   dependencies:
-    "@sfcc-dev/core" "0.0.4-sfra-alpha-4"
-    "@sfcc-dev/core-graphql" "0.0.4-sfra-alpha-4"
+    "@sfcc-dev/core" "0.0.4-sfra-alpha-5"
+    "@sfcc-dev/core-graphql" "0.0.4-sfra-alpha-5"
     cross-env "5.2.0"
     request-promise "^4.2.2"
     rollup "1.1.0"
