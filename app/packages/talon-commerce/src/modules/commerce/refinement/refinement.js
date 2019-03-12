@@ -37,7 +37,7 @@ export default class Refinement extends LightningElement {
                     labelLowerClass: ref.label.toLowerCase() + '-attribute',
                     isSelected,
                     isColor,
-                    toggleRefinement: () => this.toggleRefinement(ref.attributeId, refValue.label),
+                    toggleRefinement: () => this.toggleRefinement(ref.attributeId, (isColor) ? refValue.label : refValue.value),
                     checkStateClasses,
                     colorClassNames: !isColor ? '' : `swatch-circle-${ color } swatch-circle color-value swatch-mark ${ isSelected ? 'selected' : '' }`
                 };
