@@ -1,7 +1,4 @@
-## @sfra
-
-#### Temporary development solution to use Verdaccio as local npm repo
-`npm config set @sfra:registry http://localhost:4873`
+## SFRA modules
 
 #### This project is a Monorepo (work in progress)
 

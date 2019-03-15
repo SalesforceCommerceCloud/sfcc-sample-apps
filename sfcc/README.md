@@ -1,7 +1,4 @@
-## @sfcc
-
-#### Temporary development solution to use Verdaccio as local npm repo
-`npm config set @sfcc:registry http://localhost:4873`
+## Core Commerce SDK Modules 
 
 #### This project is a Monorepo (work in progress)
 
