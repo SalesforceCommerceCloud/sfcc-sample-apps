@@ -1,7 +1,0 @@
-{
-    "name": "fullLayout",
-    "label": "Full Layout",
-    "component": {
-        "name": "commerce/fullLayout"
-    }
-}

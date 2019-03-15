@@ -1,8 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`commerce/error renders correctly 1`] = `
-<commerce-error>
-  #shadow-root(open)
-    Error
-</commerce-error>
-`;

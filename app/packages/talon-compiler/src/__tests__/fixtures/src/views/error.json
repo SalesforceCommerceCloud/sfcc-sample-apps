@@ -1,8 +1,0 @@
-{
-    "name": "error",
-    "label": "Error",
-    "themeLayoutType": "default",
-    "component": {
-        "name": "x/error"
-    }
-}
