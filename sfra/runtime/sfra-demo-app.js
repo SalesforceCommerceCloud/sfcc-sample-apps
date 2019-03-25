@@ -36,6 +36,9 @@ class SFRADemoApp {
         // Provide api configuration data to core for Ecom host, paths, auth, etc...
         //
         this.apiConfig = core.getService(API_CONFIG_KEY);
+
+        Object.assign(config, this.apiConfig.config);
+
         this.apiConfig.config = config;
 
         console.log(this.apiConfig.config)
