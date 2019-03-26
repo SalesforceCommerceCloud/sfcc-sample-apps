@@ -2,7 +2,7 @@ import * as rp from 'request-promise';
 import Content from '../models/Content';
 
 const getContent = (config, contentIds) => {
-    const CONTENT_URL = `${config.BASE_URL}/content/(${contentIds.join()})?client_id=${config.APP_API_CLIENT_ID}`
+    const CONTENT_URL = `${config.COMMERCE_BASE_URL}/content/(${contentIds.join()})?client_id=${config.COMMERCE_APP_API_CLIENT_ID}`
     console.log('---- GETTING CONTENTS FROM API ---- ');
     console.log('---- URL ---- ' + CONTENT_URL);
     return new Promise((resolve, reject) => {

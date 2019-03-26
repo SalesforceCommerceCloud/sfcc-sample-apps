@@ -55,9 +55,9 @@ export default class CoreGraphQL {
         console.log(apiConfig);
 
         if (expressApp) {
-            const apiPath = (apiConfig) ? apiConfig.API_PATH : '/graphql';
+            const apiPath = (apiConfig) ? apiConfig.COMMERCE_API_PATH : '/graphql';
             if (!apiConfig) {
-                core.logger.warn(`No APIConfig API_PATH provided; Apollo using default path '/graphql`);
+                core.logger.warn(`No APIConfig COMMERCE_API_PATH provided; Apollo using default path '/graphql`);
             }
 
             // Ensure API Extensions are initialized

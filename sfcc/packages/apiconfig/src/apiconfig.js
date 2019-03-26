@@ -3,10 +3,18 @@ import {LOGGER_KEY} from "@sfcc-dev/core";
 
 export const API_CONFIG_KEY = Symbol('API Configuration Service');
 
+const APP_CONFIG_DATA = {};
+
+Object.keys(process.env).forEach(key => {
+    if (key.startsWith("COMMERCE_")) {
+        APP_CONFIG_DATA[key] = process.env[key];
+    }
+});
+
 export default class APIConfig {
 
     constructor(core) {
-        this.config = {};
+        this.config = APP_CONFIG_DATA;
 
         //
         // We would like to use the core Logger if available.
