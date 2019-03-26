@@ -68,3 +68,5 @@ sfra/packages/*/index.js
 *.iml
 
 .idea/
+
+package-lock.json
