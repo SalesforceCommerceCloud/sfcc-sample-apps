@@ -65,6 +65,6 @@ typings/
 sfcc/packages/*/index.js
 sfra/packages/*/index.js
 
-*.iml
-
-.idea/
+**/*.iml
+.iml
+.idea
