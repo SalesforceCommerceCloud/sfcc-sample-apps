@@ -65,8 +65,8 @@ typings/
 sfcc/packages/*/index.js
 sfra/packages/*/index.js
 
-*.iml
-
-.idea/
-
 package-lock.json
+
+**/*.iml
+.iml
+.idea
