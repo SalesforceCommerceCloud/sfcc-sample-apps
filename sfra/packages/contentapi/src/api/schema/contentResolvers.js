@@ -21,14 +21,16 @@ const getContent = (config, contentIds) => {
 
 export const resolver = (config) => {
     return {
-        content: (_, {contentIds}) => {
-            const result = getContent(config, contentIds).then((contents) => {
-                console.log("---- Received Contents from API ----");
-                console.log(contents);
-                console.log("---- Received Contents from API ----");
-                return contents.map((content) => new Content(content));
-            });
-            return result;
+        Query: {
+            content: (_, {contentIds}) => {
+                const result = getContent(config, contentIds).then((contents) => {
+                    console.log("---- Received Contents from API ----");
+                    console.log(contents);
+                    console.log("---- Received Contents from API ----");
+                    return contents.map((content) => new Content(content));
+                });
+                return result;
+            }
         }
     }
 }

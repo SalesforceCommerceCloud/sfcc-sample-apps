@@ -3,7 +3,7 @@ import Product from '../models/Product';
 
 const getProduct = (config, productId) => {
     const URL_PARAMS = `&expand=availability,images,prices,variations&all_images=true`;
-    const PRODUCT_URL = `${config.COMMERCE_BASE_URL}/products/${productId}?client_id=${config.COMMERCE_APP_API_CLIENT_ID}${URL_PARAMS}`
+    const PRODUCT_URL = `${config.COMMERCE_BASE_URL}/products/${productId}?client_id=${config.COMMERCE_APP_API_CLIENT_ID}${URL_PARAMS}`;
     console.log('---- GETTING PRODUCT FROM API ---- ');
     console.log('---- URL ---- ' + PRODUCT_URL);
     return new Promise((resolve, reject) => {
@@ -22,12 +22,14 @@ const getProduct = (config, productId) => {
 
 export const resolver = (config) => {
     return {
-        product: (_, {id}) => {
-            const productModel = getProduct(config, id).then((product) => {
-                console.log("---- Received Product from API ----");
-                return new Product(product);
-            });
-            return productModel;
+        Query: {
+            product: (_, {id}) => {
+                const productModel = getProduct(config, id).then((product) => {
+                    console.log("---- Received Product from API ----");
+                    return new Product(product);
+                });
+                return productModel;
+            }
         }
     }
 }
