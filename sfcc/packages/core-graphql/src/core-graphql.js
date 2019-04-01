@@ -8,12 +8,26 @@ export const CORE_GRAPHQL_KEY = Symbol( 'Core GraphQL with Apollo' );
 export const EXPRESS_KEY = Symbol( 'Node Express' );
 
 export const resolverFactory = (config, resolversArray) => {
-    let combinedResolvers = {};
-    resolversArray.forEach( (resolver) => {
-        const resolverInst = resolver( config ); // instantiate factory
-        Object.assign( combinedResolvers, resolverInst )
-    } );
+    let combinedResolvers = { Query: {}, Mutation: {} };
+    resolversArray.forEach((resolver) => {
+        const resolverInst = resolver(config); // instantiate factory
+        if (resolverInst.Query) {
+            Object.assign(combinedResolvers.Query, resolverInst.Query);
+        }
+        if (resolverInst.Mutation) {
+            Object.assign(combinedResolvers.Mutation, resolverInst.Mutation);
+        }
+    });
     return combinedResolvers;
+}
+
+export const dataSourcesFactory = (config, dataSourcesArray) => {
+    let dataSources = {};
+    dataSourcesArray.forEach((dataSource) => {
+        const dataSourceInst = dataSource(config);
+        Object.assign(dataSources, dataSourceInst);
+    });
+    return dataSources;
 }
 
 /**
@@ -28,8 +42,12 @@ export default class CoreGraphQL {
                 type Query {
                     _empty: String
                 }
-            ` ];
-        this._resolvers = {Query: {}};
+                type Mutation {
+                    _empty: String
+                }
+            `];
+        this._resolvers = { Query: {}, Mutation: {} };
+        this._dataSources = {};
     }
 
     set typeDef(typeDef) {
@@ -46,6 +64,14 @@ export default class CoreGraphQL {
 
     get resolvers() {
         return this._resolvers;
+    }
+
+    set dataSources(dataSources) {
+        this._dataSources = dataSources;
+    }
+
+    get dataSources() {
+        return this._dataSources;
     }
 
     start() {
@@ -65,26 +91,36 @@ export default class CoreGraphQL {
             const apis = core.getExtension( API_EXTENSIONS_KEY );
             apis.forEach( apiFactory => {
                 const api = apiFactory();
-                this.typeDef = [ ...this.typeDef, ...api.typeDefs ]
-                Object.assign( this.resolvers.Query, api.getResolvers( apiConfig ) );
-            } );
+                this.typeDef = [...this.typeDef, ...api.typeDefs];
+                let apiResolvers = api.getResolvers(apiConfig);
+                Object.assign(this.resolvers.Query, apiResolvers.Query);
+                Object.assign(this.resolvers.Mutation, apiResolvers.Mutation);
+                Object.assign(this.dataSources, api.getDataSources(apiConfig))
+            });
 
-            console.log( "*******************************" );
-            console.log( "*******************************" );
-            console.log( this.typeDef );
-            console.log( "*******************************" );
-            console.log( "*******************************" );
+            console.log("*******************************");
+            console.log("*******************************");
+            console.log("Type Defs", this.typeDef);
+            console.log("*******************************");
+            console.log("*******************************");
+            console.log("Data Sources", this.dataSources);
+            console.log("*******************************");
+            console.log("*******************************");
 
             const schema = makeExecutableSchema( {
                 typeDefs: this.typeDef,
                 resolvers: this.resolvers
             } );
 
-            this.apolloServer = new ApolloServer( {
+            this.apolloServer = new ApolloServer({
                 schema,
-                introspection: true,
-                playground: true,
-            } );
+                dataSources: () => this.dataSources,
+                context: () => {
+                    return {
+                        token: ''
+                    }
+                }
+            });
 
             this.apolloServer.applyMiddleware( {app: expressApp, path: apiPath} );
             core.logger.log( ' CoreGraphQL apolloServer middleware applied to express!' );
