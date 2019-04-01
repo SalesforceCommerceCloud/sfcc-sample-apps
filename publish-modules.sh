@@ -38,6 +38,11 @@ cd ../contentapi
 npm run clean
 npm run pub
 
+# CUSTOMERAPI
+cd ../customerapi
+npm run clean
+npm run pub
+
 
 cd ../../../
 
