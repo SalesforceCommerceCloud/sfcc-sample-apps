@@ -3,49 +3,48 @@ import {core, API_EXTENSIONS_KEY} from '@sfcc-dev/core';
 import { resolverFactory, dataSourcesFactory } from "@sfcc-dev/core-graphql";
 
 import {
-    productDetailsTypeDef,
-    productDetailsResolver,
-    productSearchTypeDef,
-    productSearchResolver
+    customerTypeDef,
+    customerResolver,
+    customerDataSource
 } from './api/index';
 
-export default class ProductAPI {
+export default class CustomerAPI {
     constructor(core) {
         this.core = core;
-        this.core.logger.log('ProductAPI.constructor(core)')
+        this.core.logger.log('CustomerAPI.constructor(core)')
     }
 
     get typeDefs() {
         core.logger.log('===========================');
         core.logger.log('===========================');
-        core.logger.log('ProductAPI.typeDefs()', productDetailsTypeDef, productSearchTypeDef);
+        core.logger.log('CustomerAPI.typeDefs()', customerTypeDef);
         core.logger.log('===========================');
         core.logger.log('===========================');
-        return [productDetailsTypeDef, productSearchTypeDef];
+        return [customerTypeDef];
     }
 
     getResolvers(config) {
         core.logger.log('===========================');
         core.logger.log('===========================');
-        core.logger.log('ProductAPI.getResolvers()', config);
+        core.logger.log('CustomerAPI.getResolvers()', config);
         core.logger.log('===========================');
         core.logger.log('===========================');
-        return resolverFactory(config,[productDetailsResolver, productSearchResolver]);
+        return resolverFactory(config,[customerResolver]);
     }
 
     getDataSources(config) {
         core.logger.log('===========================');
         core.logger.log('===========================');
-        core.logger.log('ProductAPI.getDataSources()', config);
+        core.logger.log('CustomerAPI.getDataSources()', config);
         core.logger.log('===========================');
         core.logger.log('===========================');
-        return dataSourcesFactory(config, []);
+        return dataSourcesFactory(config, [customerDataSource]);
     }
 
 }
 
 core.registerExtension(API_EXTENSIONS_KEY, function (config) {
-    const productAPI = new ProductAPI(core);
-    return productAPI;
+    const customerAPI = new CustomerAPI(core);
+    return customerAPI;
 });
 
