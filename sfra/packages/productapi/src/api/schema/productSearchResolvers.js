@@ -41,14 +41,16 @@ const searchProduct = (config, query, filterParams) => {
 
 export const resolver = (config) => {
     return {
-        productSearch: (_, {query, filterParams}) => {
-            const result = searchProduct(config, query, filterParams).then((searchResult) => {
-                console.log("---- Received Search Results from API ----");
-                return new SearchResult(searchResult, filterParams);
-            });
-            console.log("==================");
-            console.log(result);
-            return result;
+        Query: {
+            productSearch: (_, {query, filterParams}) => {
+                const result = searchProduct(config, query, filterParams).then((searchResult) => {
+                    console.log("---- Received Search Results from API ----");
+                    return new SearchResult(searchResult, filterParams);
+                });
+                console.log("==================");
+                console.log(result);
+                return result;
+            }
         }
     }
 }
