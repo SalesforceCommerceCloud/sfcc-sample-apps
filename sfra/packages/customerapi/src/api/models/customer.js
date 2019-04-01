@@ -29,12 +29,13 @@ class Customer extends RESTDataSource {
         return data;
     }
 
-    async createAccount(email, password, lastName) {
+    async createAccount(email, password, firstName, lastName) {
         const body = {
             "password": password,
             "customer": {
                 "login": email,
                 "email": email,
+                "first_name": firstName,
                 "last_name": lastName
             }
         };
@@ -42,14 +43,15 @@ class Customer extends RESTDataSource {
         return data;
     }
 
-    async register (email, password, lastName) {
+    async register (email, password, firstName, lastName) {
         let result = {};
         const bearerToken = await this.getBearerToken();
-        const customerData = await this.createAccount(email, password, lastName);
+        const customerData = await this.createAccount(email, password, firstName, lastName);
 
         if (!customerData.body.fault) {
             result.customerId = customerData.body.customer_id;
             result.customerNo = customerData.body.customer_no;
+            result.firstName = customerData.body.first_name;
             result.lastName = customerData.body.last_name;
             result.email = customerData.body.email;
         } else {
