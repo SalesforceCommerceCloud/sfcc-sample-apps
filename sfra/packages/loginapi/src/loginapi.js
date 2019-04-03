@@ -1,50 +1,50 @@
 // SFRA Core Extension module
-import {core, API_EXTENSIONS_KEY} from '@sfcc-dev/core';
+import { core, API_EXTENSIONS_KEY } from '@sfcc-dev/core';
 import { resolverFactory, dataSourcesFactory } from "@sfcc-dev/core-graphql";
 
 import {
-    customerTypeDef,
-    customerResolver,
-    customerDataSource
+    loginTypeDef,
+    loginResolver,
+    loginDataSource
 } from './api/index';
 
-export default class Loginapi {
+export default class LoginAPI {
     constructor(core) {
         this.core = core;
-        this.core.logger.log('Loginapi.constructor(core)')
+        this.core.logger.log('LoginAPI.constructor(core)')
     }
 
     get typeDefs() {
         core.logger.log('===========================');
         core.logger.log('===========================');
-        core.logger.log('Loginapi.typeDefs()', customerTypeDef);
+        core.logger.log('LoginAPI.typeDefs()', loginTypeDef);
         core.logger.log('===========================');
         core.logger.log('===========================');
-        return [customerTypeDef];
+        return [loginTypeDef];
     }
 
     getResolvers(config) {
         core.logger.log('===========================');
         core.logger.log('===========================');
-        core.logger.log('Loginapi.getResolvers()', config);
+        core.logger.log('LoginAPI.getResolvers()', config);
         core.logger.log('===========================');
         core.logger.log('===========================');
-        return resolverFactory(config,[customerResolver]);
+        return resolverFactory(config,[loginResolver]);
     }
 
     getDataSources(config) {
         core.logger.log('===========================');
         core.logger.log('===========================');
-        core.logger.log('Loginapi.getDataSources()', config);
+        core.logger.log('LoginAPI.getDataSources()', config);
         core.logger.log('===========================');
         core.logger.log('===========================');
-        return dataSourcesFactory(config, [customerDataSource]);
+        return dataSourcesFactory(config, [loginDataSource]);
     }
 
 }
 
 core.registerExtension(API_EXTENSIONS_KEY, function (config) {
-    const customerAPI = new Loginapi(core);
-    return customerAPI;
+    const loginAPI = new LoginAPI(core);
+    return loginAPI;
 });
 
