@@ -4,7 +4,7 @@ export const resolver = (config) => {
     return {
         Mutation: {
             login: async (_, { email, password }, { dataSources }) => {
-                const login = await dataSources.login.getAuthToken(email, password);
+                const login = await dataSources.login.login(email, password);
                 if (!login.fault) {
                     return login;
                 } else {
