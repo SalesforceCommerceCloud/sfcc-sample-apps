@@ -24,6 +24,11 @@ cd ../core-graphql
 npm run clean
 npm run pub
 
+# CORE-REDIS
+cd ../core-redis
+npm run clean
+npm run pub
+
 # SFRA
 cd ../../../sfra
 lerna bootstrap --hoist

@@ -11,7 +11,11 @@ Object.keys(process.env).forEach(key => {
     }
 });
 
-APP_CONFIG_DATA.REDIS_URL = process.env.REDISCLOUD_URL;
+const REDIS_URL = process.env.REDISCLOUD_URL;
+if(REDIS_URL)
+{
+    APP_CONFIG_DATA.REDIS_URL = REDIS_URL;
+}
 
 export default class APIConfig {
 
