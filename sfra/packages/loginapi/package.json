@@ -1,0 +1,22 @@
+{
+  "name": "@sfcc-dev/sfra-loginapi",
+  "version": "0.0.5-sfra-alpha-13",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "cross-env rollup -c ./scripts/rollup.config.js",
+    "clean": "rm ./sfra-*.tgz; rm index.js",
+    "pub": "npm run build; npm pack; npm publish -f",
+    "publocal": "npm version patch && npm run build && npm publish --registry http://localhost:4873"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@sfcc-dev/core": "0.0.5-sfra-alpha-12",
+    "@sfcc-dev/core-graphql": "0.0.5-sfra-alpha-12",
+    "cross-env": "5.2.0",
+    "graphql": "0.13.1",
+    "request-promise": "^4.2.2",
+    "rollup": "1.1.0"
+  }
+}
