@@ -1,6 +1,6 @@
 
 module.exports = {
-  input: 'src/loginapi.js',
+  input: 'src/customerapi.js',
   output: {
     file: 'index.js',
     format: 'cjs'

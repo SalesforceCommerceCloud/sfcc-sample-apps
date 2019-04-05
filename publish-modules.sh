@@ -43,6 +43,10 @@ cd ../customerapi
 npm run clean
 npm run pub
 
+# LOGINAPI
+cd ../loginapi
+npm run clean
+npm run pub
 
 cd ../../../
 

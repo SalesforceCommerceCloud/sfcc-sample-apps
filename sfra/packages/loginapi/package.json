@@ -1,6 +1,6 @@
 {
   "name": "@sfcc-dev/sfra-loginapi",
-  "version": "0.0.5-sfra-alpha-13",
+  "version": "0.0.5-sfra-alpha-17",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -12,8 +12,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@sfcc-dev/core": "0.0.5-sfra-alpha-12",
-    "@sfcc-dev/core-graphql": "0.0.5-sfra-alpha-12",
+    "@sfcc-dev/core": "0.0.5-sfra-alpha-17",
+    "@sfcc-dev/core-graphql": "0.0.5-sfra-alpha-17",
     "cross-env": "5.2.0",
     "graphql": "0.13.1",
     "request-promise": "^4.2.2",
