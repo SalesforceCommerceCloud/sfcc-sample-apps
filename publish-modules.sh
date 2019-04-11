@@ -53,5 +53,10 @@ cd ../loginapi
 npm run clean
 npm run pub
 
+# CARTAPI
+cd ../cartapi
+npm run clean
+npm run pub
+
 cd ../../../
 

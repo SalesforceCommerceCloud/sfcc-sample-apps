@@ -112,6 +112,7 @@ export default class CoreGraphQL {
                 resolvers: this.resolvers
             } );
 
+            // TODO: create a user session module and do session management instead of using context and token.
             this.apolloServer = new ApolloServer({
                 schema,
                 dataSources: () => this.dataSources,

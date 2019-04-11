@@ -5,6 +5,8 @@ const { RESTDataSource } = require('apollo-datasource-rest');
 class Customer extends RESTDataSource {
     constructor (config) {
         super();
+
+        // TODO: have some sort of getter to be able to get the base url to support the use case where even if it changes, we still get the latest one.
         this.baseURL = config.COMMERCE_BASE_URL;
         this.clientId = config.COMMERCE_APP_API_CLIENT_ID;
     }
@@ -14,6 +16,8 @@ class Customer extends RESTDataSource {
     }
 
     async didReceiveResponse(response) {
+
+        // TODO: return just the response here, move the logic to get the authorization header in the getBearerToken() function.
         const authToken = response.headers.get('Authorization');
         const body = await response.json();
         return { body, authentication: authToken };
@@ -48,6 +52,7 @@ class Customer extends RESTDataSource {
         const bearerToken = await this.getBearerToken();
         const customerData = await this.createAccount(email, password, firstName, lastName);
 
+        // TODO: put fault and customer details in one object together like result.data and result.error
         if (!customerData.body.fault) {
             result.customerId = customerData.body.customer_id;
             result.customerNo = customerData.body.customer_no;
