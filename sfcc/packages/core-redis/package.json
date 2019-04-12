@@ -1,17 +1,22 @@
 {
-  "name": "@sfcc-dev/core",
+  "name": "@sfcc-dev/core-redis",
   "version": "0.0.5-sfra-alpha-18",
-  "description": "sfcc core registry",
-  "main": "index.js",
+  "description": "sfcc default core redis",
+  "main": "src/core-redis.js",
   "scripts": {
     "build": "cross-env rollup -c ./scripts/rollup.config.js",
     "clean": "rm ./sfcc-*.tgz; rm index.js",
     "pub": "npm run clean; npm run build; npm pack; npm publish -f"
   },
-  "author": "Jason Cooper",
+  "author": "Philip Zou",
   "license": "MIT",
   "dependencies": {
+    "redis": "^2.8.0",
+    "@sfcc-dev/apiconfig": "0.0.5-sfra-alpha-18",
+    "@sfcc-dev/core": "0.0.5-sfra-alpha-18",
     "cross-env": "5.2.0",
     "rollup": "1.1.0"
   }
 }
+
+
