@@ -18,6 +18,10 @@ class Cart extends RESTDataSource {
         return response;
     }
 
+    // TODO: convert current productapi implementation to datasource method (like this one, customerapi and loginapi) and then re-use that for products here
+    // TODO: move logic of handling bearer token out into its own module and use session management there
+    // TODO: proper error handling
+
     async getBearerToken() {
         const body = {
             "type": "guest"
@@ -28,54 +32,34 @@ class Cart extends RESTDataSource {
     }
 
     async getCart(cartId) {
-        // return {
-        //     cartId: "123",
-        //     products: [{
-        //         id: "product",
-        //         name: "product",
-        //         price: 22.40,
-        //         currency: "USD",
-        //         page_description: "something",
-        //         long_description: "something",
-        //         short_description: "something",
-        //         primary_category_id: "something",
-        //         image: "something",
-        //         images: [{
-        //             title: "something",
-        //             alt: "something",
-        //             link: "something"
-        //         }]
-        //     }]
-        // }
+        const headers = {
+            "Authorization": this.authToken
+        };
+        const cartObj = await this.get(`baskets/${cartId}`).then((response) => {
+            return response.json();
+        });
+        const cart = {
+            cartId: cartObj.basket_id,
+            products: cartObj.product_items ? cartObj.product_items.map((product) => {
+                return {
+                    productId: product.product_id,
+                    itemId: product.item_id
+                };
+            }) : []
+        };
+        return cart;
     }
 
     async createCart() {
         const bearerToken = await this.getBearerToken();
         const headers = {
-            'Authorization': this.authToken
-        }
+            "Authorization": this.authToken
+        };
         const cartObj = await this.post('baskets', {}, headers).then((response) => {
             return response.json();
         });
-        console.log(cartObj);
         const cart = {
-            cartId: cartObj.basket_id,
-            products: [{
-                id: "product",
-                name: "product",
-                price: 22.40,
-                currency: "USD",
-                page_description: "something",
-                long_description: "something",
-                short_description: "something",
-                primary_category_id: "something",
-                image: "something",
-                images: [{
-                    title: "something",
-                    alt: "something",
-                    link: "something"
-                }]
-            }]
+            cartId: cartObj.basket_id
         };
         return cart;
     }
@@ -85,8 +69,48 @@ class Cart extends RESTDataSource {
         return `cart with cartID: ${cartId} successfully deleted`;
     }
 
-    async addToCart(productId) {
-        // return `product with productId: ${productId} successfully added to cart`;
+    // TODO: convert current productapi implementation to datasource method (like this one, customerapi and loginapi) and then re-use that for products here
+
+    async addToCart(cartId, productId) {
+        const headers = {
+            "Authorization": this.authToken
+        };
+        const body = [{
+            "product_id": productId,
+            "quantity": 1.00
+        }];
+        const cartObj = await this.post(`baskets/${cartId}/items`, body).then((response) => {
+            return response.json();
+        });
+        const cart = {
+            cartId: cartObj.basket_id,
+            products: cartObj.product_items ? cartObj.product_items.map((product) => {
+                return {
+                    productId: product.product_id,
+                    itemId: product.item_id
+                };
+            }) : []
+        };
+        return cart;
+    }
+
+    async deleteFromCart(cartId, itemId) {
+        const headers = {
+            "Authorization": this.authToken
+        };
+        const cartObj = await this.delete(`baskets/${cartId}/items/${itemId}`).then((response) => {
+            return response.json();
+        });
+        const cart = {
+            cartId: cartObj.basket_id,
+            products: cartObj.product_items ? cartObj.product_items.map((product) => {
+                return {
+                    productId: product.product_id,
+                    itemId: product.item_id
+                };
+            }) : []
+        };
+        return cart;
     }
 
 }

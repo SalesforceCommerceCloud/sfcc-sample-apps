@@ -16,8 +16,11 @@ export const resolver = (config) => {
             deleteCart: async (_, { cartId }, { dataSources }) => {
                 return dataSources.cart.deleteCart(cartId);
             },
-            addToCart: async (_, { productId }, { dataSources }) => {
-                return dataSources.cart.addToCart(productId);
+            addToCart: async (_, { cartId, productId }, { dataSources }) => {
+                return dataSources.cart.addToCart(cartId, productId);
+            },
+            deleteFromCart: async (_, { cartId, itemId }, { dataSources }) => {
+                return dataSources.cart.deleteFromCart(cartId, itemId);
             }
         }
     }
