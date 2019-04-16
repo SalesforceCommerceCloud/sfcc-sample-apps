@@ -32,6 +32,7 @@ class Cart extends RESTDataSource {
     }
 
     async getCart(cartId) {
+        this.memoizedResults.clear();
         const headers = {
             "Authorization": this.authToken
         };
