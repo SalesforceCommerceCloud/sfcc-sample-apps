@@ -21,7 +21,7 @@ const processFilterParams = (filterParams) => {
 const searchProduct = (config, query, filterParams) => {
     const URL_PARAMS = `expand=images,prices,variations`;
     const URL_FILTER_PARAMS = filterParams ? processFilterParams(filterParams) : null;
-    let searchUrl = `${config.COMMERCE_BASE_URL}/product_search?client_id=${config.COMMERCE_APP_API_CLIENT_ID}&q=${query}&${URL_PARAMS}`
+    let searchUrl = `${config.COMMERCE_CLOUD_BASE_URL}/product_search?client_id=${config.COMMERCE_APP_API_CLIENT_ID}&q=${query}&${URL_PARAMS}`
     if (URL_FILTER_PARAMS) {
         searchUrl = searchUrl + URL_FILTER_PARAMS;
     }

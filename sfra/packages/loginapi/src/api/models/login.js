@@ -5,7 +5,7 @@ const { RESTDataSource } = require('apollo-datasource-rest');
 class Login extends RESTDataSource {
     constructor (config) {
         super();
-        this.baseURL = config.COMMERCE_BASE_URL;
+        this.baseURL = config.COMMERCE_CLOUD_BASE_URL;
         this.clientId = config.COMMERCE_APP_API_CLIENT_ID;
         this.authString = ""
     }
