@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`rollup-plugin-resource-hash onwrite adds to existing resource map 1`] = `
+"{
+    \\"framework://talon\\": {
+        \\"dev\\": \\"aa6f1ead02\\"
+    },
+    \\"talontest\\": {
+        \\"dev\\": \\"testfilename\\"
+    }
+}"
+`;
+
+exports[`rollup-plugin-resource-hash onwrite writes out new resource map 1`] = `
+"{
+    \\"talontest\\": {
+        \\"dev\\": \\"testfilename\\"
+    }
+}"
+`;

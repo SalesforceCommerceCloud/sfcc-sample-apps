@@ -1,0 +1,123 @@
+<template>
+    <!-- dwMarker="linclude" dwTemplateTitle="/default/account/components/registerForm.isml (app_storefront_base)" dwTemplateURL="http://localhost:60606/target=/app_storefront_base/cartridge/templates/default/account/components/registerForm.isml" -->
+    <form action="/on/demandware.store/Sites-RefArch-Site/en_US/Account-SubmitRegistration?rurl=1" class="registration" method="POST" name="profile"><!-- dwMarker="form" dwPipelineTitle="Account-SubmitRegistration (app_storefront_base)" dwIsController="true" dwPipelineURL="http://localhost:60606/target=/app_storefront_base/cartridge/controllers/Account.js&amp;start=SubmitRegistration" -->
+        <div class="form-group
+        required">
+            <label class="form-control-label" for="registration-form-fname">
+                First Name
+            </label>
+            <input type="text"
+                   class="form-control"
+                   id="registration-form-fname"
+                   name="firstname"
+                   required=""
+                   aria-required="true"
+                   value={account.firstname.value}
+                   onchange={handleAccountChange}
+                   maxlength="50">
+            <template for:each={account.firstname.errors} for:item="error">
+                <div key={error.id} class="invalid-feedback">{error.message}</div>
+            </template>
+        </div>
+
+        <div class="form-group required">
+            <label class="form-control-label" for="registration-form-lname">
+                Last Name
+            </label>
+            <input onchange={handleAccountChange} type="text" class="form-control" id="registration-form-lname" name="lastname" required="" aria-required="true" maxlength="50">
+            <template for:each={account.lastname.errors} for:item="error">
+                <div key={error.id} class="invalid-feedback">{error.message}</div>
+            </template>
+        </div>
+
+        <div class="form-group
+        required">
+            <label class="form-control-label" for="registration-form-phone">
+                Phone
+            </label>
+            <input onchange={handleAccountChange} type="text" class="form-control" id="registration-form-phone" name="phone" required="" aria-required="true" maxlength="2147483647" pattern="^\(?([2-9][0-8][0-9])\)?[\-\. ]?([2-9][0-9]{2})[\-\. ]?([0-9]{4})(\s*x[0-9]+)?$" placeholder="Example: 9234567890">
+            <template for:each={account.phone.errors} for:item="error">
+                <div key={error.id} class="invalid-feedback">{error.message}</div>
+            </template>
+        </div>
+
+        <div class="form-group
+        required">
+            <label class="form-control-label" for="registration-form-email">
+                Email
+            </label>
+            <input onchange={handleAccountChange} type="text" class="form-control" id="registration-form-email" name="email" required="" aria-required="true" maxlength="50" pattern="^[\w.%+-]+@[\w.-]+\.[\w]{2,6}$">
+            <template for:each={account.email.errors} for:item="error">
+                <div key={error.id} class="invalid-feedback">{error.message}</div>
+            </template>
+        </div>
+
+        <div class="form-group
+        required">
+            <label class="form-control-label" for="registration-form-email-confirm">
+                Confirm Email
+            </label>
+            <input onchange={handleAccountChange} onblur={handleAccountChange} type="text" class="form-control" id="registration-form-email-confirm" name="confirmemail" required="" aria-required="true" maxlength="50" pattern="^[\w.%+-]+@[\w.-]+\.[\w]{2,6}$" data-com.agilebits.onepassword.user-edited="yes">
+            <template for:each={account.confirmemail.errors} for:item="error">
+                <div key={error.id} class="invalid-feedback">{error.message}</div>
+            </template>
+        </div>
+
+        <div class="form-group
+        required">
+            <label class="form-control-label" for="registration-form-password">
+                Password
+            </label>
+            <input onchange={handleAccountChange} type="password" class="form-control" id="registration-form-password" autocomplete="off" name="password" required="" aria-required="true" maxlength="255" minlength="8" data-com.agilebits.onepassword.user-edited="yes">
+            <template for:each={account.password.errors} for:item="error">
+                <div key={error.id} class="invalid-feedback">{error.message}</div>
+            </template>
+        </div>
+
+        <div class="form-group
+        required">
+            <label class="form-control-label" for="registration-form-password-confirm">
+                Confirm Password
+            </label>
+            <input onchange={handleAccountChange} onblur={handleAccountChange} type="password" class="form-control" id="registration-form-password-confirm" autocomplete="off" name="confirmpassword" required="" aria-required="true" maxlength="255" minlength="8">
+            <template for:each={account.confirmpassword.errors} for:item="error">
+                <div key={error.id} class="invalid-feedback">{error.message}</div>
+            </template>
+        </div>
+
+        <div class="form-group custom-control custom-checkbox">
+            <input onchange={handleAccountChange} type="checkbox" class="custom-control-input" id="add-to-email-list" name="addtoemaillist" value="true">
+            <label class="custom-control-label" for="add-to-email-list">
+                Please add me to Commerce Cloud email list.
+            </label>
+        </div>
+
+        <template if:false={accountCreated}>
+            <button type="button"
+                    class="btn btn-block btn-primary"
+                    onclick={handleAccountSubmit}>
+                Create Account
+            </button>
+        </template>
+
+        <template if:true={accountCreated}>
+            <div class="alert alert-success">
+                Account Created Successfully!
+            </div>
+        </template>
+
+        <template if:true={accountCreateError}>
+            <div class="alert alert-danger">
+                Error Creating Account!
+            </div>
+        </template>
+
+        <div class="privacy-policy">
+            Commerce cloud does not share or sell personal info.
+            <a href="#">
+                See privacy policy
+            </a>
+        </div>
+    </form>
+
+</template>

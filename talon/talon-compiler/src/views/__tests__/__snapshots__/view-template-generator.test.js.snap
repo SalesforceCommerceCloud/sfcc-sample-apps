@@ -1,0 +1,143 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`view-template-generator javascript generates the right javascript 1`] = `
+"import html from './defaultView.html'
+    export default {
+        \\"html\\": html,
+        \\"attributes\\": MOCK_GENERATED_ATTRIBUTES_JS
+    }"
+`;
+
+exports[`view-template-generator javascript generates the right javascript with no attributes 1`] = `
+"import html from './defaultView.html'
+    export default {
+        \\"html\\": html,
+        \\"attributes\\": (cmp) => ({})
+    }"
+`;
+
+exports[`view-template-generator template generates the right theme layout view attributes 1`] = `
+"(cmp) => ({
+    \\"xheader_0\\": {
+        \\"label\\": \\"Header Label\\",
+        \\"class\\": \\"header\\"
+    },
+    \\"xfooter_1\\": {
+        \\"label\\": \\"Label\\",
+        \\"number\\": -3.14,
+        \\"recordId\\": (cmp.routeParams[\\"recordId\\"] || '')
+    }
+})"
+`;
+
+exports[`view-template-generator template generates the right theme layout view html 1`] = `
+"<template>
+  <x-foo>
+    <x-header label={attributes.xheader_0.label} class={attributes.xheader_0.class} slot=\\"header\\">
+    </x-header>
+    <x-left-side slot=\\"header\\">
+      <x-logo slot=\\"left-side\\">
+      </x-logo>
+    </x-left-side>
+    <x-footer label={attributes.xfooter_1.label} number={attributes.xfooter_1.number} record-id={attributes.xfooter_1.recordId} slot=\\"footer\\">
+    </x-footer>
+    <talon-router-container></talon-router-container>
+  </x-foo>
+</template>"
+`;
+
+exports[`view-template-generator template generates the right theme layout view html for designtime 1`] = `
+Object {
+  "attributes": "(cmp) => ({
+    \\"xheader_0\\": {
+        \\"label\\": \\"Header Label\\",
+        \\"class\\": \\"header\\"
+    },
+    \\"xfooter_1\\": {
+        \\"label\\": \\"Label\\",
+        \\"number\\": -3.14,
+        \\"recordId\\": (cmp.routeParams[\\"recordId\\"] || '')
+    }
+})",
+  "html": "<template>
+  <x-foo>
+    <talondesign-region-wrapper slot=\\"header\\">
+      <talondesign-drop-region></talondesign-drop-region>
+      <talondesign-component-wrapper attributes={attributes.xheader_0} name=\\"x/header\\"></talondesign-component-wrapper>
+      <talondesign-drop-region></talondesign-drop-region>
+      <talondesign-component-wrapper name=\\"x/leftSide\\"></talondesign-component-wrapper>
+      <talondesign-drop-region></talondesign-drop-region>
+    </talondesign-region-wrapper>
+    <talondesign-region-wrapper slot=\\"customHeader\\"></talondesign-region-wrapper>
+    <talondesign-region-wrapper slot=\\"footer\\">
+      <talondesign-drop-region></talondesign-drop-region>
+      <talondesign-component-wrapper attributes={attributes.xfooter_1} name=\\"x/footer\\"></talondesign-component-wrapper>
+      <talondesign-drop-region></talondesign-drop-region>
+    </talondesign-region-wrapper>
+    <talon-router-container></talon-router-container>
+  </x-foo>
+</template>",
+}
+`;
+
+exports[`view-template-generator template generates the right view attributes 1`] = `
+"(cmp) => ({
+    \\"xheader_0\\": {
+        \\"label\\": \\"Header Label\\",
+        \\"class\\": \\"header\\"
+    },
+    \\"xfooter_1\\": {
+        \\"label\\": \\"Label\\",
+        \\"number\\": -3.14,
+        \\"recordId\\": (cmp.routeParams[\\"recordId\\"] || '')
+    }
+})"
+`;
+
+exports[`view-template-generator template generates the right view html 1`] = `
+"<template>
+  <x-foo>
+    <x-header label={attributes.xheader_0.label} class={attributes.xheader_0.class} slot=\\"header\\">
+    </x-header>
+    <x-left-side slot=\\"header\\">
+      <x-logo slot=\\"left-side\\">
+      </x-logo>
+    </x-left-side>
+    <x-footer label={attributes.xfooter_1.label} number={attributes.xfooter_1.number} record-id={attributes.xfooter_1.recordId} slot=\\"footer\\">
+    </x-footer>
+  </x-foo>
+</template>"
+`;
+
+exports[`view-template-generator template generates the right view html for designtime 1`] = `
+Object {
+  "attributes": "(cmp) => ({
+    \\"xheader_0\\": {
+        \\"label\\": \\"Header Label\\",
+        \\"class\\": \\"header\\"
+    },
+    \\"xfooter_1\\": {
+        \\"label\\": \\"Label\\",
+        \\"number\\": -3.14,
+        \\"recordId\\": (cmp.routeParams[\\"recordId\\"] || '')
+    }
+})",
+  "html": "<template>
+  <x-foo>
+    <talondesign-region-wrapper slot=\\"header\\">
+      <talondesign-drop-region></talondesign-drop-region>
+      <talondesign-component-wrapper attributes={attributes.xheader_0} name=\\"x/header\\"></talondesign-component-wrapper>
+      <talondesign-drop-region></talondesign-drop-region>
+      <talondesign-component-wrapper name=\\"x/leftSide\\"></talondesign-component-wrapper>
+      <talondesign-drop-region></talondesign-drop-region>
+    </talondesign-region-wrapper>
+    <talondesign-region-wrapper slot=\\"customHeader\\"></talondesign-region-wrapper>
+    <talondesign-region-wrapper slot=\\"footer\\">
+      <talondesign-drop-region></talondesign-drop-region>
+      <talondesign-component-wrapper attributes={attributes.xfooter_1} name=\\"x/footer\\"></talondesign-component-wrapper>
+      <talondesign-drop-region></talondesign-drop-region>
+    </talondesign-region-wrapper>
+  </x-foo>
+</template>",
+}
+`;

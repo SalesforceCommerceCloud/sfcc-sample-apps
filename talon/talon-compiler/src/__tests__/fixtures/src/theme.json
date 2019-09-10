@@ -1,0 +1,10 @@
+{
+    "themeLayouts": {
+        "inner": {
+            "view": "themeLayoutInner"
+        },
+        "default": {
+            "view": "themeLayoutDefault"
+        }
+    }
+}

@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`view-generator compiles virtual modules 1`] = `
+Object {
+  "./talonGenerated/view__x/home/view__x/home.html": "<template>
+  <x-home a={attributes.xhome_0.a} b={attributes.xhome_0.b} c={attributes.xhome_0.c}>
+  </x-home>
+</template>",
+  "./talonGenerated/view__x/home/view__x/home.js": "import html from './view__x/home.html'
+    export default {
+        \\"html\\": html,
+        \\"attributes\\": (cmp) => ({
+    \\"xhome_0\\": {
+        \\"a\\": 1,
+        \\"b\\": \\"B\\",
+        \\"c\\": (cmp.routeParams[\\"param1\\"] || '')
+    }
+})
+    }",
+}
+`;
+
+exports[`view-generator generates view resource 1`] = `
+"{
+   \\"descriptor\\": \\"view://x/home\\",
+   \\"contents\\": {
+      \\"dev\\": \\"dev code\\",
+      \\"prod\\": \\"prod code\\"
+   },
+   \\"uids\\": {
+      \\"dev\\": \\"da01e4f4d2\\",
+      \\"prod\\": \\"1279a97f1e\\"
+   }
+}"
+`;

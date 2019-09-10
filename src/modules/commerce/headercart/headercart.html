@@ -1,0 +1,14 @@
+<template>
+      <div class='minicart'>
+        <div class='minicart-total hide-link-med'>
+          <a href="/cart">
+            <i class='minicart-icon fa fa-shopping-bag'></i>
+            <span class='minicart-quantity'>
+              <template if:true={quantityAvailable}>
+                  {quantity}
+              </template>
+            </span>
+          </a>
+        </div>
+      </div>
+</template>

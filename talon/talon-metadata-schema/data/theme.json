@@ -1,0 +1,15 @@
+{
+    "name": "disaster-artist",
+    "branding": "branding.json",
+    "themeLayouts": {
+        "hero": {
+            "view": "heroLayout"
+        },
+        "default": { 
+            "view": "headerAndFooter"
+        },
+        "login": { 
+            "view": "fullLayout"
+        }
+    }
+}

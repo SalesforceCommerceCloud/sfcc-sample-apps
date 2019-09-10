@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`talondesign/dropRegion renders 1`] = `
+<talondesign-drop-region>
+  #shadow-root(open)
+    <div
+      class="dropzone"
+    />
+</talondesign-drop-region>
+`;

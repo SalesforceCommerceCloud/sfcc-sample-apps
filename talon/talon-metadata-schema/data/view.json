@@ -1,0 +1,63 @@
+{
+    "name": "twocolumn",
+    "label": "Two Column Layout",
+    "component": {
+        "name": "x/twocolumn",
+        "regions": [
+            {
+                "name": "col1",
+                "label": "Main Content",
+                "components": [
+                    {
+                        "name": "x/tabset",
+                        "regions": [
+                            {
+                                "name": "tab1",
+                                "label": "First Tab",
+                                "components": [
+                                    {
+                                        "name": "x/hometab"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "tab2",
+                                "label": "Second Tab",
+                                "components": [
+                                    {
+                                        "name": "x/abouttab"
+                                    },
+                                    {
+                                        "name": "x/abouttab2"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "tab3",
+                                "label": "Third Tab"
+                            }
+                        ],
+                        "attributes": {
+                            "tab-title": "My Lovely Tabs"
+                        }
+                    }
+                ]
+            },
+            {
+                "name": "col2",
+                "label": "Sidebar Content",
+                "components": [
+                    {
+                        "name": "x/sidebar",
+                        "attributes": {
+                            "tab-title": "Home Tab"
+                        }
+                    }
+                ]
+            }
+        ],
+        "attributes": {
+            "column-padding": "10rem"
+        }
+    }
+}

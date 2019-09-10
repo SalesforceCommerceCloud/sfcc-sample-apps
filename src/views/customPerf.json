@@ -1,0 +1,8 @@
+{
+    "name": "customPerf",
+    "label": "Custom Perf",
+    "themeLayoutType": "default",
+    "component": {
+        "name": "c/customlwc_perf"
+    }
+}

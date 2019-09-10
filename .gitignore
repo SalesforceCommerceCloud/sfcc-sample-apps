@@ -59,3 +59,15 @@ typings/
 
 # next.js build output
 .next
+
+# terraform
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+
+package-lock.json
+**/package-lock.json
+
+# idea
+.idea/
+*.iml

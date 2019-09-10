@@ -1,0 +1,16 @@
+---
+"$id": http://salesforce.com/schemas/branding.schema.json
+"$schema": http://json-schema.org/draft-07/schema#
+type: array
+items:
+  "$ref": "#/definitions/brandingProperty"
+definitions:
+  brandingProperty:
+    type: object
+    additionalProperties: false
+    properties:
+      name:
+        type: string
+        description: The CSS property.
+      value:
+        type: string

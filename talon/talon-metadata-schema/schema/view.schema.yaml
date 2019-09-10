@@ -1,0 +1,47 @@
+---
+"$id": http://salesforce.com/schemas/view.schema.json
+"$schema": http://json-schema.org/draft-07/schema#
+"$ref": "#/definitions/view"
+definitions:
+  view:
+    type: object
+    required:
+    - name
+    - component
+    properties:
+      name:
+        type: string
+        description: The name of this page
+        pattern: "^[a-zA-Z0-9]+$"
+      component:
+        "$ref": "#/definitions/component"
+    description: Describes a view
+  component:
+    required:
+    - name
+    properties:
+      name:
+        type: string
+        description: The definition of the component, can be any alpha-numeric character
+          followed by a "/" followed by any alpha numeric character
+        pattern: "^[a-zA-Z0-9_]+/[a-zA-Z0-9_]+$"
+      regions:
+        type: array
+        description: The regions AKA slots of this component
+        items:
+          "$ref": "#/definitions/region"
+      attributes:
+        type: object
+        description: The exposed attributes of this component and their values.
+        "$comment": https://html.spec.whatwg.org/multipage/dom.html#attributes
+  region:
+    properties:
+      name:
+        type: string
+        description: The name of the region which corresponds to a named slot
+        pattern: "^[a-zA-Z0-9]+$"
+      components:
+        type: array
+        description: The components for this region
+        items:
+          "$ref": "#/definitions/component"

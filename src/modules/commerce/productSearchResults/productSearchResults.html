@@ -1,0 +1,68 @@
+<template>
+      <div class='container search-results'>
+        <div class='row search-nav'></div>
+
+        <div class='row'>
+          <div class='tab-content col-12'>
+            <div class='tab-pane container active' id='product-search-results' aria-expanded='true'>
+              <div class='row grid-header'>
+                <div class='result-count text-center col-12 col-md-9 col-sm-6 order-sm-2'>
+                  <p>
+                    <span if:true={loading}>Searching for </span>
+                    <span if:true={loading} class='search-keywords'>{query}</span>
+                    <span if:false={loading}>{products.length} Results for </span>
+                    <span if:false={loading} class='search-keywords'>{query}</span>
+                  </p>
+                </div>
+                <div class='col-6 col-sm-3 order-sm-1'>
+
+                    <!-- TODO: LWC-BUG: below option selected={sortOption.selected} DOES NOT WORK. see renderedCallback() -->
+
+                    <select class='custom-select' name='sort-order' onchange={newSortRule}>
+                        <template for:each={sortOptions} for:item="sortOption" >
+                            <option key={sortOption.id}
+                                    class={sortOption.id}
+                                    selected={sortOption.selected}
+                                    value={sortOption.id}>
+                                {sortOption.label}
+                            </option>
+                        </template>
+                    </select>
+                </div>
+              </div>
+
+              <template if:false={loading}>
+                <div class='row' if:true={hasProducts}>
+                  <div class='refinement-bar col-md-3'>
+                    <div class='secondary-bar col-12 offset-sm-4 offset-md-0 col-sm-4 col-md-12'>
+                      <div class='reset btn btn-block btn-outline-primary' onclick={resetRefinements}>
+                        Reset
+                      </div>
+                    </div>
+
+                    <aside>
+                      <div class='refinements'>
+                        <template for:each={refinements} for:item="refinement">
+                          <commerce-refinement
+                            key={refinement.label}
+                            refinement={refinement}>
+                          </commerce-refinement>
+                        </template>
+                      </div>
+                    </aside>
+                  </div>
+
+                  <div class='col-sm-12 col-md-9'>
+                    <div class='container'>
+                        <commerce-productlist products={products} ></commerce-productlist>
+                    </div>
+                  </div>
+                </div>
+              </template>
+
+            </div>
+          </div>
+          <!--<div className={'lmask' + (!this.loading ? ' js-hidden' : '')} />-->
+        </div>
+      </div>
+</template>

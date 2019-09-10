@@ -1,0 +1,32 @@
+<template>
+    <!--<div key={refinement.attribute_id} className={'card collapsible-sm refinement refinement-' + refinement.label}>-->
+    <div key={refinement.attribute_id} class='card collapsible-sm refinement refinement-Color'>
+        <div class='card-header'>{refinement.label}</div>
+        <div class='card-body'>
+            <ul class='values content'>
+                <template for:each={refinement.values} for:item="refinementValue">
+                    <!--const isSelected = this.props.selectedValues && this.props.selectedValues.indexOf(refinement.value) > -1;-->
+
+                    <li
+                        key={refinementValue.key}
+                        class={refinementValue.labelLowerClass}
+                        title={refinementValue.title}
+                        onclick={refinementValue.toggleRefinement}>
+
+                        <!-- Show circle or circle-check for non color items -->
+                        <i if:false={refinementValue.isColor} class={refinementValue.checkStateClasses}></i>
+
+                        <span
+                            title={refinementValue.title}
+                            class={refinementValue.colorClassNames}>
+                            <span if:false={refinementValue.isColor}>
+                                {refinementValue.label} {refinementValue.hit_count}
+                            </span>
+                        </span>
+                    </li>
+
+                </template>
+            </ul>
+        </div>
+    </div>
+</template>

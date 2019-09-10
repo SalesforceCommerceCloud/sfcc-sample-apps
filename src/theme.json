@@ -1,0 +1,13 @@
+{
+    "name": "disaster-artist",
+    "label": "Disaster Artist",
+    "branding": "branding.json",
+    "themeLayouts": {
+        "commerce": {
+            "view": "commerceLayout"
+        },
+        "default": {
+            "view": "commerceLayout"
+        }
+    }
+}

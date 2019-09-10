@@ -1,0 +1,32 @@
+---
+"$id": http://salesforce.com/schemas/routes.schema.json
+"$schema": http://json-schema.org/draft-07/schema#
+type: array
+items:
+  "$ref": "#/definitions/route"
+minItems: 2
+definitions:
+  route:
+    type: object
+    required:
+    - name
+    - path
+    - view
+    properties:
+      name:
+        type: string
+        pattern: "^[A-Za-z0-9_-]+$"
+      path:
+        type: string
+        description: The relative path for this route, not including the path prefix
+      isRoot:
+        type: boolean
+        description: Used to determine if this is the home, if a route is not found, we can serve a 404 or redirect here
+        default: false
+      isDefault:
+        type: boolean
+        description: Used as the 404 or error if nothing else is found
+        default: false
+      view:
+        type: string
+        description: The view to route to, views are defined in /views

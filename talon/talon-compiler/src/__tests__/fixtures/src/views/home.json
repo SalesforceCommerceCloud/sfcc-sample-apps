@@ -1,0 +1,13 @@
+{
+    "name": "home",
+    "label": "Home",
+    "themeLayoutType": "inner",
+    "component": {
+        "name": "x/home",
+        "attributes": {
+            "a": 1,
+            "b": "B",
+            "c": "{!param1}"
+        }
+    }
+}

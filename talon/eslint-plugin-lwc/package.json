@@ -1,0 +1,94 @@
+{
+  "_from": "eslint-plugin-lwc",
+  "_id": "eslint-plugin-lwc@0.5.2",
+  "_inBundle": false,
+  "_integrity": "sha512-z8AvAxLek0z5TdbtAAs4N6ym+ji7GMk7MrpHGykvcqqlePL5ZVEQQrnT5vHRgJowpZbTkzkXo8FAB70PvKoNKg==",
+  "_location": "/eslint-plugin-lwc",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "eslint-plugin-lwc",
+    "name": "eslint-plugin-lwc",
+    "escapedName": "eslint-plugin-lwc",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/",
+    "/@lwc-platform/sfdc-lwc-compiler"
+  ],
+  "_resolved": "https://nexus.soma.salesforce.com/nexus/content/groups/npm-all/eslint-plugin-lwc/-/6522db84713d251c393330aa56db3df6a7e38526.tgz",
+  "_shasum": "6522db84713d251c393330aa56db3df6a7e38526",
+  "_spec": "eslint-plugin-lwc",
+  "_where": "/Volumes/Share/sf/sfra-next-app",
+  "bundleDependencies": false,
+  "dependencies": {
+    "babel-eslint": "8.2.5",
+    "eslint-plugin-compat": "2.4.0",
+    "eslint-plugin-eslint-comments": "3.0.1",
+    "eslint-plugin-import": "2.13.0",
+    "eslint-plugin-jest": "21.17.0",
+    "minimatch": "3.0.4"
+  },
+  "deprecated": false,
+  "description": "Official ESLint configuration and rules for LWC",
+  "devDependencies": {
+    "eslint": "5.9.0",
+    "husky": "^0.14.3",
+    "mocha": "5.2.0",
+    "nyc": "^12.0.2",
+    "prettier": "^1.14.0"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "files": [
+    "lib"
+  ],
+  "keywords": [
+    "eslint",
+    "eslint-plugin",
+    "lwc",
+    "salesforce"
+  ],
+  "license": "MIT",
+  "main": "lib/index.js",
+  "name": "eslint-plugin-lwc",
+  "nyc": {
+    "check-coverage": true,
+    "per-file": true,
+    "lines": 95,
+    "statements": 95,
+    "functions": 95,
+    "reporter": [
+      "html",
+      "text"
+    ]
+  },
+  "peerDependencies": {
+    "eslint": "^5.0.0"
+  },
+  "prettier": {
+    "printWidth": 100,
+    "tabWidth": 4,
+    "singleQuote": true,
+    "trailingComma": "all"
+  },
+  "publishConfig": {
+    "registry": "https://npm.lwcjs.org/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.soma.salesforce.com/lwc/eslint-plugin-lwc.git"
+  },
+  "scripts": {
+    "format": "prettier --write \"{lib,test,docs}/**/*.{js,md}\"",
+    "lint": "eslint .",
+    "precommit": "npm run format && npm run lint && npm run test",
+    "test": "nyc mocha"
+  },
+  "version": "0.5.2"
+}

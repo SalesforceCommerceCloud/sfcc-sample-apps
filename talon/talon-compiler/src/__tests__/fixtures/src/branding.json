@@ -1,0 +1,15 @@
+[
+    {
+        "name": "SomeProperty",
+        "value": "some value"
+    },
+    {
+        "name": "SomeMisc",
+        "value": "misc data"
+    },
+    {
+        "name": "MySelfie",
+        "value": "/all/the/angles.jpg",
+        "type": "Image"
+    }
+]

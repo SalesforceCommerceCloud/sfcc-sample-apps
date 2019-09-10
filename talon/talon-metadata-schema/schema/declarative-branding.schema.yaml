@@ -1,0 +1,25 @@
+---
+"$id": http://salesforce.com/schemas/declarative-branding.schema.json
+"$schema": http://json-schema.org/draft-07/schema#
+type: array
+items:
+  allOf:
+  - "$ref": branding.schema.json#/definitions/brandingProperty
+  - required:
+    - label
+    properties:
+      label:
+        type: string
+        description: The label of this theme for display in a builder
+      type: 
+        type: string
+        enum:
+        - Color
+        - Font
+        - Image
+        - Picklist
+        description: The type of the branding property, determines which editor to use in the builder
+      field:
+        type: string
+      
+        

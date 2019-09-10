@@ -1,0 +1,555 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`compiler-service [integration] compiles component 1`] = `
+Object {
+  "compat": "Talon.moduleRegistry.define('x/cmp1', ['proxy-compat/setKey', 'proxy-compat/callKey2', 'lwc', '@babel/runtime/helpers/classCallCheck', '@babel/runtime/helpers/possibleConstructorReturn', '@babel/runtime/helpers/getPrototypeOf', '@babel/runtime/helpers/inherits', 'a'], function (__setKey, __callKey2, lwc, _classCallCheck, _possibleConstructorReturn, _getPrototypeOf, _inherits, a) { 'use strict';
+
+    __setKey = __setKey && __setKey.hasOwnProperty('default') ? __setKey['default'] : __setKey;
+    __callKey2 = __callKey2 && __callKey2.hasOwnProperty('default') ? __callKey2['default'] : __callKey2;
+    _classCallCheck = _classCallCheck && _classCallCheck.hasOwnProperty('default') ? _classCallCheck['default'] : _classCallCheck;
+    _possibleConstructorReturn = _possibleConstructorReturn && _possibleConstructorReturn.hasOwnProperty('default') ? _possibleConstructorReturn['default'] : _possibleConstructorReturn;
+    _getPrototypeOf = _getPrototypeOf && _getPrototypeOf.hasOwnProperty('default') ? _getPrototypeOf['default'] : _getPrototypeOf;
+    _inherits = _inherits && _inherits.hasOwnProperty('default') ? _inherits['default'] : _inherits;
+    a = a && a.hasOwnProperty('default') ? a['default'] : a;
+
+    function stylesheet(hostSelector, shadowSelector, nativeShadow) {
+      return \\"\\\\n\\" + (nativeShadow ? \\":host {color: red;}\\" : hostSelector + \\" {color: red;}\\") + \\"\\\\n\\";
+    }
+
+    var _implicitStylesheets = [stylesheet];
+
+    function tmpl($api, $cmp, $slotset, $ctx) {
+      var api_text = $api._ES5ProxyType ? $api.get(\\"t\\") : $api.t,
+          api_element = $api._ES5ProxyType ? $api.get(\\"h\\") : $api.h;
+      return [api_element(\\"h2\\", {
+        key: 2
+      }, [api_text(\\"Cmp 1\\")])];
+    }
+
+    var _tmpl = lwc.registerTemplate(tmpl);
+
+    __setKey(tmpl, \\"stylesheets\\", []);
+
+    if (_implicitStylesheets) {
+      __callKey2((tmpl._ES5ProxyType ? tmpl.get(\\"stylesheets\\") : tmpl.stylesheets).push, \\"apply\\", tmpl._ES5ProxyType ? tmpl.get(\\"stylesheets\\") : tmpl.stylesheets, _implicitStylesheets);
+    }
+
+    __setKey(tmpl, \\"stylesheetTokens\\", {
+      hostAttribute: \\"x-cmp1_cmp1-host\\",
+      shadowAttribute: \\"x-cmp1_cmp1\\"
+    });
+
+    var b = window._ES5ProxyType ? window.get(\\"B\\") : window[\\"B\\"];
+
+    var c = window._ES5ProxyType ? window.get(\\"C\\") : window[\\"C\\"];
+
+    a();
+    b();
+    c();
+
+    var Cmp1 =
+    /*#__PURE__*/
+    function (_LightningElement) {
+      _inherits(Cmp1, _LightningElement);
+
+      function Cmp1() {
+        _classCallCheck(this, Cmp1);
+
+        return _possibleConstructorReturn(this, __callKey2(_getPrototypeOf(Cmp1), \\"apply\\", this, arguments));
+      }
+
+      return Cmp1;
+    }(lwc.LightningElement);
+
+    var cmp1 = lwc.registerComponent(Cmp1, {
+      tmpl: _tmpl
+    });
+
+    return cmp1;
+
+});
+",
+  "dev": "Talon.moduleRegistry.define('x/cmp1', ['lwc', 'a'], function (lwc, a) { 'use strict';
+
+    a = a && a.hasOwnProperty('default') ? a['default'] : a;
+
+    function stylesheet(hostSelector, shadowSelector, nativeShadow) {
+      return \\"\\\\n\\" + (nativeShadow ? (\\":host {color: red;}\\") : (hostSelector + \\" {color: red;}\\")) + \\"\\\\n\\";
+    }
+    var _implicitStylesheets = [stylesheet];
+
+    function tmpl($api, $cmp, $slotset, $ctx) {
+      const {
+        t: api_text,
+        h: api_element
+      } = $api;
+      return [api_element(\\"h2\\", {
+        key: 2
+      }, [api_text(\\"Cmp 1\\")])];
+    }
+
+    var _tmpl = lwc.registerTemplate(tmpl);
+    tmpl.stylesheets = [];
+
+    if (_implicitStylesheets) {
+      tmpl.stylesheets.push.apply(tmpl.stylesheets, _implicitStylesheets);
+    }
+    tmpl.stylesheetTokens = {
+      hostAttribute: \\"x-cmp1_cmp1-host\\",
+      shadowAttribute: \\"x-cmp1_cmp1\\"
+    };
+
+    var b = window[\\"B\\"];
+
+    var c = window[\\"C\\"];
+
+    a();
+    b();
+    c();
+
+    class Cmp1 extends lwc.LightningElement {}
+
+    var cmp1 = lwc.registerComponent(Cmp1, {
+      tmpl: _tmpl
+    });
+
+    return cmp1;
+
+});
+",
+  "prod": "Talon.moduleRegistry.define(\\"x/cmp1\\",[\\"lwc\\",\\"a\\"],function(e,t){\\"use strict\\";t=t&&t.hasOwnProperty(\\"default\\")?t.default:t;var s=[function(e,t,s){return\\"\\\\n\\"+(s?\\":host {color: red;}\\":e+\\" {color: red;}\\")+\\"\\\\n\\"}];function n(e,t,s,n){const{t:r,h:o}=e;return[o(\\"h2\\",{key:2},[r(\\"Cmp 1\\")])]}var r=e.registerTemplate(n);n.stylesheets=[],s&&n.stylesheets.push.apply(n.stylesheets,s),n.stylesheetTokens={hostAttribute:\\"x-cmp1_cmp1-host\\",shadowAttribute:\\"x-cmp1_cmp1\\"};var o=window.B,l=window.C;t(),o(),l();return e.registerComponent(class extends e.LightningElement{},{tmpl:r})});",
+  "prod_compat": "Talon.moduleRegistry.define(\\"x/cmp1\\",[\\"proxy-compat/setKey\\",\\"proxy-compat/callKey2\\",\\"lwc\\",\\"@babel/runtime/helpers/classCallCheck\\",\\"@babel/runtime/helpers/possibleConstructorReturn\\",\\"@babel/runtime/helpers/getPrototypeOf\\",\\"@babel/runtime/helpers/inherits\\",\\"a\\"],function(e,t,r,s,o,n,l,a){\\"use strict\\";e=e&&e.hasOwnProperty(\\"default\\")?e.default:e,t=t&&t.hasOwnProperty(\\"default\\")?t.default:t,s=s&&s.hasOwnProperty(\\"default\\")?s.default:s,o=o&&o.hasOwnProperty(\\"default\\")?o.default:o,n=n&&n.hasOwnProperty(\\"default\\")?n.default:n,l=l&&l.hasOwnProperty(\\"default\\")?l.default:l,a=a&&a.hasOwnProperty(\\"default\\")?a.default:a;var p=[function(e,t,r){return\\"\\\\n\\"+(r?\\":host {color: red;}\\":e+\\" {color: red;}\\")+\\"\\\\n\\"}];function u(e,t,r,s){var o=e._ES5ProxyType?e.get(\\"t\\"):e.t;return[(e._ES5ProxyType?e.get(\\"h\\"):e.h)(\\"h2\\",{key:2},[o(\\"Cmp 1\\")])]}var y=r.registerTemplate(u);e(u,\\"stylesheets\\",[]),p&&t((u._ES5ProxyType?u.get(\\"stylesheets\\"):u.stylesheets).push,\\"apply\\",u._ES5ProxyType?u.get(\\"stylesheets\\"):u.stylesheets,p),e(u,\\"stylesheetTokens\\",{hostAttribute:\\"x-cmp1_cmp1-host\\",shadowAttribute:\\"x-cmp1_cmp1\\"});var h=window._ES5ProxyType?window.get(\\"B\\"):window.B,i=window._ES5ProxyType?window.get(\\"C\\"):window.C;a(),h(),i();var d=function(e){function r(){return s(this,r),o(this,t(n(r),\\"apply\\",this,arguments))}return l(r,e),r}(r.LightningElement);return r.registerComponent(d,{tmpl:y})});",
+  "prod_debug": "Talon.moduleRegistry.define('x/cmp1', ['lwc', 'a'], function (lwc, a) { 'use strict';
+
+    a = a && a.hasOwnProperty('default') ? a['default'] : a;
+
+    function stylesheet(hostSelector, shadowSelector, nativeShadow) {
+      return \\"\\\\n\\" + (nativeShadow ? (\\":host {color: red;}\\") : (hostSelector + \\" {color: red;}\\")) + \\"\\\\n\\";
+    }
+    var _implicitStylesheets = [stylesheet];
+
+    function tmpl($api, $cmp, $slotset, $ctx) {
+      const {
+        t: api_text,
+        h: api_element
+      } = $api;
+      return [api_element(\\"h2\\", {
+        key: 2
+      }, [api_text(\\"Cmp 1\\")])];
+    }
+
+    var _tmpl = lwc.registerTemplate(tmpl);
+    tmpl.stylesheets = [];
+
+    if (_implicitStylesheets) {
+      tmpl.stylesheets.push.apply(tmpl.stylesheets, _implicitStylesheets);
+    }
+    tmpl.stylesheetTokens = {
+      hostAttribute: \\"x-cmp1_cmp1-host\\",
+      shadowAttribute: \\"x-cmp1_cmp1\\"
+    };
+
+    var b = window[\\"B\\"];
+
+    var c = window[\\"C\\"];
+
+    a();
+    b();
+    c();
+
+    class Cmp1 extends lwc.LightningElement {}
+
+    var cmp1 = lwc.registerComponent(Cmp1, {
+      tmpl: _tmpl
+    });
+
+    return cmp1;
+
+});
+",
+  "prod_debug_compat": "Talon.moduleRegistry.define('x/cmp1', ['proxy-compat/setKey', 'proxy-compat/callKey2', 'lwc', '@babel/runtime/helpers/classCallCheck', '@babel/runtime/helpers/possibleConstructorReturn', '@babel/runtime/helpers/getPrototypeOf', '@babel/runtime/helpers/inherits', 'a'], function (__setKey, __callKey2, lwc, _classCallCheck, _possibleConstructorReturn, _getPrototypeOf, _inherits, a) { 'use strict';
+
+    __setKey = __setKey && __setKey.hasOwnProperty('default') ? __setKey['default'] : __setKey;
+    __callKey2 = __callKey2 && __callKey2.hasOwnProperty('default') ? __callKey2['default'] : __callKey2;
+    _classCallCheck = _classCallCheck && _classCallCheck.hasOwnProperty('default') ? _classCallCheck['default'] : _classCallCheck;
+    _possibleConstructorReturn = _possibleConstructorReturn && _possibleConstructorReturn.hasOwnProperty('default') ? _possibleConstructorReturn['default'] : _possibleConstructorReturn;
+    _getPrototypeOf = _getPrototypeOf && _getPrototypeOf.hasOwnProperty('default') ? _getPrototypeOf['default'] : _getPrototypeOf;
+    _inherits = _inherits && _inherits.hasOwnProperty('default') ? _inherits['default'] : _inherits;
+    a = a && a.hasOwnProperty('default') ? a['default'] : a;
+
+    function stylesheet(hostSelector, shadowSelector, nativeShadow) {
+      return \\"\\\\n\\" + (nativeShadow ? \\":host {color: red;}\\" : hostSelector + \\" {color: red;}\\") + \\"\\\\n\\";
+    }
+
+    var _implicitStylesheets = [stylesheet];
+
+    function tmpl($api, $cmp, $slotset, $ctx) {
+      var api_text = $api._ES5ProxyType ? $api.get(\\"t\\") : $api.t,
+          api_element = $api._ES5ProxyType ? $api.get(\\"h\\") : $api.h;
+      return [api_element(\\"h2\\", {
+        key: 2
+      }, [api_text(\\"Cmp 1\\")])];
+    }
+
+    var _tmpl = lwc.registerTemplate(tmpl);
+
+    __setKey(tmpl, \\"stylesheets\\", []);
+
+    if (_implicitStylesheets) {
+      __callKey2((tmpl._ES5ProxyType ? tmpl.get(\\"stylesheets\\") : tmpl.stylesheets).push, \\"apply\\", tmpl._ES5ProxyType ? tmpl.get(\\"stylesheets\\") : tmpl.stylesheets, _implicitStylesheets);
+    }
+
+    __setKey(tmpl, \\"stylesheetTokens\\", {
+      hostAttribute: \\"x-cmp1_cmp1-host\\",
+      shadowAttribute: \\"x-cmp1_cmp1\\"
+    });
+
+    var b = window._ES5ProxyType ? window.get(\\"B\\") : window[\\"B\\"];
+
+    var c = window._ES5ProxyType ? window.get(\\"C\\") : window[\\"C\\"];
+
+    a();
+    b();
+    c();
+
+    var Cmp1 =
+    /*#__PURE__*/
+    function (_LightningElement) {
+      _inherits(Cmp1, _LightningElement);
+
+      function Cmp1() {
+        _classCallCheck(this, Cmp1);
+
+        return _possibleConstructorReturn(this, __callKey2(_getPrototypeOf(Cmp1), \\"apply\\", this, arguments));
+      }
+
+      return Cmp1;
+    }(lwc.LightningElement);
+
+    var cmp1 = lwc.registerComponent(Cmp1, {
+      tmpl: _tmpl
+    });
+
+    return cmp1;
+
+});
+",
+}
+`;
+
+exports[`compiler-service [integration] compiles template 1`] = `
+Object {
+  "compat": "Talon.moduleRegistry.define('x/myModule', ['proxy-compat/setKey', 'proxy-compat/callKey2', 'lwc', '@babel/runtime/helpers/classCallCheck', '@babel/runtime/helpers/possibleConstructorReturn', '@babel/runtime/helpers/getPrototypeOf', '@babel/runtime/helpers/inherits', 'a'], function (__setKey, __callKey2, lwc, _classCallCheck, _possibleConstructorReturn, _getPrototypeOf, _inherits, a) { 'use strict';
+
+    __setKey = __setKey && __setKey.hasOwnProperty('default') ? __setKey['default'] : __setKey;
+    __callKey2 = __callKey2 && __callKey2.hasOwnProperty('default') ? __callKey2['default'] : __callKey2;
+    _classCallCheck = _classCallCheck && _classCallCheck.hasOwnProperty('default') ? _classCallCheck['default'] : _classCallCheck;
+    _possibleConstructorReturn = _possibleConstructorReturn && _possibleConstructorReturn.hasOwnProperty('default') ? _possibleConstructorReturn['default'] : _possibleConstructorReturn;
+    _getPrototypeOf = _getPrototypeOf && _getPrototypeOf.hasOwnProperty('default') ? _getPrototypeOf['default'] : _getPrototypeOf;
+    _inherits = _inherits && _inherits.hasOwnProperty('default') ? _inherits['default'] : _inherits;
+    a = a && a.hasOwnProperty('default') ? a['default'] : a;
+
+    function stylesheet(hostSelector, shadowSelector, nativeShadow) {
+      return \\"\\\\n\\" + (nativeShadow ? \\":host {color: red;}\\" : hostSelector + \\" {color: red;}\\") + \\"\\\\n\\";
+    }
+
+    var _implicitStylesheets = [stylesheet];
+
+    function tmpl($api, $cmp, $slotset, $ctx) {
+      var api_text = $api._ES5ProxyType ? $api.get(\\"t\\") : $api.t,
+          api_element = $api._ES5ProxyType ? $api.get(\\"h\\") : $api.h;
+      return [api_element(\\"h2\\", {
+        key: 2
+      }, [api_text(\\"Cmp 1\\")])];
+    }
+
+    var _tmpl = lwc.registerTemplate(tmpl);
+
+    __setKey(tmpl, \\"stylesheets\\", []);
+
+    if (_implicitStylesheets) {
+      __callKey2((tmpl._ES5ProxyType ? tmpl.get(\\"stylesheets\\") : tmpl.stylesheets).push, \\"apply\\", tmpl._ES5ProxyType ? tmpl.get(\\"stylesheets\\") : tmpl.stylesheets, _implicitStylesheets);
+    }
+
+    __setKey(tmpl, \\"stylesheetTokens\\", {
+      hostAttribute: \\"x-cmp1_cmp1-host\\",
+      shadowAttribute: \\"x-cmp1_cmp1\\"
+    });
+
+    var b = window._ES5ProxyType ? window.get(\\"B\\") : window[\\"B\\"];
+
+    var c = window._ES5ProxyType ? window.get(\\"C\\") : window[\\"C\\"];
+
+    a();
+    b();
+    c();
+
+    var Cmp1 =
+    /*#__PURE__*/
+    function (_LightningElement) {
+      _inherits(Cmp1, _LightningElement);
+
+      function Cmp1() {
+        _classCallCheck(this, Cmp1);
+
+        return _possibleConstructorReturn(this, __callKey2(_getPrototypeOf(Cmp1), \\"apply\\", this, arguments));
+      }
+
+      return Cmp1;
+    }(lwc.LightningElement);
+
+    var _xCmp1 = lwc.registerComponent(Cmp1, {
+      tmpl: _tmpl
+    });
+
+    function tmpl$1($api, $cmp, $slotset, $ctx) {
+      var api_custom_element = $api._ES5ProxyType ? $api.get(\\"c\\") : $api.c;
+      return [api_custom_element(\\"x-cmp1\\", _xCmp1, {
+        key: 2
+      }, [])];
+    }
+
+    var html = lwc.registerTemplate(tmpl$1);
+
+    __setKey(tmpl$1, \\"stylesheets\\", []);
+
+    __setKey(tmpl$1, \\"stylesheetTokens\\", {
+      hostAttribute: \\"x-myModule_myHtml-host\\",
+      shadowAttribute: \\"x-myModule_myHtml\\"
+    });
+
+    var myModule = {
+      html: html
+    };
+
+    return myModule;
+
+});
+",
+  "dev": "Talon.moduleRegistry.define('x/myModule', ['lwc', 'a'], function (lwc, a) { 'use strict';
+
+    a = a && a.hasOwnProperty('default') ? a['default'] : a;
+
+    function stylesheet(hostSelector, shadowSelector, nativeShadow) {
+      return \\"\\\\n\\" + (nativeShadow ? (\\":host {color: red;}\\") : (hostSelector + \\" {color: red;}\\")) + \\"\\\\n\\";
+    }
+    var _implicitStylesheets = [stylesheet];
+
+    function tmpl($api, $cmp, $slotset, $ctx) {
+      const {
+        t: api_text,
+        h: api_element
+      } = $api;
+      return [api_element(\\"h2\\", {
+        key: 2
+      }, [api_text(\\"Cmp 1\\")])];
+    }
+
+    var _tmpl = lwc.registerTemplate(tmpl);
+    tmpl.stylesheets = [];
+
+    if (_implicitStylesheets) {
+      tmpl.stylesheets.push.apply(tmpl.stylesheets, _implicitStylesheets);
+    }
+    tmpl.stylesheetTokens = {
+      hostAttribute: \\"x-cmp1_cmp1-host\\",
+      shadowAttribute: \\"x-cmp1_cmp1\\"
+    };
+
+    var b = window[\\"B\\"];
+
+    var c = window[\\"C\\"];
+
+    a();
+    b();
+    c();
+
+    class Cmp1 extends lwc.LightningElement {}
+
+    var _xCmp1 = lwc.registerComponent(Cmp1, {
+      tmpl: _tmpl
+    });
+
+    function tmpl$1($api, $cmp, $slotset, $ctx) {
+      const {
+        c: api_custom_element
+      } = $api;
+      return [api_custom_element(\\"x-cmp1\\", _xCmp1, {
+        key: 2
+      }, [])];
+    }
+
+    var html = lwc.registerTemplate(tmpl$1);
+    tmpl$1.stylesheets = [];
+    tmpl$1.stylesheetTokens = {
+      hostAttribute: \\"x-myModule_myHtml-host\\",
+      shadowAttribute: \\"x-myModule_myHtml\\"
+    };
+
+    var myModule = {
+      html
+    };
+
+    return myModule;
+
+});
+",
+  "prod": "Talon.moduleRegistry.define(\\"x/myModule\\",[\\"lwc\\",\\"a\\"],function(t,e){\\"use strict\\";e=e&&e.hasOwnProperty(\\"default\\")?e.default:e;var s=[function(t,e,s){return\\"\\\\n\\"+(s?\\":host {color: red;}\\":t+\\" {color: red;}\\")+\\"\\\\n\\"}];function r(t,e,s,r){const{t:n,h:o}=t;return[o(\\"h2\\",{key:2},[n(\\"Cmp 1\\")])]}var n=t.registerTemplate(r);r.stylesheets=[],s&&r.stylesheets.push.apply(r.stylesheets,s),r.stylesheetTokens={hostAttribute:\\"x-cmp1_cmp1-host\\",shadowAttribute:\\"x-cmp1_cmp1\\"};var o=window.B,l=window.C;e(),o(),l();var m=t.registerComponent(class extends t.LightningElement{},{tmpl:n});function u(t,e,s,r){const{c:n}=t;return[n(\\"x-cmp1\\",m,{key:2},[])]}var h=t.registerTemplate(u);return u.stylesheets=[],u.stylesheetTokens={hostAttribute:\\"x-myModule_myHtml-host\\",shadowAttribute:\\"x-myModule_myHtml\\"},{html:h}});",
+  "prod_compat": "Talon.moduleRegistry.define(\\"x/myModule\\",[\\"proxy-compat/setKey\\",\\"proxy-compat/callKey2\\",\\"lwc\\",\\"@babel/runtime/helpers/classCallCheck\\",\\"@babel/runtime/helpers/possibleConstructorReturn\\",\\"@babel/runtime/helpers/getPrototypeOf\\",\\"@babel/runtime/helpers/inherits\\",\\"a\\"],function(e,t,r,s,o,l,n,a){\\"use strict\\";e=e&&e.hasOwnProperty(\\"default\\")?e.default:e,t=t&&t.hasOwnProperty(\\"default\\")?t.default:t,s=s&&s.hasOwnProperty(\\"default\\")?s.default:s,o=o&&o.hasOwnProperty(\\"default\\")?o.default:o,l=l&&l.hasOwnProperty(\\"default\\")?l.default:l,n=n&&n.hasOwnProperty(\\"default\\")?n.default:n,a=a&&a.hasOwnProperty(\\"default\\")?a.default:a;var y=[function(e,t,r){return\\"\\\\n\\"+(r?\\":host {color: red;}\\":e+\\" {color: red;}\\")+\\"\\\\n\\"}];function u(e,t,r,s){var o=e._ES5ProxyType?e.get(\\"t\\"):e.t;return[(e._ES5ProxyType?e.get(\\"h\\"):e.h)(\\"h2\\",{key:2},[o(\\"Cmp 1\\")])]}var p=r.registerTemplate(u);e(u,\\"stylesheets\\",[]),y&&t((u._ES5ProxyType?u.get(\\"stylesheets\\"):u.stylesheets).push,\\"apply\\",u._ES5ProxyType?u.get(\\"stylesheets\\"):u.stylesheets,y),e(u,\\"stylesheetTokens\\",{hostAttribute:\\"x-cmp1_cmp1-host\\",shadowAttribute:\\"x-cmp1_cmp1\\"});var h=window._ES5ProxyType?window.get(\\"B\\"):window.B,i=window._ES5ProxyType?window.get(\\"C\\"):window.C;a(),h(),i();var d=function(e){function r(){return s(this,r),o(this,t(l(r),\\"apply\\",this,arguments))}return n(r,e),r}(r.LightningElement),m=r.registerComponent(d,{tmpl:p});function c(e,t,r,s){return[(e._ES5ProxyType?e.get(\\"c\\"):e.c)(\\"x-cmp1\\",m,{key:2},[])]}var f=r.registerTemplate(c);return e(c,\\"stylesheets\\",[]),e(c,\\"stylesheetTokens\\",{hostAttribute:\\"x-myModule_myHtml-host\\",shadowAttribute:\\"x-myModule_myHtml\\"}),{html:f}});",
+  "prod_debug": "Talon.moduleRegistry.define('x/myModule', ['lwc', 'a'], function (lwc, a) { 'use strict';
+
+    a = a && a.hasOwnProperty('default') ? a['default'] : a;
+
+    function stylesheet(hostSelector, shadowSelector, nativeShadow) {
+      return \\"\\\\n\\" + (nativeShadow ? (\\":host {color: red;}\\") : (hostSelector + \\" {color: red;}\\")) + \\"\\\\n\\";
+    }
+    var _implicitStylesheets = [stylesheet];
+
+    function tmpl($api, $cmp, $slotset, $ctx) {
+      const {
+        t: api_text,
+        h: api_element
+      } = $api;
+      return [api_element(\\"h2\\", {
+        key: 2
+      }, [api_text(\\"Cmp 1\\")])];
+    }
+
+    var _tmpl = lwc.registerTemplate(tmpl);
+    tmpl.stylesheets = [];
+
+    if (_implicitStylesheets) {
+      tmpl.stylesheets.push.apply(tmpl.stylesheets, _implicitStylesheets);
+    }
+    tmpl.stylesheetTokens = {
+      hostAttribute: \\"x-cmp1_cmp1-host\\",
+      shadowAttribute: \\"x-cmp1_cmp1\\"
+    };
+
+    var b = window[\\"B\\"];
+
+    var c = window[\\"C\\"];
+
+    a();
+    b();
+    c();
+
+    class Cmp1 extends lwc.LightningElement {}
+
+    var _xCmp1 = lwc.registerComponent(Cmp1, {
+      tmpl: _tmpl
+    });
+
+    function tmpl$1($api, $cmp, $slotset, $ctx) {
+      const {
+        c: api_custom_element
+      } = $api;
+      return [api_custom_element(\\"x-cmp1\\", _xCmp1, {
+        key: 2
+      }, [])];
+    }
+
+    var html = lwc.registerTemplate(tmpl$1);
+    tmpl$1.stylesheets = [];
+    tmpl$1.stylesheetTokens = {
+      hostAttribute: \\"x-myModule_myHtml-host\\",
+      shadowAttribute: \\"x-myModule_myHtml\\"
+    };
+
+    var myModule = {
+      html
+    };
+
+    return myModule;
+
+});
+",
+  "prod_debug_compat": "Talon.moduleRegistry.define('x/myModule', ['proxy-compat/setKey', 'proxy-compat/callKey2', 'lwc', '@babel/runtime/helpers/classCallCheck', '@babel/runtime/helpers/possibleConstructorReturn', '@babel/runtime/helpers/getPrototypeOf', '@babel/runtime/helpers/inherits', 'a'], function (__setKey, __callKey2, lwc, _classCallCheck, _possibleConstructorReturn, _getPrototypeOf, _inherits, a) { 'use strict';
+
+    __setKey = __setKey && __setKey.hasOwnProperty('default') ? __setKey['default'] : __setKey;
+    __callKey2 = __callKey2 && __callKey2.hasOwnProperty('default') ? __callKey2['default'] : __callKey2;
+    _classCallCheck = _classCallCheck && _classCallCheck.hasOwnProperty('default') ? _classCallCheck['default'] : _classCallCheck;
+    _possibleConstructorReturn = _possibleConstructorReturn && _possibleConstructorReturn.hasOwnProperty('default') ? _possibleConstructorReturn['default'] : _possibleConstructorReturn;
+    _getPrototypeOf = _getPrototypeOf && _getPrototypeOf.hasOwnProperty('default') ? _getPrototypeOf['default'] : _getPrototypeOf;
+    _inherits = _inherits && _inherits.hasOwnProperty('default') ? _inherits['default'] : _inherits;
+    a = a && a.hasOwnProperty('default') ? a['default'] : a;
+
+    function stylesheet(hostSelector, shadowSelector, nativeShadow) {
+      return \\"\\\\n\\" + (nativeShadow ? \\":host {color: red;}\\" : hostSelector + \\" {color: red;}\\") + \\"\\\\n\\";
+    }
+
+    var _implicitStylesheets = [stylesheet];
+
+    function tmpl($api, $cmp, $slotset, $ctx) {
+      var api_text = $api._ES5ProxyType ? $api.get(\\"t\\") : $api.t,
+          api_element = $api._ES5ProxyType ? $api.get(\\"h\\") : $api.h;
+      return [api_element(\\"h2\\", {
+        key: 2
+      }, [api_text(\\"Cmp 1\\")])];
+    }
+
+    var _tmpl = lwc.registerTemplate(tmpl);
+
+    __setKey(tmpl, \\"stylesheets\\", []);
+
+    if (_implicitStylesheets) {
+      __callKey2((tmpl._ES5ProxyType ? tmpl.get(\\"stylesheets\\") : tmpl.stylesheets).push, \\"apply\\", tmpl._ES5ProxyType ? tmpl.get(\\"stylesheets\\") : tmpl.stylesheets, _implicitStylesheets);
+    }
+
+    __setKey(tmpl, \\"stylesheetTokens\\", {
+      hostAttribute: \\"x-cmp1_cmp1-host\\",
+      shadowAttribute: \\"x-cmp1_cmp1\\"
+    });
+
+    var b = window._ES5ProxyType ? window.get(\\"B\\") : window[\\"B\\"];
+
+    var c = window._ES5ProxyType ? window.get(\\"C\\") : window[\\"C\\"];
+
+    a();
+    b();
+    c();
+
+    var Cmp1 =
+    /*#__PURE__*/
+    function (_LightningElement) {
+      _inherits(Cmp1, _LightningElement);
+
+      function Cmp1() {
+        _classCallCheck(this, Cmp1);
+
+        return _possibleConstructorReturn(this, __callKey2(_getPrototypeOf(Cmp1), \\"apply\\", this, arguments));
+      }
+
+      return Cmp1;
+    }(lwc.LightningElement);
+
+    var _xCmp1 = lwc.registerComponent(Cmp1, {
+      tmpl: _tmpl
+    });
+
+    function tmpl$1($api, $cmp, $slotset, $ctx) {
+      var api_custom_element = $api._ES5ProxyType ? $api.get(\\"c\\") : $api.c;
+      return [api_custom_element(\\"x-cmp1\\", _xCmp1, {
+        key: 2
+      }, [])];
+    }
+
+    var html = lwc.registerTemplate(tmpl$1);
+
+    __setKey(tmpl$1, \\"stylesheets\\", []);
+
+    __setKey(tmpl$1, \\"stylesheetTokens\\", {
+      hostAttribute: \\"x-myModule_myHtml-host\\",
+      shadowAttribute: \\"x-myModule_myHtml\\"
+    });
+
+    var myModule = {
+      html: html
+    };
+
+    return myModule;
+
+});
+",
+}
+`;

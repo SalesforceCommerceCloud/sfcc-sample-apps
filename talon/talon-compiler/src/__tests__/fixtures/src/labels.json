@@ -1,0 +1,11 @@
+{
+  "home": {
+    "welcome": "Welcome!"
+  }, 
+  "myPage": {
+    "title": "My Page"
+  },
+  "error": {
+    "errorOccured": "An error occured"
+  }
+}

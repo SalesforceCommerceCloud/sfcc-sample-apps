@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>Salesforce Headless Commerce with LWC and Talon</title>
+
+    <script>
+        window.process = window.process || {env: {DEBUG: undefined}}
+    </script>
+    <script src="{{ basePath }}/assets/js/libs.js?{{ versionKey }}"></script>
+    <script src="/apiconfig.js?{{ versionKey }}"></script>
+
+    {{ talonInit context }}
+    <!-- Your custom scripts here -->
+    {{ talonViews context }}
+
+    <script type="text/javascript" nonce="{{ sourceNonce }}">console.log("This script should NOT be blocked by CSP");</script>
+
+    <link rel="manifest" href="{{ basePath }}/assets/manifest.json?{{ versionKey }}">
+    <link rel="shortcut icon" href="{{ basePath }}/assets/favicon.ico?{{ versionKey }}">
+
+    <link rel="stylesheet" href="{{ basePath }}/assets/css/global.css?{{ versionKey }}">
+    <link rel="stylesheet" href="{{ basePath }}/assets/css/search.css?{{ versionKey }}">
+    <link rel="stylesheet" href="{{ basePath }}/assets/css/homePage.css?{{ versionKey }}">
+
+    <link rel="stylesheet" href="{{ basePath }}/assets/css/account.css?{{ versionKey }}">
+    <link rel="stylesheet" href="{{ basePath }}/assets/css/login.css?{{ versionKey }}">
+    <link rel="stylesheet" href="{{ basePath }}/assets/css/cart.css?{{ versionKey }}">
+
+</head>
+
+<body id="main">
+{{ talonApp context "main" }}
+</body>
+
+</html>

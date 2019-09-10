@@ -1,0 +1,20 @@
+<template>
+    <div class='search hidden-xs-down'>
+        <div class='site-search'>
+            <!--<form role='search' onSubmit={(e) => e.preventDefault()}>-->
+            <form role='search'>
+                <span class='fa fa-search'></span>
+                <input class='form-control search-field'
+                       type='search'
+                       value={query}
+                       name='q'
+                       onkeypress={handleKeyUp}
+                       autofocus>
+                <!--<input class='form-control search-field' type='search' name='q' ref={input => (this.search = input)}&ndash;&gt; onKeyPress={this.handleKeyPress} defaultValue='' />-->
+                <!--<Link to={url} ref={input => (this.searchButton = input)}>-->
+                <i class='fa fa-search'></i>
+                <!--</Link>-->
+            </form>
+        </div>
+    </div>
+</template>

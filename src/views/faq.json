@@ -1,0 +1,8 @@
+{
+    "name": "faq",
+    "label": "Frequently Asked Questions",
+    "themeLayoutType": "default",
+    "component": {
+        "name": "commerce/faq"
+    }
+}
