@@ -1,9 +1,0 @@
-schemas:
-- branding
-- declarative-branding
-- routes
-- declarative-routes
-- theme
-- declarative-theme
-- view
-- declarative-view

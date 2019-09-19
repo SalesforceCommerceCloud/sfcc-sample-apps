@@ -45,7 +45,7 @@ class Home extends LightningElement {
                 };
             });
         } catch (e) {
-            return null;
+            return console.log('Error in Home connectedCallback():',  e);
         }
 
         // fetchContents( [ 'home-main', 'home-categories' ] )

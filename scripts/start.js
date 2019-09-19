@@ -6,6 +6,6 @@ require('@babel/register')({
 require("@babel/core").transform("code", {
     plugins: ["@babel/plugin-transform-runtime"],
   });
-  
+
 // Import the rest of our application.
 module.exports = require('./runtime.js')
