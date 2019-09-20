@@ -20,7 +20,7 @@ import {
 // ****************************************************
 // Instantiate the new Storefront Reference Application
 // ****************************************************
-import {sfraDemoApp} from './sfra-demo-app';
+import {sampleApp} from './sample-app';
 
 /**
  * Constants
@@ -38,36 +38,36 @@ const mode = process.env.NODE_ENV || 'development';
     await startContext({templateDir: '.'});
 
     // Create Express Instance, register it with demo app and start demo app.
-    sfraDemoApp.expressApplication = express();
-    sfraDemoApp.start();
-    sfraDemoApp.expressApplication.use(compression());
+    sampleApp.expressApplication = express();
+    sampleApp.start();
+    sampleApp.expressApplication.use(compression());
 
     // Resource middleware, compile component or views if needed and redirect to the generated resource
-    sfraDemoApp.expressApplication.use(resourceMiddleware());
+    sampleApp.expressApplication.use(resourceMiddleware());
 
     // Serve up all static files including framework files, template files, and Salesforce static resources
-    sfraDemoApp.expressApplication.use(staticMiddleware());
+    sampleApp.expressApplication.use(staticMiddleware());
 
     // Serve up the page for the current route depending on the path
-    sfraDemoApp.expressApplication.get(`*`, templateMiddleware());
+    sampleApp.expressApplication.get(`*`, templateMiddleware());
 
     if (mode !== 'production') {
         // Error handling
-        sfraDemoApp.expressApplication.use(compileErrorMiddleware());
+        sampleApp.expressApplication.use(compileErrorMiddleware());
     }
 
     // Serve up static files
-    sfraDemoApp.expressApplication.use('/', express.static(publicDir, {
+    sampleApp.expressApplication.use('/', express.static(publicDir, {
         index: false,
         immutable: true,
         maxAge: 31536000
     }));
 
     // start the server
-    const server = sfraDemoApp.expressApplication.listen(port, () => {
+    const server = sampleApp.expressApplication.listen(port, () => {
         console.log('======== Example SFRA runtime ======== ');
         console.log(`🌩 Client Server up on ==============> http://localhost:${server.address().port} <=========== Client UI ========== 🌩`.yellow);
-        console.log(`🚀 Apollo GraphQL Server up on ======> http://localhost:${server.address().port}${sfraDemoApp.apiConfig.config.COMMERCE_API_PATH} <=== Apollo GraphQL ===== 🚀`.blue);
+        console.log(`🚀 Apollo GraphQL Server up on ======> http://localhost:${server.address().port}${sampleApp.apiConfig.config.COMMERCE_API_PATH} <=== Apollo GraphQL ===== 🚀`.blue);
     });
 
     return server;

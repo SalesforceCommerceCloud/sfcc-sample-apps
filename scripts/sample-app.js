@@ -11,10 +11,10 @@ import API_CONFIG_DATA from './api'; // Our Application Specific API Configurati
 //
 // SFRA Extensions/Services
 //
-import '@sfcc-dev/sfra-productapi';
-import '@sfcc-dev/sfra-contentapi';
-import '@sfcc-dev/sfra-customerapi';
-import '@sfcc-dev/sfra-loginapi';
+import '@sfcc-dev/sfcc-productapi';
+import '@sfcc-dev/sfcc-contentapi';
+import '@sfcc-dev/sfcc-customerapi';
+import '@sfcc-dev/sfcc-loginapi';
 
 //
 // Import Keys needed to access core services end extensions
@@ -23,7 +23,7 @@ import {CORE_GRAPHQL_KEY, EXPRESS_KEY} from '@sfcc-dev/core-graphql';
 import {LOGGER_KEY, API_EXTENSIONS_KEY} from '@sfcc-dev/core';
 import {API_CONFIG_KEY} from "@sfcc-dev/apiconfig";
 
-class SFRADemoApp {
+class SampleApp {
 
     /**
      * Initialize the Application
@@ -83,5 +83,5 @@ class SFRADemoApp {
     }
 }
 
-const singleton = new SFRADemoApp(API_CONFIG_DATA);
-export const sfraDemoApp = singleton;
+const singleton = new SampleApp(API_CONFIG_DATA);
+export const sampleApp = singleton;
