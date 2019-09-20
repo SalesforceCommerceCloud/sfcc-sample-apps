@@ -2636,8 +2636,10 @@
       for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
           t[p] = s[p];
       if (s != null && typeof Object.getOwnPropertySymbols === "function")
-          for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-              t[p[i]] = s[p[i]];
+          for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+              if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                  t[p[i]] = s[p[i]];
+          }
       return t;
   }
 
@@ -2731,6 +2733,13 @@
       return ar;
   }
 
+  function __spreadArrays() {
+      for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+      for (var r = Array(s), k = 0, i = 0; i < il; i++)
+          for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+              r[k] = a[j];
+      return r;
+  }
   function __await(v) {
       return this instanceof __await ? (this.v = v, this) : new __await(v);
   }
@@ -2790,6 +2799,7 @@
     __values: __values,
     __read: __read,
     __spread: __spread,
+    __spreadArrays: __spreadArrays,
     __await: __await,
     __asyncGenerator: __asyncGenerator,
     __asyncDelegator: __asyncDelegator,
@@ -3397,7 +3407,9 @@
       __extends(InvariantError, _super);
       function InvariantError(message) {
           if (message === void 0) { message = genericMessage; }
-          var _this = _super.call(this, message) || this;
+          var _this = _super.call(this, typeof message === "number"
+              ? genericMessage + ": " + message + " (see https://github.com/apollographql/invariant-packages)"
+              : message) || this;
           _this.framesToPop = 1;
           _this.name = genericMessage;
           setPrototypeOf(_this, InvariantError.prototype);
@@ -3410,24 +3422,37 @@
           throw new InvariantError(message);
       }
   }
+  function wrapConsoleMethod(method) {
+      return function () {
+          return console[method].apply(console, arguments);
+      };
+  }
   (function (invariant) {
-      function warn() {
-          var args = [];
-          for (var _i = 0; _i < arguments.length; _i++) {
-              args[_i] = arguments[_i];
-          }
-          return console.warn.apply(console, args);
-      }
-      invariant.warn = warn;
-      function error() {
-          var args = [];
-          for (var _i = 0; _i < arguments.length; _i++) {
-              args[_i] = arguments[_i];
-          }
-          return console.error.apply(console, args);
-      }
-      invariant.error = error;
+      invariant.warn = wrapConsoleMethod("warn");
+      invariant.error = wrapConsoleMethod("error");
   })(invariant$1 || (invariant$1 = {}));
+  // Code that uses ts-invariant with rollup-plugin-invariant may want to
+  // import this process stub to avoid errors evaluating process.env.NODE_ENV.
+  // However, because most ESM-to-CJS compilers will rewrite the process import
+  // as tsInvariant.process, which prevents proper replacement by minifiers, we
+  // also attempt to define the stub globally when it is not already defined.
+  var processStub = { env: {} };
+  if (typeof process$1 === "object") {
+      processStub = process$1;
+  }
+  else
+      try {
+          // Using Function to evaluate this assignment in global scope also escapes
+          // the strict mode of the current module, thereby allowing the assignment.
+          // Inspired by https://github.com/facebook/regenerator/pull/369.
+          Function("stub", "process = stub")(processStub);
+      }
+      catch (atLeastWeTried) {
+          // The assignment can fail if a Content Security Policy heavy-handedly
+          // forbids Function usage. In those environments, developers should take
+          // extra care to replace process.env.NODE_ENV in their production builds,
+          // or define an appropriate global.process polyfill.
+      }
 
   var fastJsonStableStringify = function (data, opts) {
       if (!opts) opts = {};
@@ -3486,6 +3511,132 @@
           return '{' + out + '}';
       })(data);
   };
+
+  var _a$1 = Object.prototype, toString = _a$1.toString, hasOwnProperty = _a$1.hasOwnProperty;
+  var previousComparisons = new Map();
+  /**
+   * Performs a deep equality check on two JavaScript values, tolerating cycles.
+   */
+  function equal(a, b) {
+      try {
+          return check(a, b);
+      }
+      finally {
+          previousComparisons.clear();
+      }
+  }
+  function check(a, b) {
+      // If the two values are strictly equal, our job is easy.
+      if (a === b) {
+          return true;
+      }
+      // Object.prototype.toString returns a representation of the runtime type of
+      // the given value that is considerably more precise than typeof.
+      var aTag = toString.call(a);
+      var bTag = toString.call(b);
+      // If the runtime types of a and b are different, they could maybe be equal
+      // under some interpretation of equality, but for simplicity and performance
+      // we just return false instead.
+      if (aTag !== bTag) {
+          return false;
+      }
+      switch (aTag) {
+          case '[object Array]':
+              // Arrays are a lot like other objects, but we can cheaply compare their
+              // lengths as a short-cut before comparing their elements.
+              if (a.length !== b.length)
+                  return false;
+          // Fall through to object case...
+          case '[object Object]': {
+              if (previouslyCompared(a, b))
+                  return true;
+              var aKeys = Object.keys(a);
+              var bKeys = Object.keys(b);
+              // If `a` and `b` have a different number of enumerable keys, they
+              // must be different.
+              var keyCount = aKeys.length;
+              if (keyCount !== bKeys.length)
+                  return false;
+              // Now make sure they have the same keys.
+              for (var k = 0; k < keyCount; ++k) {
+                  if (!hasOwnProperty.call(b, aKeys[k])) {
+                      return false;
+                  }
+              }
+              // Finally, check deep equality of all child properties.
+              for (var k = 0; k < keyCount; ++k) {
+                  var key = aKeys[k];
+                  if (!check(a[key], b[key])) {
+                      return false;
+                  }
+              }
+              return true;
+          }
+          case '[object Error]':
+              return a.name === b.name && a.message === b.message;
+          case '[object Number]':
+              // Handle NaN, which is !== itself.
+              if (a !== a)
+                  return b !== b;
+          // Fall through to shared +a === +b case...
+          case '[object Boolean]':
+          case '[object Date]':
+              return +a === +b;
+          case '[object RegExp]':
+          case '[object String]':
+              return a == "" + b;
+          case '[object Map]':
+          case '[object Set]': {
+              if (a.size !== b.size)
+                  return false;
+              if (previouslyCompared(a, b))
+                  return true;
+              var aIterator = a.entries();
+              var isMap = aTag === '[object Map]';
+              while (true) {
+                  var info = aIterator.next();
+                  if (info.done)
+                      break;
+                  // If a instanceof Set, aValue === aKey.
+                  var _a = info.value, aKey = _a[0], aValue = _a[1];
+                  // So this works the same way for both Set and Map.
+                  if (!b.has(aKey)) {
+                      return false;
+                  }
+                  // However, we care about deep equality of values only when dealing
+                  // with Map structures.
+                  if (isMap && !check(aValue, b.get(aKey))) {
+                      return false;
+                  }
+              }
+              return true;
+          }
+      }
+      // Otherwise the values are not equal.
+      return false;
+  }
+  function previouslyCompared(a, b) {
+      // Though cyclic references can make an object graph appear infinite from the
+      // perspective of a depth-first traversal, the graph still contains a finite
+      // number of distinct object references. We use the previousComparisons cache
+      // to avoid comparing the same pair of object references more than once, which
+      // guarantees termination (even if we end up comparing every object in one
+      // graph to every object in the other graph, which is extremely unlikely),
+      // while still allowing weird isomorphic structures (like rings with different
+      // lengths) a chance to pass the equality test.
+      var bSet = previousComparisons.get(a);
+      if (bSet) {
+          // Return true here because we can be sure false will be returned somewhere
+          // else if the objects are not equivalent.
+          if (bSet.has(b))
+              return true;
+      }
+      else {
+          previousComparisons.set(a, bSet = new Set);
+      }
+      bSet.add(b);
+      return false;
+  }
 
   function isScalarValue(value) {
       return ['StringValue', 'BooleanValue', 'EnumValue'].indexOf(value.kind) > -1;
@@ -3552,7 +3703,7 @@
           argObj[name.value] = null;
       }
       else {
-          throw new InvariantError("The inline argument \"" + name.value + "\" of kind \"" + value.kind + "\"" +
+          throw process$1.env.NODE_ENV === "production" ? new InvariantError(17) : new InvariantError("The inline argument \"" + name.value + "\" of kind \"" + value.kind + "\"" +
               'is not supported. Use variables instead of inline arguments to ' +
               'overcome this limitation.');
       }
@@ -3666,7 +3817,7 @@
           jsonObject.type === 'json');
   }
   function defaultValueFromVariable(node) {
-      throw new InvariantError("Variable nodes are not supported by valueFromNode");
+      throw process$1.env.NODE_ENV === "production" ? new InvariantError(18) : new InvariantError("Variable nodes are not supported by valueFromNode");
   }
   function valueFromNode(node, onVariable) {
       if (onVariable === void 0) { onVariable = defaultValueFromVariable; }
@@ -3706,37 +3857,18 @@
   }
   function shouldInclude(selection, variables) {
       if (variables === void 0) { variables = {}; }
-      if (!selection.directives) {
-          return true;
-      }
-      var res = true;
-      selection.directives.forEach(function (directive) {
-          if (directive.name.value !== 'skip' && directive.name.value !== 'include') {
-              return;
-          }
-          var directiveArguments = directive.arguments || [];
-          var directiveName = directive.name.value;
-          invariant$1(directiveArguments.length === 1, "Incorrect number of arguments for the @" + directiveName + " directive.");
-          var ifArgument = directiveArguments[0];
-          invariant$1(ifArgument.name && ifArgument.name.value === 'if', "Invalid argument for the @" + directiveName + " directive.");
-          var ifValue = directiveArguments[0].value;
+      return getInclusionDirectives(selection.directives).every(function (_a) {
+          var directive = _a.directive, ifArgument = _a.ifArgument;
           var evaledValue = false;
-          if (!ifValue || ifValue.kind !== 'BooleanValue') {
-              invariant$1(ifValue.kind === 'Variable', "Argument for the @" + directiveName + " directive must be a variable or a boolean value.");
-              evaledValue = variables[ifValue.name.value];
-              invariant$1(evaledValue !== void 0, "Invalid variable referenced in @" + directiveName + " directive.");
+          if (ifArgument.value.kind === 'Variable') {
+              evaledValue = variables[ifArgument.value.name.value];
+              process$1.env.NODE_ENV === "production" ? invariant$1(evaledValue !== void 0, 3) : invariant$1(evaledValue !== void 0, "Invalid variable referenced in @" + directive.name.value + " directive.");
           }
           else {
-              evaledValue = ifValue.value;
+              evaledValue = ifArgument.value.value;
           }
-          if (directiveName === 'skip') {
-              evaledValue = !evaledValue;
-          }
-          if (!evaledValue) {
-              res = false;
-          }
+          return directive.name.value === 'skip' ? !evaledValue : evaledValue;
       });
-      return res;
   }
   function getDirectiveNames(doc) {
       var names = [];
@@ -3755,13 +3887,31 @@
           hasDirectives(['client'], document) &&
           hasDirectives(['export'], document));
   }
+  function isInclusionDirective(_a) {
+      var value = _a.name.value;
+      return value === 'skip' || value === 'include';
+  }
+  function getInclusionDirectives(directives) {
+      return directives ? directives.filter(isInclusionDirective).map(function (directive) {
+          var directiveArguments = directive.arguments;
+          var directiveName = directive.name.value;
+          process$1.env.NODE_ENV === "production" ? invariant$1(directiveArguments && directiveArguments.length === 1, 4) : invariant$1(directiveArguments && directiveArguments.length === 1, "Incorrect number of arguments for the @" + directiveName + " directive.");
+          var ifArgument = directiveArguments[0];
+          process$1.env.NODE_ENV === "production" ? invariant$1(ifArgument.name && ifArgument.name.value === 'if', 5) : invariant$1(ifArgument.name && ifArgument.name.value === 'if', "Invalid argument for the @" + directiveName + " directive.");
+          var ifValue = ifArgument.value;
+          process$1.env.NODE_ENV === "production" ? invariant$1(ifValue &&
+              (ifValue.kind === 'Variable' || ifValue.kind === 'BooleanValue'), 6) : invariant$1(ifValue &&
+              (ifValue.kind === 'Variable' || ifValue.kind === 'BooleanValue'), "Argument for the @" + directiveName + " directive must be a variable or a boolean value.");
+          return { directive: directive, ifArgument: ifArgument };
+      }) : [];
+  }
 
   function getFragmentQueryDocument(document, fragmentName) {
       var actualFragmentName = fragmentName;
       var fragments = [];
       document.definitions.forEach(function (definition) {
           if (definition.kind === 'OperationDefinition') {
-              throw new InvariantError("Found a " + definition.operation + " operation" + (definition.name ? " named '" + definition.name.value + "'" : '') + ". " +
+              throw process$1.env.NODE_ENV === "production" ? new InvariantError(1) : new InvariantError("Found a " + definition.operation + " operation" + (definition.name ? " named '" + definition.name.value + "'" : '') + ". " +
                   'No operations are allowed when using a fragment as a query. Only fragments are allowed.');
           }
           if (definition.kind === 'FragmentDefinition') {
@@ -3769,7 +3919,7 @@
           }
       });
       if (typeof actualFragmentName === 'undefined') {
-          invariant$1(fragments.length === 1, "Found " + fragments.length + " fragments. `fragmentName` must be provided when there is not exactly 1 fragment.");
+          process$1.env.NODE_ENV === "production" ? invariant$1(fragments.length === 1, 2) : invariant$1(fragments.length === 1, "Found " + fragments.length + " fragments. `fragmentName` must be provided when there is not exactly 1 fragment.");
           actualFragmentName = fragments[0].name.value;
       }
       var query = __assign({}, document, { definitions: [
@@ -3815,20 +3965,20 @@
           return definition.kind === 'OperationDefinition' &&
               definition.operation === 'mutation';
       })[0];
-      invariant$1(mutationDef, 'Must contain a mutation definition.');
+      process$1.env.NODE_ENV === "production" ? invariant$1(mutationDef, 7) : invariant$1(mutationDef, 'Must contain a mutation definition.');
       return mutationDef;
   }
   function checkDocument(doc) {
-      invariant$1(doc && doc.kind === 'Document', "Expecting a parsed GraphQL document. Perhaps you need to wrap the query string in a \"gql\" tag? http://docs.apollostack.com/apollo-client/core.html#gql");
+      process$1.env.NODE_ENV === "production" ? invariant$1(doc && doc.kind === 'Document', 8) : invariant$1(doc && doc.kind === 'Document', "Expecting a parsed GraphQL document. Perhaps you need to wrap the query string in a \"gql\" tag? http://docs.apollostack.com/apollo-client/core.html#gql");
       var operations = doc.definitions
           .filter(function (d) { return d.kind !== 'FragmentDefinition'; })
           .map(function (definition) {
           if (definition.kind !== 'OperationDefinition') {
-              throw new InvariantError("Schema type definitions not allowed in queries. Found: \"" + definition.kind + "\"");
+              throw process$1.env.NODE_ENV === "production" ? new InvariantError(9) : new InvariantError("Schema type definitions not allowed in queries. Found: \"" + definition.kind + "\"");
           }
           return definition;
       });
-      invariant$1(operations.length <= 1, "Ambiguous GraphQL document: contains " + operations.length + " operations");
+      process$1.env.NODE_ENV === "production" ? invariant$1(operations.length <= 1, 10) : invariant$1(operations.length <= 1, "Ambiguous GraphQL document: contains " + operations.length + " operations");
       return doc;
   }
   function getOperationDefinition(doc) {
@@ -3837,7 +3987,7 @@
   }
   function getOperationDefinitionOrDie(document) {
       var def = getOperationDefinition(document);
-      invariant$1(def, "GraphQL document is missing an operation");
+      process$1.env.NODE_ENV === "production" ? invariant$1(def, 11) : invariant$1(def, "GraphQL document is missing an operation");
       return def;
   }
   function getOperationName(doc) {
@@ -3852,14 +4002,14 @@
   }
   function getQueryDefinition(doc) {
       var queryDef = getOperationDefinition(doc);
-      invariant$1(queryDef && queryDef.operation === 'query', 'Must contain a query definition.');
+      process$1.env.NODE_ENV === "production" ? invariant$1(queryDef && queryDef.operation === 'query', 12) : invariant$1(queryDef && queryDef.operation === 'query', 'Must contain a query definition.');
       return queryDef;
   }
   function getFragmentDefinition(doc) {
-      invariant$1(doc.kind === 'Document', "Expecting a parsed GraphQL document. Perhaps you need to wrap the query string in a \"gql\" tag? http://docs.apollostack.com/apollo-client/core.html#gql");
-      invariant$1(doc.definitions.length <= 1, 'Fragment must have exactly one definition.');
+      process$1.env.NODE_ENV === "production" ? invariant$1(doc.kind === 'Document', 13) : invariant$1(doc.kind === 'Document', "Expecting a parsed GraphQL document. Perhaps you need to wrap the query string in a \"gql\" tag? http://docs.apollostack.com/apollo-client/core.html#gql");
+      process$1.env.NODE_ENV === "production" ? invariant$1(doc.definitions.length <= 1, 14) : invariant$1(doc.definitions.length <= 1, 'Fragment must have exactly one definition.');
       var fragmentDef = doc.definitions[0];
-      invariant$1(fragmentDef.kind === 'FragmentDefinition', 'Must be a fragment definition.');
+      process$1.env.NODE_ENV === "production" ? invariant$1(fragmentDef.kind === 'FragmentDefinition', 15) : invariant$1(fragmentDef.kind === 'FragmentDefinition', 'Must be a fragment definition.');
       return fragmentDef;
   }
   function getMainDefinition(queryDoc) {
@@ -3882,7 +4032,7 @@
       if (fragmentDefinition) {
           return fragmentDefinition;
       }
-      throw new InvariantError('Expected a parsed GraphQL query with a query, mutation, subscription, or a fragment.');
+      throw process$1.env.NODE_ENV === "production" ? new InvariantError(16) : new InvariantError('Expected a parsed GraphQL query with a query, mutation, subscription, or a fragment.');
   }
   function createFragmentMap(fragments) {
       if (fragments === void 0) { fragments = []; }
@@ -4037,11 +4187,17 @@
                       return;
                   }
                   var skip = selections.some(function (selection) {
-                      return (selection.kind === 'Field' &&
+                      return (isField(selection) &&
                           (selection.name.value === '__typename' ||
                               selection.name.value.lastIndexOf('__', 0) === 0));
                   });
                   if (skip) {
+                      return;
+                  }
+                  var field = parent;
+                  if (isField(field) &&
+                      field.directives &&
+                      field.directives.some(function (d) { return d.name.value === 'export'; })) {
                       return;
                   }
                   return __assign({}, node, { selections: selections.concat([TYPENAME_FIELD]) });
@@ -4055,7 +4211,7 @@
           if (willRemove) {
               if (!directive.arguments ||
                   !directive.arguments.some(function (arg) { return arg.name.value === 'key'; })) {
-                  console.warn('Removing an @connection directive even though it does not have a key. ' +
+                  process$1.env.NODE_ENV === "production" || invariant$1.warn('Removing an @connection directive even though it does not have a key. ' +
                       'You may want to use the key parameter to specify a store key.');
               }
           }
@@ -4075,7 +4231,7 @@
   }
   function hasDirectivesInSelection(directives, selection, nestedCheck) {
       if (nestedCheck === void 0) { nestedCheck = true; }
-      if (selection.kind !== 'Field' || !selection) {
+      if (!isField(selection)) {
           return true;
       }
       if (!selection.directives) {
@@ -4170,7 +4326,7 @@
   function getAllFragmentSpreadsFromSelectionSet(selectionSet) {
       var allFragments = [];
       selectionSet.selections.forEach(function (selection) {
-          if ((selection.kind === 'Field' || selection.kind === 'InlineFragment') &&
+          if ((isField(selection) || isInlineFragment(selection)) &&
               selection.selectionSet) {
               getAllFragmentSpreadsFromSelectionSet(selection.selectionSet).forEach(function (frag) { return allFragments.push(frag); });
           }
@@ -4209,8 +4365,7 @@
                   enter: function (node) {
                       if (node.selectionSet) {
                           var isTypenameOnly = node.selectionSet.selections.every(function (selection) {
-                              return (selection.kind === 'Field' &&
-                                  selection.name.value === '__typename');
+                              return isField(selection) && selection.name.value === '__typename';
                           });
                           if (isTypenameOnly) {
                               return null;
@@ -4223,12 +4378,15 @@
       return modifiedDoc;
   }
 
-  var toString = Object.prototype.toString;
+  var canUseWeakMap = typeof WeakMap === 'function' && !(typeof navigator === 'object' &&
+      navigator.product === 'ReactNative');
+
+  var toString$1 = Object.prototype.toString;
   function cloneDeep(value) {
       return cloneDeepHelper(value, new Map());
   }
   function cloneDeepHelper(val, seen) {
-      switch (toString.call(val)) {
+      switch (toString$1.call(val)) {
           case "[object Array]": {
               if (seen.has(val))
                   return seen.get(val);
@@ -4287,38 +4445,6 @@
       return result.errors && result.errors.length;
   }
 
-  function isEqual(a, b) {
-      if (a === b) {
-          return true;
-      }
-      if (a instanceof Date && b instanceof Date) {
-          return a.getTime() === b.getTime();
-      }
-      if (a != null &&
-          typeof a === 'object' &&
-          b != null &&
-          typeof b === 'object') {
-          for (var key in a) {
-              if (Object.prototype.hasOwnProperty.call(a, key)) {
-                  if (!Object.prototype.hasOwnProperty.call(b, key)) {
-                      return false;
-                  }
-                  if (!isEqual(a[key], b[key])) {
-                      return false;
-                  }
-              }
-          }
-          for (var key in b) {
-              if (Object.prototype.hasOwnProperty.call(b, key) &&
-                  !Object.prototype.hasOwnProperty.call(a, key)) {
-                  return false;
-              }
-          }
-          return true;
-      }
-      return false;
-  }
-
   function deepFreeze(o) {
       Object.freeze(o);
       Object.getOwnPropertyNames(o).forEach(function (prop) {
@@ -4340,7 +4466,7 @@
       return obj;
   }
 
-  var hasOwnProperty = Object.prototype.hasOwnProperty;
+  var hasOwnProperty$1 = Object.prototype.hasOwnProperty;
   function mergeDeep() {
       var sources = [];
       for (var _i = 0; _i < arguments.length; _i++) {
@@ -4370,7 +4496,7 @@
           }
           Object.keys(source).forEach(function (sourceKey) {
               var sourceValue = source[sourceKey];
-              if (hasOwnProperty.call(target, sourceKey)) {
+              if (hasOwnProperty$1.call(target, sourceKey)) {
                   var targetValue = target[sourceKey];
                   if (sourceValue !== targetValue) {
                       target[sourceKey] = mergeHelper(shallowCopyForMerge(targetValue, pastCopies), sourceValue, pastCopies);
@@ -4402,19 +4528,15 @@
   var haveWarned = Object.create({});
   function warnOnceInDevelopment(msg, type) {
       if (type === void 0) { type = 'warn'; }
-      if (isProduction()) {
-          return;
-      }
-      if (!haveWarned[msg]) {
+      if (!isProduction() && !haveWarned[msg]) {
           if (!isTest()) {
               haveWarned[msg] = true;
           }
-          switch (type) {
-              case 'error':
-                  console.error(msg);
-                  break;
-              default:
-                  console.warn(msg);
+          if (type === 'error') {
+              console.error(msg);
+          }
+          else {
+              console.warn(msg);
           }
       }
   }
@@ -4424,60 +4546,62 @@
   }
 
   var bundle_esm = /*#__PURE__*/Object.freeze({
-    getDirectiveInfoFromField: getDirectiveInfoFromField,
-    shouldInclude: shouldInclude,
-    getDirectiveNames: getDirectiveNames,
-    hasDirectives: hasDirectives,
-    hasClientExports: hasClientExports,
-    getFragmentQueryDocument: getFragmentQueryDocument,
-    getMutationDefinition: getMutationDefinition,
+    addTypenameToDocument: addTypenameToDocument,
+    argumentsObjectFromField: argumentsObjectFromField,
+    assign: assign,
+    buildQueryFromSelectionSet: buildQueryFromSelectionSet,
+    canUseWeakMap: canUseWeakMap,
     checkDocument: checkDocument,
+    cloneDeep: cloneDeep,
+    createFragmentMap: createFragmentMap,
+    getDefaultValues: getDefaultValues,
+    getDirectiveInfoFromField: getDirectiveInfoFromField,
+    getDirectiveNames: getDirectiveNames,
+    getDirectivesFromDocument: getDirectivesFromDocument,
+    getEnv: getEnv,
+    getFragmentDefinition: getFragmentDefinition,
+    getFragmentDefinitions: getFragmentDefinitions,
+    getFragmentQueryDocument: getFragmentQueryDocument,
+    getInclusionDirectives: getInclusionDirectives,
+    getMainDefinition: getMainDefinition,
+    getMutationDefinition: getMutationDefinition,
     getOperationDefinition: getOperationDefinition,
     getOperationDefinitionOrDie: getOperationDefinitionOrDie,
     getOperationName: getOperationName,
-    getFragmentDefinitions: getFragmentDefinitions,
     getQueryDefinition: getQueryDefinition,
-    getFragmentDefinition: getFragmentDefinition,
-    getMainDefinition: getMainDefinition,
-    createFragmentMap: createFragmentMap,
-    getDefaultValues: getDefaultValues,
-    variablesInOperation: variablesInOperation,
-    removeDirectivesFromDocument: removeDirectivesFromDocument,
-    addTypenameToDocument: addTypenameToDocument,
-    removeConnectionDirectiveFromDocument: removeConnectionDirectiveFromDocument,
-    getDirectivesFromDocument: getDirectivesFromDocument,
-    removeArgumentsFromDocument: removeArgumentsFromDocument,
-    removeFragmentSpreadFromDocument: removeFragmentSpreadFromDocument,
-    buildQueryFromSelectionSet: buildQueryFromSelectionSet,
-    removeClientSetsFromDocument: removeClientSetsFromDocument,
-    isScalarValue: isScalarValue,
-    isNumberValue: isNumberValue,
-    valueToObjectRepresentation: valueToObjectRepresentation,
-    storeKeyNameFromField: storeKeyNameFromField,
     getStoreKeyName: getStoreKeyName,
-    argumentsObjectFromField: argumentsObjectFromField,
-    resultKeyNameFromField: resultKeyNameFromField,
-    isField: isField,
-    isInlineFragment: isInlineFragment,
-    isIdValue: isIdValue,
-    toIdValue: toIdValue,
-    isJsonValue: isJsonValue,
-    valueFromNode: valueFromNode,
-    assign: assign,
-    cloneDeep: cloneDeep,
-    getEnv: getEnv,
-    isEnv: isEnv,
-    isProduction: isProduction,
-    isDevelopment: isDevelopment,
-    isTest: isTest,
-    tryFunctionOrLogError: tryFunctionOrLogError,
     graphQLResultHasError: graphQLResultHasError,
-    isEqual: isEqual,
+    hasClientExports: hasClientExports,
+    hasDirectives: hasDirectives,
+    isDevelopment: isDevelopment,
+    isEnv: isEnv,
+    isField: isField,
+    isIdValue: isIdValue,
+    isInlineFragment: isInlineFragment,
+    isJsonValue: isJsonValue,
+    isNumberValue: isNumberValue,
+    isProduction: isProduction,
+    isScalarValue: isScalarValue,
+    isTest: isTest,
     maybeDeepFreeze: maybeDeepFreeze,
     mergeDeep: mergeDeep,
     mergeDeepArray: mergeDeepArray,
+    removeArgumentsFromDocument: removeArgumentsFromDocument,
+    removeClientSetsFromDocument: removeClientSetsFromDocument,
+    removeConnectionDirectiveFromDocument: removeConnectionDirectiveFromDocument,
+    removeDirectivesFromDocument: removeDirectivesFromDocument,
+    removeFragmentSpreadFromDocument: removeFragmentSpreadFromDocument,
+    resultKeyNameFromField: resultKeyNameFromField,
+    shouldInclude: shouldInclude,
+    storeKeyNameFromField: storeKeyNameFromField,
+    stripSymbols: stripSymbols,
+    toIdValue: toIdValue,
+    tryFunctionOrLogError: tryFunctionOrLogError,
+    valueFromNode: valueFromNode,
+    valueToObjectRepresentation: valueToObjectRepresentation,
+    variablesInOperation: variablesInOperation,
     warnOnceInDevelopment: warnOnceInDevelopment,
-    stripSymbols: stripSymbols
+    isEqual: equal
   });
 
   var Observable_1 = createCommonjsModule(function (module, exports) {
@@ -5099,382 +5223,6 @@
 
   var Observable$1 = zenObservable;
 
-  var genericMessage$1 = "Invariant Violation";
-  var _a$1 = Object.setPrototypeOf, setPrototypeOf$1 = _a$1 === void 0 ? function (obj, proto) {
-      obj.__proto__ = proto;
-      return obj;
-  } : _a$1;
-  var InvariantError$1 = /** @class */ (function (_super) {
-      __extends(InvariantError, _super);
-      function InvariantError(message) {
-          if (message === void 0) { message = genericMessage$1; }
-          var _this = _super.call(this, typeof message === "number"
-              ? genericMessage$1 + ": " + message + " (see https://github.com/apollographql/invariant-packages)"
-              : message) || this;
-          _this.framesToPop = 1;
-          _this.name = genericMessage$1;
-          setPrototypeOf$1(_this, InvariantError.prototype);
-          return _this;
-      }
-      return InvariantError;
-  }(Error));
-  function invariant$2(condition, message) {
-      if (!condition) {
-          throw new InvariantError$1(message);
-      }
-  }
-  (function (invariant) {
-      function warn() {
-          var args = [];
-          for (var _i = 0; _i < arguments.length; _i++) {
-              args[_i] = arguments[_i];
-          }
-          return console.warn.apply(console, args);
-      }
-      invariant.warn = warn;
-      function error() {
-          var args = [];
-          for (var _i = 0; _i < arguments.length; _i++) {
-              args[_i] = arguments[_i];
-          }
-          return console.error.apply(console, args);
-      }
-      invariant.error = error;
-  })(invariant$2 || (invariant$2 = {}));
-
-  /**
-   * Copyright (c) 2015-present, Facebook, Inc.
-   *
-   * This source code is licensed under the MIT license found in the
-   * LICENSE file in the root directory of this source tree.
-   */
-
-  /**
-   * Converts an AST into a string, using one set of reasonable
-   * formatting rules.
-   */
-  function print(ast) {
-    return visit(ast, { leave: printDocASTReducer });
-  }
-
-  var printDocASTReducer = {
-    Name: function Name(node) {
-      return node.value;
-    },
-    Variable: function Variable(node) {
-      return '$' + node.name;
-    },
-
-    // Document
-
-    Document: function Document(node) {
-      return join(node.definitions, '\n\n') + '\n';
-    },
-
-    OperationDefinition: function OperationDefinition(node) {
-      var op = node.operation;
-      var name = node.name;
-      var varDefs = wrap('(', join(node.variableDefinitions, ', '), ')');
-      var directives = join(node.directives, ' ');
-      var selectionSet = node.selectionSet;
-      // Anonymous queries with no directives or variable definitions can use
-      // the query short form.
-      return !name && !directives && !varDefs && op === 'query' ? selectionSet : join([op, join([name, varDefs]), directives, selectionSet], ' ');
-    },
-
-
-    VariableDefinition: function VariableDefinition(_ref) {
-      var variable = _ref.variable,
-          type = _ref.type,
-          defaultValue = _ref.defaultValue;
-      return variable + ': ' + type + wrap(' = ', defaultValue);
-    },
-
-    SelectionSet: function SelectionSet(_ref2) {
-      var selections = _ref2.selections;
-      return block(selections);
-    },
-
-    Field: function Field(_ref3) {
-      var alias = _ref3.alias,
-          name = _ref3.name,
-          args = _ref3.arguments,
-          directives = _ref3.directives,
-          selectionSet = _ref3.selectionSet;
-      return join([wrap('', alias, ': ') + name + wrap('(', join(args, ', '), ')'), join(directives, ' '), selectionSet], ' ');
-    },
-
-    Argument: function Argument(_ref4) {
-      var name = _ref4.name,
-          value = _ref4.value;
-      return name + ': ' + value;
-    },
-
-    // Fragments
-
-    FragmentSpread: function FragmentSpread(_ref5) {
-      var name = _ref5.name,
-          directives = _ref5.directives;
-      return '...' + name + wrap(' ', join(directives, ' '));
-    },
-
-    InlineFragment: function InlineFragment(_ref6) {
-      var typeCondition = _ref6.typeCondition,
-          directives = _ref6.directives,
-          selectionSet = _ref6.selectionSet;
-      return join(['...', wrap('on ', typeCondition), join(directives, ' '), selectionSet], ' ');
-    },
-
-    FragmentDefinition: function FragmentDefinition(_ref7) {
-      var name = _ref7.name,
-          typeCondition = _ref7.typeCondition,
-          variableDefinitions = _ref7.variableDefinitions,
-          directives = _ref7.directives,
-          selectionSet = _ref7.selectionSet;
-      return (
-        // Note: fragment variable definitions are experimental and may be changed
-        // or removed in the future.
-        'fragment ' + name + wrap('(', join(variableDefinitions, ', '), ')') + ' ' + ('on ' + typeCondition + ' ' + wrap('', join(directives, ' '), ' ')) + selectionSet
-      );
-    },
-
-    // Value
-
-    IntValue: function IntValue(_ref8) {
-      var value = _ref8.value;
-      return value;
-    },
-    FloatValue: function FloatValue(_ref9) {
-      var value = _ref9.value;
-      return value;
-    },
-    StringValue: function StringValue(_ref10, key) {
-      var value = _ref10.value,
-          isBlockString = _ref10.block;
-      return isBlockString ? printBlockString(value, key === 'description') : JSON.stringify(value);
-    },
-    BooleanValue: function BooleanValue(_ref11) {
-      var value = _ref11.value;
-      return value ? 'true' : 'false';
-    },
-    NullValue: function NullValue() {
-      return 'null';
-    },
-    EnumValue: function EnumValue(_ref12) {
-      var value = _ref12.value;
-      return value;
-    },
-    ListValue: function ListValue(_ref13) {
-      var values = _ref13.values;
-      return '[' + join(values, ', ') + ']';
-    },
-    ObjectValue: function ObjectValue(_ref14) {
-      var fields = _ref14.fields;
-      return '{' + join(fields, ', ') + '}';
-    },
-    ObjectField: function ObjectField(_ref15) {
-      var name = _ref15.name,
-          value = _ref15.value;
-      return name + ': ' + value;
-    },
-
-    // Directive
-
-    Directive: function Directive(_ref16) {
-      var name = _ref16.name,
-          args = _ref16.arguments;
-      return '@' + name + wrap('(', join(args, ', '), ')');
-    },
-
-    // Type
-
-    NamedType: function NamedType(_ref17) {
-      var name = _ref17.name;
-      return name;
-    },
-    ListType: function ListType(_ref18) {
-      var type = _ref18.type;
-      return '[' + type + ']';
-    },
-    NonNullType: function NonNullType(_ref19) {
-      var type = _ref19.type;
-      return type + '!';
-    },
-
-    // Type System Definitions
-
-    SchemaDefinition: function SchemaDefinition(_ref20) {
-      var directives = _ref20.directives,
-          operationTypes = _ref20.operationTypes;
-      return join(['schema', join(directives, ' '), block(operationTypes)], ' ');
-    },
-
-    OperationTypeDefinition: function OperationTypeDefinition(_ref21) {
-      var operation = _ref21.operation,
-          type = _ref21.type;
-      return operation + ': ' + type;
-    },
-
-    ScalarTypeDefinition: addDescription(function (_ref22) {
-      var name = _ref22.name,
-          directives = _ref22.directives;
-      return join(['scalar', name, join(directives, ' ')], ' ');
-    }),
-
-    ObjectTypeDefinition: addDescription(function (_ref23) {
-      var name = _ref23.name,
-          interfaces = _ref23.interfaces,
-          directives = _ref23.directives,
-          fields = _ref23.fields;
-      return join(['type', name, wrap('implements ', join(interfaces, ' & ')), join(directives, ' '), block(fields)], ' ');
-    }),
-
-    FieldDefinition: addDescription(function (_ref24) {
-      var name = _ref24.name,
-          args = _ref24.arguments,
-          type = _ref24.type,
-          directives = _ref24.directives;
-      return name + wrap('(', join(args, ', '), ')') + ': ' + type + wrap(' ', join(directives, ' '));
-    }),
-
-    InputValueDefinition: addDescription(function (_ref25) {
-      var name = _ref25.name,
-          type = _ref25.type,
-          defaultValue = _ref25.defaultValue,
-          directives = _ref25.directives;
-      return join([name + ': ' + type, wrap('= ', defaultValue), join(directives, ' ')], ' ');
-    }),
-
-    InterfaceTypeDefinition: addDescription(function (_ref26) {
-      var name = _ref26.name,
-          directives = _ref26.directives,
-          fields = _ref26.fields;
-      return join(['interface', name, join(directives, ' '), block(fields)], ' ');
-    }),
-
-    UnionTypeDefinition: addDescription(function (_ref27) {
-      var name = _ref27.name,
-          directives = _ref27.directives,
-          types = _ref27.types;
-      return join(['union', name, join(directives, ' '), types && types.length !== 0 ? '= ' + join(types, ' | ') : ''], ' ');
-    }),
-
-    EnumTypeDefinition: addDescription(function (_ref28) {
-      var name = _ref28.name,
-          directives = _ref28.directives,
-          values = _ref28.values;
-      return join(['enum', name, join(directives, ' '), block(values)], ' ');
-    }),
-
-    EnumValueDefinition: addDescription(function (_ref29) {
-      var name = _ref29.name,
-          directives = _ref29.directives;
-      return join([name, join(directives, ' ')], ' ');
-    }),
-
-    InputObjectTypeDefinition: addDescription(function (_ref30) {
-      var name = _ref30.name,
-          directives = _ref30.directives,
-          fields = _ref30.fields;
-      return join(['input', name, join(directives, ' '), block(fields)], ' ');
-    }),
-
-    ScalarTypeExtension: function ScalarTypeExtension(_ref31) {
-      var name = _ref31.name,
-          directives = _ref31.directives;
-      return join(['extend scalar', name, join(directives, ' ')], ' ');
-    },
-
-    ObjectTypeExtension: function ObjectTypeExtension(_ref32) {
-      var name = _ref32.name,
-          interfaces = _ref32.interfaces,
-          directives = _ref32.directives,
-          fields = _ref32.fields;
-      return join(['extend type', name, wrap('implements ', join(interfaces, ' & ')), join(directives, ' '), block(fields)], ' ');
-    },
-
-    InterfaceTypeExtension: function InterfaceTypeExtension(_ref33) {
-      var name = _ref33.name,
-          directives = _ref33.directives,
-          fields = _ref33.fields;
-      return join(['extend interface', name, join(directives, ' '), block(fields)], ' ');
-    },
-
-    UnionTypeExtension: function UnionTypeExtension(_ref34) {
-      var name = _ref34.name,
-          directives = _ref34.directives,
-          types = _ref34.types;
-      return join(['extend union', name, join(directives, ' '), types && types.length !== 0 ? '= ' + join(types, ' | ') : ''], ' ');
-    },
-
-    EnumTypeExtension: function EnumTypeExtension(_ref35) {
-      var name = _ref35.name,
-          directives = _ref35.directives,
-          values = _ref35.values;
-      return join(['extend enum', name, join(directives, ' '), block(values)], ' ');
-    },
-
-    InputObjectTypeExtension: function InputObjectTypeExtension(_ref36) {
-      var name = _ref36.name,
-          directives = _ref36.directives,
-          fields = _ref36.fields;
-      return join(['extend input', name, join(directives, ' '), block(fields)], ' ');
-    },
-
-    DirectiveDefinition: addDescription(function (_ref37) {
-      var name = _ref37.name,
-          args = _ref37.arguments,
-          locations = _ref37.locations;
-      return 'directive @' + name + wrap('(', join(args, ', '), ')') + ' on ' + join(locations, ' | ');
-    })
-  };
-
-  function addDescription(cb) {
-    return function (node) {
-      return join([node.description, cb(node)], '\n');
-    };
-  }
-
-  /**
-   * Given maybeArray, print an empty string if it is null or empty, otherwise
-   * print all items together separated by separator if provided
-   */
-  function join(maybeArray, separator) {
-    return maybeArray ? maybeArray.filter(function (x) {
-      return x;
-    }).join(separator || '') : '';
-  }
-
-  /**
-   * Given array, print each item on its own line, wrapped in an
-   * indented "{ }" block.
-   */
-  function block(array) {
-    return array && array.length !== 0 ? '{\n' + indent(join(array, '\n')) + '\n}' : '';
-  }
-
-  /**
-   * If maybeString is not null or empty, then wrap with start and end, otherwise
-   * print an empty string.
-   */
-  function wrap(start, maybeString, end) {
-    return maybeString ? start + maybeString + (end || '') : '';
-  }
-
-  function indent(maybeString) {
-    return maybeString && '  ' + maybeString.replace(/\n/g, '\n  ');
-  }
-
-  /**
-   * Print a block string in the indented block form by adding a leading and
-   * trailing blank line. However, if a block string starts with whitespace and is
-   * a single-line, adding a leading blank line would strip that whitespace.
-   */
-  function printBlockString(value, isDescription) {
-    var escaped = value.replace(/"""/g, '\\"""');
-    return (value[0] === ' ' || value[0] === '\t') && value.indexOf('\n') === -1 ? '"""' + escaped.replace(/"$/, '"\n') + '"""' : '"""\n' + (isDescription ? escaped : indent(escaped)) + '\n"""';
-  }
-
   function validateOperation(operation) {
       var OPERATION_FIELDS = [
           'query',
@@ -5486,7 +5234,7 @@
       for (var _i = 0, _a = Object.keys(operation); _i < _a.length; _i++) {
           var key = _a[_i];
           if (OPERATION_FIELDS.indexOf(key) < 0) {
-              throw process$1.env.NODE_ENV === "production" ? new InvariantError$1(2) : new InvariantError$1("illegal argument: " + key);
+              throw process$1.env.NODE_ENV === "production" ? new InvariantError(2) : new InvariantError("illegal argument: " + key);
           }
       }
       return operation;
@@ -5549,7 +5297,8 @@
       return operation;
   }
   function getKey(operation) {
-      return print(operation.query) + "|" + JSON.stringify(operation.variables) + "|" + operation.operationName;
+      var query = operation.query, variables = operation.variables, operationName = operation.operationName;
+      return JSON.stringify([operationName, query, variables]);
   }
 
   function passthrough(op, forward) {
@@ -5587,7 +5336,7 @@
   var concat = function (first, second) {
       var firstLink = toLink(first);
       if (isTerminating(firstLink)) {
-          process$1.env.NODE_ENV === "production" || invariant$2.warn(new LinkError("You are calling concat on a terminating link, which will have no effect", firstLink));
+          process$1.env.NODE_ENV === "production" || invariant$1.warn(new LinkError("You are calling concat on a terminating link, which will have no effect", firstLink));
           return firstLink;
       }
       var nextLink = toLink(second);
@@ -5616,7 +5365,7 @@
           return concat(this, next);
       };
       ApolloLink.prototype.request = function (operation, forward) {
-          throw process$1.env.NODE_ENV === "production" ? new InvariantError$1(1) : new InvariantError$1('request is not implemented');
+          throw process$1.env.NODE_ENV === "production" ? new InvariantError(1) : new InvariantError('request is not implemented');
       };
       ApolloLink.empty = empty;
       ApolloLink.from = from;
@@ -5662,107 +5411,6 @@
 
   var result = symbolObservablePonyfill(root);
 
-  var genericMessage$2 = "Invariant Violation";
-  var _a$2 = Object.setPrototypeOf, setPrototypeOf$2 = _a$2 === void 0 ? function (obj, proto) {
-      obj.__proto__ = proto;
-      return obj;
-  } : _a$2;
-  var InvariantError$2 = /** @class */ (function (_super) {
-      __extends(InvariantError, _super);
-      function InvariantError(message) {
-          if (message === void 0) { message = genericMessage$2; }
-          var _this = _super.call(this, message) || this;
-          _this.framesToPop = 1;
-          _this.name = genericMessage$2;
-          setPrototypeOf$2(_this, InvariantError.prototype);
-          return _this;
-      }
-      return InvariantError;
-  }(Error));
-  function invariant$3(condition, message) {
-      if (!condition) {
-          throw new InvariantError$2(message);
-      }
-  }
-  (function (invariant) {
-      function warn() {
-          var args = [];
-          for (var _i = 0; _i < arguments.length; _i++) {
-              args[_i] = arguments[_i];
-          }
-          return console.warn.apply(console, args);
-      }
-      invariant.warn = warn;
-      function error() {
-          var args = [];
-          for (var _i = 0; _i < arguments.length; _i++) {
-              args[_i] = arguments[_i];
-          }
-          return console.error.apply(console, args);
-      }
-      invariant.error = error;
-  })(invariant$3 || (invariant$3 = {}));
-
-  var DedupLink = (function (_super) {
-      __extends(DedupLink, _super);
-      function DedupLink() {
-          var _this = _super !== null && _super.apply(this, arguments) || this;
-          _this.inFlightRequestObservables = new Map();
-          _this.subscribers = new Map();
-          return _this;
-      }
-      DedupLink.prototype.request = function (operation, forward) {
-          var _this = this;
-          if (operation.getContext().forceFetch) {
-              return forward(operation);
-          }
-          var key = operation.toKey();
-          if (!this.inFlightRequestObservables.get(key)) {
-              var singleObserver_1 = forward(operation);
-              var subscription_1;
-              var sharedObserver = new Observable$1(function (observer) {
-                  if (!_this.subscribers.has(key))
-                      _this.subscribers.set(key, new Set());
-                  _this.subscribers.get(key).add(observer);
-                  if (!subscription_1) {
-                      subscription_1 = singleObserver_1.subscribe({
-                          next: function (result) {
-                              var subscribers = _this.subscribers.get(key);
-                              _this.subscribers.delete(key);
-                              _this.inFlightRequestObservables.delete(key);
-                              if (subscribers) {
-                                  subscribers.forEach(function (obs) { return obs.next(result); });
-                                  subscribers.forEach(function (obs) { return obs.complete(); });
-                              }
-                          },
-                          error: function (error) {
-                              var subscribers = _this.subscribers.get(key);
-                              _this.subscribers.delete(key);
-                              _this.inFlightRequestObservables.delete(key);
-                              if (subscribers) {
-                                  subscribers.forEach(function (obs) { return obs.error(error); });
-                              }
-                          },
-                      });
-                  }
-                  return function () {
-                      if (_this.subscribers.has(key)) {
-                          _this.subscribers.get(key).delete(observer);
-                          if (_this.subscribers.get(key).size === 0) {
-                              _this.inFlightRequestObservables.delete(key);
-                              if (subscription_1)
-                                  subscription_1.unsubscribe();
-                          }
-                      }
-                  };
-              });
-              this.inFlightRequestObservables.set(key, sharedObserver);
-          }
-          return this.inFlightRequestObservables.get(key);
-      };
-      return DedupLink;
-  }(ApolloLink));
-
   var NetworkStatus;
   (function (NetworkStatus) {
       NetworkStatus[NetworkStatus["loading"] = 1] = "loading";
@@ -5791,12 +5439,16 @@
       return Observable$$1;
   }(Observable$1));
 
+  function isNonEmptyArray(value) {
+      return Array.isArray(value) && value.length > 0;
+  }
+
   function isApolloError(err) {
       return err.hasOwnProperty('graphQLErrors');
   }
   var generateErrorMessage = function (err) {
       var message = '';
-      if (Array.isArray(err.graphQLErrors) && err.graphQLErrors.length !== 0) {
+      if (isNonEmptyArray(err.graphQLErrors)) {
           err.graphQLErrors.forEach(function (graphQLError) {
               var errorMessage = graphQLError
                   ? graphQLError.message
@@ -5839,11 +5491,8 @@
 
   var hasError = function (storeValue, policy) {
       if (policy === void 0) { policy = 'none'; }
-      return storeValue &&
-          ((storeValue.graphQLErrors &&
-              storeValue.graphQLErrors.length > 0 &&
-              policy === 'none') ||
-              storeValue.networkError);
+      return storeValue && (storeValue.networkError ||
+          (policy === 'none' && isNonEmptyArray(storeValue.graphQLErrors)));
   };
   var ObservableQuery = (function (_super) {
       __extends(ObservableQuery, _super);
@@ -5852,35 +5501,35 @@
           var _this = _super.call(this, function (observer) {
               return _this.onSubscribe(observer);
           }) || this;
+          _this.observers = new Set();
+          _this.subscriptions = new Set();
           _this.isTornDown = false;
           _this.options = options;
           _this.variables = options.variables || {};
           _this.queryId = queryManager.generateQueryId();
           _this.shouldSubscribe = shouldSubscribe;
+          var opDef = getOperationDefinition(options.query);
+          _this.queryName = opDef && opDef.name && opDef.name.value;
           _this.queryManager = queryManager;
-          _this.observers = [];
-          _this.subscriptionHandles = [];
           return _this;
       }
       ObservableQuery.prototype.result = function () {
-          var that = this;
+          var _this = this;
           return new Promise(function (resolve, reject) {
-              var subscription;
               var observer = {
                   next: function (result$$1) {
                       resolve(result$$1);
-                      if (!that.observers.some(function (obs) { return obs !== observer; })) {
-                          that.queryManager.removeQuery(that.queryId);
+                      _this.observers.delete(observer);
+                      if (!_this.observers.size) {
+                          _this.queryManager.removeQuery(_this.queryId);
                       }
                       setTimeout(function () {
                           subscription.unsubscribe();
                       }, 0);
                   },
-                  error: function (error) {
-                      reject(error);
-                  },
+                  error: reject,
               };
-              subscription = that.subscribe(observer);
+              var subscription = _this.subscribe(observer);
           });
       };
       ObservableQuery.prototype.currentResult = function () {
@@ -5892,57 +5541,57 @@
       };
       ObservableQuery.prototype.getCurrentResult = function () {
           if (this.isTornDown) {
+              var lastResult = this.lastResult;
               return {
-                  data: this.lastError
-                      ? undefined
-                      : this.lastResult
-                          ? this.lastResult.data
-                          : undefined,
+                  data: !this.lastError && lastResult && lastResult.data || void 0,
                   error: this.lastError,
                   loading: false,
                   networkStatus: NetworkStatus.error,
               };
           }
-          var queryStoreValue = this.queryManager.queryStore.get(this.queryId);
-          if (hasError(queryStoreValue, this.options.errorPolicy)) {
-              return {
-                  data: undefined,
-                  loading: false,
-                  networkStatus: queryStoreValue.networkStatus,
-                  error: new ApolloError({
-                      graphQLErrors: queryStoreValue.graphQLErrors,
-                      networkError: queryStoreValue.networkError,
-                  }),
-              };
-          }
-          if (queryStoreValue && queryStoreValue.variables) {
-              this.options.variables = Object.assign({}, this.options.variables, queryStoreValue.variables);
-          }
           var _a = this.queryManager.getCurrentQueryResult(this), data = _a.data, partial = _a.partial;
-          var queryLoading = !queryStoreValue ||
-              queryStoreValue.networkStatus === NetworkStatus.loading;
-          var loading = (this.options.fetchPolicy === 'network-only' && queryLoading) ||
-              (partial && this.options.fetchPolicy !== 'cache-only');
-          var networkStatus;
+          var queryStoreValue = this.queryManager.queryStore.get(this.queryId);
+          var result$$1;
+          var fetchPolicy = this.options.fetchPolicy;
+          var isNetworkFetchPolicy = fetchPolicy === 'network-only' ||
+              fetchPolicy === 'no-cache';
           if (queryStoreValue) {
-              networkStatus = queryStoreValue.networkStatus;
+              var networkStatus = queryStoreValue.networkStatus;
+              if (hasError(queryStoreValue, this.options.errorPolicy)) {
+                  return {
+                      data: void 0,
+                      loading: false,
+                      networkStatus: networkStatus,
+                      error: new ApolloError({
+                          graphQLErrors: queryStoreValue.graphQLErrors,
+                          networkError: queryStoreValue.networkError,
+                      }),
+                  };
+              }
+              if (queryStoreValue.variables) {
+                  this.options.variables = __assign({}, this.options.variables, queryStoreValue.variables);
+                  this.variables = this.options.variables;
+              }
+              result$$1 = {
+                  data: data,
+                  loading: isNetworkRequestInFlight(networkStatus),
+                  networkStatus: networkStatus,
+              };
+              if (queryStoreValue.graphQLErrors && this.options.errorPolicy === 'all') {
+                  result$$1.errors = queryStoreValue.graphQLErrors;
+              }
           }
           else {
-              networkStatus = loading ? NetworkStatus.loading : NetworkStatus.ready;
-          }
-          var result$$1 = {
-              data: data,
-              loading: isNetworkRequestInFlight(networkStatus),
-              networkStatus: networkStatus,
-          };
-          if (queryStoreValue &&
-              queryStoreValue.graphQLErrors &&
-              this.options.errorPolicy === 'all') {
-              result$$1.errors = queryStoreValue.graphQLErrors;
+              var loading = isNetworkFetchPolicy ||
+                  (partial && fetchPolicy !== 'cache-only');
+              result$$1 = {
+                  data: data,
+                  loading: loading,
+                  networkStatus: loading ? NetworkStatus.loading : NetworkStatus.ready,
+              };
           }
           if (!partial) {
-              this.lastResult = __assign({}, result$$1, { stale: false });
-              this.lastResultSnapshot = cloneDeep(this.lastResult);
+              this.updateLastResult(__assign({}, result$$1, { stale: false }));
           }
           return __assign({}, result$$1, { partial: partial });
       };
@@ -5952,7 +5601,7 @@
               newResult &&
               snapshot.networkStatus === newResult.networkStatus &&
               snapshot.stale === newResult.stale &&
-              isEqual(snapshot.data, newResult.data));
+              equal(snapshot.data, newResult.data));
       };
       ObservableQuery.prototype.getLastResult = function () {
           return this.lastResult;
@@ -5966,39 +5615,37 @@
           delete this.lastError;
           this.isTornDown = false;
       };
+      ObservableQuery.prototype.resetQueryStoreErrors = function () {
+          var queryStore = this.queryManager.queryStore.get(this.queryId);
+          if (queryStore) {
+              queryStore.networkError = null;
+              queryStore.graphQLErrors = [];
+          }
+      };
       ObservableQuery.prototype.refetch = function (variables) {
           var fetchPolicy = this.options.fetchPolicy;
           if (fetchPolicy === 'cache-only') {
-              return Promise.reject(new Error('cache-only fetchPolicy option should not be used together with query refetch.'));
+              return Promise.reject(process$1.env.NODE_ENV === "production" ? new InvariantError(3) : new InvariantError('cache-only fetchPolicy option should not be used together with query refetch.'));
           }
-          if (!isEqual(this.variables, variables)) {
-              this.variables = Object.assign({}, this.variables, variables);
+          if (fetchPolicy !== 'no-cache' &&
+              fetchPolicy !== 'cache-and-network') {
+              fetchPolicy = 'network-only';
           }
-          if (!isEqual(this.options.variables, this.variables)) {
-              this.options.variables = Object.assign({}, this.options.variables, this.variables);
+          if (!equal(this.variables, variables)) {
+              this.variables = __assign({}, this.variables, variables);
           }
-          var isNetworkFetchPolicy = fetchPolicy === 'network-only' || fetchPolicy === 'no-cache';
-          var combinedOptions = __assign({}, this.options, { fetchPolicy: isNetworkFetchPolicy ? fetchPolicy : 'network-only' });
-          return this.queryManager
-              .fetchQuery(this.queryId, combinedOptions, FetchType.refetch)
-              .then(function (result$$1) { return result$$1; });
+          if (!equal(this.options.variables, this.variables)) {
+              this.options.variables = __assign({}, this.options.variables, this.variables);
+          }
+          return this.queryManager.fetchQuery(this.queryId, __assign({}, this.options, { fetchPolicy: fetchPolicy }), FetchType.refetch);
       };
       ObservableQuery.prototype.fetchMore = function (fetchMoreOptions) {
           var _this = this;
-          process$1.env.NODE_ENV === "production" ? invariant$3(fetchMoreOptions.updateQuery) : invariant$3(fetchMoreOptions.updateQuery, 'updateQuery option is required. This function defines how to update the query data with the new results.');
-          var combinedOptions;
-          return Promise.resolve()
-              .then(function () {
-              var qid = _this.queryManager.generateQueryId();
-              if (fetchMoreOptions.query) {
-                  combinedOptions = fetchMoreOptions;
-              }
-              else {
-                  combinedOptions = __assign({}, _this.options, fetchMoreOptions, { variables: Object.assign({}, _this.variables, fetchMoreOptions.variables) });
-              }
-              combinedOptions.fetchPolicy = 'network-only';
-              return _this.queryManager.fetchQuery(qid, combinedOptions, FetchType.normal, _this.queryId);
-          })
+          process$1.env.NODE_ENV === "production" ? invariant$1(fetchMoreOptions.updateQuery, 4) : invariant$1(fetchMoreOptions.updateQuery, 'updateQuery option is required. This function defines how to update the query data with the new results.');
+          var combinedOptions = __assign({}, (fetchMoreOptions.query ? fetchMoreOptions : __assign({}, this.options, fetchMoreOptions, { variables: __assign({}, this.variables, fetchMoreOptions.variables) })), { fetchPolicy: 'network-only' });
+          var qid = this.queryManager.generateQueryId();
+          return this.queryManager
+              .fetchQuery(qid, combinedOptions, FetchType.normal, this.queryId)
               .then(function (fetchMoreResult) {
               _this.updateQuery(function (previousResult) {
                   return fetchMoreOptions.updateQuery(previousResult, {
@@ -6006,7 +5653,11 @@
                       variables: combinedOptions.variables,
                   });
               });
+              _this.queryManager.stopQuery(qid);
               return fetchMoreResult;
+          }, function (error) {
+              _this.queryManager.stopQuery(qid);
+              throw error;
           });
       };
       ObservableQuery.prototype.subscribeToMore = function (options) {
@@ -6018,10 +5669,11 @@
           })
               .subscribe({
               next: function (subscriptionData) {
-                  if (options.updateQuery) {
+                  var updateQuery = options.updateQuery;
+                  if (updateQuery) {
                       _this.updateQuery(function (previous, _a) {
                           var variables = _a.variables;
-                          return options.updateQuery(previous, {
+                          return updateQuery(previous, {
                               subscriptionData: subscriptionData,
                               variables: variables,
                           });
@@ -6033,66 +5685,55 @@
                       options.onError(err);
                       return;
                   }
-                  console.error('Unhandled GraphQL subscription error', err);
+                  process$1.env.NODE_ENV === "production" || invariant$1.error('Unhandled GraphQL subscription error', err);
               },
           });
-          this.subscriptionHandles.push(subscription);
+          this.subscriptions.add(subscription);
           return function () {
-              var i = _this.subscriptionHandles.indexOf(subscription);
-              if (i >= 0) {
-                  _this.subscriptionHandles.splice(i, 1);
+              if (_this.subscriptions.delete(subscription)) {
                   subscription.unsubscribe();
               }
           };
       };
       ObservableQuery.prototype.setOptions = function (opts) {
-          var oldOptions = this.options;
-          this.options = Object.assign({}, this.options, opts);
+          var oldFetchPolicy = this.options.fetchPolicy;
+          this.options = __assign({}, this.options, opts);
           if (opts.pollInterval) {
               this.startPolling(opts.pollInterval);
           }
           else if (opts.pollInterval === 0) {
               this.stopPolling();
           }
-          var tryFetch = (oldOptions.fetchPolicy !== 'network-only' &&
-              opts.fetchPolicy === 'network-only') ||
-              (oldOptions.fetchPolicy === 'cache-only' &&
-                  opts.fetchPolicy !== 'cache-only') ||
-              (oldOptions.fetchPolicy === 'standby' &&
-                  opts.fetchPolicy !== 'standby') ||
-              false;
-          return this.setVariables(this.options.variables, tryFetch, opts.fetchResults);
+          var fetchPolicy = opts.fetchPolicy;
+          return this.setVariables(this.options.variables, oldFetchPolicy !== fetchPolicy && (oldFetchPolicy === 'cache-only' ||
+              oldFetchPolicy === 'standby' ||
+              fetchPolicy === 'network-only'), opts.fetchResults);
       };
       ObservableQuery.prototype.setVariables = function (variables, tryFetch, fetchResults) {
           if (tryFetch === void 0) { tryFetch = false; }
           if (fetchResults === void 0) { fetchResults = true; }
           this.isTornDown = false;
-          var newVariables = variables ? variables : this.variables;
-          if (isEqual(newVariables, this.variables) && !tryFetch) {
-              if (this.observers.length === 0 || !fetchResults) {
-                  return new Promise(function (resolve) { return resolve(); });
-              }
-              return this.result();
+          variables = variables || this.variables;
+          if (!tryFetch && equal(variables, this.variables)) {
+              return this.observers.size && fetchResults
+                  ? this.result()
+                  : Promise.resolve();
           }
-          else {
-              this.variables = newVariables;
-              this.options.variables = newVariables;
-              if (this.observers.length === 0) {
-                  return new Promise(function (resolve) { return resolve(); });
-              }
-              return this.queryManager
-                  .fetchQuery(this.queryId, __assign({}, this.options, { variables: this.variables }))
-                  .then(function (result$$1) { return result$$1; });
+          this.variables = this.options.variables = variables;
+          if (!this.observers.size) {
+              return Promise.resolve();
           }
+          return this.queryManager.fetchQuery(this.queryId, this.options);
       };
       ObservableQuery.prototype.updateQuery = function (mapFn) {
-          var _a = this.queryManager.getQueryWithPreviousResult(this.queryId), previousResult = _a.previousResult, variables = _a.variables, document = _a.document;
+          var queryManager = this.queryManager;
+          var _a = queryManager.getQueryWithPreviousResult(this.queryId), previousResult = _a.previousResult, variables = _a.variables, document = _a.document;
           var newResult = tryFunctionOrLogError(function () {
               return mapFn(previousResult, { variables: variables });
           });
           if (newResult) {
-              this.queryManager.dataStore.markUpdateQueryResult(document, variables, newResult);
-              this.queryManager.broadcastQueries();
+              queryManager.dataStore.markUpdateQueryResult(document, variables, newResult);
+              queryManager.broadcastQueries();
           }
       };
       ObservableQuery.prototype.stopPolling = function () {
@@ -6104,65 +5745,104 @@
           this.options.pollInterval = pollInterval;
           this.queryManager.startPollingQuery(this.options, this.queryId);
       };
+      ObservableQuery.prototype.updateLastResult = function (newResult) {
+          var previousResult = this.lastResult;
+          this.lastResult = newResult;
+          this.lastResultSnapshot = this.queryManager.assumeImmutableResults
+              ? newResult
+              : cloneDeep(newResult);
+          return previousResult;
+      };
       ObservableQuery.prototype.onSubscribe = function (observer) {
           var _this = this;
-          if (observer._subscription &&
-              observer._subscription._observer &&
-              !observer._subscription._observer.error) {
-              observer._subscription._observer.error = function (error) {
-                  console.error('Unhandled error', error.message, error.stack);
-              };
+          try {
+              var subObserver = observer._subscription._observer;
+              if (subObserver && !subObserver.error) {
+                  subObserver.error = defaultSubscriptionObserverErrorCallback;
+              }
           }
-          this.observers.push(observer);
+          catch (_a) { }
+          var first = !this.observers.size;
+          this.observers.add(observer);
           if (observer.next && this.lastResult)
               observer.next(this.lastResult);
           if (observer.error && this.lastError)
               observer.error(this.lastError);
-          if (this.observers.length === 1)
+          if (first) {
               this.setUpQuery();
+          }
           return function () {
-              _this.observers = _this.observers.filter(function (obs) { return obs !== observer; });
-              if (_this.observers.length === 0) {
+              if (_this.observers.delete(observer) && !_this.observers.size) {
                   _this.tearDownQuery();
               }
           };
       };
       ObservableQuery.prototype.setUpQuery = function () {
           var _this = this;
+          var _a = this, queryManager = _a.queryManager, queryId = _a.queryId;
           if (this.shouldSubscribe) {
-              this.queryManager.addObservableQuery(this.queryId, this);
+              queryManager.addObservableQuery(queryId, this);
           }
-          if (!!this.options.pollInterval) {
+          if (this.options.pollInterval) {
               assertNotCacheFirstOrOnly(this);
-              this.queryManager.startPollingQuery(this.options, this.queryId);
+              queryManager.startPollingQuery(this.options, queryId);
           }
-          var observer = {
-              next: function (result$$1) {
-                  _this.lastResult = result$$1;
-                  _this.lastResultSnapshot = cloneDeep(result$$1);
-                  _this.observers.forEach(function (obs) { return obs.next && obs.next(result$$1); });
-              },
-              error: function (error) {
-                  _this.lastError = error;
-                  _this.observers.forEach(function (obs) { return obs.error && obs.error(error); });
-              },
+          var onError = function (error) {
+              _this.updateLastResult(__assign({}, _this.lastResult, { errors: error.graphQLErrors, networkStatus: NetworkStatus.error, loading: false }));
+              iterateObserversSafely(_this.observers, 'error', _this.lastError = error);
           };
-          this.queryManager.startQuery(this.queryId, this.options, this.queryManager.queryListenerForObserver(this.queryId, this.options, observer));
+          queryManager.observeQuery(queryId, this.options, {
+              next: function (result$$1) {
+                  if (_this.lastError || _this.isDifferentFromLastResult(result$$1)) {
+                      var previousResult_1 = _this.updateLastResult(result$$1);
+                      var _a = _this.options, query_1 = _a.query, variables = _a.variables, fetchPolicy_1 = _a.fetchPolicy;
+                      if (queryManager.transform(query_1).hasClientExports) {
+                          queryManager.getLocalState().addExportedVariables(query_1, variables).then(function (variables) {
+                              var previousVariables = _this.variables;
+                              _this.variables = _this.options.variables = variables;
+                              if (!result$$1.loading &&
+                                  previousResult_1 &&
+                                  fetchPolicy_1 !== 'cache-only' &&
+                                  queryManager.transform(query_1).serverQuery &&
+                                  !equal(previousVariables, variables)) {
+                                  _this.refetch();
+                              }
+                              else {
+                                  iterateObserversSafely(_this.observers, 'next', result$$1);
+                              }
+                          });
+                      }
+                      else {
+                          iterateObserversSafely(_this.observers, 'next', result$$1);
+                      }
+                  }
+              },
+              error: onError,
+          }).catch(onError);
       };
       ObservableQuery.prototype.tearDownQuery = function () {
+          var queryManager = this.queryManager;
           this.isTornDown = true;
-          this.queryManager.stopPollingQuery(this.queryId);
-          this.subscriptionHandles.forEach(function (sub) { return sub.unsubscribe(); });
-          this.subscriptionHandles = [];
-          this.queryManager.removeObservableQuery(this.queryId);
-          this.queryManager.stopQuery(this.queryId);
-          this.observers = [];
+          queryManager.stopPollingQuery(this.queryId);
+          this.subscriptions.forEach(function (sub) { return sub.unsubscribe(); });
+          this.subscriptions.clear();
+          queryManager.removeObservableQuery(this.queryId);
+          queryManager.stopQuery(this.queryId);
+          this.observers.clear();
       };
       return ObservableQuery;
   }(Observable$2));
+  function defaultSubscriptionObserverErrorCallback(error) {
+      process$1.env.NODE_ENV === "production" || invariant$1.error('Unhandled error', error.message, error.stack);
+  }
+  function iterateObserversSafely(observers, method, argument) {
+      var observersWithMethod = [];
+      observers.forEach(function (obs) { return obs[method] && observersWithMethod.push(obs); });
+      observersWithMethod.forEach(function (obs) { return obs[method](argument); });
+  }
   function assertNotCacheFirstOrOnly(obsQuery) {
       var fetchPolicy = obsQuery.options.fetchPolicy;
-      process$1.env.NODE_ENV === "production" ? invariant$3(fetchPolicy !== 'cache-first' && fetchPolicy !== 'cache-only') : invariant$3(fetchPolicy !== 'cache-first' && fetchPolicy !== 'cache-only', 'Queries that specify the cache-first and cache-only fetchPolicies cannot also be polling queries.');
+      process$1.env.NODE_ENV === "production" ? invariant$1(fetchPolicy !== 'cache-first' && fetchPolicy !== 'cache-only', 5) : invariant$1(fetchPolicy !== 'cache-first' && fetchPolicy !== 'cache-only', 'Queries that specify the cache-first and cache-only fetchPolicies cannot also be polling queries.');
   }
 
   var MutationStore = (function () {
@@ -6185,19 +5865,17 @@
       };
       MutationStore.prototype.markMutationError = function (mutationId, error) {
           var mutation = this.store[mutationId];
-          if (!mutation) {
-              return;
+          if (mutation) {
+              mutation.loading = false;
+              mutation.error = error;
           }
-          mutation.loading = false;
-          mutation.error = error;
       };
       MutationStore.prototype.markMutationResult = function (mutationId) {
           var mutation = this.store[mutationId];
-          if (!mutation) {
-              return;
+          if (mutation) {
+              mutation.loading = false;
+              mutation.error = null;
           }
-          mutation.loading = false;
-          mutation.error = null;
       };
       MutationStore.prototype.reset = function () {
           this.store = {};
@@ -6217,17 +5895,17 @@
       };
       QueryStore.prototype.initQuery = function (query) {
           var previousQuery = this.store[query.queryId];
-          if (previousQuery &&
-              previousQuery.document !== query.document &&
-              !isEqual(previousQuery.document, query.document)) {
-              throw process$1.env.NODE_ENV === "production" ? new InvariantError$2() : new InvariantError$2('Internal Error: may not update existing query string in store');
-          }
+          process$1.env.NODE_ENV === "production" ? invariant$1(!previousQuery ||
+              previousQuery.document === query.document ||
+              equal(previousQuery.document, query.document), 19) : invariant$1(!previousQuery ||
+              previousQuery.document === query.document ||
+              equal(previousQuery.document, query.document), 'Internal Error: may not update existing query string in store');
           var isSetVariables = false;
           var previousVariables = null;
           if (query.storePreviousVariables &&
               previousQuery &&
               previousQuery.networkStatus !== NetworkStatus.loading) {
-              if (!isEqual(previousQuery.variables, query.variables)) {
+              if (!equal(previousQuery.variables, query.variables)) {
                   isSetVariables = true;
                   previousVariables = previousQuery.variables;
               }
@@ -6268,8 +5946,7 @@
           if (!this.store || !this.store[queryId])
               return;
           this.store[queryId].networkError = null;
-          this.store[queryId].graphQLErrors =
-              result$$1.errors && result$$1.errors.length ? result$$1.errors : [];
+          this.store[queryId].graphQLErrors = isNonEmptyArray(result$$1.errors) ? result$$1.errors : [];
           this.store[queryId].previousVariables = null;
           this.store[queryId].networkStatus = NetworkStatus.ready;
           if (typeof fetchMoreForQueryId === 'string' &&
@@ -6287,27 +5964,28 @@
           }
       };
       QueryStore.prototype.markQueryResultClient = function (queryId, complete) {
-          if (!this.store || !this.store[queryId])
-              return;
-          this.store[queryId].networkError = null;
-          this.store[queryId].previousVariables = null;
-          this.store[queryId].networkStatus = complete
-              ? NetworkStatus.ready
-              : NetworkStatus.loading;
+          var storeValue = this.store && this.store[queryId];
+          if (storeValue) {
+              storeValue.networkError = null;
+              storeValue.previousVariables = null;
+              if (complete) {
+                  storeValue.networkStatus = NetworkStatus.ready;
+              }
+          }
       };
       QueryStore.prototype.stopQuery = function (queryId) {
           delete this.store[queryId];
       };
       QueryStore.prototype.reset = function (observableQueryIds) {
           var _this = this;
-          this.store = Object.keys(this.store)
-              .filter(function (queryId) {
-              return observableQueryIds.indexOf(queryId) > -1;
-          })
-              .reduce(function (res, key) {
-              res[key] = __assign({}, _this.store[key], { networkStatus: NetworkStatus.loading });
-              return res;
-          }, {});
+          Object.keys(this.store).forEach(function (queryId) {
+              if (observableQueryIds.indexOf(queryId) < 0) {
+                  _this.stopQuery(queryId);
+              }
+              else {
+                  _this.store[queryId].networkStatus = NetworkStatus.loading;
+              }
+          });
       };
       return QueryStore;
   }());
@@ -6371,8 +6049,10 @@
               if (this.resolvers) {
                   return document;
               }
-              process$1.env.NODE_ENV === "production" || invariant$3.warn('Found @client directives in query but no client resolvers were specified. ' +
-                  'You can now pass apollo-link-state resolvers to the ApolloClient constructor.');
+              process$1.env.NODE_ENV === "production" || invariant$1.warn('Found @client directives in a query but no ApolloClient resolvers ' +
+                  'were specified. This means ApolloClient local resolver handling ' +
+                  'has been disabled, and @client directives will be passed through ' +
+                  'to your link chain.');
           }
           return null;
       };
@@ -6387,7 +6067,7 @@
                       return cache.config.dataIdFromObject(obj);
                   }
                   else {
-                      process$1.env.NODE_ENV === "production" ? invariant$3(false) : invariant$3(false, 'To use context.getCacheKey, you need to use a cache that has ' +
+                      process$1.env.NODE_ENV === "production" ? invariant$1(false, 6) : invariant$1(false, 'To use context.getCacheKey, you need to use a cache that has ' +
                           'a configurable dataIdFromObject, like apollo-cache-inmemory.');
                   }
               } });
@@ -6425,13 +6105,11 @@
           });
           return forceResolvers;
       };
-      LocalState.prototype.shouldForceResolver = function (field) {
-          return this.shouldForceResolvers(field);
-      };
       LocalState.prototype.buildRootValueFromCache = function (document, variables) {
           return this.cache.diff({
               query: buildQueryFromSelectionSet(document),
               variables: variables,
+              returnPartialData: true,
               optimistic: false,
           }).result;
       };
@@ -6497,7 +6175,7 @@
                           }
                           else {
                               fragment = fragmentMap[selection.name.value];
-                              process$1.env.NODE_ENV === "production" ? invariant$3(fragment) : invariant$3(fragment, "No fragment named " + selection.name.value);
+                              process$1.env.NODE_ENV === "production" ? invariant$1(fragment, 7) : invariant$1(fragment, "No fragment named " + selection.name.value);
                           }
                           if (fragment && fragment.typeCondition) {
                               typeCondition = fragment.typeCondition.name.value;
@@ -6528,7 +6206,7 @@
                   defaultResult = rootValue[aliasedFieldName] || rootValue[fieldName];
                   resultPromise = Promise.resolve(defaultResult);
                   if (!execContext.onlyRunForcedResolvers ||
-                      this.shouldForceResolver(field)) {
+                      this.shouldForceResolvers(field)) {
                       resolverType = rootValue.__typename || execContext.defaultOperationType;
                       resolverMap = this.resolvers && this.resolvers[resolverType];
                       if (resolverMap) {
@@ -6584,26 +6262,85 @@
       return LocalState;
   }());
 
+  function multiplex(inner) {
+      var observers = new Set();
+      var sub = null;
+      return new Observable$2(function (observer) {
+          observers.add(observer);
+          sub = sub || inner.subscribe({
+              next: function (value) {
+                  observers.forEach(function (obs) { return obs.next && obs.next(value); });
+              },
+              error: function (error) {
+                  observers.forEach(function (obs) { return obs.error && obs.error(error); });
+              },
+              complete: function () {
+                  observers.forEach(function (obs) { return obs.complete && obs.complete(); });
+              },
+          });
+          return function () {
+              if (observers.delete(observer) && !observers.size && sub) {
+                  sub.unsubscribe();
+                  sub = null;
+              }
+          };
+      });
+  }
+  function asyncMap(observable, mapFn) {
+      return new Observable$2(function (observer) {
+          var next = observer.next, error = observer.error, complete = observer.complete;
+          var activeNextCount = 0;
+          var completed = false;
+          var handler = {
+              next: function (value) {
+                  ++activeNextCount;
+                  new Promise(function (resolve) {
+                      resolve(mapFn(value));
+                  }).then(function (result$$1) {
+                      --activeNextCount;
+                      next && next.call(observer, result$$1);
+                      completed && handler.complete();
+                  }, function (e) {
+                      --activeNextCount;
+                      error && error.call(observer, e);
+                  });
+              },
+              error: function (e) {
+                  error && error.call(observer, e);
+              },
+              complete: function () {
+                  completed = true;
+                  if (!activeNextCount) {
+                      complete && complete.call(observer);
+                  }
+              },
+          };
+          var sub = observable.subscribe(handler);
+          return function () { return sub.unsubscribe(); };
+      });
+  }
+
+  var hasOwnProperty$2 = Object.prototype.hasOwnProperty;
   var QueryManager = (function () {
       function QueryManager(_a) {
-          var link = _a.link, _b = _a.queryDeduplication, queryDeduplication = _b === void 0 ? false : _b, store = _a.store, _c = _a.onBroadcast, onBroadcast = _c === void 0 ? function () { return undefined; } : _c, _d = _a.ssrMode, ssrMode = _d === void 0 ? false : _d, _e = _a.clientAwareness, clientAwareness = _e === void 0 ? {} : _e, localState = _a.localState;
+          var link = _a.link, _b = _a.queryDeduplication, queryDeduplication = _b === void 0 ? false : _b, store = _a.store, _c = _a.onBroadcast, onBroadcast = _c === void 0 ? function () { return undefined; } : _c, _d = _a.ssrMode, ssrMode = _d === void 0 ? false : _d, _e = _a.clientAwareness, clientAwareness = _e === void 0 ? {} : _e, localState = _a.localState, assumeImmutableResults = _a.assumeImmutableResults;
           this.mutationStore = new MutationStore();
           this.queryStore = new QueryStore();
           this.clientAwareness = {};
           this.idCounter = 1;
           this.queries = new Map();
           this.fetchQueryRejectFns = new Map();
-          this.queryIdsByName = {};
+          this.transformCache = new (canUseWeakMap ? WeakMap : Map)();
+          this.inFlightLinkObservables = new Map();
           this.pollingInfoByQueryId = new Map();
-          this.nextPoll = null;
           this.link = link;
-          this.deduplicator = ApolloLink.from([new DedupLink(), link]);
           this.queryDeduplication = queryDeduplication;
           this.dataStore = store;
           this.onBroadcast = onBroadcast;
           this.clientAwareness = clientAwareness;
           this.localState = localState || new LocalState({ cache: store.getCache() });
           this.ssrMode = ssrMode;
+          this.assumeImmutableResults = !!assumeImmutableResults;
       }
       QueryManager.prototype.stop = function () {
           var _this = this;
@@ -6611,173 +6348,83 @@
               _this.stopQueryNoBroadcast(queryId);
           });
           this.fetchQueryRejectFns.forEach(function (reject) {
-              reject(new Error('QueryManager stopped while query was in flight'));
+              reject(process$1.env.NODE_ENV === "production" ? new InvariantError(8) : new InvariantError('QueryManager stopped while query was in flight'));
           });
       };
       QueryManager.prototype.mutate = function (_a) {
           var mutation = _a.mutation, variables = _a.variables, optimisticResponse = _a.optimisticResponse, updateQueriesByName = _a.updateQueries, _b = _a.refetchQueries, refetchQueries = _b === void 0 ? [] : _b, _c = _a.awaitRefetchQueries, awaitRefetchQueries = _c === void 0 ? false : _c, updateWithProxyFn = _a.update, _d = _a.errorPolicy, errorPolicy = _d === void 0 ? 'none' : _d, fetchPolicy = _a.fetchPolicy, _e = _a.context, context = _e === void 0 ? {} : _e;
           return __awaiter(this, void 0, void 0, function () {
-              var mutationId, cache, generateUpdateQueriesInfo, updatedVariables, _f;
+              var mutationId, generateUpdateQueriesInfo, self;
               var _this = this;
-              return __generator(this, function (_g) {
-                  switch (_g.label) {
+              return __generator(this, function (_f) {
+                  switch (_f.label) {
                       case 0:
-                          process$1.env.NODE_ENV === "production" ? invariant$3(mutation) : invariant$3(mutation, 'mutation option is required. You must specify your GraphQL document in the mutation option.');
-                          process$1.env.NODE_ENV === "production" ? invariant$3(!fetchPolicy || fetchPolicy === 'no-cache') : invariant$3(!fetchPolicy || fetchPolicy === 'no-cache', "fetchPolicy for mutations currently only supports the 'no-cache' policy");
+                          process$1.env.NODE_ENV === "production" ? invariant$1(mutation, 9) : invariant$1(mutation, 'mutation option is required. You must specify your GraphQL document in the mutation option.');
+                          process$1.env.NODE_ENV === "production" ? invariant$1(!fetchPolicy || fetchPolicy === 'no-cache', 10) : invariant$1(!fetchPolicy || fetchPolicy === 'no-cache', "fetchPolicy for mutations currently only supports the 'no-cache' policy");
                           mutationId = this.generateQueryId();
-                          cache = this.dataStore.getCache();
-                          (mutation = cache.transformDocument(mutation)),
-                              (variables = assign({}, getDefaultValues(getMutationDefinition(mutation)), variables));
+                          mutation = this.transform(mutation).document;
                           this.setQuery(mutationId, function () { return ({ document: mutation }); });
+                          variables = this.getVariables(mutation, variables);
+                          if (!this.transform(mutation).hasClientExports) return [3, 2];
+                          return [4, this.localState.addExportedVariables(mutation, variables, context)];
+                      case 1:
+                          variables = _f.sent();
+                          _f.label = 2;
+                      case 2:
                           generateUpdateQueriesInfo = function () {
                               var ret = {};
                               if (updateQueriesByName) {
-                                  Object.keys(updateQueriesByName).forEach(function (queryName) {
-                                      return (_this.queryIdsByName[queryName] || []).forEach(function (queryId) {
-                                          ret[queryId] = {
-                                              updater: updateQueriesByName[queryName],
-                                              query: _this.queryStore.get(queryId),
-                                          };
-                                      });
+                                  _this.queries.forEach(function (_a, queryId) {
+                                      var observableQuery = _a.observableQuery;
+                                      if (observableQuery) {
+                                          var queryName = observableQuery.queryName;
+                                          if (queryName &&
+                                              hasOwnProperty$2.call(updateQueriesByName, queryName)) {
+                                              ret[queryId] = {
+                                                  updater: updateQueriesByName[queryName],
+                                                  query: _this.queryStore.get(queryId),
+                                              };
+                                          }
+                                      }
                                   });
                               }
                               return ret;
                           };
-                          if (!hasClientExports(mutation)) return [3, 2];
-                          return [4, this.localState.addExportedVariables(mutation, variables, context)];
-                      case 1:
-                          _f = _g.sent();
-                          return [3, 3];
-                      case 2:
-                          _f = variables;
-                          _g.label = 3;
-                      case 3:
-                          updatedVariables = _f;
-                          this.mutationStore.initMutation(mutationId, mutation, updatedVariables);
+                          this.mutationStore.initMutation(mutationId, mutation, variables);
                           this.dataStore.markMutationInit({
                               mutationId: mutationId,
                               document: mutation,
-                              variables: updatedVariables || {},
+                              variables: variables,
                               updateQueries: generateUpdateQueriesInfo(),
                               update: updateWithProxyFn,
                               optimisticResponse: optimisticResponse,
                           });
                           this.broadcastQueries();
+                          self = this;
                           return [2, new Promise(function (resolve, reject) {
                                   var storeResult;
                                   var error;
-                                  var operation = _this.buildOperationForLink(mutation, updatedVariables, __assign({}, context, { optimisticResponse: optimisticResponse }));
-                                  var completeMutation = function () {
-                                      if (error) {
-                                          _this.mutationStore.markMutationError(mutationId, error);
-                                      }
-                                      _this.dataStore.markMutationComplete({
-                                          mutationId: mutationId,
-                                          optimisticResponse: optimisticResponse,
-                                      });
-                                      _this.broadcastQueries();
-                                      if (error) {
-                                          return Promise.reject(error);
-                                      }
-                                      if (typeof refetchQueries === 'function') {
-                                          refetchQueries = refetchQueries(storeResult);
-                                      }
-                                      var refetchQueryPromises = [];
-                                      for (var _i = 0, refetchQueries_1 = refetchQueries; _i < refetchQueries_1.length; _i++) {
-                                          var refetchQuery = refetchQueries_1[_i];
-                                          if (typeof refetchQuery === 'string') {
-                                              var promise = _this.refetchQueryByName(refetchQuery);
-                                              if (promise) {
-                                                  refetchQueryPromises.push(promise);
-                                              }
-                                              continue;
+                                  self.getObservableFromLink(mutation, __assign({}, context, { optimisticResponse: optimisticResponse }), variables, false).subscribe({
+                                      next: function (result$$1) {
+                                          if (graphQLResultHasError(result$$1) && errorPolicy === 'none') {
+                                              error = new ApolloError({
+                                                  graphQLErrors: result$$1.errors,
+                                              });
+                                              return;
                                           }
-                                          var queryOptions = {
-                                              query: refetchQuery.query,
-                                              variables: refetchQuery.variables,
-                                              fetchPolicy: 'network-only',
-                                          };
-                                          if (refetchQuery.context) {
-                                              queryOptions.context = refetchQuery.context;
+                                          self.mutationStore.markMutationResult(mutationId);
+                                          if (fetchPolicy !== 'no-cache') {
+                                              self.dataStore.markMutationResult({
+                                                  mutationId: mutationId,
+                                                  result: result$$1,
+                                                  document: mutation,
+                                                  variables: variables,
+                                                  updateQueries: generateUpdateQueriesInfo(),
+                                                  update: updateWithProxyFn,
+                                              });
                                           }
-                                          refetchQueryPromises.push(_this.query(queryOptions));
-                                      }
-                                      return Promise.all(awaitRefetchQueries ? refetchQueryPromises : []).then(function () {
-                                          _this.setQuery(mutationId, function () { return ({ document: null }); });
-                                          if (errorPolicy === 'ignore' &&
-                                              storeResult &&
-                                              graphQLResultHasError(storeResult)) {
-                                              delete storeResult.errors;
-                                          }
-                                          return storeResult;
-                                      });
-                                  };
-                                  var clientQuery = _this.localState.clientQuery(operation.query);
-                                  var serverQuery = _this.localState.serverQuery(operation.query);
-                                  if (serverQuery) {
-                                      operation.query = serverQuery;
-                                  }
-                                  var obs = serverQuery
-                                      ? execute(_this.link, operation)
-                                      : Observable$2.of({
-                                          data: {},
-                                      });
-                                  var self = _this;
-                                  var complete = false;
-                                  var handlingNext = false;
-                                  obs.subscribe({
-                                      next: function (result$$1) { return __awaiter(_this, void 0, void 0, function () {
-                                          var updatedResult, context, variables;
-                                          return __generator(this, function (_a) {
-                                              switch (_a.label) {
-                                                  case 0:
-                                                      handlingNext = true;
-                                                      if (graphQLResultHasError(result$$1) && errorPolicy === 'none') {
-                                                          handlingNext = false;
-                                                          error = new ApolloError({
-                                                              graphQLErrors: result$$1.errors,
-                                                          });
-                                                          return [2];
-                                                      }
-                                                      self.mutationStore.markMutationResult(mutationId);
-                                                      updatedResult = result$$1;
-                                                      context = operation.context, variables = operation.variables;
-                                                      if (!(clientQuery && hasDirectives(['client'], clientQuery))) return [3, 2];
-                                                      return [4, self.localState
-                                                              .runResolvers({
-                                                              document: clientQuery,
-                                                              remoteResult: result$$1,
-                                                              context: context,
-                                                              variables: variables,
-                                                          })
-                                                              .catch(function (error) {
-                                                              handlingNext = false;
-                                                              reject(error);
-                                                              return result$$1;
-                                                          })];
-                                                  case 1:
-                                                      updatedResult = _a.sent();
-                                                      _a.label = 2;
-                                                  case 2:
-                                                      if (fetchPolicy !== 'no-cache') {
-                                                          self.dataStore.markMutationResult({
-                                                              mutationId: mutationId,
-                                                              result: updatedResult,
-                                                              document: mutation,
-                                                              variables: updatedVariables || {},
-                                                              updateQueries: generateUpdateQueriesInfo(),
-                                                              update: updateWithProxyFn,
-                                                          });
-                                                      }
-                                                      storeResult = updatedResult;
-                                                      handlingNext = false;
-                                                      if (complete) {
-                                                          completeMutation().then(resolve, reject);
-                                                      }
-                                                      return [2];
-                                              }
-                                          });
-                                      }); },
+                                          storeResult = result$$1;
+                                      },
                                       error: function (err) {
                                           self.mutationStore.markMutationError(mutationId, err);
                                           self.dataStore.markMutationComplete({
@@ -6791,10 +6438,55 @@
                                           }));
                                       },
                                       complete: function () {
-                                          if (!handlingNext) {
-                                              completeMutation().then(resolve, reject);
+                                          if (error) {
+                                              self.mutationStore.markMutationError(mutationId, error);
                                           }
-                                          complete = true;
+                                          self.dataStore.markMutationComplete({
+                                              mutationId: mutationId,
+                                              optimisticResponse: optimisticResponse,
+                                          });
+                                          self.broadcastQueries();
+                                          if (error) {
+                                              reject(error);
+                                              return;
+                                          }
+                                          if (typeof refetchQueries === 'function') {
+                                              refetchQueries = refetchQueries(storeResult);
+                                          }
+                                          var refetchQueryPromises = [];
+                                          if (isNonEmptyArray(refetchQueries)) {
+                                              refetchQueries.forEach(function (refetchQuery) {
+                                                  if (typeof refetchQuery === 'string') {
+                                                      self.queries.forEach(function (_a) {
+                                                          var observableQuery = _a.observableQuery;
+                                                          if (observableQuery &&
+                                                              observableQuery.queryName === refetchQuery) {
+                                                              refetchQueryPromises.push(observableQuery.refetch());
+                                                          }
+                                                      });
+                                                  }
+                                                  else {
+                                                      var queryOptions = {
+                                                          query: refetchQuery.query,
+                                                          variables: refetchQuery.variables,
+                                                          fetchPolicy: 'network-only',
+                                                      };
+                                                      if (refetchQuery.context) {
+                                                          queryOptions.context = refetchQuery.context;
+                                                      }
+                                                      refetchQueryPromises.push(self.query(queryOptions));
+                                                  }
+                                              });
+                                          }
+                                          Promise.all(awaitRefetchQueries ? refetchQueryPromises : []).then(function () {
+                                              self.setQuery(mutationId, function () { return ({ document: null }); });
+                                              if (errorPolicy === 'ignore' &&
+                                                  storeResult &&
+                                                  graphQLResultHasError(storeResult)) {
+                                                  delete storeResult.errors;
+                                              }
+                                              resolve(storeResult);
+                                          });
                                       },
                                   });
                               })];
@@ -6804,83 +6496,74 @@
       };
       QueryManager.prototype.fetchQuery = function (queryId, options, fetchType, fetchMoreForQueryId) {
           return __awaiter(this, void 0, void 0, function () {
-              var _a, variables, _b, metadata, _c, fetchPolicy, _d, context, cache, query, updatedVariables, _e, updatedOptions, storeResult, needToFetch, _f, complete, result$$1, shouldFetch, requestId, cancel, shouldDispatchClientResult, networkResult;
+              var _a, metadata, _b, fetchPolicy, _c, context, query, variables, storeResult, isNetworkOnly, needToFetch, _d, complete, result$$1, shouldFetch, requestId, cancel, networkResult;
               var _this = this;
-              return __generator(this, function (_g) {
-                  switch (_g.label) {
+              return __generator(this, function (_e) {
+                  switch (_e.label) {
                       case 0:
-                          _a = options.variables, variables = _a === void 0 ? {} : _a, _b = options.metadata, metadata = _b === void 0 ? null : _b, _c = options.fetchPolicy, fetchPolicy = _c === void 0 ? 'cache-first' : _c, _d = options.context, context = _d === void 0 ? {} : _d;
-                          cache = this.dataStore.getCache();
-                          query = cache.transformDocument(options.query);
-                          if (!hasClientExports(query)) return [3, 2];
+                          _a = options.metadata, metadata = _a === void 0 ? null : _a, _b = options.fetchPolicy, fetchPolicy = _b === void 0 ? 'cache-first' : _b, _c = options.context, context = _c === void 0 ? {} : _c;
+                          query = this.transform(options.query).document;
+                          variables = this.getVariables(query, options.variables);
+                          if (!this.transform(query).hasClientExports) return [3, 2];
                           return [4, this.localState.addExportedVariables(query, variables, context)];
                       case 1:
-                          _e = _g.sent();
-                          return [3, 3];
+                          variables = _e.sent();
+                          _e.label = 2;
                       case 2:
-                          _e = variables;
-                          _g.label = 3;
-                      case 3:
-                          updatedVariables = _e;
-                          updatedOptions = __assign({}, options, { variables: updatedVariables });
-                          needToFetch = fetchPolicy === 'network-only' || fetchPolicy === 'no-cache';
-                          if (fetchType !== FetchType.refetch &&
-                              fetchPolicy !== 'network-only' &&
-                              fetchPolicy !== 'no-cache') {
-                              _f = this.dataStore.getCache().diff({
+                          options = __assign({}, options, { variables: variables });
+                          isNetworkOnly = fetchPolicy === 'network-only' || fetchPolicy === 'no-cache';
+                          needToFetch = isNetworkOnly;
+                          if (!isNetworkOnly) {
+                              _d = this.dataStore.getCache().diff({
                                   query: query,
-                                  variables: updatedVariables,
+                                  variables: variables,
                                   returnPartialData: true,
                                   optimistic: false,
-                              }), complete = _f.complete, result$$1 = _f.result;
+                              }), complete = _d.complete, result$$1 = _d.result;
                               needToFetch = !complete || fetchPolicy === 'cache-and-network';
                               storeResult = result$$1;
                           }
                           shouldFetch = needToFetch && fetchPolicy !== 'cache-only' && fetchPolicy !== 'standby';
                           if (hasDirectives(['live'], query))
                               shouldFetch = true;
-                          requestId = this.generateRequestId();
-                          cancel = this.updateQueryWatch(queryId, query, updatedOptions);
+                          requestId = this.idCounter++;
+                          cancel = fetchPolicy !== 'no-cache'
+                              ? this.updateQueryWatch(queryId, query, options)
+                              : undefined;
                           this.setQuery(queryId, function () { return ({
                               document: query,
                               lastRequestId: requestId,
                               invalidated: true,
                               cancel: cancel,
                           }); });
-                          this.invalidate(true, fetchMoreForQueryId);
+                          this.invalidate(fetchMoreForQueryId);
                           this.queryStore.initQuery({
                               queryId: queryId,
                               document: query,
                               storePreviousVariables: shouldFetch,
-                              variables: updatedVariables,
+                              variables: variables,
                               isPoll: fetchType === FetchType.poll,
                               isRefetch: fetchType === FetchType.refetch,
                               metadata: metadata,
                               fetchMoreForQueryId: fetchMoreForQueryId,
                           });
                           this.broadcastQueries();
-                          shouldDispatchClientResult = !shouldFetch || fetchPolicy === 'cache-and-network';
-                          if (shouldDispatchClientResult) {
-                              this.queryStore.markQueryResultClient(queryId, !shouldFetch);
-                              this.invalidate(true, queryId, fetchMoreForQueryId);
-                              this.broadcastQueries(this.localState.shouldForceResolvers(query));
-                          }
                           if (shouldFetch) {
                               networkResult = this.fetchRequest({
                                   requestId: requestId,
                                   queryId: queryId,
                                   document: query,
-                                  options: updatedOptions,
+                                  options: options,
                                   fetchMoreForQueryId: fetchMoreForQueryId,
                               }).catch(function (error) {
                                   if (isApolloError(error)) {
                                       throw error;
                                   }
                                   else {
-                                      var lastRequestId = _this.getQuery(queryId).lastRequestId;
-                                      if (requestId >= (lastRequestId || 1)) {
+                                      if (requestId >= _this.getQuery(queryId).lastRequestId) {
                                           _this.queryStore.markQueryError(queryId, error, fetchMoreForQueryId);
-                                          _this.invalidate(true, queryId, fetchMoreForQueryId);
+                                          _this.invalidate(queryId);
+                                          _this.invalidate(fetchMoreForQueryId);
                                           _this.broadcastQueries();
                                       }
                                       throw new ApolloError({ networkError: error });
@@ -6889,185 +6572,173 @@
                               if (fetchPolicy !== 'cache-and-network') {
                                   return [2, networkResult];
                               }
-                              else {
-                                  networkResult.catch(function () { });
-                              }
+                              networkResult.catch(function () { });
                           }
-                          return [2, Promise.resolve({ data: storeResult })];
+                          this.queryStore.markQueryResultClient(queryId, !shouldFetch);
+                          this.invalidate(queryId);
+                          this.invalidate(fetchMoreForQueryId);
+                          if (this.transform(query).hasForcedResolvers) {
+                              return [2, this.localState.runResolvers({
+                                      document: query,
+                                      remoteResult: { data: storeResult },
+                                      context: context,
+                                      variables: variables,
+                                      onlyRunForcedResolvers: true,
+                                  }).then(function (result$$1) {
+                                      _this.markQueryResult(queryId, result$$1, options, fetchMoreForQueryId);
+                                      _this.broadcastQueries();
+                                      return result$$1;
+                                  })];
+                          }
+                          this.broadcastQueries();
+                          return [2, { data: storeResult }];
                   }
               });
           });
       };
+      QueryManager.prototype.markQueryResult = function (queryId, result$$1, _a, fetchMoreForQueryId) {
+          var fetchPolicy = _a.fetchPolicy, variables = _a.variables, errorPolicy = _a.errorPolicy;
+          if (fetchPolicy === 'no-cache') {
+              this.setQuery(queryId, function () { return ({
+                  newData: { result: result$$1.data, complete: true },
+              }); });
+          }
+          else {
+              this.dataStore.markQueryResult(result$$1, this.getQuery(queryId).document, variables, fetchMoreForQueryId, errorPolicy === 'ignore' || errorPolicy === 'all');
+          }
+      };
       QueryManager.prototype.queryListenerForObserver = function (queryId, options, observer) {
           var _this = this;
-          var previouslyHadError = false;
-          return function (queryStoreValue, newData, forceResolvers) { return __awaiter(_this, void 0, void 0, function () {
-              var observableQuery, fetchPolicy, errorPolicy, lastResult, lastError, shouldNotifyIfLoading, networkStatusChanged, errorStatusChanged, apolloError_1, data, isMissing, document_1, readResult, resultFromStore, query, variables, context, updatedResult, e_1, error_1;
-              return __generator(this, function (_a) {
-                  switch (_a.label) {
-                      case 0:
-                          this.invalidate(false, queryId);
-                          if (!queryStoreValue)
-                              return [2];
-                          observableQuery = this.getQuery(queryId).observableQuery;
-                          fetchPolicy = observableQuery
-                              ? observableQuery.options.fetchPolicy
-                              : options.fetchPolicy;
-                          if (fetchPolicy === 'standby')
-                              return [2];
-                          errorPolicy = observableQuery
-                              ? observableQuery.options.errorPolicy
-                              : options.errorPolicy;
-                          lastResult = observableQuery
-                              ? observableQuery.getLastResult()
-                              : null;
-                          lastError = observableQuery ? observableQuery.getLastError() : null;
-                          shouldNotifyIfLoading = (!newData && queryStoreValue.previousVariables != null) ||
-                              fetchPolicy === 'cache-only' ||
-                              fetchPolicy === 'cache-and-network';
-                          networkStatusChanged = Boolean(lastResult &&
-                              queryStoreValue.networkStatus !== lastResult.networkStatus);
-                          errorStatusChanged = errorPolicy &&
-                              (lastError && lastError.graphQLErrors) !==
-                                  queryStoreValue.graphQLErrors &&
-                              errorPolicy !== 'none';
-                          if (!(!isNetworkRequestInFlight(queryStoreValue.networkStatus) ||
-                              (networkStatusChanged && options.notifyOnNetworkStatusChange) ||
-                              shouldNotifyIfLoading)) return [3, 8];
-                          if (((!errorPolicy || errorPolicy === 'none') &&
-                              queryStoreValue.graphQLErrors &&
-                              queryStoreValue.graphQLErrors.length > 0) ||
-                              queryStoreValue.networkError) {
-                              apolloError_1 = new ApolloError({
-                                  graphQLErrors: queryStoreValue.graphQLErrors,
-                                  networkError: queryStoreValue.networkError,
-                              });
-                              previouslyHadError = true;
-                              if (observer.error) {
-                                  try {
-                                      observer.error(apolloError_1);
-                                  }
-                                  catch (e) {
-                                      setTimeout(function () {
-                                          throw e;
-                                      }, 0);
-                                  }
-                              }
-                              else {
-                                  setTimeout(function () {
-                                      throw apolloError_1;
-                                  }, 0);
-                                  if (process$1.env.NODE_ENV !== 'production') {
-                                      console.info('An unhandled error was thrown because no error handler is registered ' +
-                                          'for the query ' +
-                                          JSON.stringify(queryStoreValue.document));
-                                  }
-                              }
-                              return [2];
-                          }
-                          _a.label = 1;
-                      case 1:
-                          _a.trys.push([1, 7, , 8]);
-                          data = void 0;
-                          isMissing = void 0;
-                          if (newData) {
-                              if (fetchPolicy !== 'no-cache' && fetchPolicy !== 'network-only') {
-                                  this.setQuery(queryId, function () { return ({ newData: null }); });
-                              }
-                              data = newData.result;
-                              isMissing = !newData.complete || false;
-                          }
-                          else {
-                              if (lastResult && lastResult.data && !errorStatusChanged) {
-                                  data = lastResult.data;
-                                  isMissing = false;
-                              }
-                              else {
-                                  document_1 = this.getQuery(queryId).document;
-                                  readResult = this.dataStore.getCache().diff({
-                                      query: document_1,
-                                      variables: queryStoreValue.previousVariables ||
-                                          queryStoreValue.variables,
-                                      optimistic: true,
-                                  });
-                                  data = readResult.result;
-                                  isMissing = !readResult.complete;
-                              }
-                          }
-                          resultFromStore = void 0;
-                          if (isMissing && fetchPolicy !== 'cache-only') {
-                              resultFromStore = {
-                                  data: lastResult && lastResult.data,
-                                  loading: isNetworkRequestInFlight(queryStoreValue.networkStatus),
-                                  networkStatus: queryStoreValue.networkStatus,
-                                  stale: true,
-                              };
-                          }
-                          else {
-                              resultFromStore = {
-                                  data: data,
-                                  loading: isNetworkRequestInFlight(queryStoreValue.networkStatus),
-                                  networkStatus: queryStoreValue.networkStatus,
-                                  stale: false,
-                              };
-                          }
-                          if (errorPolicy === 'all' &&
-                              queryStoreValue.graphQLErrors &&
-                              queryStoreValue.graphQLErrors.length > 0) {
-                              resultFromStore.errors = queryStoreValue.graphQLErrors;
-                          }
-                          if (!observer.next) return [3, 6];
-                          if (!(previouslyHadError ||
-                              !observableQuery ||
-                              observableQuery.isDifferentFromLastResult(resultFromStore))) return [3, 6];
-                          _a.label = 2;
-                      case 2:
-                          _a.trys.push([2, 5, , 6]);
-                          if (!forceResolvers) return [3, 4];
-                          query = options.query, variables = options.variables, context = options.context;
-                          return [4, this.localState.runResolvers({
-                                  document: query,
-                                  remoteResult: resultFromStore,
-                                  context: context,
-                                  variables: variables,
-                                  onlyRunForcedResolvers: forceResolvers,
-                              })];
-                      case 3:
-                          updatedResult = _a.sent();
-                          resultFromStore = __assign({}, resultFromStore, updatedResult);
-                          _a.label = 4;
-                      case 4:
-                          observer.next(resultFromStore);
-                          return [3, 6];
-                      case 5:
-                          e_1 = _a.sent();
-                          setTimeout(function () {
-                              throw e_1;
-                          }, 0);
-                          return [3, 6];
-                      case 6:
-                          previouslyHadError = false;
-                          return [3, 8];
-                      case 7:
-                          error_1 = _a.sent();
-                          previouslyHadError = true;
-                          if (observer.error)
-                              observer.error(new ApolloError({ networkError: error_1 }));
-                          return [2];
-                      case 8: return [2];
+          function invoke(method, argument) {
+              if (observer[method]) {
+                  try {
+                      observer[method](argument);
                   }
-              });
-          }); };
+                  catch (e) {
+                      process$1.env.NODE_ENV === "production" || invariant$1.error(e);
+                  }
+              }
+              else if (method === 'error') {
+                  process$1.env.NODE_ENV === "production" || invariant$1.error(argument);
+              }
+          }
+          return function (queryStoreValue, newData) {
+              _this.invalidate(queryId, false);
+              if (!queryStoreValue)
+                  return;
+              var _a = _this.getQuery(queryId), observableQuery = _a.observableQuery, document = _a.document;
+              var fetchPolicy = observableQuery
+                  ? observableQuery.options.fetchPolicy
+                  : options.fetchPolicy;
+              if (fetchPolicy === 'standby')
+                  return;
+              var loading = isNetworkRequestInFlight(queryStoreValue.networkStatus);
+              var lastResult = observableQuery && observableQuery.getLastResult();
+              var networkStatusChanged = !!(lastResult &&
+                  lastResult.networkStatus !== queryStoreValue.networkStatus);
+              var shouldNotifyIfLoading = options.returnPartialData ||
+                  (!newData && queryStoreValue.previousVariables) ||
+                  (networkStatusChanged && options.notifyOnNetworkStatusChange) ||
+                  fetchPolicy === 'cache-only' ||
+                  fetchPolicy === 'cache-and-network';
+              if (loading && !shouldNotifyIfLoading) {
+                  return;
+              }
+              var hasGraphQLErrors = isNonEmptyArray(queryStoreValue.graphQLErrors);
+              var errorPolicy = observableQuery
+                  && observableQuery.options.errorPolicy
+                  || options.errorPolicy
+                  || 'none';
+              if (errorPolicy === 'none' && hasGraphQLErrors || queryStoreValue.networkError) {
+                  return invoke('error', new ApolloError({
+                      graphQLErrors: queryStoreValue.graphQLErrors,
+                      networkError: queryStoreValue.networkError,
+                  }));
+              }
+              try {
+                  var data = void 0;
+                  var isMissing = void 0;
+                  if (newData) {
+                      if (fetchPolicy !== 'no-cache' && fetchPolicy !== 'network-only') {
+                          _this.setQuery(queryId, function () { return ({ newData: null }); });
+                      }
+                      data = newData.result;
+                      isMissing = !newData.complete;
+                  }
+                  else {
+                      var lastError = observableQuery && observableQuery.getLastError();
+                      var errorStatusChanged = errorPolicy !== 'none' &&
+                          (lastError && lastError.graphQLErrors) !==
+                              queryStoreValue.graphQLErrors;
+                      if (lastResult && lastResult.data && !errorStatusChanged) {
+                          data = lastResult.data;
+                          isMissing = false;
+                      }
+                      else {
+                          var diffResult = _this.dataStore.getCache().diff({
+                              query: document,
+                              variables: queryStoreValue.previousVariables ||
+                                  queryStoreValue.variables,
+                              returnPartialData: true,
+                              optimistic: true,
+                          });
+                          data = diffResult.result;
+                          isMissing = !diffResult.complete;
+                      }
+                  }
+                  var stale = isMissing && !(options.returnPartialData ||
+                      fetchPolicy === 'cache-only');
+                  var resultFromStore = {
+                      data: stale ? lastResult && lastResult.data : data,
+                      loading: loading,
+                      networkStatus: queryStoreValue.networkStatus,
+                      stale: stale,
+                  };
+                  if (errorPolicy === 'all' && hasGraphQLErrors) {
+                      resultFromStore.errors = queryStoreValue.graphQLErrors;
+                  }
+                  invoke('next', resultFromStore);
+              }
+              catch (networkError) {
+                  invoke('error', new ApolloError({ networkError: networkError }));
+              }
+          };
+      };
+      QueryManager.prototype.transform = function (document) {
+          var transformCache = this.transformCache;
+          if (!transformCache.has(document)) {
+              var cache = this.dataStore.getCache();
+              var transformed = cache.transformDocument(document);
+              var forLink = removeConnectionDirectiveFromDocument(cache.transformForLink(transformed));
+              var clientQuery = this.localState.clientQuery(transformed);
+              var serverQuery = this.localState.serverQuery(forLink);
+              var cacheEntry_1 = {
+                  document: transformed,
+                  hasClientExports: hasClientExports(transformed),
+                  hasForcedResolvers: this.localState.shouldForceResolvers(transformed),
+                  clientQuery: clientQuery,
+                  serverQuery: serverQuery,
+                  defaultVars: getDefaultValues(getOperationDefinition(transformed)),
+              };
+              var add = function (doc) {
+                  if (doc && !transformCache.has(doc)) {
+                      transformCache.set(doc, cacheEntry_1);
+                  }
+              };
+              add(document);
+              add(transformed);
+              add(clientQuery);
+              add(serverQuery);
+          }
+          return transformCache.get(document);
+      };
+      QueryManager.prototype.getVariables = function (document, variables) {
+          return __assign({}, this.transform(document).defaultVars, variables);
       };
       QueryManager.prototype.watchQuery = function (options, shouldSubscribe) {
           if (shouldSubscribe === void 0) { shouldSubscribe = true; }
-          process$1.env.NODE_ENV === "production" ? invariant$3(options.fetchPolicy !== 'standby') : invariant$3(options.fetchPolicy !== 'standby', 'client.watchQuery cannot be called with fetchPolicy set to "standby"');
-          var queryDefinition = getQueryDefinition(options.query);
-          if (queryDefinition.variableDefinitions &&
-              queryDefinition.variableDefinitions.length) {
-              var defaultValues = getDefaultValues(queryDefinition);
-              options.variables = assign({}, defaultValues, options.variables);
-          }
+          process$1.env.NODE_ENV === "production" ? invariant$1(options.fetchPolicy !== 'standby', 11) : invariant$1(options.fetchPolicy !== 'standby', 'client.watchQuery cannot be called with fetchPolicy set to "standby"');
+          options.variables = this.getVariables(options.query, options.variables);
           if (typeof options.notifyOnNetworkStatusChange === 'undefined') {
               options.notifyOnNetworkStatusChange = false;
           }
@@ -7080,11 +6751,11 @@
       };
       QueryManager.prototype.query = function (options) {
           var _this = this;
-          process$1.env.NODE_ENV === "production" ? invariant$3(options.query) : invariant$3(options.query, 'query option is required. You must specify your GraphQL document ' +
+          process$1.env.NODE_ENV === "production" ? invariant$1(options.query, 12) : invariant$1(options.query, 'query option is required. You must specify your GraphQL document ' +
               'in the query option.');
-          process$1.env.NODE_ENV === "production" ? invariant$3(options.query.kind === 'Document') : invariant$3(options.query.kind === 'Document', 'You must wrap the query string in a "gql" tag.');
-          process$1.env.NODE_ENV === "production" ? invariant$3(!options.returnPartialData) : invariant$3(!options.returnPartialData, 'returnPartialData option only supported on watchQuery.');
-          process$1.env.NODE_ENV === "production" ? invariant$3(!options.pollInterval) : invariant$3(!options.pollInterval, 'pollInterval option only supported on watchQuery.');
+          process$1.env.NODE_ENV === "production" ? invariant$1(options.query.kind === 'Document', 13) : invariant$1(options.query.kind === 'Document', 'You must wrap the query string in a "gql" tag.');
+          process$1.env.NODE_ENV === "production" ? invariant$1(!options.returnPartialData, 14) : invariant$1(!options.returnPartialData, 'returnPartialData option only supported on watchQuery.');
+          process$1.env.NODE_ENV === "production" ? invariant$1(!options.pollInterval, 15) : invariant$1(!options.pollInterval, 'pollInterval option only supported on watchQuery.');
           return new Promise(function (resolve, reject) {
               var watchedQuery = _this.watchQuery(options, false);
               _this.fetchQueryRejectFns.set("query:" + watchedQuery.queryId, reject);
@@ -7097,9 +6768,7 @@
           });
       };
       QueryManager.prototype.generateQueryId = function () {
-          var queryId = this.idCounter.toString();
-          this.idCounter++;
-          return queryId;
+          return String(this.idCounter++);
       };
       QueryManager.prototype.stopQueryInStore = function (queryId) {
           this.stopQueryInStoreNoBroadcast(queryId);
@@ -7108,15 +6777,13 @@
       QueryManager.prototype.stopQueryInStoreNoBroadcast = function (queryId) {
           this.stopPollingQuery(queryId);
           this.queryStore.stopQuery(queryId);
-          this.invalidate(true, queryId);
+          this.invalidate(queryId);
       };
       QueryManager.prototype.addQueryListener = function (queryId, listener) {
           this.setQuery(queryId, function (_a) {
-              var _b = _a.listeners, listeners = _b === void 0 ? [] : _b;
-              return ({
-                  listeners: listeners.concat([listener]),
-                  invalidated: false,
-              });
+              var listeners = _a.listeners;
+              listeners.add(listener);
+              return { invalidated: false };
           });
       };
       QueryManager.prototype.updateQueryWatch = function (queryId, document, options) {
@@ -7147,31 +6814,16 @@
       };
       QueryManager.prototype.addObservableQuery = function (queryId, observableQuery) {
           this.setQuery(queryId, function () { return ({ observableQuery: observableQuery }); });
-          var queryDef = getQueryDefinition(observableQuery.options.query);
-          if (queryDef.name && queryDef.name.value) {
-              var queryName = queryDef.name.value;
-              this.queryIdsByName[queryName] = this.queryIdsByName[queryName] || [];
-              this.queryIdsByName[queryName].push(observableQuery.queryId);
-          }
       };
       QueryManager.prototype.removeObservableQuery = function (queryId) {
-          var _a = this.getQuery(queryId), observableQuery = _a.observableQuery, cancel = _a.cancel;
+          var cancel = this.getQuery(queryId).cancel;
+          this.setQuery(queryId, function () { return ({ observableQuery: null }); });
           if (cancel)
               cancel();
-          if (!observableQuery)
-              return;
-          var definition = getQueryDefinition(observableQuery.options.query);
-          var queryName = definition.name ? definition.name.value : null;
-          this.setQuery(queryId, function () { return ({ observableQuery: null }); });
-          if (queryName) {
-              this.queryIdsByName[queryName] = this.queryIdsByName[queryName].filter(function (val) {
-                  return !(observableQuery.queryId === val);
-              });
-          }
       };
       QueryManager.prototype.clearStore = function () {
           this.fetchQueryRejectFns.forEach(function (reject) {
-              reject(new Error('Store reset while query was in flight(not completed in link chain)'));
+              reject(process$1.env.NODE_ENV === "production" ? new InvariantError(16) : new InvariantError('Store reset while query was in flight (not completed in link chain)'));
           });
           var resetIds = [];
           this.queries.forEach(function (_a, queryId) {
@@ -7181,8 +6833,7 @@
           });
           this.queryStore.reset(resetIds);
           this.mutationStore.reset();
-          var reset = this.dataStore.reset();
-          return reset;
+          return this.dataStore.reset();
       };
       QueryManager.prototype.resetStore = function () {
           var _this = this;
@@ -7191,126 +6842,64 @@
           });
       };
       QueryManager.prototype.reFetchObservableQueries = function (includeStandby) {
-          var observableQueryPromises = this.getObservableQueryPromises(includeStandby);
+          var _this = this;
+          if (includeStandby === void 0) { includeStandby = false; }
+          var observableQueryPromises = [];
+          this.queries.forEach(function (_a, queryId) {
+              var observableQuery = _a.observableQuery;
+              if (observableQuery) {
+                  var fetchPolicy = observableQuery.options.fetchPolicy;
+                  observableQuery.resetLastResults();
+                  if (fetchPolicy !== 'cache-only' &&
+                      (includeStandby || fetchPolicy !== 'standby')) {
+                      observableQueryPromises.push(observableQuery.refetch());
+                  }
+                  _this.setQuery(queryId, function () { return ({ newData: null }); });
+                  _this.invalidate(queryId);
+              }
+          });
           this.broadcastQueries();
           return Promise.all(observableQueryPromises);
       };
+      QueryManager.prototype.observeQuery = function (queryId, options, observer) {
+          this.addQueryListener(queryId, this.queryListenerForObserver(queryId, options, observer));
+          return this.fetchQuery(queryId, options);
+      };
       QueryManager.prototype.startQuery = function (queryId, options, listener) {
+          process$1.env.NODE_ENV === "production" || invariant$1.warn("The QueryManager.startQuery method has been deprecated");
           this.addQueryListener(queryId, listener);
           this.fetchQuery(queryId, options)
               .catch(function () { return undefined; });
           return queryId;
       };
-      QueryManager.prototype.startGraphQLSubscription = function (options) {
+      QueryManager.prototype.startGraphQLSubscription = function (_a) {
           var _this = this;
-          var query = options.query;
-          var isCacheEnabled = !(options.fetchPolicy && options.fetchPolicy === 'no-cache');
-          var cache = this.dataStore.getCache();
-          var transformedDoc = cache.transformDocument(query);
-          var variables = assign({}, getDefaultValues(getOperationDefinition(query)), options.variables);
-          var updatedVariables = variables;
-          var sub;
-          var observers = [];
-          var clientQuery = this.localState.clientQuery(transformedDoc);
-          return new Observable$2(function (observer) {
-              observers.push(observer);
-              if (observers.length === 1) {
-                  var activeNextCalls_1 = 0;
-                  var complete_1 = false;
-                  var handler_1 = {
-                      next: function (result$$1) { return __awaiter(_this, void 0, void 0, function () {
-                          var updatedResult;
-                          return __generator(this, function (_a) {
-                              switch (_a.label) {
-                                  case 0:
-                                      activeNextCalls_1 += 1;
-                                      updatedResult = result$$1;
-                                      if (!(clientQuery && hasDirectives(['client'], clientQuery))) return [3, 2];
-                                      return [4, this.localState.runResolvers({
-                                              document: clientQuery,
-                                              remoteResult: result$$1,
-                                              context: {},
-                                              variables: updatedVariables,
-                                          })];
-                                  case 1:
-                                      updatedResult = _a.sent();
-                                      _a.label = 2;
-                                  case 2:
-                                      if (isCacheEnabled) {
-                                          this.dataStore.markSubscriptionResult(updatedResult, transformedDoc, updatedVariables);
-                                          this.broadcastQueries();
-                                      }
-                                      observers.forEach(function (obs) {
-                                          if (graphQLResultHasError(updatedResult) && obs.error) {
-                                              obs.error(new ApolloError({
-                                                  graphQLErrors: updatedResult.errors,
-                                              }));
-                                          }
-                                          else if (obs.next) {
-                                              obs.next(updatedResult);
-                                          }
-                                          activeNextCalls_1 -= 1;
-                                      });
-                                      if (activeNextCalls_1 === 0 && complete_1) {
-                                          handler_1.complete();
-                                      }
-                                      return [2];
-                              }
-                          });
-                      }); },
-                      error: function (error) {
-                          observers.forEach(function (obs) {
-                              if (obs.error) {
-                                  obs.error(error);
-                              }
-                          });
-                      },
-                      complete: function () {
-                          if (activeNextCalls_1 === 0) {
-                              observers.forEach(function (obs) {
-                                  if (obs.complete) {
-                                      obs.complete();
-                                  }
-                              });
-                          }
-                          complete_1 = true;
-                      }
-                  };
-                  (function () { return __awaiter(_this, void 0, void 0, function () {
-                      var updatedVariables, _a, serverQuery, operation;
-                      return __generator(this, function (_b) {
-                          switch (_b.label) {
-                              case 0:
-                                  if (!hasClientExports(transformedDoc)) return [3, 2];
-                                  return [4, this.localState.addExportedVariables(transformedDoc, variables)];
-                              case 1:
-                                  _a = _b.sent();
-                                  return [3, 3];
-                              case 2:
-                                  _a = variables;
-                                  _b.label = 3;
-                              case 3:
-                                  updatedVariables = _a;
-                                  serverQuery = this.localState.serverQuery(transformedDoc);
-                                  if (serverQuery) {
-                                      operation = this.buildOperationForLink(serverQuery, updatedVariables);
-                                      sub = execute(this.link, operation).subscribe(handler_1);
-                                  }
-                                  else {
-                                      sub = Observable$2.of({ data: {} }).subscribe(handler_1);
-                                  }
-                                  return [2];
-                          }
-                      });
-                  }); })();
-              }
-              return function () {
-                  observers = observers.filter(function (obs) { return obs !== observer; });
-                  if (observers.length === 0 && sub) {
-                      sub.unsubscribe();
+          var query = _a.query, fetchPolicy = _a.fetchPolicy, variables = _a.variables;
+          query = this.transform(query).document;
+          variables = this.getVariables(query, variables);
+          var makeObservable = function (variables) {
+              return _this.getObservableFromLink(query, {}, variables, false).map(function (result$$1) {
+                  if (!fetchPolicy || fetchPolicy !== 'no-cache') {
+                      _this.dataStore.markSubscriptionResult(result$$1, query, variables);
+                      _this.broadcastQueries();
                   }
-              };
-          });
+                  if (graphQLResultHasError(result$$1)) {
+                      throw new ApolloError({
+                          graphQLErrors: result$$1.errors,
+                      });
+                  }
+                  return result$$1;
+              });
+          };
+          if (this.transform(query).hasClientExports) {
+              var observablePromise_1 = this.localState.addExportedVariables(query, variables).then(makeObservable);
+              return new Observable$2(function (observer) {
+                  var sub = null;
+                  observablePromise_1.then(function (observable) { return sub = observable.subscribe(observer); }, observer.error);
+                  return function () { return sub && sub.unsubscribe(); };
+              });
+          }
+          return makeObservable(variables);
       };
       QueryManager.prototype.stopQuery = function (queryId) {
           this.stopQueryNoBroadcast(queryId);
@@ -7321,258 +6910,200 @@
           this.removeQuery(queryId);
       };
       QueryManager.prototype.removeQuery = function (queryId) {
-          var subscriptions = this.getQuery(queryId).subscriptions;
           this.fetchQueryRejectFns.delete("query:" + queryId);
           this.fetchQueryRejectFns.delete("fetchRequest:" + queryId);
-          subscriptions.forEach(function (x) { return x.unsubscribe(); });
+          this.getQuery(queryId).subscriptions.forEach(function (x) { return x.unsubscribe(); });
           this.queries.delete(queryId);
       };
       QueryManager.prototype.getCurrentQueryResult = function (observableQuery, optimistic) {
           if (optimistic === void 0) { optimistic = true; }
-          var _a = observableQuery.options, variables = _a.variables, query = _a.query, fetchPolicy = _a.fetchPolicy;
+          var _a = observableQuery.options, variables = _a.variables, query = _a.query, fetchPolicy = _a.fetchPolicy, returnPartialData = _a.returnPartialData;
           var lastResult = observableQuery.getLastResult();
           var newData = this.getQuery(observableQuery.queryId).newData;
           if (newData && newData.complete) {
               return { data: newData.result, partial: false };
           }
-          else if (fetchPolicy === 'no-cache' || fetchPolicy === 'network-only') {
+          if (fetchPolicy === 'no-cache' || fetchPolicy === 'network-only') {
               return { data: undefined, partial: false };
           }
-          else {
-              try {
-                  var data = this.dataStore.getCache().read({
-                      query: query,
-                      variables: variables,
-                      previousResult: lastResult ? lastResult.data : undefined,
-                      optimistic: optimistic,
-                  }) || undefined;
-                  return { data: data, partial: false };
-              }
-              catch (e) {
-                  return { data: undefined, partial: true };
-              }
-          }
+          var _b = this.dataStore.getCache().diff({
+              query: query,
+              variables: variables,
+              previousResult: lastResult ? lastResult.data : undefined,
+              returnPartialData: true,
+              optimistic: optimistic,
+          }), result$$1 = _b.result, complete = _b.complete;
+          return {
+              data: (complete || returnPartialData) ? result$$1 : void 0,
+              partial: !complete,
+          };
       };
       QueryManager.prototype.getQueryWithPreviousResult = function (queryIdOrObservable) {
           var observableQuery;
           if (typeof queryIdOrObservable === 'string') {
               var foundObserveableQuery = this.getQuery(queryIdOrObservable).observableQuery;
-              process$1.env.NODE_ENV === "production" ? invariant$3(foundObserveableQuery) : invariant$3(foundObserveableQuery, "ObservableQuery with this id doesn't exist: " + queryIdOrObservable);
+              process$1.env.NODE_ENV === "production" ? invariant$1(foundObserveableQuery, 17) : invariant$1(foundObserveableQuery, "ObservableQuery with this id doesn't exist: " + queryIdOrObservable);
               observableQuery = foundObserveableQuery;
           }
           else {
               observableQuery = queryIdOrObservable;
           }
           var _a = observableQuery.options, variables = _a.variables, query = _a.query;
-          var data = this.getCurrentQueryResult(observableQuery, false).data;
           return {
-              previousResult: data,
+              previousResult: this.getCurrentQueryResult(observableQuery, false).data,
               variables: variables,
               document: query,
           };
       };
-      QueryManager.prototype.broadcastQueries = function (forceResolvers) {
+      QueryManager.prototype.broadcastQueries = function () {
           var _this = this;
-          if (forceResolvers === void 0) { forceResolvers = false; }
           this.onBroadcast();
           this.queries.forEach(function (info, id) {
-              if (!info.invalidated || !info.listeners)
-                  return;
-              info.listeners
-                  .filter(function (x) { return !!x; })
-                  .forEach(function (listener) {
-                  listener(_this.queryStore.get(id), info.newData, forceResolvers);
-              });
+              if (info.invalidated) {
+                  info.listeners.forEach(function (listener) {
+                      if (listener) {
+                          listener(_this.queryStore.get(id), info.newData);
+                      }
+                  });
+              }
           });
       };
       QueryManager.prototype.getLocalState = function () {
           return this.localState;
       };
-      QueryManager.prototype.getObservableQueryPromises = function (includeStandby) {
+      QueryManager.prototype.getObservableFromLink = function (query, context, variables, deduplication) {
           var _this = this;
-          var observableQueryPromises = [];
-          this.queries.forEach(function (_a, queryId) {
-              var observableQuery = _a.observableQuery;
-              if (!observableQuery)
-                  return;
-              var fetchPolicy = observableQuery.options.fetchPolicy;
-              observableQuery.resetLastResults();
-              if (fetchPolicy !== 'cache-only' &&
-                  (includeStandby || fetchPolicy !== 'standby')) {
-                  observableQueryPromises.push(observableQuery.refetch());
+          if (deduplication === void 0) { deduplication = this.queryDeduplication; }
+          var observable;
+          var serverQuery = this.transform(query).serverQuery;
+          if (serverQuery) {
+              var _a = this, inFlightLinkObservables_1 = _a.inFlightLinkObservables, link = _a.link;
+              var operation = {
+                  query: serverQuery,
+                  variables: variables,
+                  operationName: getOperationName(serverQuery) || void 0,
+                  context: this.prepareContext(__assign({}, context, { forceFetch: !deduplication })),
+              };
+              context = operation.context;
+              if (deduplication) {
+                  var byVariables_1 = inFlightLinkObservables_1.get(serverQuery) || new Map();
+                  inFlightLinkObservables_1.set(serverQuery, byVariables_1);
+                  var varJson_1 = JSON.stringify(variables);
+                  observable = byVariables_1.get(varJson_1);
+                  if (!observable) {
+                      byVariables_1.set(varJson_1, observable = multiplex(execute(link, operation)));
+                      var cleanup = function () {
+                          byVariables_1.delete(varJson_1);
+                          if (!byVariables_1.size)
+                              inFlightLinkObservables_1.delete(serverQuery);
+                          cleanupSub_1.unsubscribe();
+                      };
+                      var cleanupSub_1 = observable.subscribe({
+                          next: cleanup,
+                          error: cleanup,
+                          complete: cleanup,
+                      });
+                  }
               }
-              _this.setQuery(queryId, function () { return ({ newData: null }); });
-              _this.invalidate(true, queryId);
-          });
-          return observableQueryPromises;
+              else {
+                  observable = multiplex(execute(link, operation));
+              }
+          }
+          else {
+              observable = Observable$2.of({ data: {} });
+              context = this.prepareContext(context);
+          }
+          var clientQuery = this.transform(query).clientQuery;
+          if (clientQuery) {
+              observable = asyncMap(observable, function (result$$1) {
+                  return _this.localState.runResolvers({
+                      document: clientQuery,
+                      remoteResult: result$$1,
+                      context: context,
+                      variables: variables,
+                  });
+              });
+          }
+          return observable;
       };
       QueryManager.prototype.fetchRequest = function (_a) {
           var _this = this;
           var requestId = _a.requestId, queryId = _a.queryId, document = _a.document, options = _a.options, fetchMoreForQueryId = _a.fetchMoreForQueryId;
-          var variables = options.variables, context = options.context, _b = options.errorPolicy, errorPolicy = _b === void 0 ? 'none' : _b, fetchPolicy = options.fetchPolicy;
+          var variables = options.variables, _b = options.errorPolicy, errorPolicy = _b === void 0 ? 'none' : _b, fetchPolicy = options.fetchPolicy;
           var resultFromStore;
           var errorsFromStore;
           return new Promise(function (resolve, reject) {
-              var obs;
-              var updatedContext = {};
-              var clientQuery = _this.localState.clientQuery(document);
-              var serverQuery = _this.localState.serverQuery(document);
-              if (serverQuery) {
-                  var operation = _this.buildOperationForLink(serverQuery, variables, __assign({}, context, { forceFetch: !_this.queryDeduplication }));
-                  updatedContext = operation.context;
-                  obs = execute(_this.deduplicator, operation);
-              }
-              else {
-                  updatedContext = _this.prepareContext(context);
-                  obs = Observable$2.of({ data: {} });
-              }
-              _this.fetchQueryRejectFns.set("fetchRequest:" + queryId, reject);
-              var complete = false;
-              var handlingNext = true;
-              var subscriber = {
-                  next: function (result$$1) { return __awaiter(_this, void 0, void 0, function () {
-                      var updatedResult, lastRequestId;
-                      return __generator(this, function (_a) {
-                          switch (_a.label) {
-                              case 0:
-                                  handlingNext = true;
-                                  updatedResult = result$$1;
-                                  lastRequestId = this.getQuery(queryId).lastRequestId;
-                                  if (!(requestId >= (lastRequestId || 1))) return [3, 3];
-                                  if (!(clientQuery && hasDirectives(['client'], clientQuery))) return [3, 2];
-                                  return [4, this.localState
-                                          .runResolvers({
-                                          document: clientQuery,
-                                          remoteResult: result$$1,
-                                          context: updatedContext,
-                                          variables: variables,
-                                      })
-                                          .catch(function (error) {
-                                          handlingNext = false;
-                                          reject(error);
-                                          return result$$1;
-                                      })];
-                              case 1:
-                                  updatedResult = _a.sent();
-                                  _a.label = 2;
-                              case 2:
-                                  if (fetchPolicy !== 'no-cache') {
-                                      try {
-                                          this.dataStore.markQueryResult(updatedResult, document, variables, fetchMoreForQueryId, errorPolicy === 'ignore' || errorPolicy === 'all');
-                                      }
-                                      catch (e) {
-                                          handlingNext = false;
-                                          reject(e);
-                                          return [2];
-                                      }
-                                  }
-                                  else {
-                                      this.setQuery(queryId, function () { return ({
-                                          newData: { result: updatedResult.data, complete: true },
-                                      }); });
-                                  }
-                                  this.queryStore.markQueryResult(queryId, updatedResult, fetchMoreForQueryId);
-                                  this.invalidate(true, queryId, fetchMoreForQueryId);
-                                  this.broadcastQueries();
-                                  _a.label = 3;
-                              case 3:
-                                  if (updatedResult.errors && errorPolicy === 'none') {
-                                      handlingNext = false;
-                                      reject(new ApolloError({
-                                          graphQLErrors: updatedResult.errors,
-                                      }));
-                                      return [2];
-                                  }
-                                  else if (errorPolicy === 'all') {
-                                      errorsFromStore = updatedResult.errors;
-                                  }
-                                  if (fetchMoreForQueryId || fetchPolicy === 'no-cache') {
-                                      resultFromStore = updatedResult.data;
-                                  }
-                                  else {
-                                      try {
-                                          resultFromStore = this.dataStore.getCache().read({
-                                              variables: variables,
-                                              query: document,
-                                              optimistic: false,
-                                          });
-                                      }
-                                      catch (e) { }
-                                  }
-                                  handlingNext = false;
-                                  if (complete) {
-                                      subscriber.complete();
-                                  }
-                                  return [2];
-                          }
-                      });
-                  }); },
+              var observable = _this.getObservableFromLink(document, options.context, variables);
+              var fqrfId = "fetchRequest:" + queryId;
+              _this.fetchQueryRejectFns.set(fqrfId, reject);
+              var cleanup = function () {
+                  _this.fetchQueryRejectFns.delete(fqrfId);
+                  _this.setQuery(queryId, function (_a) {
+                      var subscriptions = _a.subscriptions;
+                      subscriptions.delete(subscription);
+                  });
+              };
+              var subscription = observable.map(function (result$$1) {
+                  if (requestId >= _this.getQuery(queryId).lastRequestId) {
+                      _this.markQueryResult(queryId, result$$1, options, fetchMoreForQueryId);
+                      _this.queryStore.markQueryResult(queryId, result$$1, fetchMoreForQueryId);
+                      _this.invalidate(queryId);
+                      _this.invalidate(fetchMoreForQueryId);
+                      _this.broadcastQueries();
+                  }
+                  if (errorPolicy === 'none' && isNonEmptyArray(result$$1.errors)) {
+                      return reject(new ApolloError({
+                          graphQLErrors: result$$1.errors,
+                      }));
+                  }
+                  if (errorPolicy === 'all') {
+                      errorsFromStore = result$$1.errors;
+                  }
+                  if (fetchMoreForQueryId || fetchPolicy === 'no-cache') {
+                      resultFromStore = result$$1.data;
+                  }
+                  else {
+                      var _a = _this.dataStore.getCache().diff({
+                          variables: variables,
+                          query: document,
+                          optimistic: false,
+                          returnPartialData: true,
+                      }), result_1 = _a.result, complete = _a.complete;
+                      if (complete || options.returnPartialData) {
+                          resultFromStore = result_1;
+                      }
+                  }
+              }).subscribe({
                   error: function (error) {
-                      _this.fetchQueryRejectFns.delete("fetchRequest:" + queryId);
-                      _this.setQuery(queryId, function (_a) {
-                          var subscriptions = _a.subscriptions;
-                          return ({
-                              subscriptions: subscriptions.filter(function (x) { return x !== subscription; }),
-                          });
-                      });
+                      cleanup();
                       reject(error);
                   },
                   complete: function () {
-                      if (!handlingNext) {
-                          _this.fetchQueryRejectFns.delete("fetchRequest:" + queryId);
-                          _this.setQuery(queryId, function (_a) {
-                              var subscriptions = _a.subscriptions;
-                              return ({
-                                  subscriptions: subscriptions.filter(function (x) { return x !== subscription; }),
-                              });
-                          });
-                          resolve({
-                              data: resultFromStore,
-                              errors: errorsFromStore,
-                              loading: false,
-                              networkStatus: NetworkStatus.ready,
-                              stale: false,
-                          });
-                      }
-                      complete = true;
+                      cleanup();
+                      resolve({
+                          data: resultFromStore,
+                          errors: errorsFromStore,
+                          loading: false,
+                          networkStatus: NetworkStatus.ready,
+                          stale: false,
+                      });
                   },
-              };
-              var subscription = obs.subscribe(subscriber);
+              });
               _this.setQuery(queryId, function (_a) {
                   var subscriptions = _a.subscriptions;
-                  return ({
-                      subscriptions: subscriptions.concat([subscription]),
-                  });
+                  subscriptions.add(subscription);
               });
-          }).catch(function (error) {
-              _this.fetchQueryRejectFns.delete("fetchRequest:" + queryId);
-              throw error;
           });
-      };
-      QueryManager.prototype.refetchQueryByName = function (queryName) {
-          var _this = this;
-          var refetchedQueries = this.queryIdsByName[queryName];
-          if (refetchedQueries === undefined)
-              return;
-          return Promise.all(refetchedQueries
-              .map(function (id) { return _this.getQuery(id).observableQuery; })
-              .filter(function (x) { return !!x; })
-              .map(function (x) { return x.refetch(); }));
-      };
-      QueryManager.prototype.generateRequestId = function () {
-          var requestId = this.idCounter;
-          this.idCounter++;
-          return requestId;
       };
       QueryManager.prototype.getQuery = function (queryId) {
           return (this.queries.get(queryId) || {
-              listeners: [],
+              listeners: new Set(),
               invalidated: false,
               document: null,
               newData: null,
-              lastRequestId: null,
+              lastRequestId: 1,
               observableQuery: null,
-              subscriptions: [],
+              subscriptions: new Set(),
           });
       };
       QueryManager.prototype.setQuery = function (queryId, updater) {
@@ -7580,23 +7111,11 @@
           var newInfo = __assign({}, prev, updater(prev));
           this.queries.set(queryId, newInfo);
       };
-      QueryManager.prototype.invalidate = function (invalidated, queryId, fetchMoreForQueryId) {
-          if (queryId)
+      QueryManager.prototype.invalidate = function (queryId, invalidated) {
+          if (invalidated === void 0) { invalidated = true; }
+          if (queryId) {
               this.setQuery(queryId, function () { return ({ invalidated: invalidated }); });
-          if (fetchMoreForQueryId) {
-              this.setQuery(fetchMoreForQueryId, function () { return ({ invalidated: invalidated }); });
           }
-      };
-      QueryManager.prototype.buildOperationForLink = function (document, variables, extraContext) {
-          var cache = this.dataStore.getCache();
-          return {
-              query: cache.transformForLink
-                  ? cache.transformForLink(document)
-                  : document,
-              variables: variables,
-              operationName: getOperationName(document) || undefined,
-              context: this.prepareContext(extraContext),
-          };
       };
       QueryManager.prototype.prepareContext = function (context) {
           if (context === void 0) { context = {}; }
@@ -7610,58 +7129,43 @@
               query.networkStatus !== NetworkStatus.error);
       };
       QueryManager.prototype.startPollingQuery = function (options, queryId, listener) {
+          var _this = this;
           var pollInterval = options.pollInterval;
-          process$1.env.NODE_ENV === "production" ? invariant$3(pollInterval) : invariant$3(pollInterval, 'Attempted to start a polling query without a polling interval.');
+          process$1.env.NODE_ENV === "production" ? invariant$1(pollInterval, 18) : invariant$1(pollInterval, 'Attempted to start a polling query without a polling interval.');
           if (!this.ssrMode) {
-              this.pollingInfoByQueryId.set(queryId, {
-                  interval: pollInterval,
-                  lastPollTimeMs: Date.now() - 10,
-                  options: __assign({}, options, { fetchPolicy: 'network-only' }),
-              });
+              var info = this.pollingInfoByQueryId.get(queryId);
+              if (!info) {
+                  this.pollingInfoByQueryId.set(queryId, (info = {}));
+              }
+              info.interval = pollInterval;
+              info.options = __assign({}, options, { fetchPolicy: 'network-only' });
+              var maybeFetch_1 = function () {
+                  var info = _this.pollingInfoByQueryId.get(queryId);
+                  if (info) {
+                      if (_this.checkInFlight(queryId)) {
+                          poll_1();
+                      }
+                      else {
+                          _this.fetchQuery(queryId, info.options, FetchType.poll).then(poll_1, poll_1);
+                      }
+                  }
+              };
+              var poll_1 = function () {
+                  var info = _this.pollingInfoByQueryId.get(queryId);
+                  if (info) {
+                      clearTimeout(info.timeout);
+                      info.timeout = setTimeout(maybeFetch_1, info.interval);
+                  }
+              };
               if (listener) {
                   this.addQueryListener(queryId, listener);
               }
-              this.schedulePoll(pollInterval);
+              poll_1();
           }
           return queryId;
       };
       QueryManager.prototype.stopPollingQuery = function (queryId) {
           this.pollingInfoByQueryId.delete(queryId);
-      };
-      QueryManager.prototype.schedulePoll = function (timeLimitMs) {
-          var _this = this;
-          var now = Date.now();
-          if (this.nextPoll) {
-              if (timeLimitMs < this.nextPoll.time - now) {
-                  clearTimeout(this.nextPoll.timeout);
-              }
-              else {
-                  return;
-              }
-          }
-          this.nextPoll = {
-              time: now + timeLimitMs,
-              timeout: setTimeout(function () {
-                  _this.nextPoll = null;
-                  var nextTimeLimitMs = Infinity;
-                  _this.pollingInfoByQueryId.forEach(function (info, queryId) {
-                      if (info.interval < nextTimeLimitMs) {
-                          nextTimeLimitMs = info.interval;
-                      }
-                      if (!_this.checkInFlight(queryId)) {
-                          if (Date.now() - info.lastPollTimeMs >= info.interval) {
-                              var updateLastPollTime = function () {
-                                  info.lastPollTimeMs = Date.now();
-                              };
-                              _this.fetchQuery(queryId, info.options, FetchType.poll).then(updateLastPollTime, updateLastPollTime);
-                          }
-                      }
-                  });
-                  if (isFinite(nextTimeLimitMs)) {
-                      _this.schedulePoll(nextTimeLimitMs);
-                  }
-              }, timeLimitMs),
-          };
       };
       return QueryManager;
   }());
@@ -7708,21 +7212,18 @@
               else {
                   optimistic_1 = mutation.optimisticResponse;
               }
-              var changeFn_1 = function () {
-                  _this.markMutationResult({
-                      mutationId: mutation.mutationId,
-                      result: { data: optimistic_1 },
-                      document: mutation.document,
-                      variables: mutation.variables,
-                      updateQueries: mutation.updateQueries,
-                      update: mutation.update,
-                  });
-              };
               this.cache.recordOptimisticTransaction(function (c) {
                   var orig = _this.cache;
                   _this.cache = c;
                   try {
-                      changeFn_1();
+                      _this.markMutationResult({
+                          mutationId: mutation.mutationId,
+                          result: { data: optimistic_1 },
+                          document: mutation.document,
+                          variables: mutation.variables,
+                          updateQueries: mutation.updateQueries,
+                          update: mutation.update,
+                      });
                   }
                   finally {
                       _this.cache = orig;
@@ -7733,60 +7234,55 @@
       DataStore.prototype.markMutationResult = function (mutation) {
           var _this = this;
           if (!graphQLResultHasError(mutation.result)) {
-              var cacheWrites_1 = [];
-              cacheWrites_1.push({
-                  result: mutation.result.data,
-                  dataId: 'ROOT_MUTATION',
-                  query: mutation.document,
-                  variables: mutation.variables,
-              });
-              if (mutation.updateQueries) {
-                  Object.keys(mutation.updateQueries)
-                      .filter(function (id) { return mutation.updateQueries[id]; })
-                      .forEach(function (queryId) {
-                      var _a = mutation.updateQueries[queryId], query = _a.query, updater = _a.updater;
+              var cacheWrites_1 = [{
+                      result: mutation.result.data,
+                      dataId: 'ROOT_MUTATION',
+                      query: mutation.document,
+                      variables: mutation.variables,
+                  }];
+              var updateQueries_1 = mutation.updateQueries;
+              if (updateQueries_1) {
+                  Object.keys(updateQueries_1).forEach(function (id) {
+                      var _a = updateQueries_1[id], query = _a.query, updater = _a.updater;
                       var _b = _this.cache.diff({
                           query: query.document,
                           variables: query.variables,
                           returnPartialData: true,
                           optimistic: false,
                       }), currentQueryResult = _b.result, complete = _b.complete;
-                      if (!complete) {
-                          return;
-                      }
-                      var nextQueryResult = tryFunctionOrLogError(function () {
-                          return updater(currentQueryResult, {
-                              mutationResult: mutation.result,
-                              queryName: getOperationName(query.document) || undefined,
-                              queryVariables: query.variables,
+                      if (complete) {
+                          var nextQueryResult = tryFunctionOrLogError(function () {
+                              return updater(currentQueryResult, {
+                                  mutationResult: mutation.result,
+                                  queryName: getOperationName(query.document) || undefined,
+                                  queryVariables: query.variables,
+                              });
                           });
-                      });
-                      if (nextQueryResult) {
-                          cacheWrites_1.push({
-                              result: nextQueryResult,
-                              dataId: 'ROOT_QUERY',
-                              query: query.document,
-                              variables: query.variables,
-                          });
+                          if (nextQueryResult) {
+                              cacheWrites_1.push({
+                                  result: nextQueryResult,
+                                  dataId: 'ROOT_QUERY',
+                                  query: query.document,
+                                  variables: query.variables,
+                              });
+                          }
                       }
                   });
               }
               this.cache.performTransaction(function (c) {
                   cacheWrites_1.forEach(function (write) { return c.write(write); });
+                  var update = mutation.update;
+                  if (update) {
+                      tryFunctionOrLogError(function () { return update(c, mutation.result); });
+                  }
               });
-              var update_1 = mutation.update;
-              if (update_1) {
-                  this.cache.performTransaction(function (c) {
-                      tryFunctionOrLogError(function () { return update_1(c, mutation.result); });
-                  });
-              }
           }
       };
       DataStore.prototype.markMutationComplete = function (_a) {
           var mutationId = _a.mutationId, optimisticResponse = _a.optimisticResponse;
-          if (!optimisticResponse)
-              return;
-          this.cache.removeOptimistic(mutationId);
+          if (optimisticResponse) {
+              this.cache.removeOptimistic(mutationId);
+          }
       };
       DataStore.prototype.markUpdateQueryResult = function (document, variables, newResult) {
           this.cache.write({
@@ -7802,7 +7298,7 @@
       return DataStore;
   }());
 
-  var version$1 = "2.5.1";
+  var version$1 = "2.6.4";
 
   var hasSuggestedDevtools = false;
   var ApolloClient = (function () {
@@ -7811,32 +7307,21 @@
           this.defaultOptions = {};
           this.resetStoreCallbacks = [];
           this.clearStoreCallbacks = [];
-          this.clientAwareness = {};
-          var cache = options.cache, _a = options.ssrMode, ssrMode = _a === void 0 ? false : _a, _b = options.ssrForceFetchDelay, ssrForceFetchDelay = _b === void 0 ? 0 : _b, connectToDevTools = options.connectToDevTools, _c = options.queryDeduplication, queryDeduplication = _c === void 0 ? true : _c, defaultOptions = options.defaultOptions, resolvers = options.resolvers, typeDefs = options.typeDefs, fragmentMatcher = options.fragmentMatcher, clientAwarenessName = options.name, clientAwarenessVersion = options.version;
+          var cache = options.cache, _a = options.ssrMode, ssrMode = _a === void 0 ? false : _a, _b = options.ssrForceFetchDelay, ssrForceFetchDelay = _b === void 0 ? 0 : _b, connectToDevTools = options.connectToDevTools, _c = options.queryDeduplication, queryDeduplication = _c === void 0 ? true : _c, defaultOptions = options.defaultOptions, _d = options.assumeImmutableResults, assumeImmutableResults = _d === void 0 ? false : _d, resolvers = options.resolvers, typeDefs = options.typeDefs, fragmentMatcher = options.fragmentMatcher, clientAwarenessName = options.name, clientAwarenessVersion = options.version;
           var link = options.link;
           if (!link && resolvers) {
               link = ApolloLink.empty();
           }
           if (!link || !cache) {
-              throw process$1.env.NODE_ENV === "production" ? new InvariantError$2() : new InvariantError$2("\n        In order to initialize Apollo Client, you must specify link & cache properties on the config object.\n        This is part of the required upgrade when migrating from Apollo Client 1.0 to Apollo Client 2.0.\n        For more information, please visit:\n          https://www.apollographql.com/docs/react/basics/setup.html\n        to help you get started.\n      ");
+              throw process$1.env.NODE_ENV === "production" ? new InvariantError(1) : new InvariantError("In order to initialize Apollo Client, you must specify 'link' and 'cache' properties in the options object.\n" +
+                  "These options are part of the upgrade requirements when migrating from Apollo Client 1.x to Apollo Client 2.x.\n" +
+                  "For more information, please visit: https://www.apollographql.com/docs/tutorial/client.html#apollo-client-setup");
           }
-          var supportedCache = new Map();
-          var supportedDirectives = new ApolloLink(function (operation, forward) {
-              var result$$1 = supportedCache.get(operation.query);
-              if (!result$$1) {
-                  result$$1 = removeConnectionDirectiveFromDocument(operation.query);
-                  supportedCache.set(operation.query, result$$1);
-                  supportedCache.set(result$$1, result$$1);
-              }
-              operation.query = result$$1;
-              return forward(operation);
-          });
-          this.link = supportedDirectives.concat(link);
+          this.link = link;
           this.cache = cache;
           this.store = new DataStore(cache);
           this.disableNetworkFetches = ssrMode || ssrForceFetchDelay > 0;
           this.queryDeduplication = queryDeduplication;
-          this.ssrMode = ssrMode;
           this.defaultOptions = defaultOptions || {};
           this.typeDefs = typeDefs;
           if (ssrForceFetchDelay) {
@@ -7872,23 +7357,39 @@
               }
           }
           this.version = version$1;
-          if (clientAwarenessName) {
-              this.clientAwareness.name = clientAwarenessName;
-          }
-          if (clientAwarenessVersion) {
-              this.clientAwareness.version = clientAwarenessVersion;
-          }
           this.localState = new LocalState({
               cache: cache,
               client: this,
               resolvers: resolvers,
               fragmentMatcher: fragmentMatcher,
           });
+          this.queryManager = new QueryManager({
+              link: this.link,
+              store: this.store,
+              queryDeduplication: queryDeduplication,
+              ssrMode: ssrMode,
+              clientAwareness: {
+                  name: clientAwarenessName,
+                  version: clientAwarenessVersion,
+              },
+              localState: this.localState,
+              assumeImmutableResults: assumeImmutableResults,
+              onBroadcast: function () {
+                  if (_this.devToolsHookCb) {
+                      _this.devToolsHookCb({
+                          action: {},
+                          state: {
+                              queries: _this.queryManager.queryStore.getStore(),
+                              mutations: _this.queryManager.mutationStore.getStore(),
+                          },
+                          dataWithOptimisticResults: _this.cache.extract(true),
+                      });
+                  }
+              },
+          });
       }
       ApolloClient.prototype.stop = function () {
-          if (this.queryManager) {
-              this.queryManager.stop();
-          }
+          this.queryManager.stop();
       };
       ApolloClient.prototype.watchQuery = function (options) {
           if (this.defaultOptions.watchQuery) {
@@ -7899,48 +7400,51 @@
                   options.fetchPolicy === 'cache-and-network')) {
               options = __assign({}, options, { fetchPolicy: 'cache-first' });
           }
-          return this.initQueryManager().watchQuery(options);
+          return this.queryManager.watchQuery(options);
       };
       ApolloClient.prototype.query = function (options) {
           if (this.defaultOptions.query) {
               options = __assign({}, this.defaultOptions.query, options);
           }
-          process$1.env.NODE_ENV === "production" ? invariant$3(options.fetchPolicy !== 'cache-and-network') : invariant$3(options.fetchPolicy !== 'cache-and-network', 'cache-and-network fetchPolicy can only be used with watchQuery');
+          process$1.env.NODE_ENV === "production" ? invariant$1(options.fetchPolicy !== 'cache-and-network', 2) : invariant$1(options.fetchPolicy !== 'cache-and-network', 'The cache-and-network fetchPolicy does not work with client.query, because ' +
+              'client.query can only return a single result. Please use client.watchQuery ' +
+              'to receive multiple results from the cache and the network, or consider ' +
+              'using a different fetchPolicy, such as cache-first or network-only.');
           if (this.disableNetworkFetches && options.fetchPolicy === 'network-only') {
               options = __assign({}, options, { fetchPolicy: 'cache-first' });
           }
-          return this.initQueryManager().query(options);
+          return this.queryManager.query(options);
       };
       ApolloClient.prototype.mutate = function (options) {
           if (this.defaultOptions.mutate) {
               options = __assign({}, this.defaultOptions.mutate, options);
           }
-          return this.initQueryManager().mutate(options);
+          return this.queryManager.mutate(options);
       };
       ApolloClient.prototype.subscribe = function (options) {
-          return this.initQueryManager().startGraphQLSubscription(options);
+          return this.queryManager.startGraphQLSubscription(options);
       };
       ApolloClient.prototype.readQuery = function (options, optimistic) {
           if (optimistic === void 0) { optimistic = false; }
-          return this.initProxy().readQuery(options, optimistic);
+          return this.cache.readQuery(options, optimistic);
       };
       ApolloClient.prototype.readFragment = function (options, optimistic) {
           if (optimistic === void 0) { optimistic = false; }
-          return this.initProxy().readFragment(options, optimistic);
+          return this.cache.readFragment(options, optimistic);
       };
       ApolloClient.prototype.writeQuery = function (options) {
-          var result$$1 = this.initProxy().writeQuery(options);
-          this.initQueryManager().broadcastQueries();
+          var result$$1 = this.cache.writeQuery(options);
+          this.queryManager.broadcastQueries();
           return result$$1;
       };
       ApolloClient.prototype.writeFragment = function (options) {
-          var result$$1 = this.initProxy().writeFragment(options);
-          this.initQueryManager().broadcastQueries();
+          var result$$1 = this.cache.writeFragment(options);
+          this.queryManager.broadcastQueries();
           return result$$1;
       };
       ApolloClient.prototype.writeData = function (options) {
-          var result$$1 = this.initProxy().writeData(options);
-          this.initQueryManager().broadcastQueries();
+          var result$$1 = this.cache.writeData(options);
+          this.queryManager.broadcastQueries();
           return result$$1;
       };
       ApolloClient.prototype.__actionHookForDevTools = function (cb) {
@@ -7950,58 +7454,22 @@
           return execute(this.link, payload);
       };
       ApolloClient.prototype.initQueryManager = function () {
-          var _this = this;
-          if (!this.queryManager) {
-              this.queryManager = new QueryManager({
-                  link: this.link,
-                  store: this.store,
-                  queryDeduplication: this.queryDeduplication,
-                  ssrMode: this.ssrMode,
-                  clientAwareness: this.clientAwareness,
-                  localState: this.localState,
-                  onBroadcast: function () {
-                      if (_this.devToolsHookCb) {
-                          _this.devToolsHookCb({
-                              action: {},
-                              state: {
-                                  queries: _this.queryManager
-                                      ? _this.queryManager.queryStore.getStore()
-                                      : {},
-                                  mutations: _this.queryManager
-                                      ? _this.queryManager.mutationStore.getStore()
-                                      : {},
-                              },
-                              dataWithOptimisticResults: _this.cache.extract(true),
-                          });
-                      }
-                  },
-              });
-          }
+          process$1.env.NODE_ENV === "production" || invariant$1.warn('Calling the initQueryManager method is no longer necessary, ' +
+              'and it will be removed from ApolloClient in version 3.0.');
           return this.queryManager;
       };
       ApolloClient.prototype.resetStore = function () {
           var _this = this;
           return Promise.resolve()
-              .then(function () {
-              return _this.queryManager
-                  ? _this.queryManager.clearStore()
-                  : Promise.resolve(null);
-          })
+              .then(function () { return _this.queryManager.clearStore(); })
               .then(function () { return Promise.all(_this.resetStoreCallbacks.map(function (fn) { return fn(); })); })
-              .then(function () {
-              return _this.queryManager && _this.queryManager.reFetchObservableQueries
-                  ? _this.queryManager.reFetchObservableQueries()
-                  : Promise.resolve(null);
-          });
+              .then(function () { return _this.reFetchObservableQueries(); });
       };
       ApolloClient.prototype.clearStore = function () {
           var _this = this;
-          var queryManager = this.queryManager;
           return Promise.resolve()
-              .then(function () { return Promise.all(_this.clearStoreCallbacks.map(function (fn) { return fn(); })); })
-              .then(function () {
-              return queryManager ? queryManager.clearStore() : Promise.resolve(null);
-          });
+              .then(function () { return _this.queryManager.clearStore(); })
+              .then(function () { return Promise.all(_this.clearStoreCallbacks.map(function (fn) { return fn(); })); });
       };
       ApolloClient.prototype.onResetStore = function (cb) {
           var _this = this;
@@ -8018,15 +7486,13 @@
           };
       };
       ApolloClient.prototype.reFetchObservableQueries = function (includeStandby) {
-          return this.queryManager
-              ? this.queryManager.reFetchObservableQueries(includeStandby)
-              : Promise.resolve(null);
+          return this.queryManager.reFetchObservableQueries(includeStandby);
       };
       ApolloClient.prototype.extract = function (optimistic) {
-          return this.initProxy().extract(optimistic);
+          return this.cache.extract(optimistic);
       };
       ApolloClient.prototype.restore = function (serializedState) {
-          return this.initProxy().restore(serializedState);
+          return this.cache.restore(serializedState);
       };
       ApolloClient.prototype.addResolvers = function (resolvers) {
           this.localState.addResolvers(resolvers);
@@ -8039,13 +7505,6 @@
       };
       ApolloClient.prototype.setLocalStateFragmentMatcher = function (fragmentMatcher) {
           this.localState.setFragmentMatcher(fragmentMatcher);
-      };
-      ApolloClient.prototype.initProxy = function () {
-          if (!this.proxy) {
-              this.initQueryManager();
-              this.proxy = this.cache;
-          }
-          return this.proxy;
       };
       return ApolloClient;
   }());
@@ -8217,997 +7676,617 @@
       return ApolloCache;
   }());
 
-  function Cache$1(options) {
-    this.map = new Map;
-    this.newest = null;
-    this.oldest = null;
-    this.max = options && options.max;
-    this.dispose = options && options.dispose;
-  }
-
-  var Cache_1 = Cache$1;
-
-  var Cp = Cache$1.prototype;
-
-  Cp.has = function (key) {
-    return this.map.has(key);
-  };
-
-  Cp.get = function (key) {
-    var entry = getEntry(this, key);
-    return entry && entry.value;
-  };
-
-  function getEntry(cache, key) {
-    var entry = cache.map.get(key);
-    if (entry &&
-        entry !== cache.newest) {
-      var older = entry.older;
-      var newer = entry.newer;
-
-      if (newer) {
-        newer.older = older;
+  // This currentContext variable will only be used if the makeSlotClass
+  // function is called, which happens only if this is the first copy of the
+  // @wry/context package to be imported.
+  var currentContext = null;
+  // This unique internal object is used to denote the absence of a value
+  // for a given Slot, and is never exposed to outside code.
+  var MISSING_VALUE = {};
+  var idCounter = 1;
+  // Although we can't do anything about the cost of duplicated code from
+  // accidentally bundling multiple copies of the @wry/context package, we can
+  // avoid creating the Slot class more than once using makeSlotClass.
+  var makeSlotClass = function () { return /** @class */ (function () {
+      function Slot() {
+          // If you have a Slot object, you can find out its slot.id, but you cannot
+          // guess the slot.id of a Slot you don't have access to, thanks to the
+          // randomized suffix.
+          this.id = [
+              "slot",
+              idCounter++,
+              Date.now(),
+              Math.random().toString(36).slice(2),
+          ].join(":");
       }
-
-      if (older) {
-        older.newer = newer;
-      }
-
-      entry.older = cache.newest;
-      entry.older.newer = entry;
-
-      entry.newer = null;
-      cache.newest = entry;
-
-      if (entry === cache.oldest) {
-        cache.oldest = newer;
-      }
-    }
-
-    return entry;
-  }
-
-  Cp.set = function (key, value) {
-    var entry = getEntry(this, key);
-    if (entry) {
-      return entry.value = value;
-    }
-
-    entry = {
-      key: key,
-      value: value,
-      newer: null,
-      older: this.newest
-    };
-
-    if (this.newest) {
-      this.newest.newer = entry;
-    }
-
-    this.newest = entry;
-    this.oldest = this.oldest || entry;
-
-    this.map.set(key, entry);
-
-    return entry.value;
-  };
-
-  Cp.clean = function () {
-    if (typeof this.max === "number") {
-      while (this.oldest &&
-             this.map.size > this.max) {
-        this.delete(this.oldest.key);
-      }
-    }
-  };
-
-  Cp.delete = function (key) {
-    var entry = this.map.get(key);
-    if (entry) {
-      if (entry === this.newest) {
-        this.newest = entry.older;
-      }
-
-      if (entry === this.oldest) {
-        this.oldest = entry.newer;
-      }
-
-      if (entry.newer) {
-        entry.newer.older = entry.older;
-      }
-
-      if (entry.older) {
-        entry.older.newer = entry.newer;
-      }
-
-      this.map.delete(key);
-
-      if (typeof this.dispose === "function") {
-        this.dispose(key, entry.value);
-      }
-
-      return true;
-    }
-
-    return false;
-  };
-
-  var cache = {
-  	Cache: Cache_1
-  };
-
-  // Although `Symbol` is widely supported these days, we can safely fall
-  // back to using a non-enumerable string property without violating any
-  // assumptions elsewhere in the implementation.
-  var useSymbol =
-    typeof Symbol === "function" &&
-    typeof Symbol.for === "function";
-
-  // Used to mark `tuple.prototype` so that all objects that inherit from
-  // any `tuple.prototype` object (there could be more than one) will test
-  // positive according to `tuple.isTuple`.
-  var brand = useSymbol
-    ? Symbol.for("immutable-tuple")
-    : "@@__IMMUTABLE_TUPLE__@@";
-
-  // Used to save a reference to the globally shared `UniversalWeakMap` that
-  // stores all known `tuple` objects.
-  var globalKey = useSymbol
-    ? Symbol.for("immutable-tuple-root")
-    : "@@__IMMUTABLE_TUPLE_ROOT__@@";
-
-  // Convenient helper for defining hidden immutable properties.
-  function def(obj, name, value, enumerable) {
-    Object.defineProperty(obj, name, {
-      value: value,
-      enumerable: !! enumerable,
-      writable: false,
-      configurable: false
-    });
-    return value;
-  }
-
-  var freeze = Object.freeze || function (obj) {
-    return obj;
-  };
-
-  function isObjRef(value) {
-    switch (typeof value) {
-    case "object":
-      if (value === null) {
-        return false;
-      }
-    case "function":
-      return true;
-    default:
-      return false;
-    }
-  }
-
-  // The `mustConvertThisToArray` value is true when the corresponding
-  // `Array` method does not attempt to modify `this`, which means we can
-  // pass a `tuple` object as `this` without first converting it to an
-  // `Array`.
-  function forEachArrayMethod(fn) {
-    function call(name, mustConvertThisToArray) {
-      var desc = Object.getOwnPropertyDescriptor(Array.prototype, name);
-      fn(name, desc, !! mustConvertThisToArray);
-    }
-
-    call("every");
-    call("filter");
-    call("find");
-    call("findIndex");
-    call("forEach");
-    call("includes");
-    call("indexOf");
-    call("join");
-    call("lastIndexOf");
-    call("map");
-    call("reduce");
-    call("reduceRight");
-    call("slice");
-    call("some");
-    call("toLocaleString");
-    call("toString");
-
-    // The `reverse` and `sort` methods are usually destructive, but for
-    // `tuple` objects they return a new `tuple` object that has been
-    // appropriately reversed/sorted.
-    call("reverse", true);
-    call("sort", true);
-
-    // Make `[...someTuple]` work.
-    call(useSymbol && Symbol.iterator || "@@iterator");
-  }
-
-  // A map data structure that holds object keys weakly, yet can also hold
-  // non-object keys, unlike the native `WeakMap`.
-  var UniversalWeakMap = function UniversalWeakMap() {
-    // Since a `WeakMap` cannot hold primitive values as keys, we need a
-    // backup `Map` instance to hold primitive keys. Both `this._weakMap`
-    // and `this._strongMap` are lazily initialized.
-    this._weakMap = null;
-    this._strongMap = null;
-    this.data = null;
-  };
-
-  // Since `get` and `set` are the only methods used, that's all I've
-  // implemented here.
-
-  UniversalWeakMap.prototype.get = function get (key) {
-    var map = this._getMap(key, false);
-    if (map) {
-      return map.get(key);
-    }
-  };
-
-  UniversalWeakMap.prototype.set = function set (key, value) {
-    this._getMap(key, true).set(key, value);
-    // An actual `Map` or `WeakMap` would return `this` here, but
-    // returning the `value` is more convenient for the `tuple`
-    // implementation.
-    return value;
-  };
-
-  UniversalWeakMap.prototype._getMap = function _getMap (key, canCreate) {
-    if (! canCreate) {
-      return isObjRef(key) ? this._weakMap : this._strongMap;
-    }
-    if (isObjRef(key)) {
-      return this._weakMap || (this._weakMap = new WeakMap);
-    }
-    return this._strongMap || (this._strongMap = new Map);
-  };
-
-  // See [`universal-weak-map.js`](universal-weak-map.html).
-  // See [`util.js`](util.html).
-  // If this package is installed multiple times, there could be mutiple
-  // implementations of the `tuple` function with distinct `tuple.prototype`
-  // objects, but the shared pool of `tuple` objects must be the same across
-  // all implementations. While it would be ideal to use the `global`
-  // object, there's no reliable way to get the global object across all JS
-  // environments without using the `Function` constructor, so instead we
-  // use the global `Array` constructor as a shared namespace.
-  var root$1 = Array[globalKey] || def(Array, globalKey, new UniversalWeakMap, false);
-
-  function lookup() {
-    return lookupArray(arguments);
-  }
-
-  function lookupArray(array) {
-    var node = root$1;
-
-    // Because we are building a tree of *weak* maps, the tree will not
-    // prevent objects in tuples from being garbage collected, since the
-    // tree itself will be pruned over time when the corresponding `tuple`
-    // objects become unreachable. In addition to internalization, this
-    // property is a key advantage of the `immutable-tuple` package.
-    var len = array.length;
-    for (var i = 0; i < len; ++i) {
-      var item = array[i];
-      node = node.get(item) || node.set(item, new UniversalWeakMap);
-    }
-
-    // Return node.data rather than node itself to prevent tampering with
-    // the UniversalWeakMap tree.
-    return node.data || (node.data = Object.create(null));
-  }
-
-  // See [`lookup.js`](lookup.html).
-  // See [`util.js`](util.html).
-  // When called with any number of arguments, this function returns an
-  // object that inherits from `tuple.prototype` and is guaranteed to be
-  // `===` any other `tuple` object that has exactly the same items. In
-  // computer science jargon, `tuple` instances are "internalized" or just
-  // "interned," which allows for constant-time equality checking, and makes
-  // it possible for tuple objects to be used as `Map` or `WeakMap` keys, or
-  // stored in a `Set`.
-  function tuple() {
-    var arguments$1 = arguments;
-
-    var node = lookup.apply(null, arguments);
-
-    if (node.tuple) {
-      return node.tuple;
-    }
-
-    var t = Object.create(tuple.prototype);
-
-    // Define immutable items with numeric indexes, and permanently fix the
-    // `.length` property.
-    var argc = arguments.length;
-    for (var i = 0; i < argc; ++i) {
-      t[i] = arguments$1[i];
-    }
-
-    def(t, "length", argc, false);
-
-    // Remember this new `tuple` object so that we can return the same object
-    // earlier next time.
-    return freeze(node.tuple = t);
-  }
-
-  // Since the `immutable-tuple` package could be installed multiple times
-  // in an application, there is no guarantee that the `tuple` constructor
-  // or `tuple.prototype` will be unique, so `value instanceof tuple` is
-  // unreliable. Instead, to test if a value is a tuple, you should use
-  // `tuple.isTuple(value)`.
-  def(tuple.prototype, brand, true, false);
-  function isTuple(that) {
-    return !! (that && that[brand] === true);
-  }
-
-  tuple.isTuple = isTuple;
-
-  function toArray(tuple) {
-    var array = [];
-    var i = tuple.length;
-    while (i--) { array[i] = tuple[i]; }
-    return array;
-  }
-
-  // Copy all generic non-destructive Array methods to `tuple.prototype`.
-  // This works because (for example) `Array.prototype.slice` can be invoked
-  // against any `Array`-like object.
-  forEachArrayMethod(function (name, desc, mustConvertThisToArray) {
-    var method = desc && desc.value;
-    if (typeof method === "function") {
-      desc.value = function () {
-        var args = [], len = arguments.length;
-        while ( len-- ) args[ len ] = arguments[ len ];
-
-        var result = method.apply(
-          mustConvertThisToArray ? toArray(this) : this,
-          args
-        );
-        // Of course, `tuple.prototype.slice` should return a `tuple` object,
-        // not a new `Array`.
-        return Array.isArray(result) ? tuple.apply(void 0, result) : result;
+      Slot.prototype.hasValue = function () {
+          for (var context_1 = currentContext; context_1; context_1 = context_1.parent) {
+              // We use the Slot object iself as a key to its value, which means the
+              // value cannot be obtained without a reference to the Slot object.
+              if (this.id in context_1.slots) {
+                  var value = context_1.slots[this.id];
+                  if (value === MISSING_VALUE)
+                      break;
+                  if (context_1 !== currentContext) {
+                      // Cache the value in currentContext.slots so the next lookup will
+                      // be faster. This caching is safe because the tree of contexts and
+                      // the values of the slots are logically immutable.
+                      currentContext.slots[this.id] = value;
+                  }
+                  return true;
+              }
+          }
+          if (currentContext) {
+              // If a value was not found for this Slot, it's never going to be found
+              // no matter how many times we look it up, so we might as well cache
+              // the absence of the value, too.
+              currentContext.slots[this.id] = MISSING_VALUE;
+          }
+          return false;
       };
-      Object.defineProperty(tuple.prototype, name, desc);
-    }
-  });
-
-  // Like `Array.prototype.concat`, except for the extra effort required to
-  // convert any tuple arguments to arrays, so that
-  // ```
-  // tuple(1).concat(tuple(2), 3) === tuple(1, 2, 3)
-  // ```
-  var ref = Array.prototype;
-  var concat$1 = ref.concat;
-  tuple.prototype.concat = function () {
-    var args = [], len = arguments.length;
-    while ( len-- ) args[ len ] = arguments[ len ];
-
-    return tuple.apply(void 0, concat$1.apply(toArray(this), args.map(
-      function (item) { return isTuple(item) ? toArray(item) : item; }
-    )));
-  };
-
-  var tuple$1 = /*#__PURE__*/Object.freeze({
-    default: tuple,
-    tuple: tuple,
-    lookup: lookup,
-    lookupArray: lookupArray
-  });
-
-  var local = createCommonjsModule(function (module, exports) {
-
-  var fakeNullFiber = new (function Fiber(){});
-  var localKey = "_optimism_local";
-
-  function getCurrentFiber() {
-    return fakeNullFiber;
-  }
-
-  {
-    try {
-      var Fiber = module["eriuqer".split("").reverse().join("")]("fibers");
-      // If we were able to require fibers, redefine the getCurrentFiber
-      // function so that it has a chance to return Fiber.current.
-      getCurrentFiber = function () {
-        return Fiber.current || fakeNullFiber;
+      Slot.prototype.getValue = function () {
+          if (this.hasValue()) {
+              return currentContext.slots[this.id];
+          }
       };
-    } catch (e) {}
-  }
+      Slot.prototype.withValue = function (value, callback, 
+      // Given the prevalence of arrow functions, specifying arguments is likely
+      // to be much more common than specifying `this`, hence this ordering:
+      args, thisArg) {
+          var _a;
+          var slots = (_a = {
+                  __proto__: null
+              },
+              _a[this.id] = value,
+              _a);
+          var parent = currentContext;
+          currentContext = { parent: parent, slots: slots };
+          try {
+              // Function.prototype.apply allows the arguments array argument to be
+              // omitted or undefined, so args! is fine here.
+              return callback.apply(thisArg, args);
+          }
+          finally {
+              currentContext = parent;
+          }
+      };
+      // Capture the current context and wrap a callback function so that it
+      // reestablishes the captured context when called.
+      Slot.bind = function (callback) {
+          var context = currentContext;
+          return function () {
+              var saved = currentContext;
+              try {
+                  currentContext = context;
+                  return callback.apply(this, arguments);
+              }
+              finally {
+                  currentContext = saved;
+              }
+          };
+      };
+      // Immediately run a callback function without any captured context.
+      Slot.noContext = function (callback, 
+      // Given the prevalence of arrow functions, specifying arguments is likely
+      // to be much more common than specifying `this`, hence this ordering:
+      args, thisArg) {
+          if (currentContext) {
+              var saved = currentContext;
+              try {
+                  currentContext = null;
+                  // Function.prototype.apply allows the arguments array argument to be
+                  // omitted or undefined, so args! is fine here.
+                  return callback.apply(thisArg, args);
+              }
+              finally {
+                  currentContext = saved;
+              }
+          }
+          else {
+              return callback.apply(thisArg, args);
+          }
+      };
+      return Slot;
+  }()); };
+  // We store a single global implementation of the Slot class as a permanent
+  // non-enumerable symbol property of the Array constructor. This obfuscation
+  // does nothing to prevent access to the Slot class, but at least it ensures
+  // the implementation (i.e. currentContext) cannot be tampered with, and all
+  // copies of the @wry/context package (hopefully just one) will share the
+  // same Slot implementation. Since the first copy of the @wry/context package
+  // to be imported wins, this technique imposes a very high cost for any
+  // future breaking changes to the Slot class.
+  var globalKey = "@wry/context:Slot";
+  var host = Array;
+  var Slot = host[globalKey] || function () {
+      var Slot = makeSlotClass();
+      try {
+          Object.defineProperty(host, globalKey, {
+              value: host[globalKey] = Slot,
+              enumerable: false,
+              writable: false,
+              configurable: false,
+          });
+      }
+      finally {
+          return Slot;
+      }
+  }();
 
-  // Returns an object unique to Fiber.current, if fibers are enabled.
-  // This object is used for Fiber-local storage in ./entry.js.
-  exports.get = function () {
-    var fiber = getCurrentFiber();
-    return fiber[localKey] || (fiber[localKey] = Object.create(null));
-  };
-  });
-  var local_1 = local.get;
+  var bind = Slot.bind, noContext = Slot.noContext;
 
-  var entry = createCommonjsModule(function (module, exports) {
+  function defaultDispose() { }
+  var Cache$1 = /** @class */ (function () {
+      function Cache(max, dispose) {
+          if (max === void 0) { max = Infinity; }
+          if (dispose === void 0) { dispose = defaultDispose; }
+          this.max = max;
+          this.dispose = dispose;
+          this.map = new Map();
+          this.newest = null;
+          this.oldest = null;
+      }
+      Cache.prototype.has = function (key) {
+          return this.map.has(key);
+      };
+      Cache.prototype.get = function (key) {
+          var entry = this.getEntry(key);
+          return entry && entry.value;
+      };
+      Cache.prototype.getEntry = function (key) {
+          var entry = this.map.get(key);
+          if (entry && entry !== this.newest) {
+              var older = entry.older, newer = entry.newer;
+              if (newer) {
+                  newer.older = older;
+              }
+              if (older) {
+                  older.newer = newer;
+              }
+              entry.older = this.newest;
+              entry.older.newer = entry;
+              entry.newer = null;
+              this.newest = entry;
+              if (entry === this.oldest) {
+                  this.oldest = newer;
+              }
+          }
+          return entry;
+      };
+      Cache.prototype.set = function (key, value) {
+          var entry = this.getEntry(key);
+          if (entry) {
+              return entry.value = value;
+          }
+          entry = {
+              key: key,
+              value: value,
+              newer: null,
+              older: this.newest
+          };
+          if (this.newest) {
+              this.newest.newer = entry;
+          }
+          this.newest = entry;
+          this.oldest = this.oldest || entry;
+          this.map.set(key, entry);
+          return entry.value;
+      };
+      Cache.prototype.clean = function () {
+          while (this.oldest && this.map.size > this.max) {
+              this.delete(this.oldest.key);
+          }
+      };
+      Cache.prototype.delete = function (key) {
+          var entry = this.map.get(key);
+          if (entry) {
+              if (entry === this.newest) {
+                  this.newest = entry.older;
+              }
+              if (entry === this.oldest) {
+                  this.oldest = entry.newer;
+              }
+              if (entry.newer) {
+                  entry.newer.older = entry.older;
+              }
+              if (entry.older) {
+                  entry.older.newer = entry.newer;
+              }
+              this.map.delete(key);
+              this.dispose(entry.value, key);
+              return true;
+          }
+          return false;
+      };
+      return Cache;
+  }());
 
-  var getLocal = local.get;
-  var UNKNOWN_VALUE = Object.create(null);
+  var parentEntrySlot = new Slot();
+
+  var reusableEmptyArray = [];
   var emptySetPool = [];
-  var entryPool = [];
-
-  // Don't let the emptySetPool or entryPool grow larger than this size,
-  // since unconstrained pool growth could lead to memory leaks.
-  exports.POOL_TARGET_SIZE = 100;
-
+  var POOL_TARGET_SIZE = 100;
   // Since this package might be used browsers, we should avoid using the
   // Node built-in assert module.
   function assert(condition, optionalMessage) {
-    if (! condition) {
-      throw new Error(optionalMessage || "assertion failure");
-    }
+      if (!condition) {
+          throw new Error(optionalMessage || "assertion failure");
+      }
   }
-
-  function Entry(fn, key, args) {
-    this.parents = new Set;
-    this.childValues = new Map;
-
-    // When this Entry has children that are dirty, this property becomes
-    // a Set containing other Entry objects, borrowed from emptySetPool.
-    // When the set becomes empty, it gets recycled back to emptySetPool.
-    this.dirtyChildren = null;
-
-    reset(this, fn, key, args);
-
-    ++Entry.count;
+  function valueIs(a, b) {
+      var len = a.length;
+      return (
+      // Unknown values are not equal to each other.
+      len > 0 &&
+          // Both values must be ordinary (or both exceptional) to be equal.
+          len === b.length &&
+          // The underlying value or exception must be the same.
+          a[len - 1] === b[len - 1]);
   }
-
-  Entry.count = 0;
-
-  function reset(entry, fn, key, args) {
-    entry.fn = fn;
-    entry.key = key;
-    entry.args = args;
-    entry.value = UNKNOWN_VALUE;
-    entry.dirty = true;
-    entry.subscribe = null;
-    entry.unsubscribe = null;
-    entry.recomputing = false;
-    // Optional callback that will be invoked when entry.parents becomes
-    // empty. The Entry object is given as the first parameter. If the
-    // callback returns true, then this entry can be removed from the graph
-    // and safely recycled into the entryPool.
-    entry.reportOrphan = null;
+  function valueGet(value) {
+      switch (value.length) {
+          case 0: throw new Error("unknown value");
+          case 1: return value[0];
+          case 2: throw value[1];
+      }
   }
-
-  Entry.acquire = function (fn, key, args) {
-    var entry = entryPool.pop();
-    if (entry) {
-      reset(entry, fn, key, args);
-      return entry;
-    }
-    return new Entry(fn, key, args);
-  };
-
-  function release(entry) {
-    assert(entry.parents.size === 0);
-    assert(entry.childValues.size === 0);
-    assert(entry.dirtyChildren === null);
-    if (entryPool.length < exports.POOL_TARGET_SIZE) {
-      entryPool.push(entry);
-    }
+  function valueCopy(value) {
+      return value.slice(0);
   }
-
-  exports.Entry = Entry;
-
-  var Ep = Entry.prototype;
-
-  // The public API of Entry objects consists of the Entry constructor,
-  // along with the recompute, setDirty, and dispose methods.
-
-  Ep.recompute = function recompute() {
-    if (! rememberParent(this) &&
-        maybeReportOrphan(this)) {
-      // The recipient of the entry.reportOrphan callback decided to dispose
-      // of this orphan entry by calling entry.dispos(), which recycles it
-      // into the entryPool, so we don't need to (and should not) proceed
-      // with the recomputation.
-      return;
-    }
-
-    return recomputeIfDirty(this);
-  };
-
+  var Entry = /** @class */ (function () {
+      function Entry(fn, args) {
+          this.fn = fn;
+          this.args = args;
+          this.parents = new Set();
+          this.childValues = new Map();
+          // When this Entry has children that are dirty, this property becomes
+          // a Set containing other Entry objects, borrowed from emptySetPool.
+          // When the set becomes empty, it gets recycled back to emptySetPool.
+          this.dirtyChildren = null;
+          this.dirty = true;
+          this.recomputing = false;
+          this.value = [];
+          ++Entry.count;
+      }
+      // This is the most important method of the Entry API, because it
+      // determines whether the cached this.value can be returned immediately,
+      // or must be recomputed. The overall performance of the caching system
+      // depends on the truth of the following observations: (1) this.dirty is
+      // usually false, (2) this.dirtyChildren is usually null/empty, and thus
+      // (3) valueGet(this.value) is usually returned without recomputation.
+      Entry.prototype.recompute = function () {
+          assert(!this.recomputing, "already recomputing");
+          if (!rememberParent(this) && maybeReportOrphan(this)) {
+              // The recipient of the entry.reportOrphan callback decided to dispose
+              // of this orphan entry by calling entry.dispose(), so we don't need to
+              // (and should not) proceed with the recomputation.
+              return void 0;
+          }
+          return mightBeDirty(this)
+              ? reallyRecompute(this)
+              : valueGet(this.value);
+      };
+      Entry.prototype.setDirty = function () {
+          if (this.dirty)
+              return;
+          this.dirty = true;
+          this.value.length = 0;
+          reportDirty(this);
+          // We can go ahead and unsubscribe here, since any further dirty
+          // notifications we receive will be redundant, and unsubscribing may
+          // free up some resources, e.g. file watchers.
+          maybeUnsubscribe(this);
+      };
+      Entry.prototype.dispose = function () {
+          var _this = this;
+          forgetChildren(this).forEach(maybeReportOrphan);
+          maybeUnsubscribe(this);
+          // Because this entry has been kicked out of the cache (in index.js),
+          // we've lost the ability to find out if/when this entry becomes dirty,
+          // whether that happens through a subscription, because of a direct call
+          // to entry.setDirty(), or because one of its children becomes dirty.
+          // Because of this loss of future information, we have to assume the
+          // worst (that this entry might have become dirty very soon), so we must
+          // immediately mark this entry's parents as dirty. Normally we could
+          // just call entry.setDirty() rather than calling parent.setDirty() for
+          // each parent, but that would leave this entry in parent.childValues
+          // and parent.dirtyChildren, which would prevent the child from being
+          // truly forgotten.
+          this.parents.forEach(function (parent) {
+              parent.setDirty();
+              forgetChild(parent, _this);
+          });
+      };
+      Entry.count = 0;
+      return Entry;
+  }());
+  function rememberParent(child) {
+      var parent = parentEntrySlot.getValue();
+      if (parent) {
+          child.parents.add(parent);
+          if (!parent.childValues.has(child)) {
+              parent.childValues.set(child, []);
+          }
+          if (mightBeDirty(child)) {
+              reportDirtyChild(parent, child);
+          }
+          else {
+              reportCleanChild(parent, child);
+          }
+          return parent;
+      }
+  }
+  function reallyRecompute(entry) {
+      // Since this recomputation is likely to re-remember some of this
+      // entry's children, we forget our children here but do not call
+      // maybeReportOrphan until after the recomputation finishes.
+      var originalChildren = forgetChildren(entry);
+      // Set entry as the parent entry while calling recomputeNewValue(entry).
+      parentEntrySlot.withValue(entry, recomputeNewValue, [entry]);
+      if (maybeSubscribe(entry)) {
+          // If we successfully recomputed entry.value and did not fail to
+          // (re)subscribe, then this Entry is no longer explicitly dirty.
+          setClean(entry);
+      }
+      // Now that we've had a chance to re-remember any children that were
+      // involved in the recomputation, we can safely report any orphan
+      // children that remain.
+      originalChildren.forEach(maybeReportOrphan);
+      return valueGet(entry.value);
+  }
+  function recomputeNewValue(entry) {
+      entry.recomputing = true;
+      // Set entry.value as unknown.
+      entry.value.length = 0;
+      try {
+          // If entry.fn succeeds, entry.value will become a normal Value.
+          entry.value[0] = entry.fn.apply(null, entry.args);
+      }
+      catch (e) {
+          // If entry.fn throws, entry.value will become exceptional.
+          entry.value[1] = e;
+      }
+      // Either way, this line is always reached.
+      entry.recomputing = false;
+  }
+  function mightBeDirty(entry) {
+      return entry.dirty || !!(entry.dirtyChildren && entry.dirtyChildren.size);
+  }
+  function setClean(entry) {
+      entry.dirty = false;
+      if (mightBeDirty(entry)) {
+          // This Entry may still have dirty children, in which case we can't
+          // let our parents know we're clean just yet.
+          return;
+      }
+      reportClean(entry);
+  }
+  function reportDirty(child) {
+      child.parents.forEach(function (parent) { return reportDirtyChild(parent, child); });
+  }
+  function reportClean(child) {
+      child.parents.forEach(function (parent) { return reportCleanChild(parent, child); });
+  }
+  // Let a parent Entry know that one of its children may be dirty.
+  function reportDirtyChild(parent, child) {
+      // Must have called rememberParent(child) before calling
+      // reportDirtyChild(parent, child).
+      assert(parent.childValues.has(child));
+      assert(mightBeDirty(child));
+      if (!parent.dirtyChildren) {
+          parent.dirtyChildren = emptySetPool.pop() || new Set;
+      }
+      else if (parent.dirtyChildren.has(child)) {
+          // If we already know this child is dirty, then we must have already
+          // informed our own parents that we are dirty, so we can terminate
+          // the recursion early.
+          return;
+      }
+      parent.dirtyChildren.add(child);
+      reportDirty(parent);
+  }
+  // Let a parent Entry know that one of its children is no longer dirty.
+  function reportCleanChild(parent, child) {
+      // Must have called rememberChild(child) before calling
+      // reportCleanChild(parent, child).
+      assert(parent.childValues.has(child));
+      assert(!mightBeDirty(child));
+      var childValue = parent.childValues.get(child);
+      if (childValue.length === 0) {
+          parent.childValues.set(child, valueCopy(child.value));
+      }
+      else if (!valueIs(childValue, child.value)) {
+          parent.setDirty();
+      }
+      removeDirtyChild(parent, child);
+      if (mightBeDirty(parent)) {
+          return;
+      }
+      reportClean(parent);
+  }
+  function removeDirtyChild(parent, child) {
+      var dc = parent.dirtyChildren;
+      if (dc) {
+          dc.delete(child);
+          if (dc.size === 0) {
+              if (emptySetPool.length < POOL_TARGET_SIZE) {
+                  emptySetPool.push(dc);
+              }
+              parent.dirtyChildren = null;
+          }
+      }
+  }
   // If the given entry has a reportOrphan method, and no remaining parents,
   // call entry.reportOrphan and return true iff it returns true. The
   // reportOrphan function should return true to indicate entry.dispose()
   // has been called, and the entry has been removed from any other caches
   // (see index.js for the only current example).
   function maybeReportOrphan(entry) {
-    var report = entry.reportOrphan;
-    return typeof report === "function" &&
-      entry.parents.size === 0 &&
-      report(entry) === true;
+      return entry.parents.size === 0 &&
+          typeof entry.reportOrphan === "function" &&
+          entry.reportOrphan() === true;
   }
-
-  Ep.setDirty = function setDirty() {
-    if (this.dirty) return;
-    this.dirty = true;
-    this.value = UNKNOWN_VALUE;
-    reportDirty(this);
-    // We can go ahead and unsubscribe here, since any further dirty
-    // notifications we receive will be redundant, and unsubscribing may
-    // free up some resources, e.g. file watchers.
-    unsubscribe(this);
-  };
-
-  Ep.dispose = function dispose() {
-    var entry = this;
-    forgetChildren(entry).forEach(maybeReportOrphan);
-    unsubscribe(entry);
-
-    // Because this entry has been kicked out of the cache (in index.js),
-    // we've lost the ability to find out if/when this entry becomes dirty,
-    // whether that happens through a subscription, because of a direct call
-    // to entry.setDirty(), or because one of its children becomes dirty.
-    // Because of this loss of future information, we have to assume the
-    // worst (that this entry might have become dirty very soon), so we must
-    // immediately mark this entry's parents as dirty. Normally we could
-    // just call entry.setDirty() rather than calling parent.setDirty() for
-    // each parent, but that would leave this entry in parent.childValues
-    // and parent.dirtyChildren, which would prevent the child from being
-    // truly forgotten.
-    entry.parents.forEach(function (parent) {
-      parent.setDirty();
-      forgetChild(parent, entry);
-    });
-
-    // Since this entry has no parents and no children anymore, and the
-    // caller of Entry#dispose has indicated that entry.value no longer
-    // matters, we can safely recycle this Entry object for later use.
-    release(entry);
-  };
-
-  function setClean(entry) {
-    entry.dirty = false;
-
-    if (mightBeDirty(entry)) {
-      // This Entry may still have dirty children, in which case we can't
-      // let our parents know we're clean just yet.
-      return;
-    }
-
-    reportClean(entry);
-  }
-
-  function reportDirty(entry) {
-    entry.parents.forEach(function (parent) {
-      reportDirtyChild(parent, entry);
-    });
-  }
-
-  function reportClean(entry) {
-    entry.parents.forEach(function (parent) {
-      reportCleanChild(parent, entry);
-    });
-  }
-
-  function mightBeDirty(entry) {
-    return entry.dirty ||
-      (entry.dirtyChildren &&
-       entry.dirtyChildren.size);
-  }
-
-  // Let a parent Entry know that one of its children may be dirty.
-  function reportDirtyChild(entry, child) {
-    // Must have called rememberParent(child) before calling
-    // reportDirtyChild(parent, child).
-    assert(entry.childValues.has(child));
-    assert(mightBeDirty(child));
-
-    if (! entry.dirtyChildren) {
-      entry.dirtyChildren = emptySetPool.pop() || new Set;
-
-    } else if (entry.dirtyChildren.has(child)) {
-      // If we already know this child is dirty, then we must have already
-      // informed our own parents that we are dirty, so we can terminate
-      // the recursion early.
-      return;
-    }
-
-    entry.dirtyChildren.add(child);
-    reportDirty(entry);
-  }
-
-  // Let a parent Entry know that one of its children is no longer dirty.
-  function reportCleanChild(entry, child) {
-    var cv = entry.childValues;
-
-    // Must have called rememberChild(child) before calling
-    // reportCleanChild(parent, child).
-    assert(cv.has(child));
-    assert(! mightBeDirty(child));
-
-    var childValue = cv.get(child);
-    if (childValue === UNKNOWN_VALUE) {
-      cv.set(child, child.value);
-    } else if (childValue !== child.value) {
-      entry.setDirty();
-    }
-
-    removeDirtyChild(entry, child);
-
-    if (mightBeDirty(entry)) {
-      return;
-    }
-
-    reportClean(entry);
-  }
-
-  function removeDirtyChild(entry, child) {
-    var dc = entry.dirtyChildren;
-    if (dc) {
-      dc.delete(child);
-      if (dc.size === 0) {
-        if (emptySetPool.length < exports.POOL_TARGET_SIZE) {
-          emptySetPool.push(dc);
-        }
-        entry.dirtyChildren = null;
-      }
-    }
-  }
-
-  function rememberParent(entry) {
-    var local$$1 = getLocal();
-    var parent = local$$1.currentParentEntry;
-    if (parent) {
-      entry.parents.add(parent);
-
-      if (! parent.childValues.has(entry)) {
-        parent.childValues.set(entry, UNKNOWN_VALUE);
-      }
-
-      if (mightBeDirty(entry)) {
-        reportDirtyChild(parent, entry);
-      } else {
-        reportCleanChild(parent, entry);
-      }
-
-      return parent;
-    }
-  }
-
-  // This is the most important method of the Entry API, because it
-  // determines whether the cached entry.value can be returned immediately,
-  // or must be recomputed. The overall performance of the caching system
-  // depends on the truth of the following observations: (1) this.dirty is
-  // usually false, (2) this.dirtyChildren is usually null/empty, and thus
-  // (3) this.value is usally returned very quickly, without recomputation.
-  function recomputeIfDirty(entry) {
-    if (entry.dirty) {
-      // If this Entry is explicitly dirty because someone called
-      // entry.setDirty(), recompute.
-      return reallyRecompute(entry);
-    }
-
-    if (mightBeDirty(entry)) {
-      // Get fresh values for any dirty children, and if those values
-      // disagree with this.childValues, mark this Entry explicitly dirty.
-      entry.dirtyChildren.forEach(function (child) {
-        assert(entry.childValues.has(child));
-        try {
-          recomputeIfDirty(child);
-        } catch (e) {
-          entry.setDirty();
-        }
-      });
-
-      if (entry.dirty) {
-        // If this Entry has become explicitly dirty after comparing the fresh
-        // values of its dirty children against this.childValues, recompute.
-        return reallyRecompute(entry);
-      }
-    }
-
-    assert(entry.value !== UNKNOWN_VALUE);
-
-    return entry.value;
-  }
-
-  function reallyRecompute(entry) {
-    assert(! entry.recomputing, "already recomputing");
-    entry.recomputing = true;
-
-    // Since this recomputation is likely to re-remember some of this
-    // entry's children, we forget our children here but do not call
-    // maybeReportOrphan until after the recomputation finishes.
-    var originalChildren = forgetChildren(entry);
-
-    var local$$1 = getLocal();
-    var parent = local$$1.currentParentEntry;
-    local$$1.currentParentEntry = entry;
-
-    var threw = true;
-    try {
-      entry.value = entry.fn.apply(null, entry.args);
-      threw = false;
-
-    } finally {
-      entry.recomputing = false;
-
-      assert(local$$1.currentParentEntry === entry);
-      local$$1.currentParentEntry = parent;
-
-      if (threw || ! subscribe(entry)) {
-        // Mark this Entry dirty if entry.fn threw or we failed to
-        // resubscribe. This is important because, if we have a subscribe
-        // function and it failed, then we're going to miss important
-        // notifications about the potential dirtiness of entry.value.
-        entry.setDirty();
-      } else {
-        // If we successfully recomputed entry.value and did not fail to
-        // (re)subscribe, then this Entry is no longer explicitly dirty.
-        setClean(entry);
-      }
-    }
-
-    // Now that we've had a chance to re-remember any children that were
-    // involved in the recomputation, we can safely report any orphan
-    // children that remain.
-    originalChildren.forEach(maybeReportOrphan);
-
-    return entry.value;
-  }
-
-  var reusableEmptyArray = [];
-
   // Removes all children from this entry and returns an array of the
   // removed children.
-  function forgetChildren(entry) {
-    var children = reusableEmptyArray;
-
-    if (entry.childValues.size > 0) {
-      children = [];
-      entry.childValues.forEach(function (value, child) {
-        forgetChild(entry, child);
-        children.push(child);
-      });
-    }
-
-    // After we forget all our children, this.dirtyChildren must be empty
-    // and therefor must have been reset to null.
-    assert(entry.dirtyChildren === null);
-
-    return children;
-  }
-
-  function forgetChild(entry, child) {
-    child.parents.delete(entry);
-    entry.childValues.delete(child);
-    removeDirtyChild(entry, child);
-  }
-
-  function subscribe(entry) {
-    if (typeof entry.subscribe === "function") {
-      try {
-        unsubscribe(entry); // Prevent double subscriptions.
-        entry.unsubscribe = entry.subscribe.apply(null, entry.args);
-      } catch (e) {
-        // If this Entry has a subscribe function and it threw an exception
-        // (or an unsubscribe function it previously returned now throws),
-        // return false to indicate that we were not able to subscribe (or
-        // unsubscribe), and this Entry should remain dirty.
-        entry.setDirty();
-        return false;
-      }
-    }
-
-    // Returning true indicates either that there was no entry.subscribe
-    // function or that it succeeded.
-    return true;
-  }
-
-  function unsubscribe(entry) {
-    var unsub = entry.unsubscribe;
-    if (typeof unsub === "function") {
-      entry.unsubscribe = null;
-      unsub();
-    }
-  }
-  });
-  var entry_1 = entry.POOL_TARGET_SIZE;
-  var entry_2 = entry.Entry;
-
-  var require$$1 = getCjsExportFromNamespace(tuple$1);
-
-  var Cache$2 = cache.Cache;
-  var tuple$2 = require$$1.tuple;
-  var Entry = entry.Entry;
-  var getLocal = local.get;
-
-  function normalizeOptions(options) {
-    options = options || Object.create(null);
-
-    if (typeof options.makeCacheKey !== "function") {
-      options.makeCacheKey = tuple$2;
-    }
-
-    if (typeof options.max !== "number") {
-      options.max = Math.pow(2, 16);
-    }
-
-    return options;
-  }
-
-  function wrap$1(fn, options) {
-    options = normalizeOptions(options);
-
-    // If this wrapped function is disposable, then its creator does not
-    // care about its return value, and it should be removed from the cache
-    // immediately when it no longer has any parents that depend on it.
-    var disposable = !! options.disposable;
-
-    var cache$$1 = new Cache$2({
-      max: options.max,
-      dispose: function (key, entry$$1) {
-        entry$$1.dispose();
-      }
-    });
-
-    function reportOrphan(entry$$1) {
-      if (disposable) {
-        // Triggers the entry.dispose() call above.
-        cache$$1.delete(entry$$1.key);
-        return true;
-      }
-    }
-
-    function optimistic() {
-      if (disposable && ! getLocal().currentParentEntry) {
-        // If there's no current parent computation, and this wrapped
-        // function is disposable (meaning we don't care about entry.value,
-        // just dependency tracking), then we can short-cut everything else
-        // in this function, because entry.recompute() is going to recycle
-        // the entry object without recomputing anything, anyway.
-        return;
-      }
-
-      var key = options.makeCacheKey.apply(null, arguments);
-      if (! key) {
-        return fn.apply(null, arguments);
-      }
-
-      var args = [], len = arguments.length;
-      while (len--) args[len] = arguments[len];
-
-      var entry$$1 = cache$$1.get(key);
-      if (entry$$1) {
-        entry$$1.args = args;
-      } else {
-        cache$$1.set(key, entry$$1 = Entry.acquire(fn, key, args));
-        entry$$1.subscribe = options.subscribe;
-        if (disposable) {
-          entry$$1.reportOrphan = reportOrphan;
-        }
-      }
-
-      var value = entry$$1.recompute();
-
-      // Move this entry to the front of the least-recently used queue,
-      // since we just finished computing its value.
-      cache$$1.set(key, entry$$1);
-
-      // Clean up any excess entries in the cache, but only if this entry
-      // has no parents, which means we're not in the middle of a larger
-      // computation that might be flummoxed by the cleaning.
-      if (entry$$1.parents.size === 0) {
-        cache$$1.clean();
-      }
-
-      // If options.disposable is truthy, the caller of wrap is telling us
-      // they don't care about the result of entry.recompute(), so we should
-      // avoid returning the value, so it won't be accidentally used.
-      if (! disposable) {
-        return value;
-      }
-    }
-
-    optimistic.dirty = function () {
-      var key = options.makeCacheKey.apply(null, arguments);
-      if (! key) {
-        return;
-      }
-
-      if (! cache$$1.has(key)) {
-        return;
-      }
-
-      cache$$1.get(key).setDirty();
-    };
-
-    return optimistic;
-  }
-
-  var wrap_1 = wrap$1;
-
-  var genericMessage$3 = "Invariant Violation";
-  var _a$3 = Object.setPrototypeOf, setPrototypeOf$3 = _a$3 === void 0 ? function (obj, proto) {
-      obj.__proto__ = proto;
-      return obj;
-  } : _a$3;
-  var InvariantError$3 = /** @class */ (function (_super) {
-      __extends(InvariantError, _super);
-      function InvariantError(message) {
-          if (message === void 0) { message = genericMessage$3; }
-          var _this = _super.call(this, message) || this;
-          _this.framesToPop = 1;
-          _this.name = genericMessage$3;
-          setPrototypeOf$3(_this, InvariantError.prototype);
-          return _this;
-      }
-      return InvariantError;
-  }(Error));
-  function invariant$4(condition, message) {
-      if (!condition) {
-          throw new InvariantError$3(message);
-      }
-  }
-  (function (invariant) {
-      function warn() {
-          var args = [];
-          for (var _i = 0; _i < arguments.length; _i++) {
-              args[_i] = arguments[_i];
-          }
-          return console.warn.apply(console, args);
-      }
-      invariant.warn = warn;
-      function error() {
-          var args = [];
-          for (var _i = 0; _i < arguments.length; _i++) {
-              args[_i] = arguments[_i];
-          }
-          return console.error.apply(console, args);
-      }
-      invariant.error = error;
-  })(invariant$4 || (invariant$4 = {}));
-
-  var testMap = new Map();
-  if (testMap.set(1, 2) !== testMap) {
-      var set_1 = testMap.set;
-      Map.prototype.set = function () {
-          var args = [];
-          for (var _i = 0; _i < arguments.length; _i++) {
-              args[_i] = arguments[_i];
-          }
-          set_1.apply(this, args);
-          return this;
-      };
-  }
-  var testSet = new Set();
-  if (testSet.add(3) !== testSet) {
-      var add_1 = testSet.add;
-      Set.prototype.add = function () {
-          var args = [];
-          for (var _i = 0; _i < arguments.length; _i++) {
-              args[_i] = arguments[_i];
-          }
-          add_1.apply(this, args);
-          return this;
-      };
-  }
-  var frozen = {};
-  if (typeof Object.freeze === 'function') {
-      Object.freeze(frozen);
-  }
-  try {
-      testMap.set(frozen, frozen).delete(frozen);
-  }
-  catch (_a) {
-      var wrap$2 = function (method) {
-          return method && (function (obj) {
-              try {
-                  testMap.set(obj, obj).delete(obj);
-              }
-              finally {
-                  return method.call(Object, obj);
-              }
+  function forgetChildren(parent) {
+      var children = reusableEmptyArray;
+      if (parent.childValues.size > 0) {
+          children = [];
+          parent.childValues.forEach(function (_value, child) {
+              forgetChild(parent, child);
+              children.push(child);
           });
+      }
+      // After we forget all our children, this.dirtyChildren must be empty
+      // and therefore must have been reset to null.
+      assert(parent.dirtyChildren === null);
+      return children;
+  }
+  function forgetChild(parent, child) {
+      child.parents.delete(parent);
+      parent.childValues.delete(child);
+      removeDirtyChild(parent, child);
+  }
+  function maybeSubscribe(entry) {
+      if (typeof entry.subscribe === "function") {
+          try {
+              maybeUnsubscribe(entry); // Prevent double subscriptions.
+              entry.unsubscribe = entry.subscribe.apply(null, entry.args);
+          }
+          catch (e) {
+              // If this Entry has a subscribe function and it threw an exception
+              // (or an unsubscribe function it previously returned now throws),
+              // return false to indicate that we were not able to subscribe (or
+              // unsubscribe), and this Entry should remain dirty.
+              entry.setDirty();
+              return false;
+          }
+      }
+      // Returning true indicates either that there was no entry.subscribe
+      // function or that it succeeded.
+      return true;
+  }
+  function maybeUnsubscribe(entry) {
+      var unsubscribe = entry.unsubscribe;
+      if (typeof unsubscribe === "function") {
+          entry.unsubscribe = void 0;
+          unsubscribe();
+      }
+  }
+
+  // A trie data structure that holds object keys weakly, yet can also hold
+  // non-object keys, unlike the native `WeakMap`.
+  var KeyTrie = /** @class */ (function () {
+      function KeyTrie(weakness) {
+          this.weakness = weakness;
+      }
+      KeyTrie.prototype.lookup = function () {
+          var array = [];
+          for (var _i = 0; _i < arguments.length; _i++) {
+              array[_i] = arguments[_i];
+          }
+          return this.lookupArray(array);
       };
-      Object.freeze = wrap$2(Object.freeze);
-      Object.seal = wrap$2(Object.seal);
-      Object.preventExtensions = wrap$2(Object.preventExtensions);
+      KeyTrie.prototype.lookupArray = function (array) {
+          var node = this;
+          array.forEach(function (key) { return node = node.getChildTrie(key); });
+          return node.data || (node.data = Object.create(null));
+      };
+      KeyTrie.prototype.getChildTrie = function (key) {
+          var map = this.weakness && isObjRef(key)
+              ? this.weak || (this.weak = new WeakMap())
+              : this.strong || (this.strong = new Map());
+          var child = map.get(key);
+          if (!child)
+              map.set(key, child = new KeyTrie(this.weakness));
+          return child;
+      };
+      return KeyTrie;
+  }());
+  function isObjRef(value) {
+      switch (typeof value) {
+          case "object":
+              if (value === null)
+                  break;
+          // Fall through to return true...
+          case "function":
+              return true;
+      }
+      return false;
+  }
+
+  // The defaultMakeCacheKey function is remarkably powerful, because it gives
+  // a unique object for any shallow-identical list of arguments. If you need
+  // to implement a custom makeCacheKey function, you may find it helpful to
+  // delegate the final work to defaultMakeCacheKey, which is why we export it
+  // here. However, you may want to avoid defaultMakeCacheKey if your runtime
+  // does not support WeakMap, or you have the ability to return a string key.
+  // In those cases, just write your own custom makeCacheKey functions.
+  var keyTrie = new KeyTrie(typeof WeakMap === "function");
+  function defaultMakeCacheKey() {
+      var args = [];
+      for (var _i = 0; _i < arguments.length; _i++) {
+          args[_i] = arguments[_i];
+      }
+      return keyTrie.lookupArray(args);
+  }
+  var caches = new Set();
+  function wrap(originalFunction, options) {
+      if (options === void 0) { options = Object.create(null); }
+      var cache = new Cache$1(options.max || Math.pow(2, 16), function (entry) { return entry.dispose(); });
+      var disposable = !!options.disposable;
+      var makeCacheKey = options.makeCacheKey || defaultMakeCacheKey;
+      function optimistic() {
+          if (disposable && !parentEntrySlot.hasValue()) {
+              // If there's no current parent computation, and this wrapped
+              // function is disposable (meaning we don't care about entry.value,
+              // just dependency tracking), then we can short-cut everything else
+              // in this function, because entry.recompute() is going to recycle
+              // the entry object without recomputing anything, anyway.
+              return void 0;
+          }
+          var key = makeCacheKey.apply(null, arguments);
+          if (key === void 0) {
+              return originalFunction.apply(null, arguments);
+          }
+          var args = Array.prototype.slice.call(arguments);
+          var entry = cache.get(key);
+          if (entry) {
+              entry.args = args;
+          }
+          else {
+              entry = new Entry(originalFunction, args);
+              cache.set(key, entry);
+              entry.subscribe = options.subscribe;
+              if (disposable) {
+                  entry.reportOrphan = function () { return cache.delete(key); };
+              }
+          }
+          var value = entry.recompute();
+          // Move this entry to the front of the least-recently used queue,
+          // since we just finished computing its value.
+          cache.set(key, entry);
+          caches.add(cache);
+          // Clean up any excess entries in the cache, but only if there is no
+          // active parent entry, meaning we're not in the middle of a larger
+          // computation that might be flummoxed by the cleaning.
+          if (!parentEntrySlot.hasValue()) {
+              caches.forEach(function (cache) { return cache.clean(); });
+              caches.clear();
+          }
+          // If options.disposable is truthy, the caller of wrap is telling us
+          // they don't care about the result of entry.recompute(), so we should
+          // avoid returning the value, so it won't be accidentally used.
+          return disposable ? void 0 : value;
+      }
+      optimistic.dirty = function () {
+          var key = makeCacheKey.apply(null, arguments);
+          var child = key !== void 0 && cache.get(key);
+          if (child) {
+              child.setDirty();
+          }
+      };
+      return optimistic;
   }
 
   var haveWarned$1 = false;
@@ -9229,26 +8308,25 @@
       };
       HeuristicFragmentMatcher.prototype.match = function (idValue, typeCondition, context) {
           var obj = context.store.get(idValue.id);
-          if (!obj && idValue.id === 'ROOT_QUERY') {
-              return true;
-          }
+          var isRootQuery = idValue.id === 'ROOT_QUERY';
           if (!obj) {
-              return false;
+              return isRootQuery;
           }
-          if (!obj.__typename) {
+          var _a = obj.__typename, __typename = _a === void 0 ? isRootQuery && 'Query' : _a;
+          if (!__typename) {
               if (shouldWarn()) {
-                  process$1.env.NODE_ENV === "production" || invariant$4.warn("You're using fragments in your queries, but either don't have the addTypename:\n  true option set in Apollo Client, or you are trying to write a fragment to the store without the __typename.\n   Please turn on the addTypename option and include __typename when writing fragments so that Apollo Client\n   can accurately match fragments.");
-                  process$1.env.NODE_ENV === "production" || invariant$4.warn('Could not find __typename on Fragment ', typeCondition, obj);
-                  process$1.env.NODE_ENV === "production" || invariant$4.warn("DEPRECATION WARNING: using fragments without __typename is unsupported behavior " +
+                  process$1.env.NODE_ENV === "production" || invariant$1.warn("You're using fragments in your queries, but either don't have the addTypename:\n  true option set in Apollo Client, or you are trying to write a fragment to the store without the __typename.\n   Please turn on the addTypename option and include __typename when writing fragments so that Apollo Client\n   can accurately match fragments.");
+                  process$1.env.NODE_ENV === "production" || invariant$1.warn('Could not find __typename on Fragment ', typeCondition, obj);
+                  process$1.env.NODE_ENV === "production" || invariant$1.warn("DEPRECATION WARNING: using fragments without __typename is unsupported behavior " +
                       "and will be removed in future versions of Apollo client. You should fix this and set addTypename to true now.");
               }
               return 'heuristic';
           }
-          if (obj.__typename === typeCondition) {
+          if (__typename === typeCondition) {
               return true;
           }
           if (shouldWarn()) {
-              process$1.env.NODE_ENV === "production" || invariant$4.error('You are using the simple (heuristic) fragment matcher, but your ' +
+              process$1.env.NODE_ENV === "production" || invariant$1.error('You are using the simple (heuristic) fragment matcher, but your ' +
                   'queries contain union or interface types. Apollo Client will not be ' +
                   'able to accurately map fragments. To make this error go away, use ' +
                   'the `IntrospectionFragmentMatcher` as described in the docs: ' +
@@ -9259,47 +8337,17 @@
       return HeuristicFragmentMatcher;
   }());
 
-  var CacheKeyNode = (function () {
-      function CacheKeyNode() {
-          this.children = null;
-          this.key = null;
-      }
-      CacheKeyNode.prototype.lookup = function () {
-          var args = [];
-          for (var _i = 0; _i < arguments.length; _i++) {
-              args[_i] = arguments[_i];
-          }
-          return this.lookupArray(args);
-      };
-      CacheKeyNode.prototype.lookupArray = function (array) {
-          var node = this;
-          array.forEach(function (value) {
-              node = node.getOrCreate(value);
-          });
-          return node.key || (node.key = Object.create(null));
-      };
-      CacheKeyNode.prototype.getOrCreate = function (value) {
-          var map = this.children || (this.children = new Map());
-          var node = map.get(value);
-          if (!node) {
-              map.set(value, (node = new CacheKeyNode()));
-          }
-          return node;
-      };
-      return CacheKeyNode;
-  }());
-
   var hasOwn = Object.prototype.hasOwnProperty;
   var DepTrackingCache = (function () {
       function DepTrackingCache(data) {
-          if (data === void 0) { data = Object.create(null); }
           var _this = this;
+          if (data === void 0) { data = Object.create(null); }
           this.data = data;
-          this.depend = wrap_1(function (dataId) { return _this.data[dataId]; }, {
+          this.depend = wrap(function (dataId) { return _this.data[dataId]; }, {
               disposable: true,
               makeCacheKey: function (dataId) {
                   return dataId;
-              }
+              },
           });
       }
       DepTrackingCache.prototype.toObject = function () {
@@ -9350,38 +8398,44 @@
   }
 
   var StoreReader = (function () {
-      function StoreReader(cacheKeyRoot) {
-          if (cacheKeyRoot === void 0) { cacheKeyRoot = new CacheKeyNode; }
+      function StoreReader(_a) {
           var _this = this;
-          this.cacheKeyRoot = cacheKeyRoot;
-          var reader = this;
-          var executeStoreQuery = reader.executeStoreQuery, executeSelectionSet = reader.executeSelectionSet;
-          this.executeStoreQuery = wrap_1(function (options) {
+          var _b = _a === void 0 ? {} : _a, _c = _b.cacheKeyRoot, cacheKeyRoot = _c === void 0 ? new KeyTrie(canUseWeakMap) : _c, _d = _b.freezeResults, freezeResults = _d === void 0 ? false : _d;
+          var _e = this, executeStoreQuery = _e.executeStoreQuery, executeSelectionSet = _e.executeSelectionSet, executeSubSelectedArray = _e.executeSubSelectedArray;
+          this.freezeResults = freezeResults;
+          this.executeStoreQuery = wrap(function (options) {
               return executeStoreQuery.call(_this, options);
           }, {
               makeCacheKey: function (_a) {
                   var query = _a.query, rootValue = _a.rootValue, contextValue = _a.contextValue, variableValues = _a.variableValues, fragmentMatcher = _a.fragmentMatcher;
                   if (contextValue.store instanceof DepTrackingCache) {
-                      return reader.cacheKeyRoot.lookup(query, contextValue.store, fragmentMatcher, JSON.stringify(variableValues), rootValue.id);
+                      return cacheKeyRoot.lookup(contextValue.store, query, fragmentMatcher, JSON.stringify(variableValues), rootValue.id);
                   }
-                  return;
               }
           });
-          this.executeSelectionSet = wrap_1(function (options) {
+          this.executeSelectionSet = wrap(function (options) {
               return executeSelectionSet.call(_this, options);
           }, {
               makeCacheKey: function (_a) {
                   var selectionSet = _a.selectionSet, rootValue = _a.rootValue, execContext = _a.execContext;
                   if (execContext.contextValue.store instanceof DepTrackingCache) {
-                      return reader.cacheKeyRoot.lookup(selectionSet, execContext.contextValue.store, execContext.fragmentMatcher, JSON.stringify(execContext.variableValues), rootValue.id);
+                      return cacheKeyRoot.lookup(execContext.contextValue.store, selectionSet, execContext.fragmentMatcher, JSON.stringify(execContext.variableValues), rootValue.id);
                   }
-                  return;
+              }
+          });
+          this.executeSubSelectedArray = wrap(function (options) {
+              return executeSubSelectedArray.call(_this, options);
+          }, {
+              makeCacheKey: function (_a) {
+                  var field = _a.field, array = _a.array, execContext = _a.execContext;
+                  if (execContext.contextValue.store instanceof DepTrackingCache) {
+                      return cacheKeyRoot.lookup(execContext.contextValue.store, field, array, JSON.stringify(execContext.variableValues));
+                  }
               }
           });
       }
       StoreReader.prototype.readQueryFromStore = function (options) {
-          var optsPatch = { returnPartialData: false };
-          return this.diffQueryAgainstStore(__assign({}, options, optsPatch)).result;
+          return this.diffQueryAgainstStore(__assign({}, options, { returnPartialData: false })).result;
       };
       StoreReader.prototype.diffQueryAgainstStore = function (_a) {
           var store = _a.store, query = _a.query, variables = _a.variables, previousResult = _a.previousResult, _b = _a.returnPartialData, returnPartialData = _b === void 0 ? true : _b, _c = _a.rootId, rootId = _c === void 0 ? 'ROOT_QUERY' : _c, fragmentMatcherFunction = _a.fragmentMatcherFunction, config$$1 = _a.config;
@@ -9389,7 +8443,7 @@
           variables = assign({}, getDefaultValues(queryDefinition), variables);
           var context = {
               store: store,
-              dataIdFromObject: (config$$1 && config$$1.dataIdFromObject) || null,
+              dataIdFromObject: config$$1 && config$$1.dataIdFromObject,
               cacheRedirects: (config$$1 && config$$1.cacheRedirects) || {},
           };
           var execResult = this.executeStoreQuery({
@@ -9409,11 +8463,11 @@
               execResult.missing.forEach(function (info) {
                   if (info.tolerable)
                       return;
-                  throw process$1.env.NODE_ENV === "production" ? new InvariantError$3() : new InvariantError$3("Can't find field " + info.fieldName + " on object " + JSON.stringify(info.object, null, 2) + ".");
+                  throw process$1.env.NODE_ENV === "production" ? new InvariantError(8) : new InvariantError("Can't find field " + info.fieldName + " on object " + JSON.stringify(info.object, null, 2) + ".");
               });
           }
           if (previousResult) {
-              if (isEqual(previousResult, execResult.result)) {
+              if (equal(previousResult, execResult.result)) {
                   execResult.result = previousResult;
               }
           }
@@ -9479,11 +8533,12 @@
                   else {
                       fragment = fragmentMap[selection.name.value];
                       if (!fragment) {
-                          throw process$1.env.NODE_ENV === "production" ? new InvariantError$3() : new InvariantError$3("No fragment named " + selection.name.value);
+                          throw process$1.env.NODE_ENV === "production" ? new InvariantError(9) : new InvariantError("No fragment named " + selection.name.value);
                       }
                   }
-                  var typeCondition = fragment.typeCondition.name.value;
-                  var match = execContext.fragmentMatcher(rootValue, typeCondition, contextValue);
+                  var typeCondition = fragment.typeCondition && fragment.typeCondition.name.value;
+                  var match = !typeCondition ||
+                      execContext.fragmentMatcher(rootValue, typeCondition, contextValue);
                   if (match) {
                       var fragmentExecResult = _this.executeSelectionSet({
                           selectionSet: fragment.selectionSet,
@@ -9500,6 +8555,9 @@
               }
           });
           finalResult.result = mergeDeepArray(objectsToMerge);
+          if (this.freezeResults && process$1.env.NODE_ENV !== 'production') {
+              Object.freeze(finalResult.result);
+          }
           return finalResult;
       };
       StoreReader.prototype.executeField = function (object, typename, field, execContext) {
@@ -9512,10 +8570,17 @@
           };
           var readStoreResult = readStoreResolver(object, typename, fieldName, args, contextValue, info);
           if (Array.isArray(readStoreResult.result)) {
-              return this.combineExecResults(readStoreResult, this.executeSubSelectedArray(field, readStoreResult.result, execContext));
+              return this.combineExecResults(readStoreResult, this.executeSubSelectedArray({
+                  field: field,
+                  array: readStoreResult.result,
+                  execContext: execContext,
+              }));
           }
           if (!field.selectionSet) {
               assertSelectionSetForIdValue(field, readStoreResult.result);
+              if (this.freezeResults && process$1.env.NODE_ENV !== 'production') {
+                  maybeDeepFreeze(readStoreResult);
+              }
               return readStoreResult;
           }
           if (readStoreResult.result == null) {
@@ -9532,7 +8597,7 @@
           for (var _i = 0; _i < arguments.length; _i++) {
               execResults[_i] = arguments[_i];
           }
-          var missing = null;
+          var missing;
           execResults.forEach(function (execResult) {
               if (execResult.missing) {
                   missing = missing || [];
@@ -9544,9 +8609,10 @@
               missing: missing,
           };
       };
-      StoreReader.prototype.executeSubSelectedArray = function (field, result, execContext) {
+      StoreReader.prototype.executeSubSelectedArray = function (_a) {
           var _this = this;
-          var missing = null;
+          var field = _a.field, array = _a.array, execContext = _a.execContext;
+          var missing;
           function handleMissing(childResult) {
               if (childResult.missing) {
                   missing = missing || [];
@@ -9554,12 +8620,16 @@
               }
               return childResult.result;
           }
-          result = result.map(function (item) {
+          array = array.map(function (item) {
               if (item === null) {
                   return null;
               }
               if (Array.isArray(item)) {
-                  return handleMissing(_this.executeSubSelectedArray(field, item, execContext));
+                  return handleMissing(_this.executeSubSelectedArray({
+                      field: field,
+                      array: item,
+                      execContext: execContext,
+                  }));
               }
               if (field.selectionSet) {
                   return handleMissing(_this.executeSelectionSet({
@@ -9571,13 +8641,16 @@
               assertSelectionSetForIdValue(field, item);
               return item;
           });
-          return { result: result, missing: missing };
+          if (this.freezeResults && process$1.env.NODE_ENV !== 'production') {
+              Object.freeze(array);
+          }
+          return { result: array, missing: missing };
       };
       return StoreReader;
   }());
   function assertSelectionSetForIdValue(field, value) {
       if (!field.selectionSet && isIdValue(value)) {
-          throw process$1.env.NODE_ENV === "production" ? new InvariantError$3() : new InvariantError$3("Missing selection set for object of type " + value.typename + " returned for query field " + field.name.value);
+          throw process$1.env.NODE_ENV === "production" ? new InvariantError(10) : new InvariantError("Missing selection set for object of type " + value.typename + " returned for query field " + field.name.value);
       }
   }
   function defaultFragmentMatcher() {
@@ -9601,8 +8674,9 @@
                   if (resolver) {
                       fieldValue = resolver(object, args, {
                           getCacheKey: function (storeObj) {
-                              return toIdValue({
-                                  id: context.dataIdFromObject(storeObj),
+                              var id = context.dataIdFromObject(storeObj);
+                              return id && toIdValue({
+                                  id: id,
                                   typename: storeObj.__typename,
                               });
                           },
@@ -9712,6 +8786,7 @@
           var result = _a.result, dataId = _a.dataId, selectionSet = _a.selectionSet, context = _a.context;
           var variables = context.variables, store = context.store, fragmentMap = context.fragmentMap;
           selectionSet.selections.forEach(function (selection) {
+              var _a;
               if (!shouldInclude(selection, variables)) {
                   return;
               }
@@ -9734,7 +8809,7 @@
                           isClient = selection.directives.some(function (directive) { return directive.name && directive.name.value === 'client'; });
                       }
                       if (!isDefered && !isClient && context.fragmentMatcherFunction) {
-                          process$1.env.NODE_ENV === "production" || invariant$4.warn("Missing field " + resultFieldKey + " in " + JSON.stringify(result, null, 2).substring(0, 100));
+                          process$1.env.NODE_ENV === "production" || invariant$1.warn("Missing field " + resultFieldKey + " in " + JSON.stringify(result, null, 2).substring(0, 100));
                       }
                   }
               }
@@ -9745,18 +8820,19 @@
                   }
                   else {
                       fragment = (fragmentMap || {})[selection.name.value];
-                      process$1.env.NODE_ENV === "production" ? invariant$4(fragment) : invariant$4(fragment, "No fragment named " + selection.name.value + ".");
+                      process$1.env.NODE_ENV === "production" ? invariant$1(fragment, 2) : invariant$1(fragment, "No fragment named " + selection.name.value + ".");
                   }
                   var matches = true;
                   if (context.fragmentMatcherFunction && fragment.typeCondition) {
-                      var idValue = toIdValue({ id: 'self', typename: undefined });
+                      var id = dataId || 'self';
+                      var idValue = toIdValue({ id: id, typename: undefined });
                       var fakeContext = {
-                          store: new ObjectCache({ self: result }),
+                          store: new ObjectCache((_a = {}, _a[id] = result, _a)),
                           cacheRedirects: {},
                       };
                       var match = context.fragmentMatcherFunction(idValue, fragment.typeCondition.name.value, fakeContext);
                       if (!isProduction() && match === 'heuristic') {
-                          process$1.env.NODE_ENV === "production" || invariant$4.error('WARNING: heuristic fragment matching going on!');
+                          process$1.env.NODE_ENV === "production" || invariant$1.error('WARNING: heuristic fragment matching going on!');
                       }
                       matches = !!match;
                   }
@@ -9773,8 +8849,8 @@
           return store;
       };
       StoreWriter.prototype.writeFieldToStore = function (_a) {
-          var field = _a.field, value = _a.value, dataId = _a.dataId, context = _a.context;
           var _b;
+          var field = _a.field, value = _a.value, dataId = _a.dataId, context = _a.context;
           var variables = context.variables, dataIdFromObject = context.dataIdFromObject, store = context.store;
           var storeValue;
           var storeObject;
@@ -9799,7 +8875,7 @@
               }
               if (dataIdFromObject) {
                   var semanticId = dataIdFromObject(value);
-                  process$1.env.NODE_ENV === "production" ? invariant$4(!semanticId || !isGeneratedId(semanticId)) : invariant$4(!semanticId || !isGeneratedId(semanticId), 'IDs returned by dataIdFromObject cannot begin with the "$" character.');
+                  process$1.env.NODE_ENV === "production" ? invariant$1(!semanticId || !isGeneratedId(semanticId), 3) : invariant$1(!semanticId || !isGeneratedId(semanticId), 'IDs returned by dataIdFromObject cannot begin with the "$" character.');
                   if (semanticId ||
                       (typeof semanticId === 'number' && semanticId === 0)) {
                       valueDataId = semanticId;
@@ -9822,8 +8898,8 @@
                   var hadTypename = escapedId.typename !== undefined;
                   var hasTypename = typename !== undefined;
                   var typenameChanged = hadTypename && hasTypename && escapedId.typename !== typename;
-                  process$1.env.NODE_ENV === "production" ? invariant$4(!generated || escapedId.generated || typenameChanged) : invariant$4(!generated || escapedId.generated || typenameChanged, "Store error: the application attempted to write an object with no provided id but the store already contains an id of " + escapedId.id + " for this object. The selectionSet that was trying to be written is:\n" + JSON.stringify(field));
-                  process$1.env.NODE_ENV === "production" ? invariant$4(!hadTypename || hasTypename) : invariant$4(!hadTypename || hasTypename, "Store error: the application attempted to write an object with no provided typename but the store already contains an object with typename of " + escapedId.typename + " for the object of id " + escapedId.id + ". The selectionSet that was trying to be written is:\n" + JSON.stringify(field));
+                  process$1.env.NODE_ENV === "production" ? invariant$1(!generated || escapedId.generated || typenameChanged, 4) : invariant$1(!generated || escapedId.generated || typenameChanged, "Store error: the application attempted to write an object with no provided id but the store already contains an id of " + escapedId.id + " for this object. The selectionSet that was trying to be written is:\n" + JSON.stringify(field));
+                  process$1.env.NODE_ENV === "production" ? invariant$1(!hadTypename || hasTypename, 5) : invariant$1(!hadTypename || hasTypename, "Store error: the application attempted to write an object with no provided typename but the store already contains an object with typename of " + escapedId.typename + " for the object of id " + escapedId.id + ". The selectionSet that was trying to be written is:\n" + JSON.stringify(field));
                   if (escapedId.generated) {
                       if (typenameChanged) {
                           if (!generated) {
@@ -9837,7 +8913,7 @@
               }
           }
           storeObject = store.get(dataId);
-          if (!storeObject || !isEqual(storeValue, storeObject[storeFieldName])) {
+          if (!storeObject || !equal(storeValue, storeObject[storeFieldName])) {
               store.set(dataId, __assign({}, storeObject, (_b = {}, _b[storeFieldName] = storeValue, _b)));
           }
       };
@@ -9888,14 +8964,14 @@
           if (isIdValue(value) &&
               isGeneratedId(value.id) &&
               isIdValue(realValue) &&
-              !isEqual(value, realValue) &&
+              !equal(value, realValue) &&
               mergeWithGenerated(value.id, realValue.id, cache)) {
               madeChanges = true;
           }
       });
       cache.delete(generatedKey);
       var newRealValue = __assign({}, generated, real);
-      if (isEqual(newRealValue, real)) {
+      if (equal(newRealValue, real)) {
           return madeChanges;
       }
       cache.set(realKey, newRealValue);
@@ -9924,6 +9000,7 @@
       dataIdFromObject: defaultDataIdFromObject,
       addTypename: true,
       resultCaching: true,
+      freezeResults: false,
   };
   function defaultDataIdFromObject(result) {
       if (result.__typename) {
@@ -9963,27 +9040,30 @@
           var _this = _super.call(this) || this;
           _this.watches = new Set();
           _this.typenameDocumentCache = new Map();
-          _this.cacheKeyRoot = new CacheKeyNode();
+          _this.cacheKeyRoot = new KeyTrie(canUseWeakMap);
           _this.silenceBroadcast = false;
           _this.config = __assign({}, defaultConfig, config$$1);
           if (_this.config.customResolvers) {
-              process$1.env.NODE_ENV === "production" || invariant$4.warn('customResolvers have been renamed to cacheRedirects. Please update your config as we will be deprecating customResolvers in the next major version.');
+              process$1.env.NODE_ENV === "production" || invariant$1.warn('customResolvers have been renamed to cacheRedirects. Please update your config as we will be deprecating customResolvers in the next major version.');
               _this.config.cacheRedirects = _this.config.customResolvers;
           }
           if (_this.config.cacheResolvers) {
-              process$1.env.NODE_ENV === "production" || invariant$4.warn('cacheResolvers have been renamed to cacheRedirects. Please update your config as we will be deprecating cacheResolvers in the next major version.');
+              process$1.env.NODE_ENV === "production" || invariant$1.warn('cacheResolvers have been renamed to cacheRedirects. Please update your config as we will be deprecating cacheResolvers in the next major version.');
               _this.config.cacheRedirects = _this.config.cacheResolvers;
           }
-          _this.addTypename = _this.config.addTypename;
+          _this.addTypename = !!_this.config.addTypename;
           _this.data = _this.config.resultCaching
               ? new DepTrackingCache()
               : new ObjectCache();
           _this.optimisticData = _this.data;
-          _this.storeReader = new StoreReader(_this.cacheKeyRoot);
           _this.storeWriter = new StoreWriter();
+          _this.storeReader = new StoreReader({
+              cacheKeyRoot: _this.cacheKeyRoot,
+              freezeResults: config$$1.freezeResults,
+          });
           var cache = _this;
           var maybeBroadcastWatch = cache.maybeBroadcastWatch;
-          _this.maybeBroadcastWatch = wrap_1(function (c) {
+          _this.maybeBroadcastWatch = wrap(function (c) {
               return maybeBroadcastWatch.call(_this, c);
           }, {
               makeCacheKey: function (c) {
@@ -10014,17 +9094,21 @@
               typeof this.data.get(options.rootId) === 'undefined') {
               return null;
           }
+          var fragmentMatcher = this.config.fragmentMatcher;
+          var fragmentMatcherFunction = fragmentMatcher && fragmentMatcher.match;
           return this.storeReader.readQueryFromStore({
               store: options.optimistic ? this.optimisticData : this.data,
               query: this.transformDocument(options.query),
               variables: options.variables,
               rootId: options.rootId,
-              fragmentMatcherFunction: this.config.fragmentMatcher.match,
+              fragmentMatcherFunction: fragmentMatcherFunction,
               previousResult: options.previousResult,
               config: this.config,
-          });
+          }) || null;
       };
       InMemoryCache.prototype.write = function (write) {
+          var fragmentMatcher = this.config.fragmentMatcher;
+          var fragmentMatcherFunction = fragmentMatcher && fragmentMatcher.match;
           this.storeWriter.writeResultToStore({
               dataId: write.dataId,
               result: write.result,
@@ -10032,18 +9116,20 @@
               document: this.transformDocument(write.query),
               store: this.data,
               dataIdFromObject: this.config.dataIdFromObject,
-              fragmentMatcherFunction: this.config.fragmentMatcher.match,
+              fragmentMatcherFunction: fragmentMatcherFunction,
           });
           this.broadcastWatches();
       };
       InMemoryCache.prototype.diff = function (query) {
+          var fragmentMatcher = this.config.fragmentMatcher;
+          var fragmentMatcherFunction = fragmentMatcher && fragmentMatcher.match;
           return this.storeReader.diffQueryAgainstStore({
               store: query.optimistic ? this.optimisticData : this.data,
               query: this.transformDocument(query.query),
               variables: query.variables,
               returnPartialData: query.returnPartialData,
               previousResult: query.previousResult,
-              fragmentMatcherFunction: this.config.fragmentMatcher.match,
+              fragmentMatcherFunction: fragmentMatcherFunction,
               config: this.config,
           });
       };
@@ -10055,7 +9141,7 @@
           };
       };
       InMemoryCache.prototype.evict = function (query) {
-          throw process$1.env.NODE_ENV === "production" ? new InvariantError$3() : new InvariantError$3("eviction is not implemented on InMemory Cache");
+          throw process$1.env.NODE_ENV === "production" ? new InvariantError(1) : new InvariantError("eviction is not implemented on InMemory Cache");
       };
       InMemoryCache.prototype.reset = function () {
           this.data.clear();
@@ -10131,6 +9217,339 @@
       return InMemoryCache;
   }(ApolloCache));
 
+  /**
+   * Copyright (c) 2015-present, Facebook, Inc.
+   *
+   * This source code is licensed under the MIT license found in the
+   * LICENSE file in the root directory of this source tree.
+   */
+
+  /**
+   * Converts an AST into a string, using one set of reasonable
+   * formatting rules.
+   */
+  function print(ast) {
+    return visit(ast, { leave: printDocASTReducer });
+  }
+
+  var printDocASTReducer = {
+    Name: function Name(node) {
+      return node.value;
+    },
+    Variable: function Variable(node) {
+      return '$' + node.name;
+    },
+
+    // Document
+
+    Document: function Document(node) {
+      return join(node.definitions, '\n\n') + '\n';
+    },
+
+    OperationDefinition: function OperationDefinition(node) {
+      var op = node.operation;
+      var name = node.name;
+      var varDefs = wrap$1('(', join(node.variableDefinitions, ', '), ')');
+      var directives = join(node.directives, ' ');
+      var selectionSet = node.selectionSet;
+      // Anonymous queries with no directives or variable definitions can use
+      // the query short form.
+      return !name && !directives && !varDefs && op === 'query' ? selectionSet : join([op, join([name, varDefs]), directives, selectionSet], ' ');
+    },
+
+
+    VariableDefinition: function VariableDefinition(_ref) {
+      var variable = _ref.variable,
+          type = _ref.type,
+          defaultValue = _ref.defaultValue;
+      return variable + ': ' + type + wrap$1(' = ', defaultValue);
+    },
+
+    SelectionSet: function SelectionSet(_ref2) {
+      var selections = _ref2.selections;
+      return block(selections);
+    },
+
+    Field: function Field(_ref3) {
+      var alias = _ref3.alias,
+          name = _ref3.name,
+          args = _ref3.arguments,
+          directives = _ref3.directives,
+          selectionSet = _ref3.selectionSet;
+      return join([wrap$1('', alias, ': ') + name + wrap$1('(', join(args, ', '), ')'), join(directives, ' '), selectionSet], ' ');
+    },
+
+    Argument: function Argument(_ref4) {
+      var name = _ref4.name,
+          value = _ref4.value;
+      return name + ': ' + value;
+    },
+
+    // Fragments
+
+    FragmentSpread: function FragmentSpread(_ref5) {
+      var name = _ref5.name,
+          directives = _ref5.directives;
+      return '...' + name + wrap$1(' ', join(directives, ' '));
+    },
+
+    InlineFragment: function InlineFragment(_ref6) {
+      var typeCondition = _ref6.typeCondition,
+          directives = _ref6.directives,
+          selectionSet = _ref6.selectionSet;
+      return join(['...', wrap$1('on ', typeCondition), join(directives, ' '), selectionSet], ' ');
+    },
+
+    FragmentDefinition: function FragmentDefinition(_ref7) {
+      var name = _ref7.name,
+          typeCondition = _ref7.typeCondition,
+          variableDefinitions = _ref7.variableDefinitions,
+          directives = _ref7.directives,
+          selectionSet = _ref7.selectionSet;
+      return (
+        // Note: fragment variable definitions are experimental and may be changed
+        // or removed in the future.
+        'fragment ' + name + wrap$1('(', join(variableDefinitions, ', '), ')') + ' ' + ('on ' + typeCondition + ' ' + wrap$1('', join(directives, ' '), ' ')) + selectionSet
+      );
+    },
+
+    // Value
+
+    IntValue: function IntValue(_ref8) {
+      var value = _ref8.value;
+      return value;
+    },
+    FloatValue: function FloatValue(_ref9) {
+      var value = _ref9.value;
+      return value;
+    },
+    StringValue: function StringValue(_ref10, key) {
+      var value = _ref10.value,
+          isBlockString = _ref10.block;
+      return isBlockString ? printBlockString(value, key === 'description') : JSON.stringify(value);
+    },
+    BooleanValue: function BooleanValue(_ref11) {
+      var value = _ref11.value;
+      return value ? 'true' : 'false';
+    },
+    NullValue: function NullValue() {
+      return 'null';
+    },
+    EnumValue: function EnumValue(_ref12) {
+      var value = _ref12.value;
+      return value;
+    },
+    ListValue: function ListValue(_ref13) {
+      var values = _ref13.values;
+      return '[' + join(values, ', ') + ']';
+    },
+    ObjectValue: function ObjectValue(_ref14) {
+      var fields = _ref14.fields;
+      return '{' + join(fields, ', ') + '}';
+    },
+    ObjectField: function ObjectField(_ref15) {
+      var name = _ref15.name,
+          value = _ref15.value;
+      return name + ': ' + value;
+    },
+
+    // Directive
+
+    Directive: function Directive(_ref16) {
+      var name = _ref16.name,
+          args = _ref16.arguments;
+      return '@' + name + wrap$1('(', join(args, ', '), ')');
+    },
+
+    // Type
+
+    NamedType: function NamedType(_ref17) {
+      var name = _ref17.name;
+      return name;
+    },
+    ListType: function ListType(_ref18) {
+      var type = _ref18.type;
+      return '[' + type + ']';
+    },
+    NonNullType: function NonNullType(_ref19) {
+      var type = _ref19.type;
+      return type + '!';
+    },
+
+    // Type System Definitions
+
+    SchemaDefinition: function SchemaDefinition(_ref20) {
+      var directives = _ref20.directives,
+          operationTypes = _ref20.operationTypes;
+      return join(['schema', join(directives, ' '), block(operationTypes)], ' ');
+    },
+
+    OperationTypeDefinition: function OperationTypeDefinition(_ref21) {
+      var operation = _ref21.operation,
+          type = _ref21.type;
+      return operation + ': ' + type;
+    },
+
+    ScalarTypeDefinition: addDescription(function (_ref22) {
+      var name = _ref22.name,
+          directives = _ref22.directives;
+      return join(['scalar', name, join(directives, ' ')], ' ');
+    }),
+
+    ObjectTypeDefinition: addDescription(function (_ref23) {
+      var name = _ref23.name,
+          interfaces = _ref23.interfaces,
+          directives = _ref23.directives,
+          fields = _ref23.fields;
+      return join(['type', name, wrap$1('implements ', join(interfaces, ' & ')), join(directives, ' '), block(fields)], ' ');
+    }),
+
+    FieldDefinition: addDescription(function (_ref24) {
+      var name = _ref24.name,
+          args = _ref24.arguments,
+          type = _ref24.type,
+          directives = _ref24.directives;
+      return name + wrap$1('(', join(args, ', '), ')') + ': ' + type + wrap$1(' ', join(directives, ' '));
+    }),
+
+    InputValueDefinition: addDescription(function (_ref25) {
+      var name = _ref25.name,
+          type = _ref25.type,
+          defaultValue = _ref25.defaultValue,
+          directives = _ref25.directives;
+      return join([name + ': ' + type, wrap$1('= ', defaultValue), join(directives, ' ')], ' ');
+    }),
+
+    InterfaceTypeDefinition: addDescription(function (_ref26) {
+      var name = _ref26.name,
+          directives = _ref26.directives,
+          fields = _ref26.fields;
+      return join(['interface', name, join(directives, ' '), block(fields)], ' ');
+    }),
+
+    UnionTypeDefinition: addDescription(function (_ref27) {
+      var name = _ref27.name,
+          directives = _ref27.directives,
+          types = _ref27.types;
+      return join(['union', name, join(directives, ' '), types && types.length !== 0 ? '= ' + join(types, ' | ') : ''], ' ');
+    }),
+
+    EnumTypeDefinition: addDescription(function (_ref28) {
+      var name = _ref28.name,
+          directives = _ref28.directives,
+          values = _ref28.values;
+      return join(['enum', name, join(directives, ' '), block(values)], ' ');
+    }),
+
+    EnumValueDefinition: addDescription(function (_ref29) {
+      var name = _ref29.name,
+          directives = _ref29.directives;
+      return join([name, join(directives, ' ')], ' ');
+    }),
+
+    InputObjectTypeDefinition: addDescription(function (_ref30) {
+      var name = _ref30.name,
+          directives = _ref30.directives,
+          fields = _ref30.fields;
+      return join(['input', name, join(directives, ' '), block(fields)], ' ');
+    }),
+
+    ScalarTypeExtension: function ScalarTypeExtension(_ref31) {
+      var name = _ref31.name,
+          directives = _ref31.directives;
+      return join(['extend scalar', name, join(directives, ' ')], ' ');
+    },
+
+    ObjectTypeExtension: function ObjectTypeExtension(_ref32) {
+      var name = _ref32.name,
+          interfaces = _ref32.interfaces,
+          directives = _ref32.directives,
+          fields = _ref32.fields;
+      return join(['extend type', name, wrap$1('implements ', join(interfaces, ' & ')), join(directives, ' '), block(fields)], ' ');
+    },
+
+    InterfaceTypeExtension: function InterfaceTypeExtension(_ref33) {
+      var name = _ref33.name,
+          directives = _ref33.directives,
+          fields = _ref33.fields;
+      return join(['extend interface', name, join(directives, ' '), block(fields)], ' ');
+    },
+
+    UnionTypeExtension: function UnionTypeExtension(_ref34) {
+      var name = _ref34.name,
+          directives = _ref34.directives,
+          types = _ref34.types;
+      return join(['extend union', name, join(directives, ' '), types && types.length !== 0 ? '= ' + join(types, ' | ') : ''], ' ');
+    },
+
+    EnumTypeExtension: function EnumTypeExtension(_ref35) {
+      var name = _ref35.name,
+          directives = _ref35.directives,
+          values = _ref35.values;
+      return join(['extend enum', name, join(directives, ' '), block(values)], ' ');
+    },
+
+    InputObjectTypeExtension: function InputObjectTypeExtension(_ref36) {
+      var name = _ref36.name,
+          directives = _ref36.directives,
+          fields = _ref36.fields;
+      return join(['extend input', name, join(directives, ' '), block(fields)], ' ');
+    },
+
+    DirectiveDefinition: addDescription(function (_ref37) {
+      var name = _ref37.name,
+          args = _ref37.arguments,
+          locations = _ref37.locations;
+      return 'directive @' + name + wrap$1('(', join(args, ', '), ')') + ' on ' + join(locations, ' | ');
+    })
+  };
+
+  function addDescription(cb) {
+    return function (node) {
+      return join([node.description, cb(node)], '\n');
+    };
+  }
+
+  /**
+   * Given maybeArray, print an empty string if it is null or empty, otherwise
+   * print all items together separated by separator if provided
+   */
+  function join(maybeArray, separator) {
+    return maybeArray ? maybeArray.filter(function (x) {
+      return x;
+    }).join(separator || '') : '';
+  }
+
+  /**
+   * Given array, print each item on its own line, wrapped in an
+   * indented "{ }" block.
+   */
+  function block(array) {
+    return array && array.length !== 0 ? '{\n' + indent(join(array, '\n')) + '\n}' : '';
+  }
+
+  /**
+   * If maybeString is not null or empty, then wrap with start and end, otherwise
+   * print an empty string.
+   */
+  function wrap$1(start, maybeString, end) {
+    return maybeString ? start + maybeString + (end || '') : '';
+  }
+
+  function indent(maybeString) {
+    return maybeString && '  ' + maybeString.replace(/\n/g, '\n  ');
+  }
+
+  /**
+   * Print a block string in the indented block form by adding a leading and
+   * trailing blank line. However, if a block string starts with whitespace and is
+   * a single-line, adding a leading blank line would strip that whitespace.
+   */
+  function printBlockString(value, isDescription) {
+    var escaped = value.replace(/"""/g, '\\"""');
+    return (value[0] === ' ' || value[0] === '\t') && value.indexOf('\n') === -1 ? '"""' + escaped.replace(/"$/, '"\n') + '"""' : '"""\n' + (isDescription ? escaped : indent(escaped)) + '\n"""';
+  }
+
   var defaultHttpOptions = {
       includeQuery: true,
       includeExtensions: false,
@@ -10190,7 +9609,7 @@
           var library = 'unfetch';
           if (typeof window === 'undefined')
               library = 'node-fetch';
-          throw new InvariantError$1("\nfetch is not found globally and no fetcher passed, to fix pass a fetch for\nyour environment like https://www.npmjs.com/package/" + library + ".\n\nFor example:\nimport fetch from '" + library + "';\nimport { createHttpLink } from 'apollo-link-http';\n\nconst link = createHttpLink({ uri: '/graphql', fetch: fetch });");
+          throw process$1.env.NODE_ENV === "production" ? new InvariantError(1) : new InvariantError("\nfetch is not found globally and no fetcher passed, to fix pass a fetch for\nyour environment like https://www.npmjs.com/package/" + library + ".\n\nFor example:\nimport fetch from '" + library + "';\nimport { createHttpLink } from 'apollo-link-http';\n\nconst link = createHttpLink({ uri: '/graphql', fetch: fetch });");
       }
   };
   var createSignalIfSupported = function () {
@@ -10230,7 +9649,7 @@
           serialized = JSON.stringify(p);
       }
       catch (e) {
-          var parseError = new InvariantError$1("Network request failed. " + label + " is not serializable: " + e.message);
+          var parseError = process$1.env.NODE_ENV === "production" ? new InvariantError(2) : new InvariantError("Network request failed. " + label + " is not serializable: " + e.message);
           parseError.parseError = e;
           throw parseError;
       }
@@ -10393,6 +9812,7 @@
   Object.defineProperty(exports, "__esModule", { value: true });
 
   function graphql(resolver, document, rootValue, contextValue, variableValues, execOptions) {
+      if (variableValues === void 0) { variableValues = {}; }
       if (execOptions === void 0) { execOptions = {}; }
       var mainDefinition = bundle_esm.getMainDefinition(document);
       var fragments = bundle_esm.getFragmentDefinitions(document);
@@ -10414,7 +9834,7 @@
       var fragmentMap = execContext.fragmentMap, contextValue = execContext.contextValue, variables = execContext.variableValues;
       var result = {};
       selectionSet.selections.forEach(function (selection) {
-          if (!bundle_esm.shouldInclude(selection, variables)) {
+          if (variables && !bundle_esm.shouldInclude(selection, variables)) {
               return;
           }
           if (bundle_esm.isField(selection)) {
@@ -10460,6 +9880,7 @@
           isLeaf: !field.selectionSet,
           resultKey: bundle_esm.resultKeyNameFromField(field),
           directives: bundle_esm.getDirectiveInfoFromField(field, variables),
+          field: field,
       };
       var result = resolver(fieldName, rootValue, args, contextValue, info);
       if (!field.selectionSet) {
@@ -10605,6 +10026,7 @@
                           isLeaf: !field.selectionSet,
                           resultKey: bundle_esm.resultKeyNameFromField(field),
                           directives: bundle_esm.getDirectiveInfoFromField(field, variables),
+                          field: field,
                       };
                       return [4, resolver(fieldName, rootValue, args, contextValue, info)];
                   case 1:

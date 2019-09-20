@@ -16,15 +16,15 @@ function copy(src, dest) {
             log(`Done copying ${src} to ${dest}`);
             log(`Watching ${src} for changes...`.green);
         });
-        watcher.on('watch-error', (err) => {
+        watcher.on('watch-error', err => {
             log(`Error watching ${src}: ${err}`.red);
         });
-        watcher.on('copy', (event) => {
+        watcher.on('copy', event => {
             if (ready) {
                 log(`Copied ${event.srcPath} to ${event.dstPath}`);
             }
         });
-        watcher.on('remove', (event) => {
+        watcher.on('remove', event => {
             log(`Removed ${event.path}`);
         });
     } else {
@@ -40,6 +40,9 @@ mkdirp.sync('dist/views');
 copy('src/!(modules)', 'dist');
 copy('src/public/**/*', 'dist/public');
 copy('src/views/*', 'dist/views');
-copy('./node_modules/@salesforce-ux/design-system/assets/**/symbols.svg', 'dist/public/assets');
-copy('./node_modules/@salesforce-ux/design-system/assets/**/*.{woff2,css}', 'dist/public/assets');
-copy('./node_modules/talon-framework/dist/public/**/*', 'dist/public');
+copy('src/partials/*', 'dist/partials');
+copy('node_modules/@salesforce-ux/design-system/assets/**/symbols.svg', 'dist/public/assets');
+copy(
+    'node_modules/@salesforce-ux/design-system/assets/**/*.{woff2,css}',
+    'dist/public/assets'
+);

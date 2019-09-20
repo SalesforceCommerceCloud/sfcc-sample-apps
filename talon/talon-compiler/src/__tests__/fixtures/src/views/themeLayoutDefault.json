@@ -1,7 +1,0 @@
-{
-    "name": "themeLayoutDefault",
-    "label": "Default Theme Layout",
-    "component": {
-        "name": "x/themeLayoutDefault"
-    }
-}
