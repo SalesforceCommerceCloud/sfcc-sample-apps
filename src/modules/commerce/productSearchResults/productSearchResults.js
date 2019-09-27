@@ -66,9 +66,7 @@ export default class Search extends LightningElement {
     constructor() {
         super();
 
-        this.routeSubscription = subscribe({
-            next: this.routeSubHandler.bind(this)
-        });
+        this.routeSubscription = subscribe(this.routeSubHandler.bind(this));
 
         // Listen to search query from header search component
         window.addEventListener('update-query-event', e => {
