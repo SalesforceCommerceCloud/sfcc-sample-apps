@@ -1,16 +1,4 @@
 import { LightningElement, api, track } from 'lwc'
-import { getRoute, subscribe } from "talon/routingService";
-
-//export default { registerRoutes, getRouteUrl, getRoute, navigateToRoute, subscribe, setRouter };
-
-// import { Link } from 'react-router-dom';
-//
-// import logo from './../logo.svg';
-//
-// import Navigation from './Navigation';
-// import SearchBar from './SearchBar';
-// import HeaderCart from './HeaderCart';
-
 
 export default class CommerceHeader extends LightningElement {
 
@@ -22,13 +10,6 @@ export default class CommerceHeader extends LightningElement {
     constructor () {
         super();
         this.logo = '/assets/images/logo.svg';
-        this.subscription = subscribe({
-            next: this.routeSubHandler.bind(this)
-        });
-    }
-
-    routeSubHandler(view) {
-        console.log(view);
     }
 
     connectedCallback () {

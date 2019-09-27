@@ -1,6 +1,7 @@
 import { LightningElement, track } from 'lwc'
 
 import * as router from 'talon/routingService';
+import {navigate, routingService} from 'talon/routingService';
 
 /**
  * Search Bar where visitors can search for stuff
@@ -11,13 +12,11 @@ export default class SearchBar extends LightningElement {
 
     constructor() {
         super();
-        this.routeSubscription = router.subscribe( {
-            next: this.routeSubHandler.bind( this )
-        } );
+        this.routeSubscription = router.subscribe( this.routeSubHandler.bind( this ));
 
     }
 
-    routeSubHandler( view ) {
+    routeSubHandler( { attributes = {}, state = {} } = {}, { view } = {} ) {
         setTimeout( () => {
             const queryParam = window.location.pathname.split( '/search/' )[ 1 ];
 
@@ -29,7 +28,15 @@ export default class SearchBar extends LightningElement {
         const updateQueryEvent = new CustomEvent('update-query-event', {detail: {query: this.query}});
         window.dispatchEvent(updateQueryEvent);
         console.log( router.router )
-        router.navigateToRoute( `search`, {query: this.query} )
+        //router.navigateToRoute( `search`, {query: this.query} )
+
+        navigate({
+          id: 'search',
+          attributes: {
+            query: this.query
+          }
+        });
+
     }
 
     /**

@@ -12,10 +12,10 @@ import compression from 'compression';
 import {
     compileErrorMiddleware,
     resourceMiddleware,
-    startContext,
+    contextService,
     staticMiddleware,
     templateMiddleware,
-} from '@talon/compiler';
+} from '@webruntime/compiler';
 
 // ****************************************************
 // Instantiate the new Storefront Reference Application
@@ -35,7 +35,7 @@ const mode = process.env.NODE_ENV || 'development';
  * Setup and Start Server
  */
 (async () => {
-    await startContext({templateDir: '.'});
+    await contextService.startContext({templateDir: '.'});
 
     // Create Express Instance, register it with demo app and start demo app.
     sampleApp.expressApplication = express();

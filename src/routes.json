@@ -1,57 +1,105 @@
 [
   {
-    "name": "home",
+    "id": "home",
     "path": "/",
     "isRoot": true,
     "view": "home",
-    "label": "Home"
+    "label": "Home",
+    "page": {
+      "type": "comm_namedPage",
+      "attributes": {
+        "pageName": "home"
+      }
+    }
   },
   {
-    "name": "search",
+    "id": "search",
     "path": "/search/:query",
     "isRoot": false,
     "view": "search",
-    "label": "Search"
+    "label": "Search",
+    "page": {
+      "type": "comm_namedPage",
+      "attributes": {
+        "pageName": "search"
+      }
+    }
   },
   {
-    "name": "product",
+    "id": "product",
     "path": "/product/:pid",
     "isRoot": false,
     "view": "product",
-    "label": "Product"
+    "label": "Product",
+    "page": {
+      "type": "comm_namedPage",
+      "attributes": {
+        "pageName": "product"
+      }
+    }
   },
   {
-    "name": "register",
+    "id": "register",
     "path": "/register",
     "isRoot": false,
     "view": "login",
-    "label": "LoginRegister"
+    "label": "LoginRegister",
+    "page": {
+      "type": "comm_namedPage",
+      "attributes": {
+        "pageName": "register"
+      }
+    }
   },
   {
-    "name": "login",
+    "id": "login",
     "path": "/login",
     "isRoot": false,
     "view": "login",
-    "label": "Login"
+    "label": "Login",
+    "page": {
+      "type": "comm_namedPage",
+      "attributes": {
+        "pageName": "login"
+      }
+    }
   },
   {
-    "name": "cart",
+    "id": "cart",
     "path": "/cart",
     "isRoot": false,
     "view": "cart",
-    "label": "Cart"
+    "label": "Cart",
+    "page": {
+      "type": "comm_namedPage",
+      "attributes": {
+        "pageName": "cart"
+      }
+    }
   },
   {
-    "name": "about",
+    "id": "about",
     "path": "/about",
     "view": "about",
-    "label": "About"
+    "label": "About",
+    "page": {
+      "type": "comm_namedPage",
+      "attributes": {
+        "pageName": "about"
+      }
+    }
   },
   {
-    "name": "error",
+    "id": "error",
     "path": "/error",
     "isDefault": true,
     "view": "error",
-    "label": "Error"
+    "label": "Error",
+    "page": {
+      "type": "comm_namedPage",
+      "attributes": {
+        "pageName": "error"
+      }
+    }
   }
 ]
