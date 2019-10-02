@@ -18,16 +18,16 @@ export default class Search extends LightningElement {
     routeSubscription;
 
     @track sortOptions = [
-        { id: 'best-matches', label: 'Best Matches' },
-        { id: 'price-low-to-high', label: 'Price Low To High' },
-        { id: 'price-high-to-low', label: 'Price High to Low' },
-        { id: 'product-name-ascending', label: 'Product Name A - Z' },
-        { id: 'product-name-descending', label: 'Product Name Z - A' },
-        { id: 'most-popular', label: 'Most Popular' },
-        { id: 'top-sellers', label: 'Top Sellers' }
+        {id: 'best-matches', label: 'Best Matches'},
+        {id: 'price-low-to-high', label: 'Price Low To High'},
+        {id: 'price-high-to-low', label: 'Price High to Low'},
+        {id: 'product-name-ascending', label: 'Product Name A - Z'},
+        {id: 'product-name-descending', label: 'Product Name Z - A'},
+        {id: 'most-popular', label: 'Most Popular'},
+        {id: 'top-sellers', label: 'Top Sellers'}
     ];
 
-    @wire(productsByQuery, { query: '$query', sortRule: '$sortRule', selectedRefinements: '$selectedRefinements' })
+    @wire(productsByQuery, {query: '$query', sortRule: '$sortRule', selectedRefinements: '$selectedRefinements'})
     updateProducts(json) {
 
         console.log(this.query)
@@ -82,27 +82,12 @@ export default class Search extends LightningElement {
     }
 
     routeSubHandler(view) {
-        // TODO: need better way to get param from routingService
-
-        // Defer for now
-        setTimeout(() => {
-            const url = window.location.pathname;
-
-            // get query from param
-            const queryParam = url.split('/search/')[1];
-
-            this.query = '' + queryParam;
-
-            console.log('========================================');
-            console.log('route update. getRouteUrl', this.query);
-            console.log('route update. getRouteUrl', this.products);
-            console.log('route update. need to trigger search if query', view);
-            console.log('========================================');
-        })
+        // Set query to trigger search.
+        this.query = view.attributes.query;
     }
 
     disconnectedCallback() {
-        this.routeSubscription.unsubscribe();
+        //this.routeSubscription.unsubscribe();
     }
 
     hasQuery() {
@@ -158,7 +143,7 @@ export default class Search extends LightningElement {
         setTimeout(() => {
             const sortSelect = this.template.querySelector('select[name=sort-order]');
             if (sortSelect && sortSelect[0]) {
-                const option = sortSelect.querySelector(`option[class=${ this.sortRule.id }]`);
+                const option = sortSelect.querySelector(`option[class=${this.sortRule.id}]`);
                 if (option) {
                     option.setAttribute('selected', 'selected');
                 }

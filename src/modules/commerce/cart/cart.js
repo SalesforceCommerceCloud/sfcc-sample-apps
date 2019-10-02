@@ -1,5 +1,5 @@
 import { LightningElement, api, track } from 'lwc'
-import { getRoute, subscribe } from "talon/routingService";
+import { subscribe } from "talon/routingService";
 import { ShoppingCart } from 'commerce/data';
 
 export default class Cart extends LightningElement {
@@ -14,7 +14,7 @@ export default class Cart extends LightningElement {
         return this.products.length > 0;
     }
 
-        get shippingCost() {
+    get shippingCost() {
 
         return 7.99;
     }
@@ -25,7 +25,7 @@ export default class Cart extends LightningElement {
 
     get totalEstimate() {
         const cart = ShoppingCart.getCurrentCart();
-        const total = cart.reduce( (a, b) => {
+        const total = cart.reduce((a, b) => {
             return {price: a.price + b.price};
         });
 
@@ -34,9 +34,7 @@ export default class Cart extends LightningElement {
 
     constructor() {
         super();
-        this.routeSubscription = subscribe( {
-            next: this.routeSubHandler.bind( this )
-        } );
+        this.routeSubscription = subscribe(this.routeSubHandler.bind(this));
     }
 
     routeSubHandler(view) {
@@ -44,7 +42,7 @@ export default class Cart extends LightningElement {
     }
 
     renderedCallback() {
-        console.log( 'rend', JSON.stringify( this.products ) );
+        console.log('rend', JSON.stringify(this.products));
     }
 
     connectedCallback() {
@@ -53,7 +51,7 @@ export default class Cart extends LightningElement {
 
     removeHandler(event) {
         const elem = event.srcElement;
-        ShoppingCart.removeFromCart( parseInt( elem.getAttribute( 'data-item-index' ) ) );
+        ShoppingCart.removeFromCart(parseInt(elem.getAttribute('data-item-index')));
         this.products = ShoppingCart.getCurrentCart();
     }
 }

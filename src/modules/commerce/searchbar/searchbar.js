@@ -1,7 +1,7 @@
 import { LightningElement, track } from 'lwc'
 
 import * as router from 'talon/routingService';
-import {navigate, routingService} from 'talon/routingService';
+import { navigate } from 'talon/routingService';
 
 /**
  * Search Bar where visitors can search for stuff
@@ -9,41 +9,34 @@ import {navigate, routingService} from 'talon/routingService';
 export default class SearchBar extends LightningElement {
 
     @track query = '';
+    routeSubscription;
 
     constructor() {
         super();
-        this.routeSubscription = router.subscribe( this.routeSubHandler.bind( this ));
-
+        console.log('*************************** subs')
+        this.routeSubscription = router.subscribe(this.routeSubHandler.bind(this));
     }
 
-    routeSubHandler( { attributes = {}, state = {} } = {}, { view } = {} ) {
-        setTimeout( () => {
-            const queryParam = window.location.pathname.split( '/search/' )[ 1 ];
-
-            this.query = queryParam || '';
-        })
+    routeSubHandler(view) {
+        this.query = view.attributes.query || '';
     }
 
     updateQueryEvent() {
         const updateQueryEvent = new CustomEvent('update-query-event', {detail: {query: this.query}});
         window.dispatchEvent(updateQueryEvent);
-        console.log( router.router )
-        //router.navigateToRoute( `search`, {query: this.query} )
 
         navigate({
-          id: 'search',
-          attributes: {
-            query: this.query
-          }
+            id: 'search',
+            attributes: {
+                query: this.query
+            }
         });
-
     }
 
     /**
      * Handles pressing 'Enter' in the search field
      */
-    handleKeyUp = event => {
-        const old = this.query;
+    handleKeyUp(event) {
         this.query = (event.target.value || '').trim();
 
         if (event.key === 'Enter') {
@@ -52,7 +45,7 @@ export default class SearchBar extends LightningElement {
             }
             event.preventDefault();
         }
-    }
+    };
 
     connectedCallback() {
     }
@@ -60,4 +53,6 @@ export default class SearchBar extends LightningElement {
     renderedCallback() {
     }
 
+    disconnectedCallback(){
+    }
 }
