@@ -1,6 +1,7 @@
 import {LightningElement, api} from 'lwc'
 
-import * as router from 'talon/routingService';
+// import * as router from 'talon/routingService';
+import { navigate } from 'talon/routingService';
 
 export default class ProductTile extends LightningElement {
 
@@ -8,6 +9,14 @@ export default class ProductTile extends LightningElement {
 
     productDetail() {
         console.log(this.product.id);
-        router.navigateToRoute(`product`, {pid: this.product.id})
+        //router.navigateToRoute(`product`, {pid: this.product.id})
+
+        navigate({
+            id: 'product',
+            attributes: {
+                pid: this.product.id
+            }
+        });
+
     }
 }
