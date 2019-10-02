@@ -1,0 +1,27 @@
+{
+  "name": "@sfcc-core/core-graphql",
+  "version": "0.0.1-sfcc-alpha-1",
+  "description": "sfcc default core graphql",
+  "main": "index.js",
+  "scripts": {
+    "build": "cross-env rollup -c ./scripts/rollup.config.js",
+    "pak": "npm pack",
+    "clean": "./clean.sh",
+    "pub": "npm run build; npm pack; npm publish -f",
+    "link": "npm link",
+    "unlink": "npm link",
+    "dep-link": "./npm-dep-link.sh",
+    "dep-unlink": "./npm-dep-unlink.sh"
+  },
+  "author": "Jason Cooper",
+  "license": "MIT",
+  "dependencies": {
+    "@sfcc-core/apiconfig": "0.0.1-sfcc-alpha-1",
+    "@sfcc-core/core": "0.0.1-sfcc-alpha-1",
+    "apollo-server": "^2.3.3",
+    "cross-env": "5.2.0",
+    "graphql-tag": "^2.10.1",
+    "graphql-tools": "^4.0.4",
+    "rollup": "1.1.0"
+  }
+}

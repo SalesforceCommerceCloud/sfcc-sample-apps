@@ -1,9 +1,0 @@
-# We have two registries we could use:
-# Internal (private)
-registry=https://nexus.soma.salesforce.com/nexus/content/groups/npm-all/
-
-# Also grab @types NPMs from Nexus, SFCI cannot reach any public registry anyway
-@types:registry=https://nexus.soma.salesforce.com/nexus/content/groups/npm-all/
-
-@sfcc-dev:registry=http://localhost:4873/
-//localhost:4873/:_authToken="Q2yuScqHNAxzfNWSWR4Yt8OR2M8PLym3234ANN3XY9k="

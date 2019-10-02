@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>Salesforce Headless Commerce with LWC and Talon</title>
+
+    <script nonce="{{ sourceNonce }}">
+        window.process = window.process || {env: {DEBUG: undefined}}
+    </script>
+    <script src="{{ basePath }}/assets/js/libs.js?{{ versionKey }}"></script>
+    <script src="/apiconfig.js?{{ versionKey }}"></script>
+
+
+    {{ webruntimeInit }}
+    {{ webruntimeViews }}
+
+    {{#> headmarkup }}
+    {{/ headmarkup }}
+</head>
+
+<body id="main">
+{{ webruntimeApp "main" }}
+</body>
+
+</html>

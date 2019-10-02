@@ -1,0 +1,18 @@
+{
+  "name": "@sfcc-core/core",
+  "version": "0.0.1-sfcc-alpha-1",
+  "description": "sfcc core registry",
+  "main": "index.js",
+  "scripts": {
+    "build": "cross-env rollup -c ./scripts/rollup.config.js",
+    "clean": "./clean.sh",
+    "pub": "npm run clean; npm run build; npm pack; npm publish -f",
+    "pack": "npm pack"
+  },
+  "author": "Jason Cooper",
+  "license": "MIT",
+  "dependencies": {
+    "cross-env": "5.2.0",
+    "rollup": "1.1.0"
+  }
+}

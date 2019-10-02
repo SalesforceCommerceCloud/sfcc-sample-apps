@@ -1,0 +1,21 @@
+{
+  "name": "@sfcc-bff/contentapi",
+  "version": "0.0.1-sfcc-alpha-1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "cross-env rollup -c ./scripts/rollup.config.js",
+    "pack": "npm pack",
+    "clean": "./clean.sh",
+    "pub": "npm run build; npm pack; npm publish -f"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@sfcc-core/core": "0.0.1-sfcc-alpha-1",
+    "@sfcc-core/core-graphql": "0.0.1-sfcc-alpha-1",
+    "cross-env": "5.2.0",
+    "request-promise": "^4.2.2",
+    "rollup": "1.1.0"
+  }
+}

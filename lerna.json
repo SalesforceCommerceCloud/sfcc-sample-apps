@@ -1,0 +1,16 @@
+{
+    "lerna": "2.11.0",
+    "exact": true,
+    "version": "0.18.23",
+    "npmClient": "yarn",
+    "command": {
+        "init": {
+            "exact": true
+        },
+        "version": {
+            "conventionalCommits": true,
+            "message": "chore(release): publish %s @skip-ci@"
+        }
+    },
+    "useWorkspaces": true
+}
