@@ -53,6 +53,7 @@
     "graphql": "0.13.1",
     "graphql-tag": "^2.10.1",
     "oclif": "^1.13.6",
+    "request": "^2.88.0",
     "rollup": "^0.66.6",
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-commonjs": "^9.2.0",
