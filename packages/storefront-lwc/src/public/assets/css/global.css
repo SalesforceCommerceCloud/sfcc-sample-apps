@@ -14494,7 +14494,8 @@ footer .back-to-top i.fa-circle {
 
 .hero h1.page-title {
     top: 50%;
-    margin: -1em 0 0
+    margin: -1em 0 0;
+    color: red;
 }
 
 @media (min-width: 544px) {

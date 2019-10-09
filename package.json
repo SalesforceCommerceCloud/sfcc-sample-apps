@@ -12,10 +12,11 @@
     "build": "lerna run build --stream",
     "clean": "lerna run clean --stream",
     "start": "yarn start:lwc",
-    "start:lwc": "lerna run start --scope storefront-lwc --stream"
-  },
-  "engines": {
-    "node": ">=10.0"
+    "start:watch": "yarn start:lwc:watch",
+    "stop": "yarn stop:lwc",
+    "start:lwc": "lerna run start --scope storefront-lwc --stream",
+    "start:lwc:watch": "lerna run start:watch --scope storefront-lwc --stream",
+    "stop:lwc": "lerna run stop --scope storefront-lwc --stream"
   },
   "workspaces": [
     "packages/@sfcc-core/*",

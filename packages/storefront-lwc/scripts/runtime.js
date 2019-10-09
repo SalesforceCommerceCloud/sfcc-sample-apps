@@ -27,7 +27,6 @@ import {sampleApp} from './sample-app';
  */
 const templateDir = path.resolve(__dirname, '..');
 const publicDir = `${templateDir}/dist/public/`;
-const {log} = console;
 const port = process.env.PORT || 3000;
 const mode = process.env.NODE_ENV || 'development';
 
