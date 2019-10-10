@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Sample Talon Application with Lightning Web Components",
   "license": "MIT",
-   "private": true,
+  "private": true,
   "config": {
     "lwcVersion": "1.0.1",
     "talonVersion": "0.18.12"
@@ -26,5 +26,8 @@
   "engines": {
     "yarn": ">=1.10.1",
     "node": ">=10.6.0"
+  },
+  "dependencies": {
+    "lerna": "^3.17.0"
   }
 }
