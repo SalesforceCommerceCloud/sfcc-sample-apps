@@ -16,5 +16,5 @@ Reference apps and libraries based on `LWC`, `LWR`, `sfcc-core` and `sfcc-bff`.
 2) `heroku create` to create your own Heroku app.
 3) `git remote -v` to ensure you have a repo in the Heroku git server. 
 3) New Heroku app will be at `https://dashboard.heroku.com/apps`
-4) Make any changes locally and commit with git.
+4) Make any changes locally and git commit to master.
 5) `git push heroku master` to deploy your changes.
