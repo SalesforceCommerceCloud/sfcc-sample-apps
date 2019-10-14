@@ -84,6 +84,28 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: .5rem
 }
 
+/**
+* home page
+*/
+.image-hero {
+    width:100%
+}
+
+.hero-image .hero-banner-text span{
+    position: absolute;
+    top: 50%;
+    color: #FFFFFF;
+    left: 10%;
+}
+
+.hero-image .hero-banner-text span p {
+    text-decoration: underline;
+}
+
+.shop-category-label {
+    text-decoration: underline;
+}
+
 p {
     margin-top: 0;
     margin-bottom: 1rem
@@ -7207,7 +7229,7 @@ a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover {
 }
 
 .m-auto {
-    margin: auto !important
+    margin: 1em
 }
 
 .mt-auto, .my-auto {
@@ -14495,7 +14517,7 @@ footer .back-to-top i.fa-circle {
 .hero h1.page-title {
     top: 50%;
     margin: -1em 0 0;
-    color: red;
+    color: pink;
 }
 
 @media (min-width: 544px) {
