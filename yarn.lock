@@ -2240,7 +2240,7 @@
   resolved "https://registry.yarnpkg.com/@types/zen-observable/-/zen-observable-0.8.0.tgz#8b63ab7f1aa5321248aad5ac890a485656dcea4d"
   integrity sha512-te5lMAWii1uEJ4FwLjzdlbw3+n0FZNOvFXHxQDKeT0dilh7HOzdMzV2TrJVUzq8ep7J4Na8OUYPRLSQkJHAlrg==
 
-"@webruntime/cli@^0.18.10":
+"@webruntime/cli@^0.18.23":
   version "0.18.23"
   resolved "https://registry.yarnpkg.com/@webruntime/cli/-/cli-0.18.23.tgz#c5e0ae806a3d94ece03e367394de76649257c916"
   integrity sha512-51xZ6LvqrCWf4Sg9Btl3SJOqShq39tgEfKcfotrPDIfvG52gjLlcrXyd0yoXG5SUkZqlhtfhPoYxoeKgiczhQw==
@@ -2261,7 +2261,7 @@
     "@babel/plugin-transform-regenerator" "^7.4.4"
     "@babel/preset-env" "^7.4.4"
 
-"@webruntime/compiler@0.18.23", "@webruntime/compiler@^0.18.10":
+"@webruntime/compiler@0.18.23", "@webruntime/compiler@^0.18.23":
   version "0.18.23"
   resolved "https://registry.yarnpkg.com/@webruntime/compiler/-/compiler-0.18.23.tgz#d081ce2ffc740494fd1c6e82414f2f0005a890fe"
   integrity sha512-kYN9og5H3ftnQSy6caIPafDQeAyg7O0bIH6xG5+MWvndlQjhvooPyEyJiJzmm7iCewloJMYtvcwmGGffS8x6LQ==
