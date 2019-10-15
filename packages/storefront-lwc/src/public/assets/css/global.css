@@ -1,4 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Dosis&subset=latin-ext);
+@import "./variables";
 
 /*!
  * Bootstrap v4.0.0 (https://getbootstrap.com)
@@ -79,11 +80,6 @@ hr {
     overflow: visible
 }
 
-h1, h2, h3, h4, h5, h6 {
-    margin-top: 0;
-    margin-bottom: .5rem
-}
-
 /**
 * home page
 */
@@ -100,6 +96,48 @@ h1, h2, h3, h4, h5, h6 {
 
 .hero-image .hero-banner-text span p {
     text-decoration: underline;
+}
+.image-cropper {
+    width: 7em;
+    height: 7em;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+    margin: auto;
+}
+
+.popular-category .image-wrapper {
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+}
+
+.image-wrapper span {
+    height: 100%;
+    width: 100%;
+    display: block;
+}
+
+.popular-category-link {
+    text-align: center;
+}
+
+.shop-now-overlay {
+    position: absolute;
+    top: 50%;
+    left: 7%;
+    color: white;
+}
+
+.shop-now-overlay .shop-now-sub-text p {
+    font-size: 1.67rem;
+    font-family: Helvetica Neue;
+    color: #fff;
+    text-decoration: underline;
+}
+
+.shop-now-image {
+    width: 100%;
 }
 
 .shop-category-label {
@@ -347,24 +385,33 @@ template {
     display: none !important
 }
 
-.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+.h1, .h4, .h5, .h6, h1, h4, h5, h6 {
     margin-bottom: .5rem;
-    font-family: inherit;
-    font-weight: 500;
+    margin-top: 0;
+    font-weight: 900;
     line-height: 1.2;
     color: inherit
 }
 
+h1, h2, h3, h4, h5, h6 {
+    font-family: Helvetica Neue, Dosis, sans-serif
+}
+
 .h1, h1 {
-    font-size: 2.5rem
+    font-size: 2.5rem;
+    font-weight: $heading-1-xs-font-weight;
 }
 
 .h2, h2 {
-    font-size: 2rem
+    font-size: 2rem;
+    $heading-2-xs-font-weight
+
 }
 
 .h3, h3 {
-    font-size: 1.75rem
+    font-size: 1.67rem;
+    font-weight: 900;
+    text-align: center;
 }
 
 .h4, h4 {
@@ -14624,10 +14671,6 @@ h1.page-title:before {
     h1.page-title {
         left: 0
     }
-}
-
-h1, h2, h3, h4, h5, h6 {
-    font-family: Dosis, sans-serif
 }
 
 .notify {
