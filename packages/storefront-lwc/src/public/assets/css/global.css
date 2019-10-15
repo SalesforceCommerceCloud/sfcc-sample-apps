@@ -1,5 +1,4 @@
 @import url(https://fonts.googleapis.com/css?family=Dosis&subset=latin-ext);
-@import "./variables";
 
 /*!
  * Bootstrap v4.0.0 (https://getbootstrap.com)
@@ -399,12 +398,12 @@ h1, h2, h3, h4, h5, h6 {
 
 .h1, h1 {
     font-size: 2.5rem;
-    font-weight: $heading-1-xs-font-weight;
+    font-weight: 900;
 }
 
 .h2, h2 {
     font-size: 2rem;
-    $heading-2-xs-font-weight
+    font-weight: 900;
 
 }
 
@@ -584,24 +583,6 @@ pre code {
     padding-left: 15px;
     margin-right: auto;
     margin-left: auto
-}
-
-@media (min-width: 769px) {
-    .container {
-        max-width: 720px
-    }
-}
-
-@media (min-width: 992px) {
-    .container {
-        max-width: 940px
-    }
-}
-
-@media (min-width: 1200px) {
-    .container {
-        max-width: 1140px
-    }
 }
 
 .container-fluid {
