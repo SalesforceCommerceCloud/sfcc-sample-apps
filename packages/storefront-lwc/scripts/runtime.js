@@ -4,7 +4,7 @@
 import "@babel/polyfill";
 
 import color from 'colors';
-import express from 'express'
+import express from 'express';
 import path from 'path';
 
 import compression from 'compression';
