@@ -15,10 +15,12 @@
     "build:components": "webruntime generate .",
     "build:resources": "node scripts/copy-resources.js",
     "build:lib": "rollup -c ./libs/rollup.libs.config.js",
-    "build": "yarn run build:lib && yarn run build:validate && yarn run build:components && yarn run build:resources && yarn run build:common",
+    "build:scss": "node-sass src/public/assets/scss -o src/public/assets/css",
+    "build": "yarn run build:scss && yarn run build:lib && yarn run build:validate && yarn run build:components && yarn run build:resources && yarn run build:common",
     "start": "node ./scripts/start.js",
-    "start:watch": "concurrently \"node ./scripts/start.js\" \"node scripts/copy-resources.js --watch\"",
-    "stop": " lsof -t -i tcp:3000 | xargs kill"
+    "start:watch": "concurrently \"node ./scripts/start.js\" \"node scripts/copy-resources.js --watch\" \"yarn scss:watch\"",
+    "stop": " lsof -t -i tcp:3000 | xargs kill",
+    "scss:watch": "node-sass --watch src/public/assets/scss -o dist/public/assets/css"
   },
   "dependencies": {
     "@babel/core": "^7.2.2",
@@ -52,6 +54,7 @@
     "cpx": "^1.5.0",
     "graphql": "0.13.1",
     "graphql-tag": "^2.10.1",
+    "node-sass": "^4.12.0",
     "oclif": "^1.13.6",
     "request": "^2.88.0",
     "rollup": "^0.66.6",

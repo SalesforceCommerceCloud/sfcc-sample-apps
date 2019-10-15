@@ -18,3 +18,12 @@ Reference apps and libraries based on `LWC`, `LWR`, `sfcc-core` and `sfcc-bff`.
 3) New Heroku app will be at https://dashboard.heroku.com/apps
 4) Make any changes locally and git commit to master.
 5) `git push heroku master` to deploy your changes.
+
+e.g. Example live instance: https://arcane-reaches-49491.herokuapp.com/ 
+
+
+#### Monorepo Instructions
+
+sfcc-sample-apps is a monorepo with an sample application(s) and dendencies modules. Normally dependencies modules are published to a public npm server, but for the purpose of developing an application and the modules together everything is in a sinlge repository here (monorepo).
+
+1) 
