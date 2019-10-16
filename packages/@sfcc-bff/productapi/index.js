@@ -72,6 +72,8 @@ class Product {
     }
 }
 
+const SDKProduct = require("commerce-sdk-generated").Product;
+
 const getProduct = (config, productId) => {
     const URL_PARAMS = `&expand=availability,images,prices,variations&all_images=true`;
     const PRODUCT_URL = `${config.COMMERCE_BASE_URL}/products/${productId}?client_id=${config.COMMERCE_APP_API_CLIENT_ID}${URL_PARAMS}`;
@@ -91,14 +93,29 @@ const getProduct = (config, productId) => {
     });
 };
 
+const getSdkProduct = () => {
+    const client = new SDKProduct();
+    return client.getProduct({ id: "apple-ipod-shuffle" }).then(res => res.json());
+};
+
 const resolver = (config) => {
     return {
         Query: {
             product: (_, {id}) => {
-                const productModel = getProduct(config, id).then((product) => {
-                    console.log("---- Received Product from API ----");
-                    return new Product(product);
-                });
+                let productModel;
+                if (id === "apple-ipod-shuffle") {
+                    productModel = getSdkProduct().then((product) => {
+                        console.log("---- Received Product from SDK ----");
+                        console.log(product);
+                        console.log("---- ------------------------- ----");
+                        return new Product(product);
+                    });
+                } else {
+                    productModel = getProduct(config, id).then((product) => {
+                        console.log("---- Received Product from API ----");
+                        return new Product(product);
+                    });
+                }
                 return productModel;
             }
         }

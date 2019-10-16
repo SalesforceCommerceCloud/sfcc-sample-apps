@@ -14,6 +14,7 @@
   "dependencies": {
     "@sfcc-core/core": "0.0.1-sfcc-alpha-1",
     "@sfcc-core/core-graphql": "0.0.1-sfcc-alpha-1",
+    "commerce-sdk-generated": "file:../../../temp-dependencies/commerce-sdk-generated",
     "cross-env": "5.2.0",
     "request-promise": "^4.2.2",
     "rollup": "1.1.0"
