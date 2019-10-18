@@ -19,6 +19,7 @@
     --cyan: #17a2b8;
     --white: #fff;
     --gray: #6c757d;
+    --gray-1: #222;
     --gray-dark: #343a40;
     --primary: #00a1e0;
     --secondary: #6c757d;
@@ -82,20 +83,17 @@ hr {
 /**
 * home page
 */
+
 .image-hero {
     width:100%
 }
 
-.hero-image .hero-banner-text span{
-    position: absolute;
-    top: 50%;
-    color: #FFFFFF;
-    left: 10%;
+.hero-image .hero-banner-text span h3 {
+    text-decoration: underline;
+    text-align: left;
+    margin-top: 1em;
 }
 
-.hero-image .hero-banner-text span p {
-    text-decoration: underline;
-}
 .image-cropper {
     width: 7em;
     height: 7em;
@@ -117,18 +115,47 @@ hr {
     display: block;
 }
 
-.popular-category-link {
-    text-align: center;
+.container .popular-category-link {
+    text-align: center; 
 }
-
-.shop-now-overlay {
+    
+.popular-categories a.popular-cat-link
+{
+    color: #222;
+    text-decoration: underline;
+}
+    
+.shop-now-text {
     position: absolute;
     top: 50%;
-    left: 7%;
+    left: 15%;
     color: white;
+    transform: translate(-50%, -50%);
 }
 
-.shop-now-overlay .shop-now-sub-text p {
+.hero-image .hero-banner-text span{
+    position: absolute;
+    top: 50%;
+    color: white;
+    left: 20%;
+    transform: translate(-50%, -50%);
+}
+
+.shop-now-overlay-text p {
+    margin-top: 0.53em;
+}
+
+.shop-now-overlay-text h3 {
+    margin-top: 0.53em;
+    margin-bottom: 0.53em;
+}
+
+.shop-now-overlay-text h2 {
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+}
+
+.shop-now-link {
     font-size: 1.67rem;
     font-family: Helvetica Neue;
     color: #fff;
@@ -137,6 +164,8 @@ hr {
 
 .shop-now-image {
     width: 100%;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .shop-category-label {
@@ -579,10 +608,6 @@ pre code {
 
 .container {
     width: 100%;
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto
 }
 
 .container-fluid {
@@ -5864,7 +5889,75 @@ a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover {
     display: inline-flex !important
 }
 
+/**
+* Extra small screen : Portrait phones 
+*/
+@media (max-width: 544px) {
+
+    .shop-now-overlay-text {
+        margin-left: 2.8em;
+    }
+
+    .hero-banner-text span {
+        margin-left: 4em;
+    }
+
+    .popular-category-label-a {
+        font-size: 0.875em;
+        padding-top: 0.3em;
+    }
+
+    h1 {
+        font-size : 2.18em;
+    }
+
+    h2 {
+        font-size: 1.75em;
+    }
+
+    h3 {
+        font-size : 1.3em;
+    }
+
+    p {
+        font-size : 0.875em;
+    }
+}
+
+/**
+* small screen : landscape phones
+*/
 @media (min-width: 544px) {
+
+    .shop-now-overlay-text {
+        margin-left: 2.8em;
+    }
+
+    .hero-banner-text span {
+        margin-left: 2em;
+    }
+
+    .popular-category-label-a {
+        font-size: 0.875em;
+        padding-top: 0.5em;
+    }
+
+    h1 {
+        font-size : 4em;
+    }
+
+    h2 {
+        font-size: 3em;
+    }
+
+    h3 {
+        font-size: 1.67em;
+    }
+
+    p {
+        font-size : 1em;
+    }
+
     .d-sm-none {
         display: none !important
     }
@@ -5904,7 +5997,41 @@ a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover {
     }
 }
 
+/*
+* medium screen- tablets
+*/
+
 @media (min-width: 769px) {
+
+    .shop-now-overlay-text {
+        margin-left: 3.7em;
+    }
+
+    .hero-banner-text span {
+        margin-left: 4em;
+    }
+
+    .popular-category-label-a {
+        font-size: 1em;
+        padding-top: 0.5em;
+    }
+
+    h1 {
+        font-size : 4em;
+    }
+
+    h2 {
+        font-size: 3em;
+    }
+
+    h3 {
+        font-size: 1.67em;
+    }
+
+    p {
+        font-size : 1em;
+    }
+
     .d-md-none {
         display: none !important
     }
@@ -5944,7 +6071,40 @@ a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover {
     }
 }
 
+/*
+* large screen : laptops
+*/
 @media (min-width: 992px) {
+
+    .shop-now-overlay-text {
+        margin-left: 5.6em;
+    }
+
+    .hero-banner-text span{
+        margin-left: 4em;
+    }
+
+    .popular-category-label-a {
+        font-size: 1.125em;
+        padding-top: 0.625em;
+    }
+
+    h1 {
+        font-size: 4.5em;
+    }
+
+    h2 {
+        font-size: 3.37em;
+    }
+
+    h3 {
+        font-size: 1.8em;
+    }
+
+    p {
+        font-size: 1.1em;
+    }
+
     .d-lg-none {
         display: none !important
     }
@@ -5984,7 +6144,41 @@ a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover {
     }
 }
 
+/*
+* extra large screen: laptops and desktops
+*/
+
 @media (min-width: 1200px) {
+
+    .shop-now-overlay-text {
+        margin-left: 5.6em;
+    }
+
+    .hero-banner-text span {
+        margin-left: 4em;
+    }
+
+    .popular-category-label-a {
+        font-size: 1.125em;
+        padding-top: 0.625em;
+    }
+
+    h1 {
+        font-size: 4.5em;
+    }
+
+    h2 {
+        font-size: 3.37em;
+    }
+
+    h3 {
+        font-size: 1.8em;
+    }
+
+    p {
+        font-size: 1.1em;
+    }
+
     .d-xl-none {
         display: none !important
     }

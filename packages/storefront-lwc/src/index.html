@@ -2,11 +2,13 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8"/>
+    <meta charset="UTF-8" />
     <title>Salesforce Headless Commerce with LWC and Talon</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <script nonce="{{ sourceNonce }}">
-        window.process = window.process || {env: {DEBUG: undefined}}
+        window.process = window.process || { env: { DEBUG: undefined } }
     </script>
     <script src="{{ basePath }}/assets/js/libs.js?{{ versionKey }}"></script>
     <script src="/apiconfig.js?{{ versionKey }}"></script>
@@ -20,7 +22,7 @@
 </head>
 
 <body id="main">
-{{ webruntimeApp "main" }}
+    {{ webruntimeApp "main" }}
 </body>
 
 </html>

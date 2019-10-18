@@ -1,148 +1,181 @@
 <template>
-    <div class="container">
-        <div class="row hero-image">
-            <div class="col-12">
-                <a href="/search/Womens">
-                    <img class="image-hero" src="/assets/images/homepage/hero_medium.jpg" alt="Hero Banner Image" title="Hero Banner Image">
-                    <div class="row hero-banner-text">
-                        <span>
-                            <h1>Summer Look</h1>
-                            <p>Shop Now</p>
-                        </span>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <div class="cat-container">
-            <div class="row shop-category-component ">
-                <div class="col-auto shop-category-header text-center mw-100 m-auto">
-                    <h3>Shop Category</h3>
-                </div>
-                <div class="mw-100 m-auto">
-                    <div class="row">
-                        <div class="col-auto m-auto text-center mw-100 text-truncate shop-category-label">
-                            <a href="/search/Womens" id="womens" class="shop-category-label-a ">
-                                Women
-                            </a>
-                        </div>
-                        <div class="col-auto m-auto text-center mw-100 text-truncate shop-category-label">
-                            <a href="/search/mens" id="mens" class="shop-category-label-a ">
-                                Men
-                            </a>
-                        </div>
-                        <div class="col-auto m-auto text-center mw-100 text-truncate shop-category-label">
-                            <a href="/search/Womens/accessories/shoes" id="womens-accessories-shoes" class="shop-category-label-a ">
-                                Shoes
-                            </a>
-                        </div>
-                        <div class="col-auto m-auto text-center mw-100 text-truncate shop-category-label">
-                            <a href="/search/Womens/accessories/scarves" id="womens-accessories-scarves" class="shop-category-label-a ">
-                                Scarves
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container popular-categories">
-            <div class="popular-cat-heading">
-                <h3>Popular Catalogs</h3>
-            </div>
-            <div class="row d-flex justify-content-center">
-                <div class="col-md-2 col-4 popular-category">
-                    <div class="image-cropper">
-                        <a href="/search/Womens/Clothing/Outfits">
-                            <img class="image-wrapper" src="/assets/images/homepage/cat-banner-womens-clothing.jpg">
-                            <span class="background-image" role="img" aria-label="Outfits"></span>
-                        </a>
-                    </div>
-                    <div class="popular-category-link">
-                        <a href="/search/Womens/Clothing/Outfits" class="popular-category-label-a popular-cat-link">Outfits</a>
-                    </div>
-                </div>
-
-                <div class="col-md-2 col-4 popular-category">
-                    <div class="image-cropper">
-                        <a href="/search/Womens/Clothing/tops">
-                            <img class="image-wrapper" src="/assets/images/homepage/cat-banner-womens-tops.jpg">
-                                <span class="background-image" role="img" aria-label="Tops"></span>
-                        </a>
-                    </div>
-                    <div class="popular-category-link">
-                        <a href="/search/Womens/clothing/tops" class="popular-category-label-a popular-cat-link">Tops</a>
-                    </div>
-                </div>
-
-                <div class="col-md-2 col-4 popular-category">
-                    <div class="image-cropper">
-                        <a href="/search/Women/Clothing/dresses">
-                            <img class="image-wrapper" src="/assets/images/homepage/cat-banner-womens-dresses.jpg">
-                                <span class="background-image" role="img" aria-label="Dresses"></span>
-                        </a>
-                    </div>
-                    <div class="popular-category-link">
-                        <a href="/search/Womens/Clothing/dresses" class="popular-category-label-a popular-cat-link">Dresses</a>
-                    </div>
-                </div>
-
-                <div class="col-md-2 col-4 popular-category">
-                    <div class="image-cropper">
-                        <a href="/search/Womens/clothing/bottoms">
-                            <img class="image-wrapper" src="/assets/images/homepage/cat-banner-womens-bottoms.jpg">
-                                <span class="background-image" role="img" aria-label="Bottoms"></span>
-                        </a>
-                    </div>
-                    <div class="popular-category-link">
-                        <a href="/search/Womens/Clothing/bottoms" class="popular-category-label-a popular-cat-link">Bottoms</a>
-                    </div>
-                </div>
-
-                <div class="col-md-2 col-4 popular-category">
-                    <div class="image-cropper">
-                        <a href="/search/Womens/clothing/jackets">
-                            <img class="image-wrapper" src="/assets/images/homepage/cat-banner-womens-jackets.jpg">
-                                <span class="background-image" role="img" aria-label="Jackets &amp; Coats"></span>
-                        </a>
-                    </div>
-                    <div class="popular-category-link">
-                        <a href="/search/Womens/clothing/jackets" class="popular-category-label-a popular-cat-link">Jackets &amp; Coats</a>
-                    </div>
-                </div>
-
-                <div class="col-md-2 col-4 popular-category">
-                    <div class="image-cropper">
-                        <a href="/search/new%20arrivals/womens/">
-                            <img class="image-wrapper" src="/assets/images/homepage/cat-banner-womens-red.jpg">
-                                <span class="background-image" role="img" aria-label="Feeling Red"></span>
-                        </a>
-                    </div>
-                    <div class="popular-category-link">
-                        <a href="/search/new%20arrivals/womens" class="popular-category-label-a popular-cat-link">Feeling Red</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container showNow">
-            <div class="row shop-now-image">
+    <div role="main" id="maincontent">
+        <div class="storepage">
+            <div class="container">
+                <div class="row hero-image">
                     <div class="col-12">
-                        <img class="shop-now-image" src="/assets/images/homepage/cat-landing-slotbottom-womens-clothing.jpg" alt="Shop Now Image" title="Shop Now Image">
-                        <div class="shop-now-overlay">
-                            <div class="row shop-now-text">
-                                <div class="col-12 text-sm-left text-center">
-                                    <span>
-                                        <h2>Dresses</h2>
-                                        <p>for</p>
-                                        <h2>Beties</h2>
-                                    </span>
-                                </div>
+                        <a href="/search/Womens">
+                            <img class="image-hero" src="/assets/images/homepage/hero_medium.jpg"
+                                alt="Hero Banner Image" title="Hero Banner Image">
+                            <div class="row hero-banner-text">
+                                <span>
+                                    <h1>Summer Look</h1>
+                                    <h3>Shop Now</h3>
+                                </span>
                             </div>
-                            <div class="row shop-now-sub-text">
-                                <div class="col-12 text-sm-left text-center">
-                                    <p class="link-large">Shop Now</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container category">
+                <div class="row shop-category-component ">
+                    <div class="col-auto shop-category-header text-center mw-100 m-auto">
+                        <h3>Shop Category</h3>
+                    </div>
+                    <div class="mw-100 m-auto">
+                        <div class="row">
+                            <div class="col-auto m-auto text-center mw-100 text-truncate shop-category-label">
+                                <a href="/search/Womens" id="womens" class="shop-category-label-a ">
+                                    Women
+                                </a>
+                            </div>
+                            <div class="col-auto m-auto text-center mw-100 text-truncate shop-category-label">
+                                <a href="/search/mens" id="mens" class="shop-category-label-a ">
+                                    Men
+                                </a>
+                            </div>
+                            <div class="col-auto m-auto text-center mw-100 text-truncate shop-category-label">
+                                <a href="/search/Womens/accessories/shoes" id="womens-accessories-shoes"
+                                    class="shop-category-label-a ">
+                                    Shoes
+                                </a>
+                            </div>
+                            <div class="col-auto m-auto text-center mw-100 text-truncate shop-category-label">
+                                <a href="/search/Womens/accessories/scarves" id="womens-accessories-scarves"
+                                    class="shop-category-label-a ">
+                                    Scarves
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="row mx-n2">
+                            <div class="region col-12">
+                                <div class="component-layouts-popularCategories">
+                                    <div class="container popular-categories">
+                                        <div class="popular-cat-heading">
+                                            <h3>Popular Catalogs</h3>
+                                        </div>
+                                        <div class="row d-flex justify-content-center">
+                                            <div class="col-4 col-sm-2  popular-category">
+                                                <div class="image-cropper">
+                                                    <a href="/search/Womens/Clothing/Outfits">
+                                                        <img src="/assets/images/homepage/cat-banner-womens-clothing.jpg"
+                                                            class="image-wrapper">
+                                                        <span role="img" aria-label="Outfits"
+                                                            class="background-image"></span>
+                                                    </a>
+                                                </div>
+                                                <div class="popular-category-link">
+                                                    <a href="/search/Womens/Clothing/Outfits"
+                                                        class="popular-category-label-a popular-cat-link">Outfits</a>
+                                                </div>
+                                            </div>
+                                            <div class="col-4 col-sm-2  popular-category">
+                                                <div class="image-cropper">
+                                                    <a href="/search/Womens/Clothing/tops">
+                                                        <img src="/assets/images/homepage/cat-banner-womens-tops.jpg"
+                                                            class="image-wrapper">
+                                                        <span role="img" aria-label="Tops"
+                                                            class="background-image"></span>
+                                                    </a>
+                                                </div>
+                                                <div class="popular-category-link">
+                                                    <a href="/search/Womens/clothing/tops"
+                                                        class="popular-category-label-a popular-cat-link">Tops</a>
+                                                </div>
+                                            </div>
+                                            <div class="col-4 col-sm-2  popular-category">
+                                                <div class="image-cropper">
+                                                    <a href="/search/Women/Clothing/dresses">
+                                                        <img src="/assets/images/homepage/cat-banner-womens-dresses.jpg"
+                                                            class="image-wrapper">
+                                                        <span role="img" aria-label="Dresses"
+                                                            class="background-image"></span>
+                                                    </a>
+                                                </div>
+                                                <div class="popular-category-link">
+                                                    <a href="/search/Womens/Clothing/dresses"
+                                                        class="popular-category-label-a popular-cat-link">Dresses</a>
+                                                </div>
+                                            </div>
+                                            <div class="col-4 col-sm-2  popular-category">
+                                                <div class="image-cropper">
+                                                    <a href="/search/Womens/clothing/bottoms">
+                                                        <img src="/assets/images/homepage/cat-banner-womens-bottoms.jpg"
+                                                            class="image-wrapper">
+                                                        <span role="img" aria-label="Bottoms"
+                                                            class="background-image"></span>
+                                                    </a>
+                                                </div>
+                                                <div class="popular-category-link">
+                                                    <a href="/search/Womens/Clothing/bottoms"
+                                                        class="popular-category-label-a popular-cat-link">Bottoms</a>
+                                                </div>
+                                            </div>
+                                            <div class="col-4 col-sm-2  popular-category">
+                                                <div class="image-cropper">
+                                                    <a href="/search/Womens/clothing/jackets">
+                                                        <img src="/assets/images/homepage/cat-banner-womens-jackets.jpg"
+                                                            class="image-wrapper">
+                                                        <span role="img" aria-label="Jackets &amp; Coats"
+                                                            class="background-image"></span>
+                                                    </a>
+                                                </div>
+                                                <div class="popular-category-link">
+                                                    <a href="/search/Womens/clothing/jackets"
+                                                        class="popular-category-label-a popular-cat-link">Jackets
+                                                        &amp; Coats</a>
+                                                </div>
+                                            </div>
+                                            <div class="col-4 col-sm-2  popular-category">
+                                                <div class="image-cropper">
+                                                    <a href="/search/new%20arrivals/womens/">
+                                                        <img src="/assets/images/homepage/cat-banner-womens-red.jpg"
+                                                            class="image-wrapper">
+                                                        <span role="img" aria-label="Feeling Red"
+                                                            class="background-image"></span>
+                                                    </a>
+                                                </div>
+                                                <div class="popular-category-link">
+                                                    <a href="/search/new%20arrivals/womens"
+                                                        class="popular-category-label-a popular-cat-link">Feeling
+                                                        Red</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="row shop-now">
+                    <div class="col-12">
+                        <img class="shop-now-image"
+                            src="/assets/images/homepage/cat-landing-slotbottom-womens-clothing.jpg"
+                            alt="Shop Now Image" title="Shop Now Image">
+                        <div class="row shop-now-text">
+                            <div class="col-12 text-center shop-now-overlay-text">
+                                <span>
+                                    <h2>Dresses</h2>
+                                    <h3>for</h3>
+                                    <h2>Beties</h2>
+                                    <p class="shop-now-link">Shop Now</p>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
