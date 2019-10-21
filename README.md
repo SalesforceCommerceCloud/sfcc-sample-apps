@@ -7,8 +7,8 @@ Reference apps and libraries based on `LWC`, `LWR`, `sfcc-core` and `sfcc-bff`.
 1) 	`git clone git@github.com:coopaq/sfcc-sample-apps.git`
 2) `cd sfcc-sample-apps`
 3)	`yarn`
-4)	`yarn run build`
-5)	`yarn run start`
+4)	`yarn build`
+5)	`yarn start`
 
 
 #### Developer Heroku Deploy
@@ -16,8 +16,8 @@ Reference apps and libraries based on `LWC`, `LWR`, `sfcc-core` and `sfcc-bff`.
 2) `heroku create` to create your own Heroku app.
 3) `git remote -v` to ensure you have a repo in the Heroku git server. 
 3) New Heroku app will be at https://dashboard.heroku.com/apps
-4) Make any changes locally and git commit to master.
-5) `git push heroku master` to deploy your changes.
+4) Make any changes locally and git commit to your branch.
+5) `git push heroku [yourbranch]:master` to deploy your changes.
 
 e.g. Example live instance: https://arcane-reaches-49491.herokuapp.com/ 
 
