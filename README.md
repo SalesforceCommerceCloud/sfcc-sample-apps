@@ -7,8 +7,8 @@ Reference apps and libraries based on `LWC`, `LWR`, `sfcc-core` and `sfcc-bff`.
 1) 	`git clone git@github.com:coopaq/sfcc-sample-apps.git`
 2) `cd sfcc-sample-apps`
 3)	`yarn`
-4)	`yarn run build`
-5)	`yarn run start`
+4)	`yarn build`
+5)	`yarn start`
 
 
 #### Developer Heroku Deploy
