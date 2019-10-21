@@ -90,7 +90,8 @@ hr {
 
 .hero-banner-text span h3 {
     text-decoration: underline;
-    margin-top: 1em;
+    text-align: left;
+    margin-top: 0.2em;
 }
 
 .hero-banner-text span{
@@ -98,6 +99,10 @@ hr {
     top: 50%;
     color: white;
     transform: translate(-50%, -50%);
+}
+
+.hero-banner-text span h2 {
+    margin-bottom: 0.2em;
 }
 
 .shop-category-component {
@@ -112,7 +117,7 @@ hr {
 }
 
 .shop-category-header h3 {
-    margin-top: 0.5em;
+    margin-top: 0.3em;
     margin-bottom: 0;
 }
 
@@ -139,6 +144,11 @@ hr {
     width: 100%;
     height: 100%;
     background-repeat: no-repeat;
+}
+
+.popular-cat-heading h3 {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
 }
 
 .image-wrapper span {
@@ -636,6 +646,8 @@ pre code {
 
 .container {
     width: 100%;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 .container-fluid {
@@ -5929,13 +5941,9 @@ a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover {
     }
 
     .hero-banner-text span {
-        left: 30%;
-        margin-left: 2em;
+        left: 35%;
+        margin-left: 4em;
         margin-right: 2em;
-    }
-
-    .hero-banner-text span h3 {
-        text-align: center;
     }
 
     .popular-category-label-a {
@@ -5996,10 +6004,6 @@ a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover {
     .hero-banner-text span {
         left: 50%;
         margin-left: 2em;
-    }
-
-    .hero-banner-text span h3 {
-        text-align: center;
     }
 
     .popular-category-label-a {
@@ -6092,7 +6096,7 @@ a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover {
     }
 
     .shop-category-component {
-        padding: 2em 4em;
+        padding: 0.94em;
     }
 
     .popular-category-label-a {
@@ -6173,10 +6177,6 @@ a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover {
 * large screen : laptops screen width >=992px
 */
 @media (min-width: 992px) {
-
-    .hero-banner-text span h3 {
-        text-align: left;
-    }
 
     .shop-now-overlay-text {
         margin-left: 5.6em;
