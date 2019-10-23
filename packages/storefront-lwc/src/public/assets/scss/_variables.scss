@@ -1,0 +1,82 @@
+@import "bootstrap/scss/functions";
+
+// font-awesome font file locations in relation to target location of the css file.
+$fa-font-path: "../fonts" !default;
+
+// flag icons location in relation to target location of the css file.
+$flag-icon-css-path: "../fonts/flags/" !default;
+
+$white: #fff !default;
+$black: #000 !default;
+$blue: #0070d2 !default;
+$green: #008827 !default;
+$primary: #00a1e0 !default;
+$red: #c00 !default;
+$success: $green !default;
+$danger: $red !default;
+$light-blue: #7ed0ee !default;
+
+// Consolidated values
+$grey1: #f9f9f9 !default;
+$grey2: #eee !default;
+$grey3: #ccc !default;
+$grey4: #999 !default;
+$grey5: #666 !default;
+$grey6: #444 !default;
+$grey7: #222 !default;
+$grey8: #333 !default;
+$grey-transparent-1: rgba(0, 0, 0, 0.65) !default;
+$grey-transparent-2: rgba(0, 0, 0, 0.25) !default;
+
+$light-gray: $grey1 !default;
+$slightly-darker-gray: $grey4 !default;
+$dark-gray: $grey6 !default;
+$darker-gray: $grey7 !default;
+$horizontal-rule-grey: $grey3 !default;
+$product-number-grey: $grey3 !default;
+$horizontal-border-grey: $grey4 !default;
+$menu-link: $grey6 !default;
+$close-menu-bg: $grey2 !default;
+$link-color: $dark-gray !default;
+$hr-border-color: $grey3 !default;
+
+$grid-breakpoints: (
+    xs: 0,
+    sm: 544px,
+    md: 769px,
+    lg: 992px,
+    xl: 1200px
+) !default;
+
+$container-max-widths: (
+    md: 720px,
+    lg: 940px,
+    xl: 1140px
+) !default;
+
+$border-radius: 0.1875rem !default;
+$border-radius-lg: $border-radius !default;
+$border-radius-sm: $border-radius !default;
+
+$state-danger-text: #fff !default;
+$alert-success-text: #fff !default;
+
+// Font sizes
+$base16-14px: 0.875em !default;
+
+// Bootstrap overrides
+$body-bg: $grey1 !default;
+$card-cap-bg: $white !default;
+
+// Tabs
+$nav-tabs-border-width: 0 !default;
+$nav-tabs-border-radius: 0 !default;
+$nav-tabs-active-link-hover-bg: transparent !default;
+
+// breadcrumb
+$breadcrumb-bg: transparent !default;
+
+// table border
+$table-border-color: $grey3 !default;
+
+$svg-check: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Cpath fill='%23ff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3E%3C/svg%3E") !default;

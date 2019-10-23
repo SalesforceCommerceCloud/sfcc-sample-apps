@@ -1,0 +1,86 @@
+.modal-background {
+    background-color: $black;
+    display: none;
+    height: 100%;
+    position: fixed;
+    opacity: 0.5;
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+
+input[placeholder] {
+    text-overflow: ellipsis;
+}
+
+header ~ #maincontent .container a:not(.btn-primary, .btn-outline-primary) {
+    color: $blue;
+}
+
+.hide-order-discount {
+    display: none;
+}
+
+.hide-shipping-discount {
+    display: none;
+}
+
+.order-discount {
+    color: $success;
+}
+
+.shipping-discount {
+    color: $success;
+}
+
+.error-messaging {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+}
+
+.error-hero {
+    background-image: url('../images/storelocator.jpg');
+    margin-bottom: 0.625em;
+}
+
+.error-message {
+    margin-top: 3.125rem;
+    margin-bottom: 3.125rem;
+}
+
+.error.continue-shopping {
+    margin-bottom: 6.25em;
+}
+
+.error-unassigned-category {
+    color: $red;
+}
+
+.skip {
+    position: absolute;
+    left: 0;
+    top: -4.2em;
+    overflow: hidden;
+    padding: 1em 1.5em;
+    background: $white;
+    transition: all 0.2s ease-in-out;
+}
+
+a.skip:active,
+a.skip:focus,
+a.skip:hover {
+    left: 0;
+    top: 0;
+    width: auto;
+    height: auto;
+    z-index: 10000000;
+    background: $white;
+    transition: all 0.2s ease-in-out;
+}
+
+.card-header-custom {
+    font-size: 1.5rem;
+    margin-bottom: 0;
+}

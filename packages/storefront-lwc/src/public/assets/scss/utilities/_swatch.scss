@@ -1,0 +1,135 @@
+@import "../variables";
+@import "shapes";
+
+@mixin swatch($diameter, $color) {
+    @include circle($diameter, $color);
+    @include swatch-check-mark();
+
+    border: 0.063em solid rgba(0, 0, 0, 0.3);
+    display: inline-block;
+    margin-right: 0.313em;
+    position: relative;
+
+    // swatch-filter x mark to undo a filter
+    i.fa-times-circle {
+        background: $white;
+        border-radius: 50%;
+        height: 0.75em;
+        line-height: 0.8em;
+        width: 0.8em;
+    }
+}
+
+@mixin swatch-check-mark() {
+    &.color-value[data-selected=true]::after {
+        color: $black;
+        content: '\f058';
+        display: table-caption;
+        font-family: 'FontAwesome';
+        font-size: 1.625em;
+        left: 0.295em;
+        position: absolute;
+    }
+
+    &.color-value.selected::after {
+        background: $white;
+        border-radius: 50%;
+        color: $black;
+        content: '\f058';
+        display: table-caption;
+        font-family: 'FontAwesome';
+        font-size: 1.625em;
+        height: 0.75em;
+        left: 0.31em;
+        line-height: 0.8em;
+        position: absolute;
+        top: 0.35em;
+        width: 0.8em;
+    }
+}
+
+$swatch-colors: (
+    'beige': #f5f5dc,
+    'black': $black,
+    'blue': $blue,
+    'brown': #a52a2a,
+    'green': $green,
+    'grey': #8f979d,
+    'navy': #000080,
+    'orange': #ffa500,
+    'pink': #fe249a,
+    'purple': #800080,
+    'red': #f00,
+    'white': $white,
+    'yellow': #ff0
+);
+
+@each $color in map-keys($swatch-colors) {
+    $colorValue: #{map-get($swatch-colors, $color)};
+
+    .swatch-circle-#{$color} {
+
+        @include circle(2.5em, $colorValue);
+
+        display: block;
+        position: relative;
+
+        &.disabled {
+            opacity: 0.2;
+        }
+    }
+
+    .swatch-filter-#{$color} {
+
+        @include circle(1.38em, $colorValue);
+
+        background-color: $colorValue;
+        display: block;
+        position: relative;
+
+        &.disabled {
+            opacity: 0.2;
+        }
+    }
+}
+
+// Credit: Christian Muecke (cmuecke@demandware.com)
+.swatch-circle-miscellaneous {
+    background:
+        linear-gradient(
+            0deg,
+            rgba(130, 30, 145, 1) 0,
+            rgba(130, 30, 145, 1) 25%,
+            rgba(237, 209, 52, 1) 25%,
+            rgba(255, 255, 0, 1) 50%,
+            rgba(237, 209, 52, 1) 50%,
+            #59ba00 50%,
+            #59ba00 76%,
+            #111 76%,
+            #111 100%
+        ),
+        linear-gradient(
+            0deg,
+            rgba(14, 92, 209, 1) 0,
+            rgba(14, 92, 209, 1) 50%,
+            rgba(226, 11, 11, 1) 50%,
+            rgba(226, 11, 11, 1) 100%
+        );
+    background-repeat: repeat-y, repeat;
+    background-size: 50% 100%, 100% 100%;
+    border: 0.063em solid rgba(0, 0, 0, 0.3);
+    border-radius: 1.25em;
+    display: block;
+    height: 2.5em;
+    position: relative;
+    transform: rotate(35deg);
+    width: 2.5em;
+
+    &.disabled {
+        opacity: 0.2;
+    }
+
+    &.selected::after {
+        transform: rotate(-35deg);
+    }
+}

@@ -1,0 +1,124 @@
+@import "../utilities/swatch";
+@import "productCommon";
+
+.quick-view-dialog,
+.choose-bonus-product-dialog {
+    max-width: 56.25em;
+
+    .selectable-bonus-product-line-item {
+        margin-top: 0.2em;
+        margin-bottom: 0.2em;
+        padding-top: 0.3em;
+        padding-bottom: 0.3em;
+    }
+
+    .beenSelected {
+        background-color: $grey2;
+    }
+
+    .modal-header {
+        background-color: $grey2;
+        border-bottom: 2px solid #ccc;
+        border-top-left-radius: 0.1875rem;
+        border-top-right-radius: 0.1875rem;
+
+        .full-pdp-link {
+            color: $primary;
+        }
+
+        .close {
+            font-size: 2rem;
+            line-height: 1.5rem;
+        }
+    }
+
+    .modal-title {
+        font-size: 1em;
+    }
+
+    .product-name {
+        font-size: 1.875em;
+    }
+
+    .swatch-circle {
+        // $white will be replaced by color image background via Javascript
+        @include swatch(2.5em, $white);
+    }
+
+    a[disabled] .swatch-circle {
+        cursor: not-allowed;
+
+        &.color-value.selected::after {
+            background-color: $gray-700;
+        }
+    }
+
+    .availablity-container {
+        text-align: right;
+    }
+
+    .availablity-container,
+    .size-chart {
+        margin-top: 0.938em;
+    }
+
+    .modal-content {
+        border: 1px solid rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-body {
+        max-height: 28.125em; /* 450/16 */
+        overflow-y: auto;
+    }
+
+    button.close {
+        font-size: 1.25em;
+    }
+
+    .modal-footer {
+        background-color: $white;
+        border: none;
+        border-bottom-right-radius: 0.1875rem;
+        border-bottom-left-radius: 0.1875rem;
+
+        .prices .price {
+            font-size: 1.6em;
+        }
+    }
+
+    .prices .sales {
+        font-size: 1.5rem;
+    }
+
+    .promotions {
+        text-align: left;
+        color: $red;
+    }
+
+    .bonus-summary {
+        @include media-breakpoint-down(sm) {
+            font-size: 0.625em;
+        }
+
+        .bonus-product-name {
+            @include media-breakpoint-down(sm) {
+                padding: 0;
+            }
+        }
+    }
+
+    .pre-cart-products {
+        margin-right: 0.125em;
+    }
+
+    .color-attribute {
+        border: none;
+        padding: 0;
+        background: none;
+    }
+
+    .non-input-label {
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+}

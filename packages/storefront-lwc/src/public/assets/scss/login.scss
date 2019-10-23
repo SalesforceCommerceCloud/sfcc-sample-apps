@@ -1,0 +1,50 @@
+@import "variables";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins/breakpoints";
+@import "components/formFields";
+
+.login-page {
+    margin-top: 1em;
+
+    .login-form-nav {
+        margin-bottom: 1.25em;
+
+        .tab-pane {
+            margin-top: 1em;
+        }
+    }
+
+    .login {
+        margin-bottom: 0.938em;
+
+        .error-message-form {
+            padding: 0.625em;
+            background-color: $danger;
+            color: $state-danger-text;
+            border-radius: 0.188em;
+        }
+    }
+}
+
+.registration-page {
+    .privacy-policy {
+        margin-top: 1rem;
+    }
+}
+
+.login-banner {
+    background-image: url('../images/account.jpg');
+    background-position-y: 40%;
+}
+
+.equal-height .card {
+    width: 100%;
+}
+
+.track-order-header {
+    font-size: 1.75rem;
+}
+
+.request-password-title {
+    font-size: 1.5rem;
+}

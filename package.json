@@ -19,11 +19,18 @@
     "start:lwc:watch": "lerna run start:watch --scope storefront-lwc --stream",
     "stop:lwc": "lerna run stop --scope storefront-lwc --stream"
   },
-  "workspaces": [
-    "packages/@sfcc-core/*",
-    "packages/@sfcc-bff/*",
-    "packages/storefront-lwc"
-  ],
+  "workspaces": {
+    "packages": [
+      "packages/@sfcc-core/*",
+      "packages/@sfcc-bff/*",
+      "packages/storefront-lwc"
+    ],
+    "nohoist": [
+      "**/bootstrap",
+      "**/bootstrap/**",
+      "**/font-awesome"
+    ]
+  },
   "engines": {
     "yarn": ">=1.10.1",
     "node": ">=10.6.0"

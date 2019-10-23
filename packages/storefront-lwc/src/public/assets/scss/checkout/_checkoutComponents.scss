@@ -1,0 +1,226 @@
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins/breakpoints";
+
+$checkout-font-weight: 600;
+
+$receipt-font-size: 0.875rem;
+$receipt-spacing: 0.625em;
+$stored-payment-spacing: 1rem;
+
+.page {
+    background-color: $light-gray;
+}
+
+.checkout-card-header {
+    font-size: 1.25em;
+    font-weight: $checkout-font-weight;
+}
+
+.grand-total-price {
+    float: right;
+    font-weight: $checkout-font-weight;
+}
+
+.grand-total-label {
+    font-weight: $checkout-font-weight;
+}
+
+.grand-total {
+    font-size: 1.125rem !important;
+    font-weight: 600;
+}
+
+.order-receipt-label {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.product-divider {
+    margin-left: -$receipt-spacing;
+    margin-right: -$receipt-spacing;
+
+    hr {
+        border-top: dashed 0.063em;
+    }
+}
+
+.product-line-item + .product-line-item::before,
+.multi-shipping + .product-line-item::before {
+    content: "";
+    display: block;
+    border-bottom: 0.063em dashed $horizontal-rule-grey;
+    margin: $receipt-spacing -0.625em;
+
+    @include media-breakpoint-up(lg) {
+        margin: $receipt-spacing -1.225em;
+    }
+}
+
+.shipment-block + .shipment-block::before {
+    content: "";
+    display: block;
+    border-bottom: 0.063em dashed $horizontal-rule-grey;
+    margin: $receipt-spacing -0.625em;
+
+    @include media-breakpoint-up(lg) {
+        margin: $receipt-spacing -1.225em;
+    }
+}
+
+.shipping-method {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.hero-confirmation {
+    background-image: url('../../images/thankyou.jpg');
+    background-position-y: -8.125em;
+}
+
+.product-summary-block {
+    margin: 1em 0;
+
+    h3 {
+        font-size: 1.25rem;
+    }
+}
+
+.leading-lines {
+    overflow: hidden;
+    margin: 0;
+
+    label {
+        background-color: white;
+    }
+
+    .start-lines {
+        padding: 1px;
+
+        span {
+            position: relative;
+            background-color: white;
+            z-index: 2;
+        }
+
+        &::before {
+            float: left;
+            width: 0;
+            white-space: nowrap;
+            content: ". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ";
+            z-index: 1;
+            color: #adadad;
+        }
+    }
+
+    .end-lines {
+        padding: 1px;
+
+        span {
+            position: relative;
+            background-color: white;
+            z-index: 2;
+        }
+    }
+}
+
+.summary-details {
+    font-size: 0.938em;
+    margin-bottom: 1em;
+}
+
+.summary-details .address-summary {
+    margin-bottom: 0.5em;
+}
+
+.summary-section-label {
+    font-size: 1em;
+    font-weight: $checkout-font-weight;
+
+    @include media-breakpoint-up(lg) {
+        font-weight: 500;
+    }
+}
+
+.add-payment {
+    margin-top: $stored-payment-spacing;
+}
+
+.selected-payment {
+    background-color: $gray-200;
+}
+
+.saved-security-code {
+    margin-top: $stored-payment-spacing;
+}
+
+.saved-credit-card-type {
+    font-weight: 600;
+}
+
+.saved-payment-information {
+    margin-top: $stored-payment-spacing;
+    margin-bottom: $stored-payment-spacing;
+}
+
+.payment-information {
+    margin-bottom: $stored-payment-spacing;
+}
+
+.checkout-hidden {
+    display: none;
+}
+
+.card-image {
+    margin-top: 0.5rem;
+    width: 100%;
+}
+
+.cancel-new-payment {
+    margin-top: $stored-payment-spacing;
+}
+
+.form-check.start-lines {
+    padding-left: 1.5rem;
+}
+
+.multi-ship .single-shipping .shipping-content {
+    display: none;
+}
+
+.multi-ship .shipping-summary .single-shipping {
+    display: none;
+}
+
+.gift-message-block {
+    padding-bottom: 1em;
+    padding-top: 1em;
+}
+
+.single-shipping .summary-section-label {
+    margin-bottom: 0;
+}
+
+.confirm-details .shipping-method,
+.confirm-details .shipping-method-price {
+    margin-bottom: 0;
+}
+
+.multi-ship .confirm-details .single-shipping {
+    display: none;
+}
+
+.multi-shipping {
+    display: none;
+}
+
+.contact-info-block {
+    border-bottom: 0.063em dashed $horizontal-rule-grey;
+}
+
+.view-address-block h3,
+.shipping-method-block h3 {
+    font-size: 1.25rem;
+}

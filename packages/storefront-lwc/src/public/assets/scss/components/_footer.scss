@@ -1,0 +1,145 @@
+@import "collapsibleItem";
+@import "toastMessage";
+
+footer {
+    background-color: $gray-200;
+    padding-top: 1.25em; /* 20/16 */
+    padding-bottom: 1.25em;
+
+    h2 {
+        font-size: $font-size-base;
+        margin-bottom: 0;
+        line-height: 2.5em; /* 40/16 */
+    }
+
+    ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .social {
+        h2 {
+            margin-top: 0;
+        }
+
+        @include clearfix;
+    }
+
+    .copyright,
+    .social {
+        margin-top: 1.25em;
+    }
+
+    .footer-container .footer-item.collapsible-xs button {
+        font-family: 'Dosis', sans-serif;
+        padding: 0;
+    }
+
+    .social-links {
+
+        @include clearfix;
+
+        @include media-breakpoint-down(xs) {
+            width: 80%;
+        }
+
+        float: left;
+
+        li {
+            float: left;
+            margin: 0.313em;
+
+            @include media-breakpoint-down(xs) {
+                width: 20%;
+                text-align: center;
+            }
+        }
+
+        a {
+            font-size: 2.25em;
+
+            &:hover {
+                text-decoration: none;
+            }
+        }
+    }
+
+    .store {
+
+        @include media-breakpoint-down(xs) {
+            border-bottom: 1px solid $dark-gray;
+
+            .content {
+                display: none;
+            }
+
+            h2 {
+                @include clearfix;
+
+                &::after {
+                    font-family: "FontAwesome";
+                    float: right;
+                    content: "\f041";
+                }
+            }
+        }
+    }
+
+    .content {
+        font-size: 0.875em;
+
+        li {
+            height: 1.875rem;
+        }
+    }
+
+    .copyright,
+    .postscript {
+        font-size: 0.8125em;
+    }
+
+    .copyright {
+        margin-bottom: 0.625em;
+    }
+
+    .back-to-top {
+        margin: 0.1em 0.313em;
+        padding: 0;
+        background-color: transparent;
+        border: 0;
+        -webkit-appearance: none;
+
+        i {
+            &.fa-arrow-up {
+                color: rgba(0, 0, 0, 0.7);
+            }
+
+            &.fa-circle {
+                text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            }
+        }
+    }
+}
+
+.footer-item {
+
+    @include media-breakpoint-down(xs) {
+        border-bottom: 1px solid $dark-gray;
+    }
+}
+
+#consent-tracking {
+    .button-wrapper {
+        button {
+            margin: 0.5em;
+        }
+    }
+}
+
+.email-signup-message {
+    @include toast-message();
+}
+
+.email-signup-alert {
+    @include toast-alert();
+}

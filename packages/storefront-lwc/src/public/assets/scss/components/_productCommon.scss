@@ -1,0 +1,112 @@
+@import "toastMessage";
+
+.attribute {
+    margin-top: 0.938em;
+
+    label {
+        display: block;
+    }
+}
+
+.swatch a {
+    text-decoration: none;
+}
+
+.primary-images {
+
+    @include media-breakpoint-down(xs) {
+        margin: 0;
+        padding: 0;
+    }
+}
+
+.prices-add-to-cart-actions {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    z-index: 50;
+    padding-right: 0;
+    padding-left: 0;
+    left: 0;
+
+    @include media-breakpoint-down(xs) {
+        background-color: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    @include media-breakpoint-up(sm) {
+        position: static;
+        padding: 0 0.9375em;
+    }
+
+    .price {
+        text-align: center;
+    }
+}
+
+.prices {
+    padding-bottom: 0.5em;
+    padding-top: 0.5em;
+    text-align: center;
+}
+
+.cart-and-ipay {
+    text-align: center;
+
+    @include media-breakpoint-only(xs) {
+        padding-bottom: 26px;
+
+        .btn {
+            width: 98%;
+            margin: 1%;
+            display: block;
+        }
+    }
+}
+
+.add-to-cart-messages {
+    @include toast-message();
+}
+
+.add-to-basket-alert {
+    @include toast-alert();
+}
+
+.simple-quantity {
+    margin-top: 1em;
+}
+
+.main-attributes {
+    margin-top: 1em;
+}
+
+.size-chart {
+    margin-top: 1.071em;
+}
+
+div.availability {
+    margin-top: 1.071em;
+}
+
+.bundle-item {
+    padding-bottom: 1em;
+    border-bottom: 1px solid $hr-border-color;
+
+    &:last-child {
+        border-bottom: none;
+    }
+}
+
+.container.product-detail {
+    margin-top: 2em;
+    margin-bottom: 2em;
+
+    @include media-breakpoint-only(xs) {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+}
+
+.product-option:not(:first-child) {
+    margin-top: 1.071em;
+}

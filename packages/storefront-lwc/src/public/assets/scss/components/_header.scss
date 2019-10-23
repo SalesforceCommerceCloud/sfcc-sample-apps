@@ -1,0 +1,197 @@
+@import "menu";
+
+$banner-padding: 0.3125em;
+$menu-padding: 0.5em;
+$menu-item-margin: 0.625em;
+
+.header {
+    position: relative;
+}
+
+.navbar-header {
+    height: 4.375em; /* 70/16 */
+
+    .user,
+    .country-selector,
+    .search,
+    .minicart {
+        display: inline-block;
+        margin: 1.125em 0 0 0.5em;
+    }
+
+    .user,
+    .country-selector,
+    .minicart,
+    .navbar-toggler {
+        line-height: 2.25em; /* 36/16 */
+        height: auto;
+    }
+
+    .navbar-toggler {
+        font-size: 1.6em;
+        width: auto;
+    }
+
+    .user {
+        position: relative;
+
+        .popover {
+            position: absolute;
+            display: none;
+            padding: 1em;
+            top: 85%;
+            left: 0;
+
+            a {
+                white-space: nowrap;
+                margin-bottom: 0.5em;
+            }
+
+            &::before {
+                left: 1.5rem;
+            }
+
+            &::after {
+                left: 1.5rem;
+            }
+
+            &.show {
+                display: block;
+            }
+        }
+    }
+}
+
+.brand {
+    position: absolute;
+    left: 50%;
+    display: block;
+    text-align: center;
+
+    img {
+        width: 100%;
+    }
+
+    @include media-breakpoint-up(lg) {
+        width: 14.125em; /* 226/16 */
+        margin-left: -7.0625em; /* 113/16 */
+        padding-top: 0.5em;
+    }
+
+    @include media-breakpoint-down(md) {
+        width: 4em; /* 64/16 */
+        margin-left: -2em;
+        padding-top: 0.8em;
+    }
+}
+
+.main-menu {
+    background-color: $dark-gray;
+
+    .navbar .close-menu button,
+    .navbar .close-button button {
+        background-color: transparent;
+        border: 0;
+        -webkit-appearance: none;
+    }
+}
+
+.header-banner {
+    background-color: $darker-gray;
+    text-align: center;
+    color: $white;
+
+    .close-button {
+        width: 1.5em + $banner-padding * 2;
+
+        .close {
+            opacity: 1;
+            color: $white;
+            width: 100%;
+            height: 100%;
+            background-color: $primary;
+        }
+    }
+
+    .content {
+        margin-right: 1.5em;
+        padding-top: $banner-padding;
+        padding-bottom: $banner-padding;
+    }
+}
+
+.minicart {
+    margin-top: 0.1875em; /* 3/16 */
+    vertical-align: top;
+
+    .minicart-icon {
+        font-size: 1.5em;
+    }
+
+    a.minicart-link {
+        &:hover {
+            text-decoration: none;
+        }
+    }
+
+    .minicart-quantity {
+        background-color: $primary;
+        border-radius: 50%;
+        width: 1.25em; /* 20/16 */
+        height: 1.25em; /* 20/16 */
+        line-height: normal;
+        display: inline-block;
+        text-align: center;
+        font-size: 0.8125em; /* 13/16 */
+        position: relative;
+        top: -0.9375em; /* 15/16 */
+        left: -0.9375em; /* 15/16 */
+        color: $white;
+    }
+}
+
+a.normal {
+    color: $primary;
+    text-decoration: underline;
+}
+
+.slide-up {
+    transition-duration: 0.5s;
+    transition-timing-function: ease-in;
+    max-height: 100px;
+    overflow: hidden;
+
+    &.hide {
+        max-height: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+        transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+    }
+}
+
+.dropdown-country-selector {
+    margin-top: -0.0625em;
+}
+
+.cookie-warning-messaging.cookie-warning {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+    text-align: center;
+    display: none;
+}
+
+.valid-cookie-warning {
+    background-color: $blue;
+    color: $white;
+    white-space: nowrap;
+
+    p {
+        margin-top: 0;
+        margin-bottom: 0.2em;
+        padding-right: 2em;
+    }
+}

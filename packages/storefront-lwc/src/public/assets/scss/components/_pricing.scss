@@ -1,0 +1,66 @@
+@import "../variables";
+
+.price {
+    color: $grey7;
+
+    .strike-through {
+        text-decoration: line-through;
+        color: $grey4;
+        margin-right: 0.938rem;
+    }
+
+    .starting,
+    .range,
+    .sales {
+        font-weight: bold;
+    }
+
+    .tiered {
+        color: $grey7;
+
+        table {
+            border-top: 1px solid $grey3;
+            margin: 0 auto;
+
+            tr {
+                &:nth-child(odd) {
+                    background-color: $grey2;
+                }
+            }
+        }
+
+        td,
+        span.price {
+            font-size: 0.875rem;
+            font-weight: bold;
+        }
+
+        td {
+            padding: 0.313rem;
+
+            &.quantity {
+                font-weight: normal;
+                text-align: right;
+            }
+
+            &.value {
+                text-align: left;
+            }
+        }
+
+        .table-header {
+            font-size: 1.125rem;
+            padding: 0.313rem;
+        }
+
+        .column-header {
+            font-size: 1rem;
+            padding: 0.313rem;
+            font-weight: normal;
+        }
+
+        .column-header.quantity {
+            text-align: right;
+        }
+    }
+}

@@ -1,0 +1,46 @@
+@import "bootstrap/scss/mixins/breakpoints";
+@import "../../variables";
+
+.look-book-layout {
+    .look-book-set1 {
+        .cell1 {
+            padding-bottom: 15px;
+        }
+
+        @include media-breakpoint-up(sm) {
+            .cell2 {
+                padding-bottom: 15px;
+            }
+        }
+    }
+
+    .show-more {
+        text-align: center !important;
+
+        @include media-breakpoint-up(lg) {
+            display: none;
+        }
+    }
+
+    .look-book-set2 {
+        @include media-breakpoint-only(xs) {
+            .cell4 {
+                padding-top: 15px;
+            }
+        }
+
+        @include media-breakpoint-down(md) {
+            display: block;
+
+            .cell4 {
+                padding-bottom: 15px;
+            }
+        }
+    }
+
+    .look-book-set2.hide-set {
+        @include media-breakpoint-down(md) {
+            display: none;
+        }
+    }
+}

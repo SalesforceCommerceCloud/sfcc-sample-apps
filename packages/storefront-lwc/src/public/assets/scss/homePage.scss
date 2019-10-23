@@ -1,0 +1,162 @@
+@import "variables";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins/breakpoints";
+@import "components/categoryTiles";
+
+.page {
+    .hero {
+        background-position-y: 0;
+    }
+
+    .shop-the-style {
+        .hero {
+            background-position-y: 45%;
+        }
+    }
+}
+
+.hp-category-message,
+.hp-promotion-message {
+    position: absolute;
+    bottom: 0.9375em;
+    left: 1.875em;
+
+    a {
+        color: $white;
+    }
+
+    a.hp-promotion-message1 {
+        font-size: 0.75em;
+    }
+}
+
+.category-tile {
+    border: 1px solid white;
+}
+
+.half-height {
+    min-height: 23.125em;
+
+    @include media-breakpoint-down(sm) {
+        min-height: 15.375em;
+    }
+}
+
+.full-height {
+    min-height: 51.725em;
+
+    @include media-breakpoint-down(sm) {
+        min-height: 35.375em;
+    }
+
+    @include media-breakpoint-only(xs) {
+        min-height: 15.375em;
+    }
+}
+
+.mens-jackets {
+    background-position: 50% 34%;
+
+    @include media-breakpoint-up(sm) {
+        background-size: auto 100%;
+    }
+
+    @include media-breakpoint-down(xs) {
+        background-position-y: 8%;
+    }
+}
+
+.womens-dresses {
+    background-position: 50% 15%;
+}
+
+.womens-jewelry {
+    background-position: 40% 60%;
+
+    @include media-breakpoint-up(sm) {
+        background-size: auto 100%;
+    }
+}
+
+.shop-red {
+    background-position-y: 60%;
+    min-height: 28.65em;
+
+    @include media-breakpoint-down(sm) {
+        min-height: 15.375em;
+    }
+
+    @include media-breakpoint-down(xs) {
+        background-position: 45% 85%;
+    }
+}
+
+.container.home-categories {
+
+    @include media-breakpoint-only(xs) {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+.home-main-categories {
+    margin-bottom: 2em;
+}
+
+.hp-product-grid {
+    margin: 0;
+
+    .hp-product-content {
+        background-color: transparent; // remove if no longer using Bootstrap .card styles
+        text-align: center;
+        border: 0;
+
+        @include media-breakpoint-down(xs) {
+            min-height: 20.375em;
+        }
+
+        span {
+            font-size: 1em;
+
+            @include media-breakpoint-down(sm) {
+                font-size: 0.85em;
+            }
+
+            @include media-breakpoint-down(xs) {
+                font-size: 0.65em;
+            }
+        }
+
+        span.largeText {
+            font-size: 5.5em;
+            font-weight: 200;
+
+            @include media-breakpoint-down(lg) { font-size: 4.5em; }
+
+            @include media-breakpoint-down(md) { font-size: 3.4em; }
+
+            @include media-breakpoint-down(sm) { font-size: 3em; }
+
+            @include media-breakpoint-down(xs) { font-size: 2.5em; }
+        }
+
+        a {
+            color: $primary;
+            text-decoration: none;
+        }
+    }
+}
+
+.home-email-signup {
+    background-color: $grey6;
+
+    > .container {
+        padding-top: 0.625em;
+        padding-bottom: 0.625em;
+    }
+
+    .email-description {
+        padding-top: 0.375em;
+        color: $white;
+    }
+}

@@ -1,0 +1,19 @@
+@import "../variables";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins/breakpoints";
+@import "account";
+@import "../utilities/deleteCardButton";
+
+.card-body-positioning {
+    position: relative;
+}
+
+.card-make-default-link {
+    margin-top: 0.625em; /* 10/16 */
+}
+
+.remove-btn {
+    @include delete-card-button();
+
+    width: 3rem;
+}

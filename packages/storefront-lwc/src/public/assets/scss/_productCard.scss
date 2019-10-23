@@ -1,0 +1,107 @@
+@import "variables";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins/breakpoints";
+
+.item-attributes {
+    vertical-align: top;
+    padding-left: 0;
+}
+
+.line-item-attributes,
+.line-item-option {
+    font-size: 0.813rem;
+    margin: 0;
+}
+
+.line-item-name {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    color: $darker-gray;
+    font-size: 1em;
+    font-weight: bold;
+    margin-bottom: 0.313em;
+}
+
+.line-item-pricing-info {
+    margin-bottom: 0;
+
+    + .price {
+        font-size: 1em;
+        font-weight: bolder;
+    }
+}
+
+.line-item-price-quantity-info {
+    margin-top: 0.625em;
+    border-top: 1px solid $horizontal-rule-grey;
+}
+
+.flex {
+    display: flex;
+}
+
+.line-item-total-text {
+    font-size: 0.813em;
+}
+
+.pricing {
+    font-size: 1em;
+    font-weight: bolder;
+}
+
+.item-image {
+    height: 5.625em;
+    width: 5.625em;
+    margin-right: 0.938em;
+    flex-grow: 0;
+    flex-shrink: 0;
+
+    img.product-image {
+        display: block;
+        margin: 0 auto;
+        max-width: 100%;
+        height: auto;
+        max-height: 5.625em;
+    }
+}
+
+.non-adjusted-price {
+    display: none;
+}
+
+.line-item-promo {
+    color: $success;
+    font-size: 0.813em;
+}
+
+.line-item-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.bundled-line-item + .bundled-line-item {
+    margin-top: 0.625em;
+}
+
+.bundle-includes {
+    font-size: 0.813em;
+    margin-bottom: 0.625em;
+}
+
+.line-item-divider {
+    margin: 0.625em -1.225em 0.625em -1.325em;
+}
+
+.line-dotted {
+    border-top: 0.063em dashed #ccc;
+}
+
+.line-item-availability {
+    font-size: 0.813rem;
+}
+
+.product-line-item-details {
+    overflow-y: auto;
+}

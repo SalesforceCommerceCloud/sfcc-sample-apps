@@ -1,0 +1,62 @@
+@import "../variables";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins/breakpoints";
+@import "../components/formFields";
+
+.account-image {
+    background-image: url(../../images/account.jpg);
+    background-position-y: 40%;
+}
+
+.card-footer > a {
+    color: $primary;
+    text-decoration: underline;
+}
+
+.card-header > a {
+    color: $primary;
+    float: right;
+    text-decoration: underline;
+}
+
+.card-info-group {
+    p {
+        margin-bottom: 0;
+    }
+
+    div {
+        margin-bottom: 1rem;
+    }
+
+    div:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.order-history-control,
+.order-history {
+    h2 {
+        font-weight: bold;
+        margin-top: 0.5rem;
+    }
+}
+
+.dashboard-order-card-image {
+    width: 7rem;
+    padding-right: 1rem;
+}
+
+.dashboard-order-card-footer-columns:last-child {
+    text-align: right;
+}
+
+.dashboard-order-card-footer-value {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.card-header h2,
+.card-header h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0;
+}
