@@ -6,7 +6,7 @@ Reference apps and libraries based on `LWC`, `LWR`, `sfcc-core` and `sfcc-bff`.
 #### Setup
 1) 	`git clone git@github.com:coopaq/sfcc-sample-apps.git`
 2) `cd sfcc-sample-apps`
-3)	`yarn`
+3)	`yarn`  (install if needed `npm install yarn -g`)
 4)	`yarn build`
 5)	`yarn start`
 
