@@ -20,7 +20,7 @@ Create concierge ticket to get access if needed. https://concierge.it.salesforce
 4) Make any changes locally and git commit to your branch.
 5) `git push heroku [yourbranch]:master` to deploy your changes.
 
-e.g. Example live instance: https://arcane-reaches-49491.herokuapp.com/ 
+e.g. Example live instance: https://sfcc-storefront-lwc.herokuapp.com/
 
 
 #### Monorepo Instructions
