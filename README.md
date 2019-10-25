@@ -13,6 +13,7 @@ Reference apps and libraries based on `LWC`, `LWR`, `sfcc-core` and `sfcc-bff`.
 
 #### Developer Heroku Deploy
 1) `heroku login` to open browser and login with `youremail@salesforce.com`
+1a) Create concierge ticket to get access if needed. https://concierge.it.salesforce.com/articles/en_US/Supportforce_Article/Heroku-for-SFDC-Employees
 2) `heroku create` to create your own Heroku app.
 3) `git remote -v` to ensure you have a repo in the Heroku git server. 
 3) New Heroku app will be at https://dashboard.heroku.com/apps
