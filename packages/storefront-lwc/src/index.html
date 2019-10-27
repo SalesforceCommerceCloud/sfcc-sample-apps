@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <title>Salesforce Headless Commerce with LWC and Talon</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,9 +14,37 @@
     <script src="{{ basePath }}/assets/js/libs.js?{{ versionKey }}"></script>
     <script src="/apiconfig.js?{{ versionKey }}"></script>
 
-
     {{ webruntimeInit }}
     {{ webruntimeViews }}
+
+    <!-- iOS PWA Code -->
+
+    <!-- iPhone X (portrait) SPLASHSCREEN -->
+    <link
+      href="{{ basePath }}/assets/images/splash/LaunchImage-1125@3x~iphoneX-portrait_1125x2436.png"
+      media="(device-width: 375px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 3)"
+      rel="apple-touch-startup-image"
+    />
+
+    <!-- Apple iOS Icon -->
+    <link rel="apple-touch-icon" href="{{ basePath }}/assets/images/icons/icon-192x192.png" />
+
+    <!-- Service Worker Registration -->
+    <script>
+      if ("serviceWorker" in navigator) {
+        if (navigator.serviceWorker.controller) {
+          console.log("Active service worker already exists");
+        } else {
+          navigator.serviceWorker
+            .register("serviceWorker.js", { scope: "/" })
+            .then(reg => {
+              console.log(
+                `Service worker has been registered for scope: ${reg.scope}`
+              );
+            });
+        }
+      }
+    </script>
 
     {{#> headmarkup }}
     {{/ headmarkup }}
