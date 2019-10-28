@@ -1,5 +1,6 @@
 @charset "UTF-8";
 
+// @import "new_variables";
 @import "variables";
 @import "bootstrap-custom-import";
 @import "bootstrapOverrides";
@@ -10,7 +11,6 @@
 @import "components/hero";
 @import "components/headers";
 @import "components/notification";
-// @import url(https://fonts.googleapis.com/css?family=Dosis&subset=latin-ext);
 @import "components/pricing";
 @import "components/productTiles";
 @import "components/tabs";

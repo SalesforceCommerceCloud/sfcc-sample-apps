@@ -1,0 +1,185 @@
+// --------------------------------------------
+// Sample App: Functions, Mixins and Variables
+// --------------------------------------------
+
+// Translated this
+// https://salesforce.invisionapp.com/share/GHU820P6QUP#/screens/387062219_Font
+
+$base-font-size: 14px !default;
+
+$light-gray: #999 !default;
+$medium-gray: #444 !default;
+$dark-gray: #222 !default;
+$white: #fff !default;
+
+$mobile-base: 0.875rem !default;
+$tablet-base: 1.0rem !default;
+$desktop-base: 1.125rem !default;
+
+$font-weight-heavy: 900 !default;
+$font-weight-bold: 600 !default;
+$font-weight-normal: 400 !default;
+
+$breakpoint-mobile-max: 768px;
+$breakpoint-tablet-min: 768px;
+$breakpoint-desktop-min: 992px;
+
+@mixin mobile {
+  @media (max-width: $breakpoint-mobile-max) { @content; }
+}
+@mixin tablet {
+  @media (min-width: $breakpoint-tablet-min) { @content; }
+}
+@mixin desktop {
+  @media (min-width: $breakpoint-desktop-min) { @content; }
+}
+
+@mixin heavy { font-weight: $font-weight-heavy; }
+@mixin bold { font-weight: $font-weight-bold; }
+@mixin normal { font-weight: $font-weight-normal; }
+
+
+// --------------------------------------------
+// Styles
+// --------------------------------------------
+
+body {
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: $base-font-size;
+  color: $dark-gray;
+}
+
+// e.g. Main banner title
+h1 {
+  color: $white;
+  @include heavy;
+  @include mobile { font-size: 2.5 * $mobile-base; text-align: center; }
+  @include tablet { font-size: 4 * $tablet-base; text-align: left;}
+  @include desktop { font-size: 4 * $desktop-base; text-align: left;}
+}
+
+// e.g. Campaign banner title
+h2 {
+  color: $dark-gray;
+  @include heavy;
+  @include mobile { font-size: 2 * $mobile-base; text-align: center; }
+  @include tablet { font-size: 3 * $tablet-base; text-align: left;}
+  @include desktop { font-size: 3 * $desktop-base; text-align: left}
+}
+
+// e.g. section title (center) , pdp product name/price (text-align:left)
+h3 {
+  color: $dark-gray;
+  @include heavy;
+  @include mobile { font-size: 1.5 * $mobile-base; text-align: center; }
+  @include tablet { font-size: 1.67 * $tablet-base; text-align: center;}
+  @include desktop { font-size: 1.67 * $desktop-base; text-align: center;}
+}
+
+// e.g. navigation catalog, breadcrumb title
+h4 {
+  color: $dark-gray;
+  @include bold;
+  @include mobile { font-size: 1.3 * $mobile-base; text-align: center; }
+  @include tablet { font-size: 1.5 * $tablet-base; text-align: left;}
+  @include desktop { font-size: 1.5 * $desktop-base; text-align: left;}
+}
+
+// e.g Search section title
+h5 {
+  color: $dark-gray;
+  @include bold;
+  @include mobile { font-size: $mobile-base; text-align: left; }
+  @include tablet { font-size: $tablet-base; text-align: left;}
+  @include desktop { font-size: $desktop-base; text-align: left;}
+}
+
+// e.g. Product tiles product price small
+h6 {
+  color: $dark-gray;
+  @include bold;
+  @include mobile { font-size: 0.8 * $mobile-base; text-align: left; }
+  @include tablet { font-size: 0.8 * $tablet-base; text-align: left;}
+  @include desktop { font-size: 0.8 * $desktop-base; text-align: left;}
+}
+
+// Primary CTA
+.call-to-action {
+  color: $dark-gray;
+  @include bold;
+  @include mobile { font-size: $mobile-base; text-align: center; }
+  @include tablet { font-size: $tablet-base; text-align: center;}
+  @include desktop { font-size: $desktop-base; text-align: center;}
+}
+
+// Paragraph Large (e.g. editorial text)
+.large-paragraph {
+  color: $medium-gray;
+  @include normal;
+  @include mobile { font-size: 1.5 * $mobile-base; text-align: left; }
+  @include tablet { font-size: 1.67 * $tablet-base; text-align: left;}
+  @include desktop { font-size: 1.67 * $desktop-base; text-align: left;}
+}
+
+// Paragraph Normal
+.normal-paragraph,
+p {
+  color: $medium-gray;
+  @include normal;
+  @include mobile { font-size: $mobile-base; text-align: left; }
+  @include tablet { font-size: $tablet-base; text-align: left;}
+  @include desktop { font-size: $desktop-base; text-align: left;}
+}
+
+// Paragraph Small  (e.g. navigation category)
+.small-paragraph {
+  color: $medium-gray;
+  @include normal;
+  @include mobile { font-size: 0.8 * $mobile-base; text-align: left; }
+  @include tablet { font-size: 0.8 * $tablet-base; text-align: left;}
+  @include desktop { font-size: 0.8 * $desktop-base; text-align: left;}
+}
+
+// e.g. Links under image
+.caption,
+.normal-link {
+  color: $medium-gray;
+  text-decoration: underline;
+  @include normal;
+  @include mobile { font-size: $mobile-base; text-align: center; }
+  @include tablet { font-size: $tablet-base; text-align: center;}
+  @include desktop { font-size: $desktop-base; text-align: center;}
+}
+
+// e.g. Product Detail Size Chart
+.small-link {
+  color: $medium-gray;
+  text-decoration: underline;
+  @include normal;
+  @include mobile { font-size: 0.8 * $mobile-base; text-align: right; }
+  @include tablet { font-size: 0.8 * $tablet-base; text-align: right;}
+  @include desktop { font-size: 0.8 * $desktop-base; text-align: right;}
+}
+
+// e.g. Product Detail Size Chart
+.large-link {
+  color: $white;
+  text-decoration: underline;
+  @include normal;
+  @include mobile { font-size: 1.5 * $mobile-base; text-align: center; }
+  @include tablet { font-size: 1.67 * $tablet-base; text-align: left;}
+  @include desktop { font-size: 1.67 * $desktop-base; text-align: left;}
+}
+
+// e.g. Product detail origin price for sale product
+.product-sale-strikethrough {
+  color: $light-gray;
+  text-decoration: line-through;
+  @include normal;
+  @include mobile { font-size: 1.5 * $mobile-base; text-align: center; }
+  @include tablet { font-size: 1.67 * $tablet-base; text-align: left;}
+  @include desktop { font-size: 1.67 * $desktop-base; text-align: left;}
+}
+
+// TODO translate this
+// https://salesforce.invisionapp.com/share/GHU820P6QUP#/screens/387062228_Section_Spacing
