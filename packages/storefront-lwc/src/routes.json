@@ -101,5 +101,18 @@
         "pageName": "error"
       }
     }
+  },
+  {
+    "id": "styleguide",
+    "path": "/styleguide",
+    "isRoot": false,
+    "view": "styleguide",
+    "label": "styleguide",
+    "page": {
+      "type": "comm_namedPage",
+      "attributes": {
+        "pageName": "styleguide"
+      }
+    }
   }
 ]

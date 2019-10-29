@@ -1,0 +1,19 @@
+{
+  "name": "styleguide",
+  "label": "styleguide",
+  "themeLayoutType": "styleguide",
+  "component": {
+    "name": "commerce/oneRow",
+    "regions": [
+      {
+        "name": "main",
+        "label": "Main Content",
+        "components": [
+          {
+            "name": "commerce/styleguide"
+          }
+        ]
+      }
+    ]
+  }
+}

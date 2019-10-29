@@ -176,11 +176,22 @@ body {
   color: $dark-gray;
 }
 
+// e.g. Main banner title
 h1 { @include heading-1; }
+
+// e.g. Campaign banner title
 h2 { @include heading-2; }
+
+// e.g. section title (center) , pdp product name/price (text-align:left)
 h3 { @include heading-3; }
+
+// e.g. navigation catalog, breadcrumb title
 h4 { @include heading-4; }
+
+// e.g Search section title
 h5 { @include heading-5; }
+
+// e.g. Product tiles product price small
 h6 { @include heading-6; }
 
 // Primary CTA
