@@ -1,0 +1,19 @@
+@import "../variables";
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins/breakpoints";
+@import "../components/formFields";
+
+.login-oauth {
+    margin-top: 1rem;
+}
+
+.total-items-label {
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+}
+
+.total-price {
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+}

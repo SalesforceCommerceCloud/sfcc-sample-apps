@@ -1,7 +1,7 @@
-@import "../../../scss/variables";
+@import "variables";
 @import "bootstrap/scss/variables";
 @import "bootstrap/scss/mixins/breakpoints";
-@import "../../../scss/components/categoryTiles";
+@import "components/categoryTiles";
 
 .page {
     .hero {
@@ -184,7 +184,7 @@
 
 .shop-category-component {
     background-image:
-  url("../../../public/assets/images/homepage/gray.jpg");
+  url("../images/homepage/gray.jpg");
   position: relative;
 }
 

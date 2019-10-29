@@ -8,6 +8,9 @@
         },
         "default": {
             "view": "commerceLayout"
+        },
+        "styleguide": {
+            "view": "styleguideLayout"
         }
     }
 }

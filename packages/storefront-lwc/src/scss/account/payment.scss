@@ -1,0 +1,32 @@
+@import "../variables";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins/breakpoints";
+@import "account";
+@import "../utilities/deleteCardButton";
+@import "../components/creditCardField";
+
+.back-to-account-link {
+    margin-bottom: 0;
+}
+
+.card-body-positioning {
+    position: relative;
+}
+
+.make-default-payment {
+    margin-bottom: 1rem;
+}
+
+.masked-card-number {
+    margin-top: 1rem;
+}
+
+.payment-to-remove {
+    font-weight: bold;
+}
+
+.remove-btn {
+    @include delete-card-button();
+
+    width: 3rem;
+}

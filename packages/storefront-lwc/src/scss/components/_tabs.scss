@@ -1,0 +1,24 @@
+@import "../variables";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins/breakpoints";
+
+.form-nav .nav-tabs .nav-link {
+    color: $grey8;
+}
+
+.form-nav .nav-tabs .nav-link.active,
+.form-nav .nav-tabs .nav-link.active:focus,
+.form-nav .nav-tabs .nav-link.active:hover {
+    background-color: $white;
+    color: $grey8;
+}
+
+.nav-tabs .nav-link.active {
+    background-color: transparent;
+}
+
+@include media-breakpoint-up(lg) {
+    .form-nav .nav-item > .nav-link {
+        color: $grey8;
+    }
+}

@@ -1,0 +1,28 @@
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+
+// Font sizes
+$base16-14px: 0.875em !default;
+$font-weight-heavy: 900;
+$font-weight-bold: 600;
+
+// Font sizes
+$base-font-size: 1rem !default;
+$md-font-size: $base-font-size * 1.14 !default;
+$lg-font-size: $base-font-size * 1.28 !default;
+
+$heading-1-xs-font-size: $base-font-size * 2.5 !default;
+$heading-1-md-font-size: $md-font-size * 4 !default;
+$heading-1-lg-font-size: $lg-font-size * 4 !default;
+
+$heading-1-xs-font-weight: $font-weight-heavy;
+$heading-2-xs-font-weight: $font-weight-heavy;
+$heading-3-xs-font-weight: $font-weight-heavy;
+
+$heading-2-xs-font-size: $base-font-size * 2 !default;
+$heading-2-md-font-size: $md-font-size * 3 !default;
+$heading-2-lg-font-size: $lg-font-size * 3 !default;
+
+$heading-3-xs-font-size: $base-font-size * 1.5 !default;
+$heading-3-md-font-size: $md-font-size * 1.67 !default;
+$heading-3-lg-font-size: $lg-font-size * 1.67 !default;

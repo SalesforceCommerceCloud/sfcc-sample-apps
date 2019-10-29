@@ -1,0 +1,64 @@
+$arrow-height: 1.25em; /* 20/16 */
+
+.info-icon {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    border: none;
+    padding: 0;
+    background: inherit;
+
+    .icon {
+        border-radius: 1.25rem;
+        background-color: #00a1e0;
+        width: 1.5625rem;
+        display: inline-block;
+        text-align: center;
+        color: #fff;
+        font-weight: 600;
+    }
+
+    .tooltip {
+        position: absolute;
+        bottom: 100%;
+        padding: 0.312rem;
+        border-radius: $border-radius;
+        background-color: $grey6;
+        color: $white;
+        font-size: 0.928rem;
+        min-width: 20rem;
+        max-width: 15rem;
+        transform: translate(-50%, -$arrow-height/2);
+        left: 50%;
+        margin-left: 4px;
+        animation: fade-in 0.5s linear forwards;
+
+        @keyframes fade-in {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        &::before {
+            content: " ";
+            position: absolute;
+            display: block;
+            height: $arrow-height; /* 20/16 */
+            left: 0;
+            bottom: -$arrow-height;
+            width: 100%;
+        }
+
+        &::after {
+            border-left: solid transparent $arrow-height/2; /* 10/16 */
+            border-right: solid transparent $arrow-height/2; /* 10/16 */
+            border-top: solid $grey6 $arrow-height/2;
+            bottom: -$arrow-height/2;
+            content: " ";
+            height: 0;
+            left: 50%;
+            margin-left: -13px;
+            position: absolute;
+            width: 0;
+        }
+    }
+}

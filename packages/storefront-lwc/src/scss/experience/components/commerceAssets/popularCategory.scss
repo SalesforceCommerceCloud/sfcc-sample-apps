@@ -1,0 +1,46 @@
+@import "../../variables";
+
+.category-thumbnail {
+    border-radius: 50%;
+}
+
+.popular-category {
+    padding: 1em 0;
+}
+
+.popular-categories {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.image-cropper {
+    width: 7em;
+    height: 7em;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+    margin: auto;
+}
+
+header ~ #maincontent .container {
+    .popular-category-link {
+        text-align: center;
+
+        a.popular-cat-link {
+            color: $shop-category-label-a-color;
+            text-decoration: underline;
+        }
+    }
+}
+
+.image-wrapper {
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+
+    span {
+        height: 100%;
+        width: 100%;
+        display: block;
+    }
+}

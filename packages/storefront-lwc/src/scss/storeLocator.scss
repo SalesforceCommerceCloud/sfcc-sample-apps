@@ -1,0 +1,88 @@
+@import "variables";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins/breakpoints";
+@import "storeLocator/storeLocator";
+
+.map-marker {
+    float: left;
+    width: 2em;
+    height: 2em;
+    text-align: center;
+    line-height: 2em;
+    border-radius: 0.375em;
+    color: #fff;
+    background-color: $light-blue;
+    position: relative;
+
+    &::after {
+        position: absolute;
+        bottom: -0.625em;
+        left: 50%;
+        transform: translate(-50%, 0);
+        content: '';
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 1em 0.5em 0;
+        border-color: $light-blue transparent transparent transparent;
+    }
+}
+
+.gm-style-iw {
+    .store-details {
+        margin-left: 0;
+        font-family: $font-family-sans-serif;
+        font-size: 1rem;
+        font-weight: normal;
+        line-height: 1.5;
+    }
+
+    a {
+        color: $blue;
+    }
+}
+
+.map-canvas {
+    display: none;
+
+    @include media-breakpoint-up(sm) {
+        height: 28.125em;
+        display: block;
+    }
+}
+
+.store-name {
+    font-weight: 600;
+}
+
+.store-details {
+    display: block;
+    margin-left: 3.125em;
+}
+
+.store-locator-no-apiKey {
+    display: none;
+}
+
+.store-locator-no-results {
+    display: none;
+}
+
+.store-locator-hero {
+    background-image: url('../images/storelocator.jpg');
+    margin-bottom: 0.625em;
+
+    @include media-breakpoint-up(sm) {
+        display: none;
+    }
+}
+
+.results {
+
+    @include media-breakpoint-up(md) {
+        overflow-y: auto;
+        overflow-x: hidden;
+        max-height: 21.875em;
+        margin-right: -0.938em;
+    }
+}

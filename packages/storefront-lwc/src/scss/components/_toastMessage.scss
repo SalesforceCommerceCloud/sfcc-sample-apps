@@ -1,0 +1,23 @@
+@mixin toast-message() {
+    transform: translate(-50%, -50%);
+    position: fixed;
+    top: 15%;
+    left: 50%;
+}
+
+@mixin toast-alert() {
+    animation: fade 5s linear forwards;
+    box-shadow: 1px 1px 5px grey;
+    padding: 1em;
+
+    @keyframes fade {
+        0% { opacity: 0; }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% { opacity: 0; }
+    }
+
+    &.show {
+        display: block;
+    }
+}

@@ -1,0 +1,314 @@
+@import "variables";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins/breakpoints";
+@import "utilities/deleteCardButton";
+@import "components/quickView";
+
+$spacer: 0.625em;
+$negative-spacer: -0.625rem;
+
+.single-approaching-discount {
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    background-color: $white;
+    color: $success;
+    margin-bottom: 0.3125rem;
+}
+
+.checkout-continue {
+    position: fixed;
+    bottom: 0;
+    z-index: 1;
+    padding-right: 0;
+    padding-left: 0;
+
+    @include media-breakpoint-down(xs) {
+        background-color: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+
+        div {
+            padding: $spacer;
+        }
+    }
+
+    @include media-breakpoint-up(sm) {
+        position: static;
+        padding-right: 0.938em;
+        padding-left: 0.938em;
+    }
+}
+
+.edit {
+    margin-right: 0.625em;
+}
+
+.product-edit {
+    margin-top: auto;
+
+    a {
+        font-size: 0.813em;
+    }
+}
+
+.line-item-attributes {
+    font-size: 0.813rem;
+    margin: 0;
+}
+
+.item-attributes {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.line-item-divider {
+    margin: $spacer $negative-spacer $spacer $negative-spacer;
+}
+
+.line-item-name {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: 1em;
+    color: $darker-gray;
+    font-weight: bold;
+    margin-bottom: $spacer;
+    width: 90%;
+}
+
+.line-item-price {
+    font-size: 1em;
+    color: $darker-gray;
+    font-weight: bold;
+}
+
+.line-item-price-info {
+    font-size: 0.75em;
+    margin-bottom: 0.5rem;
+}
+
+.no-margin-top {
+    margin-top: 0;
+}
+
+.number-of-items {
+    font-size: 1.25rem;
+    margin-top: 1rem;
+
+    @include media-breakpoint-up(sm) {
+        margin-top: 0;
+    }
+}
+
+.optional-promo {
+    color: $primary;
+}
+
+.product-info {
+    margin-bottom: 0.313em;
+    padding: $spacer;
+
+    @include media-breakpoint-up(md) {
+        height: auto;
+    }
+}
+
+.product-to-remove {
+    font-weight: bold;
+}
+
+.item-image {
+    height: 5.625em;
+    width: 5.625em;
+    margin-right: 0.938em;
+    flex-grow: 0;
+    flex-shrink: 0;
+
+    img.product-image {
+        display: block;
+        margin: 0 auto;
+        max-width: 100%;
+        height: auto;
+        max-height: 5.625em;
+    }
+}
+
+.promo-code-form {
+    display: none;
+
+    @include media-breakpoint-up(sm) {
+        display: block;
+    }
+}
+
+.promo-code-submit {
+    padding-left: 0;
+}
+
+.quantity-form {
+    margin-bottom: 0;
+    margin-top: -0.313em;
+}
+
+.product-info {
+    .remove-btn {
+        color: $slightly-darker-gray;
+        font-size: 1.625em;
+        padding: 0;
+        position: absolute;
+        top: $negative-spacer;
+        right: 0.25rem;
+        border: none;
+        background-color: $white;
+
+        @include media-breakpoint-up(lg) {
+            top: 0;
+            bottom: 0;
+            right: $negative-spacer;
+            margin-top: $negative-spacer;
+            margin-bottom: $negative-spacer;
+        }
+    }
+
+    .remove-btn-lg {
+        @include delete-card-button();
+
+        padding-left: 0.3125rem;
+        padding-right: 0.3125rem;
+        z-index: 1;
+    }
+}
+
+.bonus-product {
+    display: block;
+    text-align: center;
+}
+
+.remove-line-item {
+    position: relative;
+}
+
+.remove-coupon {
+    border: none;
+    background: transparent;
+}
+
+.sub-total {
+    font-weight: bold;
+}
+
+.grand-total {
+    font-size: 1em;
+    font-weight: 600;
+}
+
+.coupon-price-adjustment + .coupon-price-adjustment {
+    margin-top: 0.625rem;
+}
+
+.coupon-price-adjustment {
+    background-color: $white;
+    padding: 0.625em;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.1875rem;
+}
+
+.coupon-promotion-relationship {
+    font-size: 0.813em;
+    padding-left: 1rem;
+    margin-bottom: 0;
+}
+
+.coupons-and-promos {
+    margin-bottom: 0.625rem;
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.coupon-code {
+    font-size: 1.125em;
+}
+
+.coupon-applied {
+    color: $success;
+    font-size: 0.813em;
+}
+
+.coupon-not-applied {
+    color: $danger;
+    font-size: 0.813em;
+}
+
+.coupon-error {
+    color: $danger;
+    margin-top: 0.25rem;
+}
+
+.coupon-missing-error {
+    display: none;
+}
+
+.applied-promotion-discount {
+    color: $success;
+    float: right;
+}
+
+.promotion-information {
+    margin-bottom: 0.625rem;
+    margin-top: 0.625rem;
+}
+
+.line-item-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.bundle-includes {
+    font-size: 0.813em;
+    margin-bottom: 0.625em;
+}
+
+.cart-page .bundled-line-item + .bundled-line-item::before,
+.cart-page .bonus-line-item-row + .bonus-line-item-msg::before {
+    content: "";
+    display: block;
+    border-bottom: 0.063em dashed $horizontal-rule-grey;
+    margin: 0.625em -0.625em;
+}
+
+.quantity-label {
+    font-size: 0.813em;
+}
+
+.quantity {
+    width: 100%;
+    min-width: 5em;
+}
+
+.bundle-misc {
+    font-size: 0.813rem;
+
+    @include media-breakpoint-down(md) {
+        margin-bottom: 0.625em;
+    }
+}
+
+.cart-error-messaging.cart-error {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 2;
+}
+
+.valid-cart-error {
+    min-height: 6.5rem;
+}
+
+.bundled-line-item {
+    .item-attributes {
+        margin-left: 0;
+    }
+}
+
+.bonus-product-button {
+    margin-right: 1.5em;
+}

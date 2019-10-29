@@ -1,0 +1,30 @@
+@mixin carousel-right-most-element($right) {
+    position: absolute;
+    top: 0;
+    right: $right;
+    z-index: -1;
+    display: block;
+    visibility: visible;
+}
+
+@mixin carousel-left-most-element($left) {
+    position: absolute;
+    top: 0;
+    left: $left;
+    z-index: -1;
+}
+
+@mixin carousel-transform($x) {
+    transform: translateX($x);
+    @supports (transform-style: preserve-3d) {
+        transform: translate3d($x, 0, 0);
+    }
+}
+
+@mixin carousel-indicators() {
+    padding-bottom: 4.375rem;
+
+    .pd-carousel-indicators {
+        display: flex;
+    }
+}

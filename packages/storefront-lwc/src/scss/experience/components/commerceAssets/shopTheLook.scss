@@ -1,0 +1,69 @@
+@import "../../variables";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins/breakpoints";
+
+.shopthelook-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: 0.5s ease;
+    padding-left: 0.1em;
+    padding-right: 0.1em;
+}
+
+.product-info {
+    transition: 0.5s ease;
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.shopthelook-figure-lg:hover {
+    .shopthelook-image {
+        filter: brightness(40%);
+    }
+
+    .product-info {
+        display: block;
+    }
+}
+
+.shopthelook-text {
+    background-color: $white;
+    color: $shop-the-look-link-color;
+    font-weight: $font-weight-huskie;
+    margin-top: 1em;
+    border-color: $white;
+    border-radius: 0;
+}
+
+.shopthelook-figure-sm {
+    .shopthelook-set-count {
+        color: $shop-the-look-link-color;
+    }
+}
+
+.shopthelook-figure-lg {
+    .shopthelook-product-name .product-text-center {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        @include media-breakpoint-up(sm) {
+            color: $shop-the-look-text-color;
+            font-weight: $shop-the-look-product-name-text-weight;
+            font-size: $shop-the-look-product-name-text-size;
+        }
+    }
+
+    .shopthelook-product-price .price {
+        color: $shop-the-look-text-color;
+    }
+
+    .shopthelook-set-count {
+        color: $shop-the-look-text-color;
+    }
+}

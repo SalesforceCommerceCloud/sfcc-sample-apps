@@ -1,0 +1,17 @@
+@import "../variables";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins/breakpoints";
+@import "account";
+
+.profile-back-to-account-link {
+    color: $primary;
+    text-decoration: underline;
+    display: block;
+    text-align: center;
+}
+
+.tracking-consent {
+    color: $blue;
+    text-decoration: underline;
+    cursor: pointer;
+}
