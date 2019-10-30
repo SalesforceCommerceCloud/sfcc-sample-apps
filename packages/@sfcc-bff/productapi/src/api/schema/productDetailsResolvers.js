@@ -1,50 +1,31 @@
-import * as rp from 'request-promise';
-import Product from '../models/Product';
-const SDKProduct = require("commerce-sdk-generated").Product;
+'use strict';
 
-const getProduct = (config, productId) => {
+import fetch from 'node-fetch';
+import Product from '../models/Product';
+import {Product as SDKProduct} from 'commerce-sdk-generated';
+
+const getOcapiProduct = async (config, productId) => {
     const URL_PARAMS = `&expand=availability,images,prices,variations&all_images=true`;
     const PRODUCT_URL = `${config.COMMERCE_BASE_URL}/products/${productId}?client_id=${config.COMMERCE_APP_API_CLIENT_ID}${URL_PARAMS}`;
-    console.log('---- GETTING PRODUCT FROM API ---- ');
-    console.log('---- URL ---- ' + PRODUCT_URL);
-    return new Promise((resolve, reject) => {
-        Promise.all([
-            rp.get({
-                uri: PRODUCT_URL,
-                json: true
-            })
-        ]).then(([product]) => {
-            resolve(product);
-        }).catch((err) => {
-            reject(err);
-        });
-    });
+    return await fetch(PRODUCT_URL).then(res => res.json());
 };
 
-const getSdkProduct = () => {
+const getSdkProduct = async (id) => {
     const client = new SDKProduct();
-    return client.getProduct({ id: "apple-ipod-shuffle" }).then(res => res.json());
+    return await client.getProduct({id}).then(res => res.json());
 }
 
 export const resolver = (config) => {
     return {
         Query: {
-            product: (_, {id}) => {
-                let productModel;
+            product: async (_, {id}) => {
+                let apiProduct;
                 if (id === "apple-ipod-shuffle") {
-                    productModel = getSdkProduct().then((product) => {
-                        console.log("---- Received Product from SDK ----");
-                        console.log(product);
-                        console.log("---- ------------------------- ----");
-                        return new Product(product);
-                    });
+                    apiProduct = await getSdkProduct(id);
                 } else {
-                    productModel = getProduct(config, id).then((product) => {
-                        console.log("---- Received Product from API ----");
-                        return new Product(product);
-                    });
+                    apiProduct = await getOcapiProduct(config, id);
                 }
-                return productModel;
+                return new Product(apiProduct);
             }
         }
     }
