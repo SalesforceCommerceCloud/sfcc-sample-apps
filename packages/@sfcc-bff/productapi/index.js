@@ -1,8 +1,12 @@
 'use strict';
 
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+
 var core = require('@sfcc-core/core');
 var coreGraphql = require('@sfcc-core/core-graphql');
 var apolloServerCore = require('apollo-server-core');
+var fetch = _interopDefault(require('node-fetch'));
+var commerceSdkGenerated = require('commerce-sdk-generated');
 var rp = require('request-promise');
 
 const typeDef = apolloServerCore.gql`
@@ -21,12 +25,40 @@ const typeDef = apolloServerCore.gql`
         primary_category_id: String!
         image: String!
         images(allImages: Boolean = true, size: String = "large"): [Image!]
+        variants: [Variant],
+        variationAttributes: [VariationAttribute]
     }
 
     type Image {
         title: String!
         alt: String!
         link: String!
+    }
+
+    type Variant {
+        id: String!
+        variationValues: [VariationValue]
+    }
+
+    type VariationValue {
+        key: String!
+        value: String!
+    }
+
+    type VariationAttribute {
+        variationAttributeType: VariationAttributeType,
+        variationAttributeValues: [VariationAttributeValues]
+    }
+
+    type VariationAttributeType {
+        id: String!
+        name: String!
+    }
+
+    type VariationAttributeValues {
+        name: String!
+        value: String!
+        orderable: Boolean!
     }
 `;
 
@@ -41,9 +73,7 @@ class Image {
 var getImages = (imageGroups) => {
     return ({ allImages, size }) => {
         let result = [];
-
         let imageGroup = imageGroups.find((group) => group.view_type === size);
-
         if (allImages) {
             imageGroup.images.forEach((image) => {
                 result.push(new Image(image));
@@ -51,9 +81,51 @@ var getImages = (imageGroups) => {
         } else {
             result.push(new Image(imageGroup.images[0]));
         }
-    
         return result;
     };
+};
+
+var getVariants = (variants) => {
+    return () => {
+        let result = variants.map(variant => {
+            let variationValues = Object.keys(variant.variation_values).map(key => {
+                return {
+                    key: key,
+                    value: variant.variation_values[key]
+                }
+            });
+            return {
+                id: variant.product_id,
+                variationValues: Object.keys(variant.variation_values).map(key => {
+                    return {
+                        key: key,
+                        value: variant.variation_values[key]
+                    }
+                })
+            }
+        });
+        return result;
+    };
+};
+
+var getVariationAttributes = (variationAttributes) => {
+    return () => {
+        return variationAttributes.map(variationAttribute => {
+            return {
+                variationAttributeType: {
+                    id: variationAttribute.id,
+                    name: variationAttribute.name,
+                },
+                variationAttributeValues: variationAttribute.values.map(variationAttributeValue => {
+                    return {
+                        name: variationAttributeValue.name,
+                        value: variationAttributeValue.value,
+                        orderable: variationAttributeValue.orderable
+                    }
+                })
+            }
+        })
+    }
 };
 
 class Product {
@@ -65,58 +137,36 @@ class Product {
 
         console.log('Product.constructor(apiProduct)', apiProduct);
         Object.assign(this, apiProduct);
-        
+
         // TODO: remove the following and use the above this.images
         this.image = apiProduct.image_groups[0].images[0].link;
-        console.log('==== this =====', this);
+        this.variants = getVariants(apiProduct.variants);
+        this.variationAttributes = getVariationAttributes(apiProduct.variation_attributes);
     }
 }
 
-const SDKProduct = require("commerce-sdk-generated").Product;
-
-const getProduct = (config, productId) => {
+const getOcapiProduct = async (config, productId) => {
     const URL_PARAMS = `&expand=availability,images,prices,variations&all_images=true`;
     const PRODUCT_URL = `${config.COMMERCE_BASE_URL}/products/${productId}?client_id=${config.COMMERCE_APP_API_CLIENT_ID}${URL_PARAMS}`;
-    console.log('---- GETTING PRODUCT FROM API ---- ');
-    console.log('---- URL ---- ' + PRODUCT_URL);
-    return new Promise((resolve, reject) => {
-        Promise.all([
-            rp.get({
-                uri: PRODUCT_URL,
-                json: true
-            })
-        ]).then(([product]) => {
-            resolve(product);
-        }).catch((err) => {
-            reject(err);
-        });
-    });
+    return await fetch(PRODUCT_URL).then(res => res.json());
 };
 
-const getSdkProduct = () => {
-    const client = new SDKProduct();
-    return client.getProduct({ id: "apple-ipod-shuffle" }).then(res => res.json());
+const getSdkProduct = async (id) => {
+    const client = new commerceSdkGenerated.Product();
+    return await client.getProduct({id}).then(res => res.json());
 };
 
 const resolver = (config) => {
     return {
         Query: {
-            product: (_, {id}) => {
-                let productModel;
+            product: async (_, {id}) => {
+                let apiProduct;
                 if (id === "apple-ipod-shuffle") {
-                    productModel = getSdkProduct().then((product) => {
-                        console.log("---- Received Product from SDK ----");
-                        console.log(product);
-                        console.log("---- ------------------------- ----");
-                        return new Product(product);
-                    });
+                    apiProduct = await getSdkProduct(id);
                 } else {
-                    productModel = getProduct(config, id).then((product) => {
-                        console.log("---- Received Product from API ----");
-                        return new Product(product);
-                    });
+                    apiProduct = await getOcapiProduct(config, id);
                 }
-                return productModel;
+                return new Product(apiProduct);
             }
         }
     }
