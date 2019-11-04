@@ -1,0 +1,40 @@
+@import "../../../scss/variables";
+
+.shop-now {
+    margin-top: 1em;
+}
+
+.shop-now-text {
+    position: absolute;
+    top: 50%;
+    left: 15%;
+    color: white;
+    transform: translate(-50%, -50%);
+}
+
+.shop-now-overlay-text p {
+    margin-top: 0.53em;
+}
+
+.shop-now-overlay-text h3 {
+    margin-top: 0.53em;
+    margin-bottom: 0.53em;
+}
+
+.shop-now-overlay-text h2 {
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+}
+
+.shop-now-link {
+    margin-top: 0;
+    font-family: Helvetica Neue;
+    color: #fff;
+    text-decoration: underline;
+}
+
+.shop-now-image {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+}
