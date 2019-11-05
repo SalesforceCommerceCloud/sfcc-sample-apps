@@ -2,17 +2,47 @@
 
 import Image from "./Image";
 
-var getImages = (imageGroups) => {
-    return ({ allImages, size }) => {
+const getImages = (imageGroups) => {
+    return ({allImages, size}) => {
         let result = [];
-        let imageGroup = imageGroups.find((group) => group.view_type === size);
-        if (allImages) {
-            imageGroup.images.forEach((image) => {
-                result.push(new Image(image));
-            })
+
+        const tmpHash = {};
+
+        // Return all images if allImages and all sizes asked for
+        if (allImages && size === 'all') {
+            imageGroups.forEach(imageGroup => {
+                imageGroup.images.forEach((image) => {
+                    // ensure unique image being returned
+                    if ( !tmpHash[image.link] ) {
+                        result.push(new Image(image));
+                        tmpHash[image.link] = true;
+                    }
+                });
+            });
         } else {
-            result.push(new Image(imageGroup.images[0]));
+            // Find images of the size requested (default large)
+            let sizeImages = [];
+            imageGroups.forEach(imageGroup => {
+                if (imageGroup.view_type === size) {
+                    sizeImages = sizeImages.concat(imageGroup.images);
+                }
+            });
+
+            // Return all of this size when all images are requested
+            if (allImages) {
+                sizeImages.forEach((image) => {
+                    // ensure unique image being returned
+                    if ( !tmpHash[image.link] ) {
+                        result.push(new Image(image));
+                        tmpHash[image.link] = true;
+                    }
+                });
+            } else {
+                // Only first of the size requested when all images false
+                result.push(new Image(sizeImages[0]));
+            }
         }
+
         return result;
     };
 }
@@ -76,4 +106,5 @@ class Product {
         this.variationAttributes = getVariationAttributes(apiProduct.variation_attributes);
     }
 }
+
 export default Product;
