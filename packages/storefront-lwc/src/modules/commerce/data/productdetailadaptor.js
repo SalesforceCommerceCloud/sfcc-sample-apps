@@ -35,11 +35,15 @@ register(productDetailById, (eventTarget) => {
                             price
                             primary_category_id
                             image
+                            images(allImages: true, size: "large") {
+                                title
+                                alt
+                                link
+                            }
                         }
                     }
                  `
                 }).then(result => {
-                    console.log(result.data.product);
                     return result.data.product;
                 }).catch((error) => {
                     console.log(error);
