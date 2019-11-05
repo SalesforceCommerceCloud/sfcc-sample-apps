@@ -1,0 +1,17 @@
+@import "../../../scss/variables";
+
+.image-hero {
+    width:100%
+}
+
+.hero-banner-text span h3 {
+    text-decoration: underline;
+    margin-top: 1em;
+}
+
+.hero-banner-text span{
+    position: absolute;
+    top: 50%;
+    color: white;
+    transform: translate(-50%, -50%);
+}
