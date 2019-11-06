@@ -28,6 +28,7 @@ register(productDetailById, (eventTarget) => {
                         product(id: "${ pid }") {
                             name
                             id
+                            masterId
                             longDescription
                             shortDescription
                             currency
@@ -37,6 +38,28 @@ register(productDetailById, (eventTarget) => {
                                 title
                                 alt
                                 link
+                            }
+                            variants {
+                                id
+                                variationValues {
+                                    key
+                                    value
+                                }
+                            }
+                            variationAttributes {
+                                variationAttributeType {
+                                    id
+                                    name
+                                }
+                                variationAttributeValues {
+                                    name
+                                    value
+                                    orderable
+                                    swatchImage {
+                                        link
+                                        style
+                                    }
+                                }
                             }
                         }
                     }

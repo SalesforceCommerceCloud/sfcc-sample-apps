@@ -10,6 +10,7 @@ export const typeDef = gql`
     type Product {
         id: String!
         name: String!
+        masterId: String
         price: Float!
         currency: String!
         longDescription: String!
@@ -24,6 +25,7 @@ export const typeDef = gql`
         title: String!
         alt: String!
         link: String!
+        style: String
     }
 
     type Variant {
@@ -50,5 +52,6 @@ export const typeDef = gql`
         name: String!
         value: String!
         orderable: Boolean!
+        swatchImage: Image
     }
 `;

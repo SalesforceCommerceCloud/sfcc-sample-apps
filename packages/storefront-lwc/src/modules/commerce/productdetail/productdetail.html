@@ -1,13 +1,14 @@
 <template>
     <div class="container product-detail product-wrapper" data-pid="25518447M">
         <div class="row">
-            <div class="col-12">
+            <div class="d-md-none col">
                 <!-- Product Name -->
-                <div class="row">
-                    <div class="d-md-none col-sm-12">
-                        <h1 class="product-name">{product.name}</h1>
-                    </div>
-                </div>
+                <h3 class="float-left product-name">{product.name}</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="d-md-none col">
+                <p class="small-paragraph">Item No. {product.id}</p>
             </div>
         </div>
 
@@ -38,17 +39,21 @@
             <div class="col-12 col-sm-6">
 
                 <!-- Product Name -->
-                <h3 class="product-name hidden-sm-down">{product.name}</h3>
+                <div class="row">
+                    <div class="col">
+                        <h3 class="float-left hidden-sm-down">{product.name}</h3>
+                    </div>
+                </div>
 
-                <div class="product-number-rating clearfix">
+                <div class="row justify-content-between product-number-rating">
                     <!-- Product Number -->
-                    <div class="product-number hidden-xs-down small-paragraph">
+                    <div class="col-auto mr-auto product-number hidden-xs-down small-paragraph">
                         Item No.
-                        <span class="product-id">{product.id}</span>
+                        <span class="product-id"> {product.id}</span>
                     </div>
 
                     <!-- Product Rating -->
-                    <div class="ratings pull-right">
+                    <div class="col-auto ratings">
                         <i class="fa fa-star" aria-hidden="true"></i>
                         <i class="fa fa-star" aria-hidden="true"></i>
                         <i class="fa fa-star" aria-hidden="true"></i>
@@ -57,32 +62,12 @@
                     </div>
                 </div>
 
-                <div class="row justify-content-center">
-                    <!-- Attributes and Quantity -->
-                    <div class="col-md-10 col-12">
-                        <div data-attr="size">
-                            <!-- Quantity Drop Down Menu -->
-                            <div class="quantity col-sm-6">
-                                <label>Quantity</label>
-                                <select class="quantity-select custom-select form-control">
-                                    <option value="1" selected="">
-                                        1
-                                    </option>
-                                </select>
-                            </div>
 
-                            <div class="attribute">
-                                <!-- Select <Attribute> Label -->
-                                <label class="size"> Select Size </label>
-                                <!-- Attribute Values Drop Down Menu -->
-                                <select class="custom-select form-control select-size">
-                                    <option> Select Size</option>
-                                    <option> S </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+                <!-- Variations and Quantity -->
+                <commerce-variations variations={product.variations} variation-attributes={product.variationAttributes}></commerce-variations>
 
+
+                <div class="row">
                     <!-- Size Chart -->
                     <!-- Product Availability -->
                     <!-- Availability -->
@@ -102,37 +87,26 @@
                         </div>
                     </div>
 
-                    <div class="col-md-10 col-12">
-                        <hr>
-                    </div>
-
-                    <div class="col-12 prices-add-to-cart-actions">
-                        <!-- Prices -->
-                        <div class="prices">
-                            <div class="price">
-                                <span>
-                                    <span class="strike-through list">
-                                    </span>
-
-                                    <span class="sales">
-                                        <span class="value">
-                                            {product.currency} {product.price}
-                                        </span>
-                                    </span>
-                                </span>
+                    <div class="col-12">
+                        <div class="row justify-content-center">
+                            <div class="col price d-flex">
+                                <!-- Prices -->
+                                <h3>
+                                    ${price}
+                                </h3>
                             </div>
                         </div>
 
                         <div class="row cart-and-ipay">
                             <div class="col-sm-12">
                                 <template if:false={readyToAddToCart}>
-                                    <button class="add-to-cart btn btn-primary" onclick={addToCartHandler}>
+                                    <button class="btn btn-primary" onclick={addToCartHandler}>
                                         <i class="fa fa-shopping-bag"></i>
                                         Add to Cart
                                     </button>
                                 </template>
                                 <template if:true={readyToAddToCart}>
-                                    <button class="add-to-cart btn btn-primary" disabled onclick={addToCartHandler}>
+                                    <button class="btn btn-primary" disabled onclick={addToCartHandler}>
                                         <i class="fa fa-shopping-bag"></i>
                                         Add to Cart
                                     </button>
