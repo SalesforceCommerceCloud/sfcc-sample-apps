@@ -80,6 +80,144 @@ hr {
     overflow: visible
 }
 
+/**
+* home page
+*/
+
+.common-image-filter {
+    filter: brightness(40%);
+}
+
+.storepage .col-12 {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.image-hero {
+    width:100%
+}
+
+.hero-banner-text span h3 {
+    text-decoration: underline;
+    text-align: left;
+    margin-top: 0.2em;
+}
+
+.hero-banner-text span{
+    position: absolute;
+    top: 50%;
+    color: white;
+    transform: translate(-50%, -50%);
+}
+
+.hero-banner-text span h2 {
+    margin-bottom: 0.2em;
+}
+
+.shop-category-component {
+    background-image:
+  url("../images/homepage/gray.jpg");
+  position: relative;
+}
+
+.shop-category-component .shop-category-header {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.shop-category-header h3 {
+    margin-top: 0.3em;
+    margin-bottom: 0;
+}
+
+.shop-category-component .shop-category-label {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.shop-category-component .shop-category-header .mw-100 {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.image-cropper {
+    width: 9.4em;
+    height: 9.4em;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+    margin: auto;
+}
+
+.popular-category .image-wrapper {
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+}
+
+.popular-cat-heading h3 {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.image-wrapper span {
+    height: 100%;
+    width: 100%;
+    display: block;
+}
+
+.container .popular-category-link {
+    text-align: center;
+}
+
+.popular-categories a.popular-cat-link
+{
+    color: #222;
+    text-decoration: underline;
+}
+
+.shop-now {
+    margin-top: 1em;
+}
+
+.shop-now-text {
+    position: absolute;
+    top: 50%;
+    left: 15%;
+    color: white;
+    transform: translate(-50%, -50%);
+}
+
+.shop-now-overlay-text p {
+    margin-top: 0.53em;
+}
+
+.shop-now-overlay-text h3 {
+    margin-top: 0.53em;
+    margin-bottom: 0.53em;
+}
+
+.shop-now-overlay-text h2 {
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+}
+
+.shop-now-link {
+    margin-top: 0;
+    font-family: Helvetica Neue;
+    color: #fff;
+    text-decoration: underline;
+}
+
+.shop-now-image {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.shop-category-label {
+    text-decoration: underline;
+}
 
 p {
     margin-top: 0;
@@ -517,6 +655,8 @@ pre code {
 
 .container {
     width: 100%;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 .container-fluid {
@@ -5805,14 +5945,18 @@ a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover {
 */
 @media (max-width: 576px) {
 
+    .banner-image img {
+        height: 17em;
+        object-fit: cover;
+    }
+
     .shop-now-overlay-text {
         margin-left: 2.8em;
     }
 
     .hero-banner-text span {
-        left: 30%;
-        margin-left: 2em;
-        margin-right: 2em;
+        left: 50%;
+        margin-right: -1em;
     }
 
     .hero-banner-text span h3 {
@@ -5824,14 +5968,32 @@ a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover {
         padding-top: 0.3em;
     }
 
+    .shop-category-label-a {
+        font-size : 0.875em;
+    }
+
+    .shop-category-component {
+        padding-top: 0.7em;
+        padding-bottom: 0.7em;
+    }
+
+    .popular-categories {
+        padding-left: 1.4em;
+        padding-right: 1.4em;
+    }
+
     .popular-categories .d-flex {
         margin-left: 0;
         margin-right: 0;
     }
 
+    .popular-categories .col-4 {
+        margin-bottom: 1em;
+    }
+
     .image-cropper {
-        width: 7.5em;
-        height: 7.5em;
+        width: 6.5em;
+        height: 6.5em;
     }
 
     .shop-now-text {
@@ -5879,10 +6041,6 @@ a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover {
         margin-left: 2em;
     }
 
-    .hero-banner-text span h3 {
-        text-align: center;
-    }
-
     .popular-category-label-a {
         font-size: 0.875em;
         padding-top: 0.5em;
@@ -5894,8 +6052,8 @@ a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover {
     }
 
     .image-cropper {
-        width: 7.5em;
-        height: 7.5em;
+        width: 6.5em;
+        height: 6.5em;
     }
 
     .shop-now-text {
@@ -5969,11 +6127,15 @@ a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover {
 
     .hero-banner-text span {
         left: 25%;
-        margin-left: 4em;
+        margin-left: 6em;
     }
 
     .shop-category-component {
-        padding: 2em 4em;
+        padding: 0.94em;
+    }
+
+    .shop-category-component .shop-category-links {
+        margin-top: 1em;
     }
 
     .popular-category-label-a {
@@ -5986,9 +6148,20 @@ a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover {
         margin-right: 1em;
     }
 
+    .popular-category {
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+    }
+
+    .popular-categories {
+        padding-left: 1em;
+        padding-right: 1em;
+    }
+
     .image-cropper {
         width: 6.5em;
         height: 6.5em;
+        margin-bottom: 0.5em;
     }
 
     .shop-now-text {
@@ -6055,10 +6228,6 @@ a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover {
 */
 @media (min-width: 992px) {
 
-    .hero-banner-text span h3 {
-        text-align: left;
-    }
-
     .shop-now-overlay-text {
         margin-left: 5.6em;
     }
@@ -6069,15 +6238,14 @@ a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover {
     }
 
     .popular-categories .d-flex {
-        margin-left: 2em;
-        margin-right: 2em;
+        margin:auto;
+        max-width: 1024px;
     }
 
     .image-cropper {
         width: 8.3em;
         height: 8.3em;
-        margin-left: 0;
-        margin-right: 0;
+        margin: auto;
     }
 
     .shop-category-label-a {
@@ -6151,19 +6319,12 @@ a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover {
 
     .hero-banner-text span{
         left: 13%;
-        margin-left: 8em;
+        margin-left: 15em;
     }
 
     .image-cropper {
-        width: 11em;
-        height: 11em;
-        margin-left: 0;
-        margin-right: 0;
-    }
-
-    .popular-categories .d-flex {
-        margin-left: 6em;
-        margin-right: 6em;
+        width: 8.3em;
+        height: 8.3em;
     }
 
     .d-xl-none {
@@ -7438,7 +7599,7 @@ a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover {
 }
 
 .m-auto {
-    margin: 1em
+    margin: 0.2em
 }
 
 .mt-auto, .my-auto {

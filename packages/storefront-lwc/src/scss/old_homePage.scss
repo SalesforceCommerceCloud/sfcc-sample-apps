@@ -1,0 +1,208 @@
+.category-tile {
+  position: relative
+}
+
+.category-tile h3 {
+  position: absolute;
+  bottom: 1.875rem;
+  left: 1.875rem;
+  color: #fff
+}
+
+.category-tile:before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(180deg, transparent 60%, rgba(0, 0, 0, .5))
+}
+
+.page .hero {
+  background-position-y: 0
+}
+
+.page .shop-the-style .hero {
+  background-position-y: 45%
+}
+
+.hp-category-message, .hp-promotion-message {
+  position: absolute;
+  bottom: .9375em;
+  left: 1.875em
+}
+
+.hp-category-message a, .hp-promotion-message a {
+  color: #fff
+}
+
+.hp-category-message a.hp-promotion-message1, .hp-promotion-message a.hp-promotion-message1 {
+  font-size: .75em
+}
+
+.category-tile {
+  border: 1px solid #fff
+}
+
+.half-height {
+  min-height: 23.125em
+}
+
+@media (max-width: 768.98px) {
+  .half-height {
+    min-height: 15.375em
+  }
+}
+
+.full-height {
+  min-height: 51.725em
+}
+
+@media (max-width: 768.98px) {
+  .full-height {
+    min-height: 35.375em
+  }
+}
+
+@media (max-width: 543.98px) {
+  .full-height {
+    min-height: 15.375em
+  }
+}
+
+.mens-jackets {
+  background-position: 50% 34%
+}
+
+@media (min-width: 544px) {
+  .mens-jackets {
+    background-size: auto 100%
+  }
+}
+
+@media (max-width: 543.98px) {
+  .mens-jackets {
+    background-position-y: 8%
+  }
+}
+
+.womens-dresses {
+  background-position: 50% 15%
+}
+
+.womens-jewelry {
+  background-position: 40% 60%
+}
+
+@media (min-width: 544px) {
+  .womens-jewelry {
+    background-size: auto 100%
+  }
+}
+
+.shop-red {
+  background-position-y: 60%;
+  min-height: 28.65em
+}
+
+@media (max-width: 768.98px) {
+  .shop-red {
+    min-height: 15.375em
+  }
+}
+
+@media (max-width: 543.98px) {
+  .shop-red {
+    background-position: 45% 85%
+  }
+}
+
+@media (max-width: 543.98px) {
+  .container.home-categories {
+    padding-left: 0;
+    padding-right: 0
+  }
+}
+
+.home-main-categories {
+  margin-bottom: 2em
+}
+
+.hp-product-grid {
+  margin: 0
+}
+
+.hp-product-grid .hp-product-content {
+  background-color: transparent;
+  text-align: center;
+  border: 0
+}
+
+@media (max-width: 543.98px) {
+  .hp-product-grid .hp-product-content {
+    min-height: 20.375em
+  }
+}
+
+.hp-product-grid .hp-product-content span {
+  font-size: 1em
+}
+
+@media (max-width: 768.98px) {
+  .hp-product-grid .hp-product-content span {
+    font-size: .85em
+  }
+}
+
+@media (max-width: 543.98px) {
+  .hp-product-grid .hp-product-content span {
+    font-size: .65em
+  }
+}
+
+.hp-product-grid .hp-product-content span.largeText {
+  font-size: 5.5em;
+  font-weight: 200
+}
+
+@media (max-width: 1199.98px) {
+  .hp-product-grid .hp-product-content span.largeText {
+    font-size: 4.5em
+  }
+}
+
+@media (max-width: 991.98px) {
+  .hp-product-grid .hp-product-content span.largeText {
+    font-size: 3.4em
+  }
+}
+
+@media (max-width: 768.98px) {
+  .hp-product-grid .hp-product-content span.largeText {
+    font-size: 3em
+  }
+}
+
+@media (max-width: 543.98px) {
+  .hp-product-grid .hp-product-content span.largeText {
+    font-size: 2.5em
+  }
+}
+
+.hp-product-grid .hp-product-content a {
+  color: #00a1e0;
+  text-decoration: none
+}
+
+.home-email-signup {
+  background-color: #444
+}
+
+.home-email-signup > .container {
+  padding-top: .625em;
+  padding-bottom: .625em
+}
+
+.home-email-signup .email-description {
+  padding-top: .375em;
+  color: #fff
+}
