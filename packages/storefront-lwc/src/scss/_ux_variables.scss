@@ -20,7 +20,7 @@ $font-weight-heavy: 900 !default;
 $font-weight-bold: 600 !default;
 $font-weight-normal: 400 !default;
 
-$breakpoint-mobile-max: 768px;
+$breakpoint-mobile-max: 767px;
 $breakpoint-tablet-min: 768px;
 $breakpoint-desktop-min: 992px;
 
@@ -167,76 +167,7 @@ $breakpoint-desktop-min: 992px;
   @include desktop { font-size: 1.67 * $desktop-base; text-align: left;}
 }
 
-// --------------------------------------------
-// Styles
-// --------------------------------------------
-body {
-  font-family: 'Helvetica Neue', sans-serif;
-  font-size: $base-font-size;
-  color: $dark-gray;
-}
-
-// e.g. Main banner title
-h1 { @include heading-1; }
-
-// e.g. Campaign banner title
-h2 { @include heading-2; }
-
-// e.g. section title (center) , pdp product name/price (text-align:left)
-h3 { @include heading-3; }
-
-// e.g. navigation catalog, breadcrumb title
-h4 { @include heading-4; }
-
-// e.g Search section title
-h5 { @include heading-5; }
-
-// e.g. Product tiles product price small
-h6 { @include heading-6; }
-
-// Primary CTA
-.call-to-action {
-  @include primary-call-to-action;
-}
-
-// Paragraph Large (e.g. editorial text)
-.large-paragraph {
-  @include large-paragraph;
-}
-
-// Paragraph Normal
-.normal-paragraph,
-p {
-  @include normal-paragraph;
-}
-
-// Paragraph Small  (e.g. navigation category)
-.small-paragraph {
-  @include small-paragraph;
-}
-
-// e.g. Links under image
-.caption,
-.normal-link {
-  @include caption;
-}
-
-// e.g. Product Detail Size Chart
-.small-link {
-  @include small-link;
-}
-
-// e.g. Product Detail Size Chart
-.large-link {
-  @include large-link;
-}
-
-// e.g. Product detail origin price for sale product
-.strikethrough,
-.product-sale-strikethrough {
-  @include strikethrough
-}
-
-
 // TODO translate this
 // https://salesforce.invisionapp.com/share/GHU820P6QUP#/screens/387062228_Section_Spacing
+
+
