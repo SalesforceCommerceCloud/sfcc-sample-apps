@@ -98,6 +98,7 @@ class Product {
         this.images = getImages(apiProduct.image_groups);
 
         console.log('Product.constructor(apiProduct)', apiProduct);
+        Object.assign(this, apiProduct);
         this.longDescription = apiProduct.long_description;
         this.shortDescription = apiProduct.short_description;
 
