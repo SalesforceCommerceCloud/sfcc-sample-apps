@@ -1,16 +1,18 @@
 @charset "UTF-8";
 
-// @import "new_variables";
+// @import "ux_variables";
 @import "variables";
 @import "bootstrap-custom-import";
 @import "bootstrapOverrides";
 @import "utilities/responsiveUtils";
+@import "font-awesome/scss/font-awesome";
 @import "components/common";
 @import "components/header";
 @import "components/footer";
 @import "components/hero";
 @import "components/headers";
 @import "components/notification";
+@import url(https://fonts.googleapis.com/css?family=Dosis&subset=latin-ext);
 @import "components/pricing";
 @import "components/productTiles";
 @import "components/tabs";
@@ -19,3 +21,4 @@
 @import "miniCart";
 @import "components/tooltip";
 @import "components/headerSearch";
+@import "ux_defaults";
