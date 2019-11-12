@@ -1,0 +1,8 @@
+@import "../../../scss/components/toastMessage";
+
+.add-to-cart-toast-message {
+    .add-to-cart-message,
+    .add-to-cart-failed {
+        @include toast-message();
+    }
+}

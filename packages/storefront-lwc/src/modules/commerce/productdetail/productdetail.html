@@ -22,11 +22,13 @@
                         </template>
                     </div>
 
-                    <a class="carousel-control-prev" href="javascript: void 0;" role="button" data-slide="prev" onclick={handleCarousel}>
+                    <a class="carousel-control-prev" href="javascript: void 0;" role="button" data-slide="prev"
+                        onclick={handleCarousel}>
                         <span class="fa icon-prev" aria-hidden="true"></span>
                         <span class="sr-only">Previous</span>
                     </a>
-                    <a class="carousel-control-next" href="javascript: void 0;" role="button" data-slide="next" onclick={handleCarousel}>
+                    <a class="carousel-control-next" href="javascript: void 0;" role="button" data-slide="next"
+                        onclick={handleCarousel}>
                         <span class="fa icon-next" aria-hidden="true"></span>
                         <span class="sr-only">Next</span>
                     </a>
@@ -85,7 +87,7 @@
                     <!-- Product Availability -->
                     <!-- Availability -->
                     <div class="availability col-md-10 col-12 product-availability" data-ready-to-order="false"
-                         data-available="true">
+                        data-available="true">
                         <div class="row">
                             <div class="col-12 col-sm-4">
                                 <label class="availability">
@@ -123,12 +125,21 @@
 
                         <div class="row cart-and-ipay">
                             <div class="col-sm-12">
-                                <input type="hidden" class="add-to-cart-url"
-                                       value="/on/demandware.store/Sites-RefArch-Site/en_US/Cart-AddProduct">
-                                <button class="add-to-cart btn btn-primary" onclick={addToCartHandler}>
-                                    <i class="fa fa-shopping-bag"></i>
-                                    Add to Cart
-                                </button>
+                                <template if:false={readyToAddToCart}>
+                                    <button class="add-to-cart btn btn-primary" onclick={addToCartHandler}>
+                                        <i class="fa fa-shopping-bag"></i>
+                                        Add to Cart
+                                    </button>
+                                </template>
+                                <template if:true={readyToAddToCart}>
+                                    <button class="add-to-cart btn btn-primary" disabled onclick={addToCartHandler}>
+                                        <i class="fa fa-shopping-bag"></i>
+                                        Add to Cart
+                                    </button>
+                                </template>
+                                <commerce-toastmessage alert-success-message="Your Product successfully added to Cart"
+                                    alert-fail-message="Not able to add Product to Cart">
+                                </commerce-toastmessage>
                             </div>
                         </div>
 

@@ -5,6 +5,7 @@ import { productDetailById, ShoppingCart } from 'commerce/data'
 export default class ProductDetail extends LightningElement {
 
     @api pid = '';
+    @track readyToAddToCart = false;
     @track product = { images : [] };
     activeImage;
     @wire(productDetailById, {pid: '$pid'})
