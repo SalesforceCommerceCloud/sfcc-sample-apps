@@ -41,6 +41,7 @@
     "@sfcc-bff/contentapi": "0.0.1-sfcc-alpha-1",
     "@sfcc-bff/customerapi": "0.0.1-sfcc-alpha-1",
     "@sfcc-bff/loginapi": "0.0.1-sfcc-alpha-1",
+    "@sfcc-bff/cartapi": "0.0.1-sfcc-alpha-1",
     "@sfcc-bff/productapi": "0.0.1-sfcc-alpha-1",
     "@sfcc-core/apiconfig": "0.0.1-sfcc-alpha-1",
     "@sfcc-core/core": "0.0.1-sfcc-alpha-1",
