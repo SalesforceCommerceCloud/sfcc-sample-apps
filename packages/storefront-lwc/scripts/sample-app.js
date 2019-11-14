@@ -15,6 +15,7 @@ import '@sfcc-bff/productapi';
 import '@sfcc-bff/contentapi';
 import '@sfcc-bff/customerapi';
 import '@sfcc-bff/loginapi';
+import '@sfcc-bff/cartapi';
 
 //
 // Import Keys needed to access core services end extensions
