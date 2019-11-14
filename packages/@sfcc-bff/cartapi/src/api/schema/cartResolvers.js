@@ -1,5 +1,5 @@
 import { ApolloError } from 'apollo-server';
-import { dataSourcesFactory } from '@sfcc-dev/core-graphql';
+import { dataSourcesFactory } from '@sfcc-core/core-graphql';
 
 export const resolver = (config) => {
     return {

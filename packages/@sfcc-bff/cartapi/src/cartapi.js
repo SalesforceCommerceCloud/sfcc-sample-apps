@@ -1,6 +1,6 @@
 // SFRA Core Extension module
-import { core, API_EXTENSIONS_KEY } from '@sfcc-dev/core';
-import { resolverFactory, dataSourcesFactory } from "@sfcc-dev/core-graphql";
+import { core, API_EXTENSIONS_KEY } from '@sfcc-core/core';
+import { resolverFactory, dataSourcesFactory } from "@sfcc-core/core-graphql";
 
 import {
     cartTypeDef,
