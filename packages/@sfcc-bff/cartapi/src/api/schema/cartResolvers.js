@@ -1,26 +1,41 @@
 import { ApolloError } from 'apollo-server';
-import { dataSourcesFactory } from '@sfcc-core/core-graphql';
+import Cart from '../models/Cart';
+import fetch from 'node-fetch';
+
+const getBearerToken = async(config) => {
+    const body = {
+        "type": "guest"
+    };
+    const getToken_URL = `${config.COMMERCE_BASE_URL}/customers/auth?client_id=${config.COMMERCE_APP_API_CLIENT_ID}`;
+    const response = await fetch(getToken_URL, {
+        method: 'post',
+        body:    JSON.stringify(body),
+        headers: { 'Content-Type': 'application/json' },
+    });
+    return response.headers.get('Authorization');
+}
+
+const createBasket = async (config) => {
+    const bearerToken = await getBearerToken(config);
+    const createBasket_URL = `${config.COMMERCE_BASE_URL}/baskets`;
+    return await fetch(createBasket_URL, {
+        method: 'post',
+        headers: { 'Content-Type': 'application/json', 'Authorization': bearerToken },
+    }).then(res => res.json());
+}
 
 export const resolver = (config) => {
     return {
-        // TODO: convert productapi to use datasource method, then use product model datasource here
         Query: {
-            getCart: async (_, { cartId }, { dataSources }) => {
+            getCart: (_, { cartId }) => {
                 return dataSources.cart.getCart(cartId);
             }
         },
         Mutation: {
-            createCart: async (_, args, { dataSources }) => {
-                return dataSources.cart.createCart();
-            },
-            deleteCart: async (_, { cartId }, { dataSources }) => {
-                return dataSources.cart.deleteCart(cartId);
-            },
-            addToCart: async (_, { cartId, productId }, { dataSources }) => {
-                return dataSources.cart.addToCart(cartId, productId);
-            },
-            deleteFromCart: async (_, { cartId, itemId }, { dataSources }) => {
-                return dataSources.cart.deleteFromCart(cartId, itemId);
+            createCart: async (_, {}) => {
+                const myCart = await createBasket(config);
+                console.log('hahaha I got the myCart is ', myCart);
+                return new Cart(myCart);
             }
         }
     }

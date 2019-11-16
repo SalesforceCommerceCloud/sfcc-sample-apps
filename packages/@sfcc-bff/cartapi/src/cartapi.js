@@ -4,8 +4,7 @@ import { resolverFactory, dataSourcesFactory } from "@sfcc-core/core-graphql";
 
 import {
     cartTypeDef,
-    cartResolver,
-    cartDataSource
+    cartResolver
 } from './api/index';
 
 export default class CartAPI {
@@ -38,7 +37,7 @@ export default class CartAPI {
         core.logger.log('cartAPI.getDataSources()', config);
         core.logger.log('===========================');
         core.logger.log('===========================');
-        return dataSourcesFactory(config, [cartDataSource]);
+        return dataSourcesFactory(config, []);
     }
 
 }
