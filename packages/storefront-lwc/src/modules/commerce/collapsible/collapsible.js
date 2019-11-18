@@ -1,8 +1,16 @@
-import { LightningElement, api } from 'lwc'
+import { LightningElement, api, track } from 'lwc'
 
 export default class CollapsibleContent extends LightningElement {
+  @track altCollapsibleContent;
   @api collapsibleTitle;
-  @api collapsibleContent;
+  @api get collapsibleContent() {
+    return this._collapsibleContent;
+  };
+
+  set collapsibleContent(value) {
+    this.altCollapsibleContent = value;
+    return this._collapsibleContent = value;
+  };
 
   constructor() {
       super();
@@ -25,5 +33,6 @@ export default class CollapsibleContent extends LightningElement {
   }
 
   renderedCallback() {
+    this.template.querySelector('.card-body').innerHTML = this.collapsibleContent ? this.collapsibleContent : '';
   }
 }
