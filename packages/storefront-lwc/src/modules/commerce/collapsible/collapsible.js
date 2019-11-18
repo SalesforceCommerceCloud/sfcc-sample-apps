@@ -1,8 +1,8 @@
 import { LightningElement, api } from 'lwc'
 
-export default class ProductDescription extends LightningElement {
-  @api productShortDescription;
-  @api productLongDescription;
+export default class CollapsibleContent extends LightningElement {
+  @api collapsibleTitle;
+  @api collapsibleContent;
 
   constructor() {
       super();

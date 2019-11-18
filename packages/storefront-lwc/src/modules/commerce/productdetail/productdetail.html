@@ -151,8 +151,12 @@
         <div class="recommendations">
         </div>
     </div>
-    <commerce-productdescription
-        product-long-description={product.longDescription}
-        product-short-description={product.shortDescription}>
-    </commerce-productdescription>
+    <commerce-collapsible
+        collapsible-title="Description"
+        collapsible-content={product.longDescription}>
+    </commerce-collapsible>
+    <commerce-collapsible
+        collapsible-title="Detail"
+        collapsible-content={product.shortDescription}>
+    </commerce-collapsible>
 </template>

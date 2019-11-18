@@ -1,6 +1,6 @@
 @import "../../../scss/ux_variables";
 
-.description-and-detail {
+.collapsible {
     padding-left: 1.875em;
     padding-right: 1.875em;
 
@@ -31,16 +31,14 @@
         }
     }
 
-    .description .title::after,
-    .details .title::after {
+    .title::after {
         float: right;
         content: "\f078";
         font-family: "FontAwesome";
         font-size: medium;
     }
 
-    .description .title.active::after,
-    .details .title.active::after {
+    .title.active::after {
         content: "\f077";
         margin-top: -0.125em;
         font-size: medium;
