@@ -2,7 +2,8 @@ import { LightningElement, api, track } from 'lwc'
 
 export default class CollapsibleContent extends LightningElement {
   @track altCollapsibleContent;
-  @api collapsibleTitle;
+  @track altCollapsibleTitle;
+
   @api get collapsibleContent() {
     return this._collapsibleContent;
   };
@@ -10,6 +11,15 @@ export default class CollapsibleContent extends LightningElement {
   set collapsibleContent(value) {
     this.altCollapsibleContent = value;
     return this._collapsibleContent = value;
+  };
+
+  @api get collapsibleTitle() {
+    return this._collapsibleTitle;
+  };
+
+  set collapsibleTitle(value) {
+    this.altCollapsibleTitle = value;
+    return this._collapsibleTitle = value;
   };
 
   constructor() {
