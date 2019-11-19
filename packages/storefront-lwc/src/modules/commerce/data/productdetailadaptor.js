@@ -28,12 +28,10 @@ register(productDetailById, (eventTarget) => {
                         product(id: "${ pid }") {
                             name
                             id
-                            page_description
-                            long_description
-                            short_description
+                            longDescription
+                            shortDescription
                             currency
                             price
-                            primary_category_id
                             image
                             images(allImages: true, size: "large") {
                                 title

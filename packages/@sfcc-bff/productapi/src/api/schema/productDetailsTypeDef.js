@@ -12,10 +12,8 @@ export const typeDef = gql`
         name: String!
         price: Float!
         currency: String!
-        page_description: String!
-        long_description: String!
-        short_description: String!
-        primary_category_id: String!
+        longDescription: String!
+        shortDescription: String!
         image: String!
         images(allImages: Boolean = true, size: String = "large"): [Image!]
         variants: [Variant],

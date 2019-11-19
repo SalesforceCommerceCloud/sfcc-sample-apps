@@ -98,7 +98,9 @@ class Product {
         this.images = getImages(apiProduct.image_groups);
 
         console.log('Product.constructor(apiProduct)', apiProduct);
-        Object.assign(this, apiProduct)
+        Object.assign(this, apiProduct);
+        this.longDescription = apiProduct.long_description;
+        this.shortDescription = apiProduct.short_description;
 
         // TODO: remove the following and use the above this.images
         this.image = apiProduct.image_groups[0].images[0].link;
