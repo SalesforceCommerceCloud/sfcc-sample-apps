@@ -1,25 +1,25 @@
 import { LightningElement, api, track } from 'lwc'
 
 export default class CollapsibleContent extends LightningElement {
-  @track altCollapsibleContent;
-  @track altCollapsibleTitle;
+  @track titleContent;
+  @track titleTitle;
 
-  @api get collapsibleContent() {
+  @api get content() {
     return this._collapsibleContent;
   };
 
-  set collapsibleContent(value) {
-    this.altCollapsibleContent = value;
+  set content(value) {
+    this.titleContent = value;
     return this._collapsibleContent = value;
   };
 
-  @api get collapsibleTitle() {
-    return this._collapsibleTitle;
+  @api get title() {
+    return this._title;
   };
 
-  set collapsibleTitle(value) {
-    this.altCollapsibleTitle = value;
-    return this._collapsibleTitle = value;
+  set title(value) {
+    this.titleTitle = value;
+    return this._title = value;
   };
 
   constructor() {
@@ -43,6 +43,7 @@ export default class CollapsibleContent extends LightningElement {
   }
 
   renderedCallback() {
-    this.template.querySelector('.card-body').innerHTML = this.collapsibleContent ? this.collapsibleContent : '';
+    this.template.querySelector('.card-header h4').innerHTML = this.title ? this.title : '';
+    this.template.querySelector('.card-body').innerHTML = this.content ? this.content : '';
   }
 }

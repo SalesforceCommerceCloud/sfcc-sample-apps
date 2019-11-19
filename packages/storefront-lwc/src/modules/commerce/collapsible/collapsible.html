@@ -7,12 +7,17 @@
                         <h4 
                             onclick={toggledropdown}
                             class="title text-left" 
-                            aria-expanded="false">
-                            {collapsibleTitle}
+                            aria-expanded="false"
+                            data-title={titleTitle} 
+                            lwc:dom="manual">
                         </h4>
                     </div>
                     <div class="collapse">
-                        <div lwc:dom="manual" class="card-body" alt={altCollapsibleContent}></div>
+                        <div 
+                            lwc:dom="manual" 
+                            class="card-body" 
+                            data-title={titleContent}>
+                        </div>
                     </div>
                 </div>
             </div>
