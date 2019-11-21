@@ -7,7 +7,7 @@ export const typeDef = gql`
     extend type Mutation {
         createCart: Cart!
         deleteCart(cartId: String!): String!
-        addToCart(cartId: String!, productId: String!): Cart!
+        addToCart(cartId: String!, productId: String!, quantity: Int!): Cart!
         deleteFromCart(cartId: String!, itemId: String!): Cart!
     }
     type Cart {
@@ -16,6 +16,8 @@ export const typeDef = gql`
     }
     type ProductItem {
         productId: String!
+        productName : String!
+        quantity: Int!
         itemId: String!
     }
 `;
