@@ -80,7 +80,11 @@ var getVariationAttributes = (variationAttributes, imageGroups) => {
                 },
                 variationAttributeValues: variationAttribute.values.map(variationAttributeValue => {
                     let swatchImage = imageGroups.find(imageGroup => {
-                        return (imageGroup.view_type === "swatch") && (imageGroup.variation_attributes[0].values[0].value === variationAttributeValue.value)
+                        if (imageGroup.variation_attributes) {
+                            return (imageGroup.view_type === "swatch") && (imageGroup.variation_attributes[0].values[0].value === variationAttributeValue.value)
+                        } else {
+                            return false;
+                        }
                     })
                     return {
                         name: variationAttributeValue.name,
