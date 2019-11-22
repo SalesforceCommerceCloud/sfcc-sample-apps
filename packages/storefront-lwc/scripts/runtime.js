@@ -14,7 +14,7 @@ import {
     resourceMiddleware,
     contextService,
     staticMiddleware,
-    templateMiddleware,
+    templateMiddleware
 } from '@webruntime/compiler';
 
 // ****************************************************
@@ -54,6 +54,11 @@ const mode = process.env.NODE_ENV || 'development';
         // Error handling
         sampleApp.expressApplication.use(compileErrorMiddleware());
     }
+
+    // provide route for service-worker
+    sampleApp.expressApplication.use("/service-worker.js", (req, res) => {
+        res.sendFile(path.resolve(__dirname, "service-worker.js"));
+    });
 
     // Serve up static files
     sampleApp.expressApplication.use('/', express.static(publicDir, {

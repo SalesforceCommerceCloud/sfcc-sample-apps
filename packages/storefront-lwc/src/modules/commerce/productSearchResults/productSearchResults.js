@@ -70,8 +70,7 @@ export default class Search extends LightningElement {
 
         // Listen to search query from header search component
         window.addEventListener('update-query-event', e => {
-            this.loading = true;
-            // this.query = e.detail.query;
+            this.loading = (e.detail && e.detail.query !== this.query);
         });
 
         window.addEventListener('toggle-refinement', e => {
@@ -86,20 +85,12 @@ export default class Search extends LightningElement {
         this.query = view.attributes.query;
     }
 
-    disconnectedCallback() {
-        //this.routeSubscription.unsubscribe();
-    }
-
     hasQuery() {
         return !!this.query;
     }
 
     hasProducts() {
         return !!this.products && !!this.products.length;
-    }
-
-    connectedCallback() {
-        console.log('ProductSearchResults.connectedCallback()')
     }
 
     /**

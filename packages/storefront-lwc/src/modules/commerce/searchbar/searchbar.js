@@ -13,7 +13,6 @@ export default class SearchBar extends LightningElement {
 
     constructor() {
         super();
-        console.log('*************************** subs')
         this.routeSubscription = router.subscribe(this.routeSubHandler.bind(this));
     }
 
@@ -36,7 +35,7 @@ export default class SearchBar extends LightningElement {
     /**
      * Handles pressing 'Enter' in the search field
      */
-    handleKeyUp(event) {
+    handleKey(event) {
         this.query = (event.target.value || '').trim();
 
         if (event.key === 'Enter') {
@@ -47,12 +46,9 @@ export default class SearchBar extends LightningElement {
         }
     };
 
-    connectedCallback() {
-    }
-
-    renderedCallback() {
-    }
-
-    disconnectedCallback(){
+    handleIconClick() {
+        if (!!this.query) {
+            this.updateQueryEvent();
+        }
     }
 }

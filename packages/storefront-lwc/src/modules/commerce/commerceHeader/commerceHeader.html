@@ -1,35 +1,62 @@
 <template>
-    <div>
-        <header>
-            <nav>
-                <div class='header container'>
-                    <div class='row'>
-                        <div class='col-12'>
-                            <div class='navbar-header brand'>
-                                <!--<Link to='/'>-->
-                                <!--<img src={logo} class='logo' alt='logo' ref={logo => (this.logo = logo)} />-->
-                                <!--</Link>-->
-                                <a href="/">
-                                    <img src={logo} class='logo' alt='logo'/>
-                                </a>
-                            </div>
-                            <div class='navbar-header'>
-                                <div class='pull-right'>
+    <nav role="navigation">
+        <div class="container">
+            <div class="row header">
 
-                                    <commerce-searchbar></commerce-searchbar>
-                                    <commerce-headercart></commerce-headercart>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <!-- Desktop -->
+                <div class="col text-right d-none d-md-block logo">
+                    <a href="/">
+                        <img class="" src="/assets/images/logo-small.svg" alt="Logo">
+                    </a>
                 </div>
-                <div class='main-menu navbar-toggleable-sm menu-toggleable-left multilevel-dropdown'>
-
-                    <commerce-navigation></commerce-navigation>
-
+                <div class="col text-right d-none d-md-block">
+                    <!-- language -->
                 </div>
-            </nav>
-        </header>
-    </div>
+
+                <!-- MOBILE -->
+                <div class="col text-left d-md-none mobile-menu">
+                    <button class="navbar-toggler d-md-none text-left" type="button">
+                        <span class="menu-icon">☰</span>
+                        <span class="hidden-xs-down">Menu</span>
+                    </button>
+                </div>
+                <div class="col text-center d-md-none logo">
+                    <a href="/">
+                        <img class="" src="/assets/images/logo-small.svg" alt="Logo">
+                    </a>
+                </div>
+                <div class="col text-right d-md-none mini-cart">
+                    <commerce-headercart></commerce-headercart>
+                </div>
+
+                <!-- Mobile/Tablet/Desktop -->
+                <div class="col-12 col-md-6 text-center searchbar">
+                    <commerce-searchbar></commerce-searchbar>
+                </div>
+
+                <!-- Desktop -->
+                <div class="col text-right d-none d-md-block sign-in">
+                    <a href="/login" title="Sign In">
+                        <i class=" fa fa-user"></i>
+                        <span>Sign In</span>
+                    </a>
+                </div>
+                <div class="col text-left d-none d-md-block">
+                    <commerce-headercart></commerce-headercart>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="container">
+                <div class="row">
+                    <!-- ------------------------------------------------------------------ -->
+                    <!-- TBD Include Category Navigation (mobile/tablet/desktop) -->
+                    <!-- ------------------------------------------------------------------ -->
+                </div>
+            </div>
+        </div>
+    </nav>
 </template>
+
+

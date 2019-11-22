@@ -19,6 +19,7 @@ register(productDetailById, (eventTarget) => {
         if (pid && pid.length) {
             try {
                 // TODO: read from api config
+                // TODO: Need to rework and use lwc-apollo-client (no new ApolloClient() to get caching)
                 var client = new window.ApolloClient({
                     uri: window.apiconfig.COMMERCE_API_PATH || "/graphql"
                 });
