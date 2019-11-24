@@ -5,35 +5,9 @@ import { LightningElement, api } from 'lwc'
 
 export default class ProductPrice extends LightningElement {
 
-   @api product;
+   @api apiPrice;
 
-  // render() {
-  //   const product = this.props.product;
-  //
-  //   if (product) {
-  //     if (product.price_max) {
-  //       return (
-  //         <span className='sales'>
-  //           <Currency quantity={product.price} currency={product.currency} />
-  //           -
-  //           <Currency quantity={product.price_max} currency={product.currency} />
-  //         </span>
-  //       );
-  //     } else {
-  //       return (
-  //         <span className='sales'>
-  //           <Currency quantity={product.price} currency={product.currency} />
-  //         </span>
-  //       );
-  //     }
-  //   }
-  // }
+   get price () {
+     return this.apiPrice.toFixed(2);
+   }
 }
-
-// ProductPrice.propTypes = {
-//   product: PropTypes.shape({
-//     currency: PropTypes.string.isRequired,
-//     price: PropTypes.number.isRequired,
-//     price_max: PropTypes.number
-//   })
-// };

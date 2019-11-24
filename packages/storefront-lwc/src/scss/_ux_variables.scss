@@ -10,6 +10,7 @@ $base-font-size: 14px !default;
 $light-gray: #999 !default;
 $medium-gray: #444 !default;
 $dark-gray: #222 !default;
+$gray-4: #ccc !default;
 $white: #fff !default;
 
 $mobile-base: 0.875rem !default;
@@ -19,6 +20,10 @@ $desktop-base: 1.125rem !default;
 $font-weight-heavy: 900 !default;
 $font-weight-bold: 600 !default;
 $font-weight-normal: 400 !default;
+
+// Product Tile
+$product-swatch-shadow-color: $gray-4 !default;
+$product-tile-more-swatch-color: $medium-gray !default;
 
 $breakpoint-mobile-max: 767px;
 $breakpoint-tablet-min: 768px;

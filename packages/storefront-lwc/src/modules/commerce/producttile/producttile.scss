@@ -1,0 +1,16 @@
+@import "../../../scss/ux_variables";
+
+.product-tile {
+    .tile-body {
+        @include mobile { font-size: 0.875em; }
+        @include tablet { font-size: 1em; }
+        @include desktop { font-size: 1.125em; }
+
+        padding: 0;
+
+        .pdp-link,
+        .price {
+            padding-top: 0.3125em;
+        }
+    }
+}
