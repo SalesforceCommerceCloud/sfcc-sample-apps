@@ -98,13 +98,18 @@ const getCartByCustomerId = async (customerId, config) => {
     }).then(res => res.json())
 }
 
-const deleteProductFromCart = async (productId, config) => {
+const deleteProductFromCart = async (itemId, config) => {
+    if (!itemId) {
+        return { 
+            fault : { message: 'A valid itemId is needed!' }
+        };
+    };
     let customerCart = await getCartByCustomerId(Cart.customerId, config);
     if (customerCart.fault) {
         return customerCart;
     } else {
         Cart.cartId = customerCart.baskets[0].basket_id;
-        const deleteFromCartUrl = `${config.COMMERCE_BASE_URL}/baskets/${Cart.cartId}/items/${productId}`;
+        const deleteFromCartUrl = `${config.COMMERCE_BASE_URL}/baskets/${Cart.cartId}/items/${itemId}`;
         return await fetch(deleteFromCartUrl, {
             method: 'delete',
             headers: { 'Content-Type': 'application/json', 'Authorization': Cart.authToken }
@@ -171,8 +176,8 @@ export const resolver = (config) => {
                     return new Cart(apiCart);
                 }
             },
-            deleteProductFromCart: async (_, { productId }) => {
-                const apiCart = await deleteProductFromCart(productId, config);
+            deleteProductFromCart: async (_, { itemId }) => {
+                const apiCart = await deleteProductFromCart(itemId, config);
                 if (!apiCart.fault) {
                     return new Cart(apiCart);
                 } else {
