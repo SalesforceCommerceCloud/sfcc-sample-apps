@@ -17,6 +17,7 @@ export const typeDef = gql`
         name: String!
         price: Float!
         image: Image!
+        colorSwatches: [ColorSwatch]
     }
 
     type Refinement {
@@ -38,5 +39,14 @@ export const typeDef = gql`
     input Filter {
         id: String!
         value: String!
+    }
+
+    type ColorSwatch {
+        name: String!
+        value: String!
+        title: String
+        link: String
+        alt: String
+        style: String
     }
 `;

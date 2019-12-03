@@ -1,0 +1,11 @@
+@import "../../../scss/ux_variables";
+
+.swatch-button {
+    border-radius: 50%;
+    width: 1.25em;
+    height: 1.25em;
+    border: 0.1875em solid white;
+    padding: 0;
+    box-shadow: 0 0 0 0.125em $product-swatch-shadow-color;
+    box-sizing: content-box;
+}

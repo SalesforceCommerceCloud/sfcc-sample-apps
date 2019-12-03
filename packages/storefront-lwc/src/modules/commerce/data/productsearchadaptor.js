@@ -73,6 +73,14 @@ register(productsByQuery, (eventTarget) => {
                                   link
                                   alt
                                 }
+                                colorSwatches {
+                                    name
+                                    value
+                                    title
+                                    link
+                                    alt
+                                    style
+                                }
                               }
                                 refinements {
                                 values {
