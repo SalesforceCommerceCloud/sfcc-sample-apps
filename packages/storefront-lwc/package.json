@@ -23,8 +23,8 @@
     "stop": " lsof -t -i tcp:3000 | xargs kill",
     "start:watch": "concurrently \"yarn start\" \"node scripts/copy-resources.js --watch\" \"yarn watch:scss\"",
     "watch:scss": "yarn watch:public:scss && yarn watch:lwc:scss",
-    "watch:lwc:scss": "node-sass src/modules/commerce -wo src/modules/commerce --include-path node_modules",
-    "watch:public:scss": "node-sass src/scss -wo dist/public/assets/css --include-path node_modules"
+    "watch:lwc:scss": "yarn build:lwc:scss && node-sass src/modules/commerce -wo src/modules/commerce --include-path node_modules",
+    "watch:public:scss": "yarn build:public:scss && node-sass src/scss -wo dist/public/assets/css --include-path node_modules"
   },
   "dependencies": {
     "@babel/core": "^7.2.2",

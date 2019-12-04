@@ -5,17 +5,11 @@ export default class CommerceHeader extends LightningElement {
     @track logo;
     @api test;
 
-    constructor () {
+    constructor() {
         super();
         this.logo = '/assets/images/logo.svg';
     }
 
-    connectedCallback () {
-    }
-
-    renderedCallback () {
-    }
-
-    disconnectedCallback() {
+    renderedCallback() {
     }
 }

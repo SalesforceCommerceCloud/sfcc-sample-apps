@@ -9,6 +9,7 @@ import {
 
 export default class CartAPI {
     constructor(core) {
+        // TODO: no need to pass core anymore
         this.core = core;
         this.core.logger.log('cartAPI.constructor(core)')
     }
