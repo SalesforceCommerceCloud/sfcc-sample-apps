@@ -74,6 +74,11 @@ p {
   @include strikethrough
 }
 
+// Gutter size
+.grid-gutter {
+  @include grid-gutter
+}
+
 
 /**
  * Miscellaneous UX Options

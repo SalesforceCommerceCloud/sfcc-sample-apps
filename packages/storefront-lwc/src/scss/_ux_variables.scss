@@ -5,7 +5,7 @@
 // Translated this
 // https://salesforce.invisionapp.com/share/GHU820P6QUP#/screens/387062219_Font
 
-$base-font-size: 14px !default;
+$base-font-size: 16px !default;
 
 $light-gray: #999 !default;
 $medium-gray: #444 !default;
@@ -170,6 +170,12 @@ $breakpoint-desktop-min: 992px;
   @include mobile { font-size: 1.5 * $mobile-base; text-align: center; }
   @include tablet { font-size: 1.67 * $tablet-base; text-align: left;}
   @include desktop { font-size: 1.67 * $desktop-base; text-align: left;}
+}
+
+@mixin grid-gutter {
+  @include mobile { padding: 0.35714286 * $mobile-base; }
+  @include tablet { padding: 0.46875 * $tablet-base; }
+  @include desktop { padding: .555555556 * $desktop-base;}
 }
 
 // TODO translate this
