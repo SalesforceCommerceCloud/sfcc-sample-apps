@@ -1,83 +1,137 @@
 /**
- * A UI Cart Work Around until Cart BFF and LWC Wire Adaptors are implemented
+ * A cart service to add to cart, load cart and blast off events
  */
 class Cart {
+    cart = {};
 
     listeners = [];
 
-    constructor() {
-        console.log( 'Cart Constructor' )
-    }
+    isCartLoaded = false;
 
     /**
-     * Add to the cart in session storage.
-     * Using simple array currently for a cart.
-     * @param product
+     * Calling Add to the cart BFF.
+     * @param product: the product to add to Cart
      */
+
+    // TODO : wire up the UI quantity selector to pass in quantity to add
     addToCart(product) {
-        console.log( 'add to cart' );
-        let cart = this.getCurrentCart();
-
-        // TODO: need cart to be an object and need unique cart_id for each entry.
-        cart.push( product );
-
-        this.updateCart( cart );
+        let pid = product.id;
+        try {
+            let client = new window.ApolloClient({
+                uri: window.apiconfig.COMMERCE_API_PATH || '/graphql'
+            });
+            return client.mutate({
+                mutation: window.gql`
+                mutation {
+                    addProductToCart(productId: "${ pid }", quantity: 1){
+                      cartId
+                      customerId
+                      addProductMessage
+                      getCartMessage
+                      totalProductsQuantity
+                      products {
+                        productId
+                        itemId
+                        quantity
+                        productName
+                      }
+                    }
+                  }
+             `
+            }).then(result => {
+                this.cart = result.data.addProductToCart;
+                this.isCartLoaded = true;
+                this.updateCart('add-to-cart');
+                return this.cart;
+            }).catch((error) => {
+                console.log('addToCart failed with message', error);
+                this.updateCart('failed-add-to-cart');
+                return {};
+            });
+        } catch (e) {
+            console.log('addToCart Exception received', e);
+            this.updateCart('failed-add-to-cart');
+            return {};
+        }
     }
 
+    // TODO : wire this call with BFF
     removeFromCart(index) {
         let cart = this.getCurrentCart();
         if (index > -1) {
-            cart.splice( index, 1 );
+            cart.splice(index, 1);
         }
 
-        this.updateCart( cart );
+        this.updateCart(cart);
     }
 
     /**
-     * Update or Creates the session storage cart.
-     *
-     * @param cart  A valid JSON string
-     *              or valid empty array or array of products.
+     * Execute each handler registered
+     * @param {eventType} eventType of the event
      *
      */
-    updateCart(cart) {
-        if (typeof cart === 'string') {
-            sessionStorage.setItem( 'cart', cart );
-        } else if (cart && cart.length) {
-            sessionStorage.setItem( 'cart', JSON.stringify( cart ) );
-        } else {
-            cart = [];
-            sessionStorage.setItem( 'cart', JSON.stringify( cart ) );
-        }
-        this.listeners.forEach( (cb) => {
-            cb();
-        } )
+    updateCart(eventType) {
+        this.listeners.forEach((cb) => {
+            cb(eventType);
+        });
     }
 
     /**
-     * Get the current cart in the session.
-     * @return {Array}
+     * get the quantity of Cart if Cart is loaded
+     * if first time landing the page, call loadCart()
+     * @returns {quantity} for miniCart to display
      */
-    getCurrentCart() {
-        let cart = sessionStorage.getItem( 'cart' );
+    getCartQuantity() {
+        if (this.isCartLoaded) {
+            return this.cart.totalProductsQuantity || 0;
+        }
+        this.loadCart();
+        return 0;
+    }
 
+    /**
+     * Get the current cart from BFF.
+     * @returns {Object} cart object
+     */
+    loadCart() {
         try {
-            if (cart) {
-                cart = JSON.parse( cart );
-            } else {
-                cart = [];
-                sessionStorage.setItem( 'cart', JSON.stringify( cart ) );
-            }
+            let client = new window.ApolloClient({
+                uri: window.apiconfig.COMMERCE_API_PATH || '/graphql'
+            });
+            return client.query({
+                query: window.gql`
+                {
+                    getCart{
+                        cartId
+                        customerId
+                        getCartMessage
+                        totalProductsQuantity
+                        products {
+                            productId
+                            itemId
+                            quantity
+                            productName
+                        }
+                    }
+                }
+             `
+            }).then(result => {
+                this.cart = result.data.getCart;
+                this.isCartLoaded = true;
+                this.updateCart('cart-loaded');
+                return this.cart;
+            }).catch((error) => {
+                console.log('Warning: No Cart has been created yet!', error);
+                return {};
+            });
         } catch (e) {
-            cart = [];
-            sessionStorage.setItem( 'cart', JSON.stringify( cart ) );
+            console.log('Exception loading cart', e);
+            return {};
         }
-
-        return cart;
     }
 
-    addToCartListener(callback) {
-        this.listeners.push( callback );
+    updateCartListener(callback) {
+        this.listeners.push(callback);
     }
 }
 

@@ -1,7 +1,5 @@
 import { register, ValueChangedEvent } from 'wire-service';
 
-//import ApolloClient from 'ApolloClient';
-
 export const productDetailById = Symbol('product-detail');
 
 register(productDetailById, (eventTarget) => {
@@ -14,12 +12,9 @@ register(productDetailById, (eventTarget) => {
      */
     const fetchProductById = (options) => {
         const pid = options.pid;
-        console.log('Load Product by pid: ' + pid);
 
         if (pid && pid.length) {
             try {
-                // TODO: read from api config
-                // TODO: Need to rework and use lwc-apollo-client (no new ApolloClient() to get caching)
                 var client = new window.ApolloClient({
                     uri: window.apiconfig.COMMERCE_API_PATH || "/graphql"
                 });
@@ -68,11 +63,11 @@ register(productDetailById, (eventTarget) => {
                 }).then(result => {
                     return result.data.product;
                 }).catch((error) => {
-                    console.log(error);
+                    console.log('Error fetching product by ID ', error);
                     return {};
                 });
             } catch (e) {
-                console.log("error", e);
+                console.log('Exception fetching product by ID ', e);
                 return {};
             }
         } else {
