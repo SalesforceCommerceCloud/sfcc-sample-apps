@@ -1,4 +1,3 @@
-@import "../utilities/swatch";
 @import "../variables";
 
 .site-search {
@@ -72,10 +71,6 @@
         display: flex;
         position: fixed;
         width: 100%;
-    }
-
-    .swatch-circle {
-        @include swatch(2.5em, $white);
     }
 
     .header {

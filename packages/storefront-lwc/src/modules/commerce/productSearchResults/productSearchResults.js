@@ -13,6 +13,11 @@ export default class Search extends LightningElement {
     @track refinements = [];
     @track query = '';
     @track loading = false;
+    // Is this the right way to do this? Todo: Ask Jason
+    @track currentRefinements = {
+        hasRefinements: false,
+        values: []
+    };
     sortRule;
     selectedRefinements = {};
     routeSubscription;
@@ -30,7 +35,7 @@ export default class Search extends LightningElement {
     @wire(productsByQuery, {query: '$query', sortRule: '$sortRule', selectedRefinements: '$selectedRefinements'})
     updateProducts(json) {
 
-        console.log(this.query)
+        console.log(this.query);
         console.log('===============================');
         console.log('API', (json.data && json.data.productSearch) ? json.data.productSearch : 'no results or query');
         console.log('===============================');
@@ -55,6 +60,17 @@ export default class Search extends LightningElement {
                     }
                 })
             });
+
+            if (json.data.productSearch.currentFilters && json.data.productSearch.currentFilters.length) {
+                this.currentRefinements.values = [];
+                json.data.productSearch.currentFilters.forEach(filter => {
+                    if (filter.id !== 'sort') {
+                        this.currentRefinements.values.push(filter);
+                    }
+                });
+
+                this.currentRefinements.hasRefinements = this.currentRefinements.values.length > 0;
+            }
         } else {
             this.products = [];
             this.refinements = [];
@@ -99,10 +115,13 @@ export default class Search extends LightningElement {
     toggleRefinement = (refinement, value) => {
         this.selectedRefinements[refinement] = this.selectedRefinements[refinement] || [];
         const index = this.selectedRefinements[refinement].indexOf(value);
-        let isSelected = index === -1
-
+        let isSelected = index === -1;
         if (isSelected) {
-            this.selectedRefinements[refinement].push(value);
+            if (refinement !== 'cgid') {
+                this.selectedRefinements[refinement].push(value);
+            } else {
+                this.selectedRefinements[refinement][0] = value;
+            }
         } else {
             this.selectedRefinements[refinement].splice(index, 1);
         }
@@ -122,12 +141,12 @@ export default class Search extends LightningElement {
                 this.sortRule = option;
             }
         });
-    }
+    };
 
     newSortRule = (event) => {
         const newSortRule = event.target.value;
         this.updateSortOptions(newSortRule);
-    }
+    };
 
     renderedCallback() {
         // TODO: ugh. why is LWC stripping 'option[selected]' attribute?
@@ -140,15 +159,14 @@ export default class Search extends LightningElement {
                 }
             }
         })
-    }
+    };
 
     resetRefinements = () => {
         this.selectedRefinements = {};
         this.sortRule = this.sortOptions[0];
-    }
+    };
 
-    renderedCallback() {
-        console.log('ProductSearchResults renderedCallback()');
-    }
-
+    toggleRefinmentBar = () => {
+        this.isShowRefinementBar = !this.isShowRefinementBar;
+    };
 }

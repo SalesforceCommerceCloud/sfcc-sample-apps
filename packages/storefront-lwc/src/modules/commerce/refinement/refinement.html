@@ -1,32 +1,37 @@
 <template>
-    <!--<div key={refinement.attribute_id} className={'card collapsible-sm refinement refinement-' + refinement.label}>-->
-    <div key={refinement.attribute_id} class='card collapsible-sm refinement refinement-Color'>
-        <div class='card-header'>{refinement.label}</div>
-        <div class='card-body'>
-            <ul class='values content'>
-                <template for:each={refinement.values} for:item="refinementValue">
-                    <!--const isSelected = this.props.selectedValues && this.props.selectedValues.indexOf(refinement.value) > -1;-->
+    <div if:true={refinement.values} key={refinement.attribute_id} class="card collapsible-card refinement">
+        <div class='card-header'>
+            <h5 class="collapsible-card-title active" aria-expanded="true" onclick={toggleDropdown}>{refinement.label}</h5>
+        </div>
 
-                    <li
-                        key={refinementValue.key}
-                        class={refinementValue.labelLowerClass}
-                        title={refinementValue.title}
-                        onclick={refinementValue.toggleRefinement}>
+        <div class='card-body collapse show values content'>
+            <div class="container-fluid">
+                <div class="row">
+                    <template for:each={refinement.values} for:item="refinementValue">
+                        <template if:false={refinementValue.isCategory}>
+                            <div if:true={refinementValue.toDisplay} key={refinementValue.key} class="form-check col-sm-3 col-md-12">
+                                <input class="form-check-input" type="checkbox" value={refinementValue.title} id={refinementValue.key} onclick={refinementValue.toggleRefinement}>
+                                <label class="form-check-label refinement-label" for={refinementValue.key}>
+                                    <div if:false={refinementValue.isColor} title={refinementValue.title}>
+                                        <div>{refinementValue.label} ({refinementValue.hit_count})</div>
+                                    </div>
 
-                        <!-- Show circle or circle-check for non color items -->
-                        <i if:false={refinementValue.isColor} class={refinementValue.checkStateClasses}></i>
+                                    <div if:true={refinementValue.isColor} title={refinementValue.title}>
+                                        <div class={refinementValue.colorClassNames}></div>
+                                        <div class="color-refinement-label d-inline">{refinementValue.label} ({refinementValue.hit_count})</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </template>
 
-                        <span
-                            title={refinementValue.title}
-                            class={refinementValue.colorClassNames}>
-                            <span if:false={refinementValue.isColor}>
-                                {refinementValue.label} {refinementValue.hit_count}
-                            </span>
-                        </span>
-                    </li>
-
-                </template>
-            </ul>
+                        <template if:true={refinementValue.isCategory}>
+                            <div class="col-12 category-refinement" key={refinementValue.key}>
+                                <commerce-category-refinement refinement={refinementValue}></commerce-category-refinement>
+                            </div>
+                        </template>
+                    </template>
+                </div>
+            </div>
         </div>
     </div>
 </template>

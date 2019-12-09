@@ -29,6 +29,8 @@ export const typeDef = gql`
     type RefinementValue {
         label: String!
         value: String!
+        hit_count: Int!
+        values: [RefinementValue]
     }
 
     type CurrentFilter {

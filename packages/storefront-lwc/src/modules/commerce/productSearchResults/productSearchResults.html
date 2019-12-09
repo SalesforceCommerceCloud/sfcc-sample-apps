@@ -29,12 +29,32 @@
                         </template>
                     </select>
                 </div>
+                  <div class='col-6 col-sm-3 d-lg-none'>
+                      <button class="btn btn-primary btn-lg btn-block filter-button" onclick={toggleRefinmentBar}>Filter</button>
+                  </div>
               </div>
 
               <template if:false={loading}>
                 <div class='row' if:true={hasProducts}>
                   <div class='refinement-bar col-md-3'>
-                    <div class='secondary-bar col-12 offset-sm-4 offset-md-0 col-sm-4 col-md-12'>
+                      <div class="filter-header">
+                          <div class="header-bar d-md-none clearfix">
+                              <div class="pull-left d-md-none result-count">
+                                  {products.length} Results
+                              </div>
+                              <button class="pull-right close" onclick={toggleRefinmentBar}>
+                                  <span>Close </span>
+                                  <i class="fa fa-close"></i>
+                              </button>
+                          </div>
+                      </div>
+                    <div class='secondary-bar'>
+                        <template if:true={currentRefinements.hasRefinements} for:each={currentRefinements.values} for:item="currentRefinement">
+                            <commerce-current-refinement
+                                    key={currentRefinement.value}
+                                    refinement={currentRefinement}>
+                            </commerce-current-refinement>
+                        </template>
                       <div class='reset btn btn-block btn-outline-primary' onclick={resetRefinements}>
                         Reset
                       </div>
@@ -62,7 +82,6 @@
 
             </div>
           </div>
-          <!--<div className={'lmask' + (!this.loading ? ' js-hidden' : '')} />-->
         </div>
       </div>
 </template>

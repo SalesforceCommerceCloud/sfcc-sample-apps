@@ -3,12 +3,6 @@
 @import "bootstrap/scss/mixins/breakpoints";
 @import "../utilities/shapes";
 @import "../utilities/responsiveUtils";
-@import "../utilities/swatch";
-
-.product-detail .swatch-circle {
-    // $white will be replaced by color image background in ISML
-    @include swatch(2.5em, $white);
-}
 
 .product-detail [disabled] .swatch-circle,
 .product-detail .swatch-circle.unselectable {

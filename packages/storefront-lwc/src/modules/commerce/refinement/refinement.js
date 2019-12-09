@@ -20,29 +20,13 @@ export default class Refinement extends LightningElement {
             values: []
         };
 
-        //
         // Decorate refinement.values for various template options.
-        //
         if (ref && ref.values && ref.values.length) {
             ref.values.forEach(refValue => {
-                const isColor = ref.attributeId === 'c_refinementColor';
-                console.log('======= ', refValue.value);
-                const isSelected = refValue.isSelected || false; // TODO <<<<<<<<<
-                const checkStateClasses = `fa ${ isSelected ? 'fa-check-circle' : 'fa-circle-o' }`;
-                const color = refValue.label.toLowerCase();
-                let newObj = {
-                    label: refValue.label,
-                    title: `Refine by ${ ref.label }: ${ refValue.label }`,
-                    key: ref.label + refValue.value,
-                    labelLowerClass: ref.label.toLowerCase() + '-attribute',
-                    isSelected,
-                    isColor,
-                    toggleRefinement: () => this.toggleRefinement(ref.attributeId, (isColor) ? refValue.label : refValue.value),
-                    checkStateClasses,
-                    colorClassNames: !isColor ? '' : `swatch-circle-${ color } swatch-circle color-value swatch-mark ${ isSelected ? 'selected' : '' }`
-                };
-                newRef.values.push(newObj);
+                newRef.values.push(this.buildRefinementObject(refValue, ref));
             })
+        } else {
+            newRef.values = null;
         }
         this._refinement = newRef;
     }
@@ -51,10 +35,38 @@ export default class Refinement extends LightningElement {
         super();
     }
 
-    toggleRefinement(refinement, value) {
-        // const refinement = event.currentTarget.getAttribute('data-refinement');
-        // const value = event.currentTarget.getAttribute('data-value');
+    buildRefinementObject(refValue, ref) {
+        const isColor = ref.attributeId === 'c_refinementColor';
+        const isCategory = ref.attributeId === 'cgid';
+        const isSelected = !!refValue.isSelected
+        const color = refValue.label.toLowerCase();
+        let newObj = {
+            label: refValue.label,
+            title: `Refine by ${ ref.label }: ${ refValue.label }`,
+            key: ref.label + refValue.value,
+            labelLowerClass: ref.label.toLowerCase() + '-attribute',
+            isSelected,
+            hit_count: refValue.hit_count,
+            isColor,
+            toggleRefinement: () => this.toggleRefinement(ref.attributeId, (isColor) ? refValue.label : refValue.value),
+            categoryClasses: isSelected ? 'refinement-selected category-refinement-item' : 'refinement-not-selected category-refinement-item',
+            colorClassNames: !isColor ? '' : `swatch-circle-${ color } ${ isSelected ? 'selected' : '' }`,
+            toDisplay: refValue.hit_count > 0,
+            isCategory,
+            hasSubValues: refValue.values && refValue.values.length,
+            values: refValue.values && refValue.values.length ? [] : null
+        };
 
+        if (refValue.values && refValue.values.length) {
+            refValue.values.forEach(refSubValue => {
+                newObj.values.push(this.buildRefinementObject(refSubValue, ref));
+            });
+        }
+
+        return newObj;
+    }
+
+    toggleRefinement(refinement, value) {
         if (refinement && value) {
             const event = new CustomEvent('toggle-refinement', {
                 detail: {
@@ -65,9 +77,23 @@ export default class Refinement extends LightningElement {
 
             window.dispatchEvent(event);
         }
-        // html ...() => { this.props.toggleRefinement(refinement, refinement.value); }}>
-        //console.log('todo: toggleRefinement send message to productSearchResult component', event.currentTarget);
     }
 
+    toggleDropdown(event) {
+        const toggleButton = event.target;
+        const divCard = event.target.parentElement.parentElement;
+        const divCollapse = divCard.children[1];
 
+        if (divCollapse.classList.contains('show')) {
+            divCollapse.classList.remove('show');
+            toggleButton.classList.remove('active');
+            divCard.classList.add('collapsed');
+            toggleButton.setAttribute("aria-expanded", false);
+        } else {
+            divCollapse.classList.add('show');
+            toggleButton.classList.add('active');
+            divCard.classList.remove('collapsed');
+            toggleButton.setAttribute("aria-expanded", true);
+        }
+    }
 }
