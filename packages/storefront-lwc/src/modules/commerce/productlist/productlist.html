@@ -1,7 +1,7 @@
 <template>
     <div class='row product-grid'>
         <template for:each={products} for:item="product">
-            <div class='col-6 col-sm-4' key={product.id} >
+            <div class='col-6 col-sm-4 grid-gutter' key={product.id} >
                 <div class='product' >
                     <commerce-producttile product={product}></commerce-producttile>
                 </div>
