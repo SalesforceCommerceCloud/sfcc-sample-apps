@@ -80,6 +80,7 @@ export default class Refinement extends LightningElement {
     }
 
     toggleDropdown(event) {
+        // test
         const toggleButton = event.target;
         const divCard = event.target.parentElement.parentElement;
         const divCollapse = divCard.children[1];
