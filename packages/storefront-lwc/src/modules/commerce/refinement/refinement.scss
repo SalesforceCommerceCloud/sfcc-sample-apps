@@ -6,9 +6,17 @@
   font-family: "FontAwesome";
 }
 
-.collapsible-card-title.active::after {
+.expanded .collapsible-card-title::after {
   content: "\f077";
   margin-top: -0.125em;
+}
+
+.collapsed .card-body {
+  display: none;
+}
+
+.expanded .card-body {
+  display: block;
 }
 
 .collapsible-card-title {
@@ -20,7 +28,7 @@
   top: 0;
 }
 
-.refinement .content .form-check:not(:last-child) {
+.refinement .form-check:not(:last-child) {
   margin-bottom: 0.714rem;
 }
 

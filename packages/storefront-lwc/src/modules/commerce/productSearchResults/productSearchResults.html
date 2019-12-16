@@ -30,19 +30,19 @@
                     </select>
                 </div>
                   <div class='col-6 col-sm-3 d-lg-none'>
-                      <button class="btn btn-primary btn-lg btn-block filter-button" onclick={toggleRefinmentBar}>Filter</button>
+                      <button class="btn btn-primary btn-lg btn-block filter-button" onclick={toggleRefinementBar}>Filter</button>
                   </div>
               </div>
 
               <template if:false={loading}>
                 <div class='row' if:true={hasProducts}>
-                  <div class='refinement-bar col-md-3'>
+                  <div class={refinementBar}>
                       <div class="filter-header">
                           <div class="header-bar d-md-none clearfix">
                               <div class="pull-left d-md-none result-count">
                                   {products.length} Results
                               </div>
-                              <button class="pull-right close" onclick={toggleRefinmentBar}>
+                              <button class="pull-right close" onclick={toggleRefinementBar}>
                                   <span>Close </span>
                                   <i class="fa fa-close"></i>
                               </button>

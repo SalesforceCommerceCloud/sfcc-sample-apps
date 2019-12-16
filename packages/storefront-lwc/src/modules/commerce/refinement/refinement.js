@@ -5,6 +5,8 @@ import { LightningElement, api, track } from 'lwc'
 export default class Refinement extends LightningElement {
 
     @track _refinement;
+    @track cardClass = 'card collapsible-card refinement expanded';
+    @track expanded;
 
     @api
     get refinement() {
@@ -38,7 +40,7 @@ export default class Refinement extends LightningElement {
     buildRefinementObject(refValue, ref) {
         const isColor = ref.attributeId === 'c_refinementColor';
         const isCategory = ref.attributeId === 'cgid';
-        const isSelected = !!refValue.isSelected
+        const isSelected = !!refValue.isSelected;
         const color = refValue.label.toLowerCase();
         let newObj = {
             label: refValue.label,
@@ -79,22 +81,13 @@ export default class Refinement extends LightningElement {
         }
     }
 
-    toggleDropdown(event) {
-        // test
-        const toggleButton = event.target;
-        const divCard = event.target.parentElement.parentElement;
-        const divCollapse = divCard.children[1];
-
-        if (divCollapse.classList.contains('show')) {
-            divCollapse.classList.remove('show');
-            toggleButton.classList.remove('active');
-            divCard.classList.add('collapsed');
-            toggleButton.setAttribute("aria-expanded", false);
+    toggleDropdown() {
+        if (this.expanded) {
+            this.cardClass = 'card collapsible-card refinement expanded';
         } else {
-            divCollapse.classList.add('show');
-            toggleButton.classList.add('active');
-            divCard.classList.remove('collapsed');
-            toggleButton.setAttribute("aria-expanded", true);
+            this.cardClass = 'card collapsible-card refinement collapsed';
         }
-    }
+
+        this.expanded = !this.expanded;
+    };
 }

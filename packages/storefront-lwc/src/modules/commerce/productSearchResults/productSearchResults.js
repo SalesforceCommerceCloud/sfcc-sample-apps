@@ -13,14 +13,18 @@ export default class Search extends LightningElement {
     @track refinements = [];
     @track query = '';
     @track loading = false;
+    @track refinementBar = 'refinement-bar col-md-3 d-none d-lg-block';
+    @track showRefinementBar = true;
     // Is this the right way to do this? Todo: Ask Jason
     @track currentRefinements = {
         hasRefinements: false,
         values: []
     };
+
     sortRule;
     selectedRefinements = {};
     routeSubscription;
+
 
     @track sortOptions = [
         {id: 'best-matches', label: 'Best Matches'},
@@ -166,7 +170,13 @@ export default class Search extends LightningElement {
         this.sortRule = this.sortOptions[0];
     };
 
-    toggleRefinmentBar = () => {
-        this.isShowRefinementBar = !this.isShowRefinementBar;
+    toggleRefinementBar() {
+        if (this.showRefinementBar) {
+            this.refinementBar = 'refinement-bar col-md-3 d-lg-block';
+        } else {
+            this.refinementBar = 'refinement-bar col-md-3 d-none d-lg-block';
+        }
+
+        this.showRefinementBar = !this.showRefinementBar;
     };
 }

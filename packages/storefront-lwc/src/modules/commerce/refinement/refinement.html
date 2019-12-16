@@ -1,10 +1,10 @@
 <template>
-    <div if:true={refinement.values} key={refinement.attribute_id} class="card collapsible-card refinement">
+    <div if:true={refinement.values} key={refinement.attribute_id} class={cardClass}>
         <div class='card-header'>
-            <h5 class="collapsible-card-title active" aria-expanded="true" onclick={toggleDropdown}>{refinement.label}</h5>
+            <h5 class="collapsible-card-title" aria-expanded={expanded} onclick={toggleDropdown}>{refinement.label}</h5>
         </div>
 
-        <div class='card-body collapse show values content'>
+        <div class='card-body'>
             <div class="container-fluid">
                 <div class="row">
                     <template for:each={refinement.values} for:item="refinementValue">
