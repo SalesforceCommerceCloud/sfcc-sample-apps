@@ -49,12 +49,6 @@
                           </div>
                       </div>
                     <div class='secondary-bar'>
-                        <template if:true={currentRefinements.hasRefinements} for:each={currentRefinements.values} for:item="currentRefinement">
-                            <commerce-current-refinement
-                                    key={currentRefinement.value}
-                                    refinement={currentRefinement}>
-                            </commerce-current-refinement>
-                        </template>
                       <div class='reset btn btn-block btn-outline-primary' onclick={resetRefinements}>
                         Reset
                       </div>
