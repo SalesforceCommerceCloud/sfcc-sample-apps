@@ -16,6 +16,7 @@ export const typeDef = gql`
         customerId : String
         addProductMessage: String
         getCartMessage:String
+        totalProductsQuantity: Int
         products: [ProductItem]
 
     }
