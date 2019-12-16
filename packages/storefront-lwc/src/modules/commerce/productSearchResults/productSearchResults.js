@@ -13,9 +13,13 @@ export default class Search extends LightningElement {
     @track refinements = [];
     @track query = '';
     @track loading = false;
+    @track refinementBar = 'refinement-bar col-md-3 d-none d-lg-block';
+    @track showRefinementBar = true;
+
     sortRule;
     selectedRefinements = {};
     routeSubscription;
+
 
     @track sortOptions = [
         {id: 'best-matches', label: 'Best Matches'},
@@ -30,7 +34,7 @@ export default class Search extends LightningElement {
     @wire(productsByQuery, {query: '$query', sortRule: '$sortRule', selectedRefinements: '$selectedRefinements'})
     updateProducts(json) {
 
-        console.log(this.query)
+        console.log(this.query);
         console.log('===============================');
         console.log('API', (json.data && json.data.productSearch) ? json.data.productSearch : 'no results or query');
         console.log('===============================');
@@ -99,10 +103,13 @@ export default class Search extends LightningElement {
     toggleRefinement = (refinement, value) => {
         this.selectedRefinements[refinement] = this.selectedRefinements[refinement] || [];
         const index = this.selectedRefinements[refinement].indexOf(value);
-        let isSelected = index === -1
-
+        let isSelected = index === -1;
         if (isSelected) {
-            this.selectedRefinements[refinement].push(value);
+            if (refinement !== 'cgid') {
+                this.selectedRefinements[refinement].push(value);
+            } else {
+                this.selectedRefinements[refinement][0] = value;
+            }
         } else {
             this.selectedRefinements[refinement].splice(index, 1);
         }
@@ -122,12 +129,12 @@ export default class Search extends LightningElement {
                 this.sortRule = option;
             }
         });
-    }
+    };
 
     newSortRule = (event) => {
         const newSortRule = event.target.value;
         this.updateSortOptions(newSortRule);
-    }
+    };
 
     renderedCallback() {
         // TODO: ugh. why is LWC stripping 'option[selected]' attribute?
@@ -140,15 +147,20 @@ export default class Search extends LightningElement {
                 }
             }
         })
-    }
+    };
 
     resetRefinements = () => {
         this.selectedRefinements = {};
         this.sortRule = this.sortOptions[0];
-    }
+    };
 
-    renderedCallback() {
-        console.log('ProductSearchResults renderedCallback()');
-    }
+    toggleRefinementBar() {
+        if (this.showRefinementBar) {
+            this.refinementBar = 'refinement-bar col-md-3 d-lg-block';
+        } else {
+            this.refinementBar = 'refinement-bar col-md-3 d-none d-lg-block';
+        }
 
+        this.showRefinementBar = !this.showRefinementBar;
+    };
 }

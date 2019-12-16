@@ -14,7 +14,9 @@ class SearchResult {
                 values: refinement.values ? refinement.values.map((value) => {
                     return {
                         label: value.label,
-                        value: value.value
+                        value: value.value,
+                        hit_count: value.hit_count,
+                        values: value.values
                     }
                 }) : null
             }

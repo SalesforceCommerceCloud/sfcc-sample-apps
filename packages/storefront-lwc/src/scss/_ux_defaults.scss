@@ -92,40 +92,6 @@ p {
   padding-left: 0;
 }
 
-.row,
-.container {
-  margin-right: 0 !important;
-  margin-left: 0 !important;;
-  padding-right: 0 !important;
-  padding-left: 0 !important;;
-}
-
-.container {
-  width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
-  margin-right: auto;
-  margin-left: auto;
-}
-
-@media (min-width: 769px) {
-  .container {
-    max-width: 4096px;
-  }
-}
-
-@media (min-width: 992px) {
-  .container {
-    max-width: 4096px;
-  }
-}
-
-@media (min-width: 1200px) {
-  .container {
-    max-width: 4096px;
-  }
-}
-
 hr {
   color: #222;
   text-decoration: underline;

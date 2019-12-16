@@ -63,7 +63,7 @@ register(productsByQuery, (eventTarget) => {
                     return client.query({
                         query: window.gql`
                         {
-                          productSearch(query: "${ query }" ${ filters }) {
+                            productSearch(query: "${ query }" ${ filters }) {
                                 productHits {
                                 id
                                 name
@@ -81,21 +81,32 @@ register(productsByQuery, (eventTarget) => {
                                     alt
                                     style
                                 }
-                              }
-                                refinements {
+                            }
+                            refinements {
                                 values {
-                                  label
-                                  value
+                                    label
+                                    value
+                                    hit_count
+                                    values {
+                                        label
+                                        value
+                                        hit_count
+                                        values {
+                                            label
+                                            value
+                                            hit_count
+                                        }
+                                    }
                                 }
                                 label
                                 attributeId
-                              }
-                              currentFilters {
+                            }
+                            currentFilters {
                                 id
                                 value
-                              }
-                          }
+                            }
                         }
+                    }
                      `
                     }).then(result => {
                         console.log(result);

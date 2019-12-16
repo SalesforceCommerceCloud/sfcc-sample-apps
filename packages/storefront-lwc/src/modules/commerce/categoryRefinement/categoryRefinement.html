@@ -1,0 +1,12 @@
+<template>
+    <ul class="category-list">
+        <li class={refinement.categoryClasses} onclick={refinement.toggleRefinement}>
+            {refinement.label} ({refinement.hit_count})
+        </li>
+        <li if:true={refinement.hasSubValues} class="category-refinement-sub-list">
+            <template for:each={refinement.values} for:item="catRefinementSubCat">
+                <commerce-category-refinement key={catRefinementSubCat.key} refinement={catRefinementSubCat}></commerce-category-refinement>
+            </template>
+        </li>
+    </ul>
+</template>
