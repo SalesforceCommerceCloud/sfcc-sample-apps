@@ -42,17 +42,15 @@ class Cart {
                 this.cart = result.data.addProductToCart;
                 this.isCartLoaded = true;
                 this.updateCart('add-to-cart');
-                return this.cart;
             }).catch((error) => {
                 console.log('addToCart failed with message', error);
                 this.updateCart('failed-add-to-cart');
-                return {};
             });
         } catch (e) {
             console.log('addToCart Exception received', e);
             this.updateCart('failed-add-to-cart');
-            return {};
         }
+        return this.cart;
     }
 
     // TODO : wire this call with BFF
@@ -119,15 +117,13 @@ class Cart {
                 this.cart = result.data.getCart;
                 this.isCartLoaded = true;
                 this.updateCart('cart-loaded');
-                return this.cart;
             }).catch((error) => {
                 console.log('Warning: No Cart has been created yet!', error);
-                return {};
             });
         } catch (e) {
             console.log('Exception loading cart', e);
-            return {};
         }
+        return this.cart;
     }
 
     updateCartListener(callback) {
