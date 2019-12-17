@@ -5,4 +5,8 @@ import { LightningElement, api } from 'lwc'
 export default class ProductList extends LightningElement {
 
     @api products
+
+    toggleRefinementBar(event) {
+        window.dispatchEvent(new CustomEvent('toggle-refinement-bar'));
+    }
 }

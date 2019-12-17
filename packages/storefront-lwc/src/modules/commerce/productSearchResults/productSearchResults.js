@@ -70,6 +70,10 @@ export default class Search extends LightningElement {
             this.toggleRefinement(e.detail.refinement, e.detail.value);
         });
 
+        window.addEventListener('toggle-refinement-bar', e => {
+            this.toggleRefinementBar();
+        });
+
         // Listen to sort option change component
         window.addEventListener('update-sort', e => {
             this.sortRule = e.detail.sortRule;
