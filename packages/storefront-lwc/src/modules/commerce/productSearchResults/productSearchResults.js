@@ -20,17 +20,6 @@ export default class Search extends LightningElement {
     selectedRefinements = {};
     routeSubscription;
 
-
-    @track sortOptions = [
-        {id: 'best-matches', label: 'Best Matches'},
-        {id: 'price-low-to-high', label: 'Price Low To High'},
-        {id: 'price-high-to-low', label: 'Price High to Low'},
-        {id: 'product-name-ascending', label: 'Product Name A - Z'},
-        {id: 'product-name-descending', label: 'Product Name Z - A'},
-        {id: 'most-popular', label: 'Most Popular'},
-        {id: 'top-sellers', label: 'Top Sellers'}
-    ];
-
     @wire(productsByQuery, {query: '$query', sortRule: '$sortRule', selectedRefinements: '$selectedRefinements'})
     updateProducts(json) {
 
@@ -81,7 +70,14 @@ export default class Search extends LightningElement {
             this.toggleRefinement(e.detail.refinement, e.detail.value);
         });
 
-        this.updateSortOptions('best-matches');
+        window.addEventListener('toggle-refinement-bar', e => {
+            this.toggleRefinementBar();
+        });
+
+        // Listen to sort option change component
+        window.addEventListener('update-sort', e => {
+            this.sortRule = e.detail.sortRule;
+        });
     }
 
     routeSubHandler(view) {
@@ -117,42 +113,10 @@ export default class Search extends LightningElement {
         this.selectedRefinements = Object.assign({}, this.selectedRefinements);
     };
 
-    updateSortOptions(newSortRuleId) {
-        this.sortRule = this.sortOptions[0];
-
-        this.sortOptions.forEach(option => {
-            if (option.id !== newSortRuleId && option.selected) {
-                option.selected = null;
-                delete option.selected;
-            } else if (option.id === newSortRuleId) {
-                option.selected = 'selected';
-                this.sortRule = option;
-            }
-        });
-    };
-
-    newSortRule = (event) => {
-        const newSortRule = event.target.value;
-        this.updateSortOptions(newSortRule);
-    };
-
-    renderedCallback() {
-        // TODO: ugh. why is LWC stripping 'option[selected]' attribute?
-        setTimeout(() => {
-            const sortSelect = this.template.querySelector('select[name=sort-order]');
-            if (sortSelect && sortSelect[0]) {
-                const option = sortSelect.querySelector(`option[class=${this.sortRule.id}]`);
-                if (option) {
-                    option.setAttribute('selected', 'selected');
-                }
-            }
-        })
-    };
-
     resetRefinements = () => {
         this.selectedRefinements = {};
-        this.sortRule = this.sortOptions[0];
-    };
+        this.sortRule = 'best-matches';
+    }
 
     toggleRefinementBar() {
         if (this.showRefinementBar) {
