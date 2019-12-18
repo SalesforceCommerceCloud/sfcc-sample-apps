@@ -8,15 +8,17 @@ export const CORE_GRAPHQL_KEY = Symbol( 'Core GraphQL with Apollo' );
 export const EXPRESS_KEY = Symbol( 'Node Express' );
 
 export const resolverFactory = (config, resolversArray) => {
-    let combinedResolvers = { Query: {}, Mutation: {} };
+    let combinedResolvers = {};
     resolversArray.forEach((resolver) => {
         const resolverInst = resolver(config); // instantiate factory
-        if (resolverInst.Query) {
-            Object.assign(combinedResolvers.Query, resolverInst.Query);
-        }
-        if (resolverInst.Mutation) {
-            Object.assign(combinedResolvers.Mutation, resolverInst.Mutation);
-        }
+        const keys = Object.keys(resolverInst);
+        keys.forEach((key) => {
+            if (combinedResolvers[key]) {
+                combinedResolvers[key] = {...combinedResolvers[key], ...resolverInst[key]};
+            } else {
+                combinedResolvers[key] = resolverInst[key];
+            }
+        });
     });
     return combinedResolvers;
 }
@@ -46,7 +48,7 @@ export default class CoreGraphQL {
                     _empty: String
                 }
             `];
-        this._resolvers = { Query: {}, Mutation: {} };
+        this._resolvers = {};
         this._dataSources = {};
     }
 
@@ -93,9 +95,15 @@ export default class CoreGraphQL {
                 const api = apiFactory();
                 this.typeDef = [...this.typeDef, ...api.typeDefs];
                 let apiResolvers = api.getResolvers(apiConfig);
-                Object.assign(this.resolvers.Query, apiResolvers.Query);
-                Object.assign(this.resolvers.Mutation, apiResolvers.Mutation);
-                Object.assign(this.dataSources, api.getDataSources(apiConfig))
+                const keys = Object.keys(apiResolvers);
+                keys.forEach((key) => {
+                    if (this.resolvers[key]) {
+                        this.resolvers[key] = {...this.resolvers[key], ...apiResolvers[key]}
+                    } else {
+                        this.resolvers[key] = apiResolvers[key]
+                    }
+                });
+                Object.assign(this.dataSources, api.getDataSources && api.getDataSources(apiConfig))
             });
 
             console.log("*******************************");
@@ -142,5 +150,5 @@ export default class CoreGraphQL {
 }
 
 core.registerService( CORE_GRAPHQL_KEY, function () {
-    return new CoreGraphQL( core );
-} );
+    return new CoreGraphQL(core);
+});
