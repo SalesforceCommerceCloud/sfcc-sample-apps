@@ -34,6 +34,7 @@ class Cart {
                         itemId
                         quantity
                         productName
+                        price
                       }
                     }
                   }
@@ -52,6 +53,44 @@ class Cart {
         }
         return this.cart;
     }
+
+    getCurrentCart() {
+        try {
+            let client = new window.ApolloClient({
+                uri: window.apiconfig.COMMERCE_API_PATH || '/graphql'
+            });
+            return client.query({
+                query: window.gql`
+                {
+                    getCart{
+                        cartId
+                        customerId
+                        getCartMessage
+                          totalProductsQuantity
+                        products {
+                          productId
+                          itemId
+                          quantity
+                          productName
+                          price
+                        }
+                      }
+                }
+             `
+            }).then(result => {
+                this.cart = result.data.getCart;
+                console.log('****result is ', this.cart);
+                this.isCartLoaded = true;
+                this.updateCart('cart-loaded');
+            }).catch((error) => {
+                console.log('Warning: No Cart has been created yet!', error);
+            });
+        } catch (e) {
+            console.log('Exception loading cart', e);
+        }
+        return this.cart;
+    }
+
 
     // TODO : wire this call with BFF
     removeFromCart(index) {
@@ -109,6 +148,7 @@ class Cart {
                             itemId
                             quantity
                             productName
+                            price
                         }
                     }
                 }

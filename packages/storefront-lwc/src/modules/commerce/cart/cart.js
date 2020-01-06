@@ -24,11 +24,12 @@ export default class Cart extends LightningElement {
     }
 
     get totalEstimate() {
-        const cart = ShoppingCart.getCurrentCart();
+        const Mycart = ShoppingCart.getCurrentCart();
+        console.log('the cart looks like this now ', Mycart);
+        const cart = Mycart.products;
         const total = cart.reduce((a, b) => {
             return {price: a.price + b.price};
         });
-
         return (total.price + this.salesTax + this.shippingCost).toFixed(2);
     }
 

@@ -23,6 +23,7 @@ export const typeDef = gql`
     type ProductItem {
         productId: String!
         productName : String!
+        price: Float!
         quantity: Int!
         itemId: String!
     }
