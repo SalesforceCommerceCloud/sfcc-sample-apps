@@ -34,6 +34,7 @@ class Cart {
                         itemId
                         quantity
                         productName
+                        price
                       }
                     }
                   }
@@ -76,22 +77,21 @@ class Cart {
 
     /**
      * get the quantity of Cart if Cart is loaded
-     * if first time landing the page, call loadCart()
+     * if first time landing the page, call getCurrentCart()
      * @returns {quantity} for miniCart to display
      */
     getCartQuantity() {
-        if (this.isCartLoaded) {
-            return this.cart.totalProductsQuantity || 0;
+        if (!this.isCartLoaded) {
+            this.getCurrentCart();
         }
-        this.loadCart();
-        return 0;
+        return this.cart.totalProductsQuantity || 0;
     }
 
     /**
      * Get the current cart from BFF.
      * @returns {Object} cart object
      */
-    loadCart() {
+    getCurrentCart() {
         try {
             let client = new window.ApolloClient({
                 uri: window.apiconfig.COMMERCE_API_PATH || '/graphql'
@@ -109,6 +109,7 @@ class Cart {
                             itemId
                             quantity
                             productName
+                            price
                         }
                     }
                 }
@@ -117,6 +118,7 @@ class Cart {
                 this.cart = result.data.getCart;
                 this.isCartLoaded = true;
                 this.updateCart('cart-loaded');
+                return this.cart;
             }).catch((error) => {
                 console.log('Warning: No Cart has been created yet!', error);
             });

@@ -24,11 +24,9 @@ export default class Cart extends LightningElement {
     }
 
     get totalEstimate() {
-        const cart = ShoppingCart.getCurrentCart();
-        const total = cart.reduce((a, b) => {
-            return {price: a.price + b.price};
+        const total = ShoppingCart.cart.products.reduce((a, b) => {
+            return {price: a.price + b.price}; 
         });
-
         return (total.price + this.salesTax + this.shippingCost).toFixed(2);
     }
 
@@ -46,7 +44,13 @@ export default class Cart extends LightningElement {
     }
 
     connectedCallback() {
-        this.products = ShoppingCart.getCurrentCart();
+        ShoppingCart.getCurrentCart()
+        .then(cart => {
+            this.products = cart.products;
+        })
+        .catch((error) => {
+            console.log('error received ', error);
+        })
     }
 
     removeHandler(event) {

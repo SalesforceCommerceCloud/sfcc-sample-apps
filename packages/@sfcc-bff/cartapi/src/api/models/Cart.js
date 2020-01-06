@@ -12,6 +12,7 @@ class Cart {
             return {
                 productId: product.product_id,
                 productName: product.product_name,
+                price: product.price,
                 quantity: product.quantity,
                 itemId: product.item_id
             };
