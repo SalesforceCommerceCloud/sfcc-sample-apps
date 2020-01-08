@@ -12,6 +12,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "commerce-sdk": "^0.0.13-alpha.11",
     "@sfcc-core/core": "0.0.1-sfcc-alpha-1",
     "@sfcc-core/core-graphql": "0.0.1-sfcc-alpha-1",
     "commerce-sdk-generated": "file:../../../temp-dependencies/commerce-sdk-generated",
