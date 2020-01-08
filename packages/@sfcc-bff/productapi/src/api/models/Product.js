@@ -45,7 +45,7 @@ const getImages = (imageGroups) => {
 
         return result;
     };
-}
+};
 
 var getVariants = (variants) => {
     return () => {
@@ -65,10 +65,10 @@ var getVariants = (variants) => {
                     }
                 })
             }
-        })
+        });
         return result;
     };
-}
+};
 
 var getVariationAttributes = (variationAttributes, imageGroups) => {
     return () => {
@@ -96,7 +96,7 @@ var getVariationAttributes = (variationAttributes, imageGroups) => {
             }
         })
     }
-}
+};
 
 class Product {
     constructor(apiProduct) {

@@ -18,7 +18,19 @@ export const typeDef = gql`
         image: String!
         images(allImages: Boolean = true, size: String = "large"): [Image!]
         variants: [Variant],
-        variationAttributes: [VariationAttribute]
+        variationAttributes: [VariationAttribute],
+        productType: ProductType,
+        inventory: Inventory
+    }
+    
+    type ProductType {
+        bundle: Boolean
+        item: Boolean
+        master: Boolean
+        option: Boolean
+        set: Boolean
+        variant: Boolean
+        variationGroup: Boolean
     }
 
     type Image {
@@ -26,6 +38,15 @@ export const typeDef = gql`
         alt: String!
         link: String!
         style: String
+    }
+    
+    type Inventory {
+        ats: Float
+        backorderable: Boolean
+        id: String!
+        orderable: Boolean
+        preorderable: Boolean
+        stockLevel: Float
     }
 
     type Variant {

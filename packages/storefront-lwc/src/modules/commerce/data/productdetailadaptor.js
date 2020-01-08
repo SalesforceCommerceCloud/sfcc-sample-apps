@@ -57,6 +57,23 @@ register(productDetailById, (eventTarget) => {
                                     }
                                 }
                             }
+                            inventory {
+                                ats
+                                backorderable
+                                id
+                                orderable
+                                preorderable
+                                stockLevel
+                            }
+                            productType {
+                                bundle
+                                item
+                                master
+                                option
+                                set
+                                variant
+                                variationGroup
+                            }
                         }
                     }
                  `

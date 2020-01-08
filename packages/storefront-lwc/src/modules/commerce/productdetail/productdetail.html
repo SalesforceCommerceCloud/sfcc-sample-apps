@@ -71,20 +71,8 @@
                     <!-- Size Chart -->
                     <!-- Product Availability -->
                     <!-- Availability -->
-                    <div class="availability col-md-10 col-12 product-availability" data-ready-to-order="false"
-                        data-available="true">
-                        <div class="row">
-                            <div class="col-12 col-sm-4">
-                                <label class="availability">
-                                    Availability:
-                                </label>
-                            </div>
-                            <div class="col-12 col-sm-8">
-                                <ul class="list-unstyled availability-msg">
-                                    <li>Select Styles for Availability</li>
-                                </ul>
-                            </div>
-                        </div>
+                    <div class="col-12">
+                        <commerce-product-availability inventory={product.inventory} type={product.productType}></commerce-product-availability>
                     </div>
 
                     <div class="col-12">
