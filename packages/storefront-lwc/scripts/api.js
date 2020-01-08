@@ -1,3 +1,9 @@
+/*
+    Copyright (c) 2020, salesforce.com, inc.
+    All rights reserved.
+    SPDX-License-Identifier: BSD-3-Clause
+    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+*/
 // default values if env var are not set
 const APP_API_INSTANCE = "dev11-sitegenesis-dw.demandware.net";
 const APP_API_SITE_ID = "RefArch";
