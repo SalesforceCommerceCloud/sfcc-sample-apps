@@ -20,23 +20,7 @@ export default class Cart extends LightningElement {
         return this.products.length > 0;
     }
 
-    get shippingCost() {
-
-        return 7.99;
-    }
-
-    get salesTax() {
-        return 5.15;
-    }
-
-    get totalEstimate() {
-        const total = ShoppingCart.cart.products.reduce((a, b) => {
-            return {price: a.price + b.price}; 
-        });
-        return (total.price + this.salesTax + this.shippingCost).toFixed(2);
-    }
-
-    constructor() {
+   constructor() {
         super();
         this.routeSubscription = subscribe(this.routeSubHandler.bind(this));
     }

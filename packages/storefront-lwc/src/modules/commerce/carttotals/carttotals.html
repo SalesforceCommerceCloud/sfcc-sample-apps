@@ -1,0 +1,43 @@
+<template>
+    <div class="row">
+        <div class="col-8">
+            <p>Shipping cost</p>
+        </div>
+        <div class="col-4">
+            <p class="text-right shipping-cost">${shippingCost}</p>
+        </div>
+    </div>
+    <div class="row shipping-discount hide-shipping-discount">
+        <div class="col-8">
+            <p>Shipping Discount</p>
+        </div>
+        <div class="col-4">
+            <p class="text-right shipping-discount-total">- $0.00</p>
+        </div>
+    </div>
+    <!-- Sales Tax -->
+    <div class="row">
+        <div class="col-8">
+            <p>Sales Tax</p>
+        </div>
+        <div class="col-4">
+            <p class="text-right tax-total">${salesTax}</p>
+        </div>
+    </div>
+    <div class="row order-discount hide-order-discount">
+        <div class="col-8">
+            <p>Order Discount</p>
+        </div>
+        <div class="col-4">
+            <p class="text-right order-discount-total"> - $0.00</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-8">
+            <strong>Estimated Total</strong>
+        </div>
+        <div class="col-4">
+            <p class="text-right grand-total">${totalEstimate}</p>
+        </div>
+    </div>
+</template>
