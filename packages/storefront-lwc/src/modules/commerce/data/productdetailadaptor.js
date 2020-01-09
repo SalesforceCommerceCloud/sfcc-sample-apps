@@ -63,9 +63,9 @@ register(productDetailById, (eventTarget) => {
                                 id
                                 orderable
                                 preorderable
-                                stockLevel
+                                stock_level
                             }
-                            productType {
+                            type {
                                 bundle
                                 item
                                 master

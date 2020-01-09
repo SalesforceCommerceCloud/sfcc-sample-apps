@@ -19,8 +19,8 @@ export const typeDef = gql`
         images(allImages: Boolean = true, size: String = "large"): [Image!]
         variants: [Variant],
         variationAttributes: [VariationAttribute],
-        productType: ProductType,
-        inventory: Inventory
+        type: ProductType,
+        inventory: Inventory!
     }
     
     type ProductType {
@@ -46,7 +46,7 @@ export const typeDef = gql`
         id: String!
         orderable: Boolean
         preorderable: Boolean
-        stockLevel: Float
+        stock_level: Float
     }
 
     type Variant {

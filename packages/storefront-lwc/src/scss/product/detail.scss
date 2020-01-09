@@ -73,10 +73,6 @@ label.color ~ a:hover {
     }
 }
 
-label.availability {
-    padding-right: 0.3125em;
-}
-
 @include media-breakpoint-up(sm) {
     .product-number-rating {
         border-bottom: 1px solid $hr-border-color;

@@ -14,7 +14,6 @@ export default class ProductDetail extends LightningElement {
         this.product = product;
         this.masterPid = product.masterId;
         this.setActiveImageCss(0);
-
     }
     routeSubscription;
 

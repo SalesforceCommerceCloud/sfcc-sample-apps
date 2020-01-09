@@ -62,18 +62,14 @@
                     </div>
                 </div>
 
-
                 <!-- Variations and Quantity -->
                 <commerce-variations variations={product.variations} variation-attributes={product.variationAttributes}></commerce-variations>
 
+                <!-- Product Availability -->
+                <commerce-product-availability inventory={product.inventory} type={product.type}></commerce-product-availability>
 
                 <div class="row">
                     <!-- Size Chart -->
-                    <!-- Product Availability -->
-                    <!-- Availability -->
-                    <div class="col-12">
-                        <commerce-product-availability inventory={product.inventory} type={product.productType}></commerce-product-availability>
-                    </div>
 
                     <div class="col-12">
                         <div class="row justify-content-center">
@@ -110,8 +106,7 @@
             </div>
         </div>
 
-        <div class="recommendations">
-        </div>
+        <div class="recommendations"></div>
     </div>
     <commerce-collapsible
         title="Description"
