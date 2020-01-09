@@ -141,10 +141,9 @@ $breakpoint-desktop-min: 992px;
 // Paragraph Small  (e.g. navigation category)
 @mixin small-paragraph {
   color: $medium-gray;
+  font-size: 0.875rem;
+  text-align: left;
   @include normal;
-  @include mobile { font-size: 0.8 * $mobile-base; text-align: left; }
-  @include tablet { font-size: 0.8 * $tablet-base; text-align: left;}
-  @include desktop { font-size: 0.8 * $desktop-base; text-align: left;}
 }
 
 // e.g. Links under image

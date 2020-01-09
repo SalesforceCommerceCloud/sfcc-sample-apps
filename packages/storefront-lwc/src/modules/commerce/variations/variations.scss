@@ -1,10 +1,6 @@
 @import "../../../scss/ux_variables";
 
 .variations-and-quantity {
-    .swatch {
-        padding-left: 0;
-    }
-
     button.color-swatch {
         border-radius: 50%;
         width: 2.5em;
@@ -23,8 +19,8 @@
 
     .color-swatches {
         @include mobile { padding-top: 1em; }
-        @include tablet { padding-top: 3em; }
-        @include desktop { padding-top: 4em; }
+        @include tablet { padding-top: 2em; }
+        @include desktop { padding-top: 2em; }
     }
 
     .dropdowns {
