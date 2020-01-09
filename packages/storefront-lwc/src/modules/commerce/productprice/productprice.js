@@ -1,3 +1,9 @@
+/*
+    Copyright (c) 2020, salesforce.com, inc.
+    All rights reserved.
+    SPDX-License-Identifier: BSD-3-Clause
+    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+*/
 import { LightningElement, api } from 'lwc'
 // import PropTypes from 'prop-types';
 //
@@ -5,35 +11,9 @@ import { LightningElement, api } from 'lwc'
 
 export default class ProductPrice extends LightningElement {
 
-   @api product;
+   @api apiPrice;
 
-  // render() {
-  //   const product = this.props.product;
-  //
-  //   if (product) {
-  //     if (product.price_max) {
-  //       return (
-  //         <span className='sales'>
-  //           <Currency quantity={product.price} currency={product.currency} />
-  //           -
-  //           <Currency quantity={product.price_max} currency={product.currency} />
-  //         </span>
-  //       );
-  //     } else {
-  //       return (
-  //         <span className='sales'>
-  //           <Currency quantity={product.price} currency={product.currency} />
-  //         </span>
-  //       );
-  //     }
-  //   }
-  // }
+   get price () {
+     return this.apiPrice.toFixed(2);
+   }
 }
-
-// ProductPrice.propTypes = {
-//   product: PropTypes.shape({
-//     currency: PropTypes.string.isRequired,
-//     price: PropTypes.number.isRequired,
-//     price_max: PropTypes.number
-//   })
-// };

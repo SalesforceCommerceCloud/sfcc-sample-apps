@@ -1,5 +1,11 @@
+/*
+    Copyright (c) 2020, salesforce.com, inc.
+    All rights reserved.
+    SPDX-License-Identifier: BSD-3-Clause
+    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+*/
 import { LightningElement, api, track } from 'lwc'
-import { getRoute, subscribe } from 'webruntime/routingService';
+import * as router from 'webruntime/routingService';
 
 export default class Login extends LightningElement {
 
@@ -25,12 +31,11 @@ export default class Login extends LightningElement {
 
     constructor() {
         super();
-        this.routeSubscription = subscribe( {
-            next: this.routeSubHandler.bind( this )
-        } );
+        this.routeSubscription = router.subscribe(this.routeSubHandler.bind(this));
     }
 
     routeSubHandler( view ) {
-        this.loginActive = view.name === 'login';
+        this.loginActive = !!view.attributes && view.attributes.pageName === 'login';
     }
 }
+

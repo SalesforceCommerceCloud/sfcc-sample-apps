@@ -1,4 +1,3 @@
-@import "../utilities/swatch";
 @import "productCommon";
 @import "quickView";
 
@@ -27,73 +26,6 @@
 
     border: 0;
     margin-bottom: 0;
-
-    .tile-body {
-        padding: 0.625em 0 1.875em;
-
-        .color-swatches {
-            min-height: 2.25em;
-
-            .product-tile-color-label {
-                cursor: pointer;
-                font-size: 1em;
-
-                @include media-breakpoint-down(md) {
-                    font-size: 0.9375em;
-                }
-
-                @include media-breakpoint-down(sm) {
-                    font-size: 0.8125em;
-                }
-            }
-        }
-
-        .price {
-            font-size: 1.125em;
-            margin-bottom: 0;
-
-            @include media-breakpoint-down(md) {
-                font-size: 1.0625em;
-            }
-
-            @include media-breakpoint-down(sm) {
-                font-size: 1em;
-            }
-
-            .tiered {
-                font-size: 0.875em;
-
-                .value {
-                    font-weight: bold;
-                }
-            }
-        }
-
-        .coming-soon-tile {
-            text-align: center;
-        }
-
-        .pdp-link {
-            line-height: 1.2;
-
-            a {
-                font-size: 1em;
-                text-decoration: none;
-
-                @include media-breakpoint-down(md) {
-                    font-size: 0.9375em;
-                }
-
-                @include media-breakpoint-down(sm) {
-                    font-size: 0.8125em;
-                }
-            }
-        }
-
-        .ratings {
-            font-size: 0.9em;
-        }
-    }
 
     .image-container {
         position: relative;
@@ -129,11 +61,6 @@
         a {
             text-decoration: none;
         }
-    }
-
-    .swatch-circle {
-        // $white will be replaced by color image background via Javascript
-        @include swatch(1.8em, $white);
     }
 }
 

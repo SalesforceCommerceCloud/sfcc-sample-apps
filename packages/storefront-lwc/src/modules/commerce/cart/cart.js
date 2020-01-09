@@ -1,3 +1,9 @@
+/*
+    Copyright (c) 2020, salesforce.com, inc.
+    All rights reserved.
+    SPDX-License-Identifier: BSD-3-Clause
+    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+*/
 import { LightningElement, api, track } from 'lwc'
 import { subscribe } from 'webruntime/routingService';
 import { ShoppingCart } from 'commerce/data';
@@ -24,11 +30,9 @@ export default class Cart extends LightningElement {
     }
 
     get totalEstimate() {
-        const cart = ShoppingCart.getCurrentCart();
-        const total = cart.reduce((a, b) => {
-            return {price: a.price + b.price};
+        const total = ShoppingCart.cart.products.reduce((a, b) => {
+            return {price: a.price + b.price}; 
         });
-
         return (total.price + this.salesTax + this.shippingCost).toFixed(2);
     }
 
@@ -46,7 +50,13 @@ export default class Cart extends LightningElement {
     }
 
     connectedCallback() {
-        this.products = ShoppingCart.getCurrentCart();
+        ShoppingCart.getCurrentCart()
+        .then(cart => {
+            this.products = cart.products;
+        })
+        .catch((error) => {
+            console.log('error received ', error);
+        })
     }
 
     removeHandler(event) {

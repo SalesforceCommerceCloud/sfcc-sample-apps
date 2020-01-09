@@ -1,3 +1,9 @@
+<!--
+    Copyright (c) 2020, salesforce.com, inc.
+    All rights reserved.
+    SPDX-License-Identifier: BSD-3-Clause
+    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+-->
 <template>
     <div id="maincontent">
         <!-- dwMarker="decorator" dwTemplateTitle="/default/common/layout/page.isml (app_storefront_base)" dwTemplateURL="http://localhost:60606/target=/app_storefront_base/cartridge/templates/default/common/layout/page.isml" -->
@@ -62,53 +68,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-sm-8 col-md-6">
-                    <div class="card">
-                        <!-- dwMarker="linclude" dwTemplateTitle="/default/account/components/trackOrderForm.isml (app_storefront_base)" dwTemplateURL="http://localhost:60606/target=/app_storefront_base/cartridge/templates/default/account/components/trackOrderForm.isml" -->
-                        <form action="/on/demandware.store/Sites-RefArch-Site/en_US/Order-Track" class="trackorder" method="GET" name="trackorder-form"><!-- dwMarker="form" dwPipelineTitle="Order-Track (app_storefront_base)" dwIsController="true" dwPipelineURL="http://localhost:60606/target=/app_storefront_base/cartridge/controllers/Order.js&amp;start=Track" -->
-                            <h3 class="card-header track-order-header">Check order</h3>
-                            <div class="card-body">
-
-                                <p class="track-order-header-text">See your order even if you are not a registered user. Enter the order number and the billing address ZIP code.</p>
-
-                                <div class="form-group required">
-                                    <label class="form-control-label" for="trackorder-form-number">
-                                        Order number
-                                    </label>
-                                    <input type="text" required="" class="form-control" id="trackorder-form-number" name="trackOrderNumber">
-                                    <div class="invalid-feedback"></div>
-                                </div>
-
-                                <div class="form-group required">
-                                    <label class="form-control-label" for="trackorder-form-email">
-                                        Order Email
-                                    </label>
-                                    <input type="text" required="" class="form-control" id="trackorder-form-email" name="trackOrderEmail" pattern="^[\w.%+-]+@[\w.-]+\.[\w]{2,6}$" maxlength="50">
-                                    <div class="invalid-feedback"></div>
-                                </div>
-                                <!-- Billing Zip Code -->
-                                <!-- dwMarker="linclude" dwTemplateTitle="/default/account/components/trackOrderFormBillingZipCode.isml (app_storefront_base)" dwTemplateURL="http://localhost:60606/target=/app_storefront_base/cartridge/templates/default/account/components/trackOrderFormBillingZipCode.isml" -->
-                                <div class="form-group required">
-                                    <label class="form-control-label" for="trackorder-form-zip">
-                                        Billing ZIP code
-                                    </label>
-                                    <input type="text" required="" class="form-control" id="trackorder-form-zip" name="trackOrderPostal" pattern="(^\d{5}(-\d{4})?$)|(^[abceghjklmnprstvxyABCEGHJKLMNPRSTVXY]{1}\d{1}[A-Za-z]{1} *\d{1}[A-Za-z]{1}\d{1}$)">
-                                    <div class="invalid-feedback"></div>
-                                </div>
-
-
-                                <input type="hidden" name="csrf_token" value="up6M-lzMqLJGR745Xj1Zg3EUKEFoQkbzbtCLQhRyrxC3GCn7U4WGxEjZcUBgsY3yGBT8vEwlnS3Crg-6SGdnmtNyeu18VN78B1G4ULVQ8-mPRg5zQQw9sbPXn_hTpDwJrbMXdUf1xDntJyMAatb8kf4cMSHTNkCYpASGM9HG08HL0ZAnb5g">
-
-                                <div class="form-group">
-                                    <button class="btn btn-block btn-primary" type="submit" name="submit" value="submit">
-                                        Check status
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-
                     </div>
                 </div>
             </div>

@@ -1,3 +1,9 @@
+/*
+    Copyright (c) 2020, salesforce.com, inc.
+    All rights reserved.
+    SPDX-License-Identifier: BSD-3-Clause
+    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+*/
 'use strict';
 
 import SearchResultProduct from "./SearchResultProduct";
@@ -14,7 +20,9 @@ class SearchResult {
                 values: refinement.values ? refinement.values.map((value) => {
                     return {
                         label: value.label,
-                        value: value.value
+                        value: value.value,
+                        hit_count: value.hit_count,
+                        values: value.values
                     }
                 }) : null
             }

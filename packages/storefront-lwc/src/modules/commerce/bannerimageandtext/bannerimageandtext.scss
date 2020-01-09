@@ -1,0 +1,108 @@
+@import "../../../scss/ux_variables";
+
+.shop-now {
+  margin-top: 1em;
+
+  .shop-now-overlay-text h2,
+  .shop-now-overlay-text h3 {
+    text-align: center !important;
+  }
+
+  .shop-now-link {
+    font-family: Helvetica Neue;
+    color: #fff;
+    text-decoration: underline;
+  }
+
+  .shop-now-overlay-text h3.shop-now-link {
+    margin-top: 1em;
+  }
+
+  .shop-now-text {
+    position: absolute;
+    top: 50%;
+    left: 15%;
+    color: white;
+    transform: translate(-50%, -50%);
+  }
+
+  .shop-now-overlay-text p {
+    margin-top: 0.53em;
+  }
+
+  .shop-now-overlay-text h3 {
+    margin-top: 0.53em;
+    margin-bottom: 0.53em;
+    color: $white;
+    font-weight: $font-weight-normal;
+  }
+
+  .shop-now-overlay-text h2 {
+    color: $white;
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+  }
+
+  .shop-now-image {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+
+  @include mobile {
+    .shop-now-overlay-text {
+      margin-left: 2.8em;
+    }
+
+    .shop-now-text {
+      left: 40%
+    }
+
+    .shop-now-overlay-text h2 {
+      color: $white;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    .shop-now-overlay-text h3 {
+      margin-bottom: 0;
+      font-weight: $font-weight-normal;
+    }
+
+    .shop-category-component {
+      line-height: 2em;
+    }
+
+    .shop-category-header h3 {
+      margin-top: 0.5em;
+      margin-bottom: 0;
+    }
+  }
+
+  @include tablet {
+    .shop-now-overlay-text {
+      margin-left: 2.8em;
+    }
+
+    .shop-now-text {
+      left: 40%;
+    }
+
+  }
+
+  @include desktop {
+    .shop-now-overlay-text {
+      margin-left: 3.7em;
+    }
+
+    .shop-category-component {
+      padding: 2em 4em;
+    }
+
+    .shop-now-text {
+      left: 15%;
+    }
+
+  }
+}

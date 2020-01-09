@@ -1,3 +1,9 @@
+/*
+    Copyright (c) 2020, salesforce.com, inc.
+    All rights reserved.
+    SPDX-License-Identifier: BSD-3-Clause
+    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+*/
 //
 // SFCC Core registry and core extensions/services
 //
@@ -15,6 +21,7 @@ import '@sfcc-bff/productapi';
 import '@sfcc-bff/contentapi';
 import '@sfcc-bff/customerapi';
 import '@sfcc-bff/loginapi';
+import '@sfcc-bff/cartapi';
 
 //
 // Import Keys needed to access core services end extensions

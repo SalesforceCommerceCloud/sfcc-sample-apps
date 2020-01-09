@@ -1,6 +1,10 @@
+/*
+    Copyright (c) 2020, salesforce.com, inc.
+    All rights reserved.
+    SPDX-License-Identifier: BSD-3-Clause
+    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+*/
 import { register, ValueChangedEvent } from 'wire-service';
-
-//import ApolloClient from 'ApolloClient';
 
 export const productDetailById = Symbol('product-detail');
 
@@ -14,11 +18,9 @@ register(productDetailById, (eventTarget) => {
      */
     const fetchProductById = (options) => {
         const pid = options.pid;
-        console.log('Load Product by pid: ' + pid);
 
         if (pid && pid.length) {
             try {
-                // TODO: read from api config
                 var client = new window.ApolloClient({
                     uri: window.apiconfig.COMMERCE_API_PATH || "/graphql"
                 });
@@ -28,17 +30,38 @@ register(productDetailById, (eventTarget) => {
                         product(id: "${ pid }") {
                             name
                             id
-                            page_description
-                            long_description
-                            short_description
+                            masterId
+                            longDescription
+                            shortDescription
                             currency
                             price
-                            primary_category_id
                             image
                             images(allImages: true, size: "large") {
                                 title
                                 alt
                                 link
+                            }
+                            variants {
+                                id
+                                variationValues {
+                                    key
+                                    value
+                                }
+                            }
+                            variationAttributes {
+                                variationAttributeType {
+                                    id
+                                    name
+                                }
+                                variationAttributeValues {
+                                    name
+                                    value
+                                    orderable
+                                    swatchImage {
+                                        link
+                                        style
+                                    }
+                                }
                             }
                         }
                     }
@@ -46,11 +69,11 @@ register(productDetailById, (eventTarget) => {
                 }).then(result => {
                     return result.data.product;
                 }).catch((error) => {
-                    console.log(error);
+                    console.log('Error fetching product by ID ', error);
                     return {};
                 });
             } catch (e) {
-                console.log("error", e);
+                console.log('Exception fetching product by ID ', e);
                 return {};
             }
         } else {

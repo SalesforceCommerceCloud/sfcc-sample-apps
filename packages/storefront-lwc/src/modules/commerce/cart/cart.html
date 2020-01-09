@@ -1,3 +1,9 @@
+<!--
+    Copyright (c) 2020, salesforce.com, inc.
+    All rights reserved.
+    SPDX-License-Identifier: BSD-3-Clause
+    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+-->
 <template>
     <div role="main" id="maincontent">
 
@@ -32,10 +38,10 @@
             <div class="row">
                 <div class="col-sm-7 col-md-8">
                     <template for:each={products} for:item="product" for:index="index">
-                        <div key={product.id} class="card product-info  uuid-1ef92777cbf6c7daaaafdd1905">
+                        <div key={product.productId} class="card product-info  uuid-1ef92777cbf6c7daaaafdd1905">
                             <div class="line-item-header">
                                 <div class="line-item-name">
-                                    {product.name}
+                                    {product.productName}
                                 </div>
                                 <div class="remove-line-item d-lg-none">
                                     <button type="button" class="remove-btn remove-product btn btn-light" data-toggle="modal" data-target=".cart.cart-page #removeProductModal" data-pid="701642852674M" data-name="Wide Leg Pant" data-action="/on/demandware.store/Sites-RefArch-Site/en_US/Cart-RemoveProductLineItem" data-uuid="8e56221845f1932db670ca0fb8" aria-label="Remove product Wide Leg Pant">

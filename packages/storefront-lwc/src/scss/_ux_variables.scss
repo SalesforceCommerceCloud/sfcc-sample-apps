@@ -5,11 +5,27 @@
 // Translated this
 // https://salesforce.invisionapp.com/share/GHU820P6QUP#/screens/387062219_Font
 
-$base-font-size: 14px !default;
+$base-font-size: 16px !default;
+
+// colors
+$beige: #f5f5dc !default;
+$black: #000 !default;
+$blue: #007bff !default;
+$brown: #a52a2a !default;
+$green: #28a745 !default;
+$grey: #8f979d !default;
+$navy: #000080 !default;
+$orange: #ffa500 !default;
+$pink: #fe249a !default;
+$purple: #800080 !default;
+$red: #f00 !default;
+$yellow: #ff0 !default;
+
 
 $light-gray: #999 !default;
 $medium-gray: #444 !default;
 $dark-gray: #222 !default;
+$gray-4: #ccc !default;
 $white: #fff !default;
 
 $mobile-base: 0.875rem !default;
@@ -20,7 +36,11 @@ $font-weight-heavy: 900 !default;
 $font-weight-bold: 600 !default;
 $font-weight-normal: 400 !default;
 
-$breakpoint-mobile-max: 768px;
+// Product Tile
+$product-swatch-shadow-color: $gray-4 !default;
+$product-tile-more-swatch-color: $medium-gray !default;
+
+$breakpoint-mobile-max: 767px;
 $breakpoint-tablet-min: 768px;
 $breakpoint-desktop-min: 992px;
 
@@ -167,76 +187,13 @@ $breakpoint-desktop-min: 992px;
   @include desktop { font-size: 1.67 * $desktop-base; text-align: left;}
 }
 
-// --------------------------------------------
-// Styles
-// --------------------------------------------
-body {
-  font-family: 'Helvetica Neue', sans-serif;
-  font-size: $base-font-size;
-  color: $dark-gray;
+@mixin grid-gutter {
+  @include mobile { padding: 0.35714286 * $mobile-base; }
+  @include tablet { padding: 0.46875 * $tablet-base; }
+  @include desktop { padding: .555555556 * $desktop-base;}
 }
-
-// e.g. Main banner title
-h1 { @include heading-1; }
-
-// e.g. Campaign banner title
-h2 { @include heading-2; }
-
-// e.g. section title (center) , pdp product name/price (text-align:left)
-h3 { @include heading-3; }
-
-// e.g. navigation catalog, breadcrumb title
-h4 { @include heading-4; }
-
-// e.g Search section title
-h5 { @include heading-5; }
-
-// e.g. Product tiles product price small
-h6 { @include heading-6; }
-
-// Primary CTA
-.call-to-action {
-  @include primary-call-to-action;
-}
-
-// Paragraph Large (e.g. editorial text)
-.large-paragraph {
-  @include large-paragraph;
-}
-
-// Paragraph Normal
-.normal-paragraph,
-p {
-  @include normal-paragraph;
-}
-
-// Paragraph Small  (e.g. navigation category)
-.small-paragraph {
-  @include small-paragraph;
-}
-
-// e.g. Links under image
-.caption,
-.normal-link {
-  @include caption;
-}
-
-// e.g. Product Detail Size Chart
-.small-link {
-  @include small-link;
-}
-
-// e.g. Product Detail Size Chart
-.large-link {
-  @include large-link;
-}
-
-// e.g. Product detail origin price for sale product
-.strikethrough,
-.product-sale-strikethrough {
-  @include strikethrough
-}
-
 
 // TODO translate this
 // https://salesforce.invisionapp.com/share/GHU820P6QUP#/screens/387062228_Section_Spacing
+
+

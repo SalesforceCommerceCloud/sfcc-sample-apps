@@ -1,3 +1,9 @@
+/*
+    Copyright (c) 2020, salesforce.com, inc.
+    All rights reserved.
+    SPDX-License-Identifier: BSD-3-Clause
+    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+*/
 import { gql } from 'apollo-server-core';
 
 export const typeDef = gql`
@@ -17,6 +23,7 @@ export const typeDef = gql`
         name: String!
         price: Float!
         image: Image!
+        colorSwatches: [ColorSwatch]
     }
 
     type Refinement {
@@ -28,6 +35,8 @@ export const typeDef = gql`
     type RefinementValue {
         label: String!
         value: String!
+        hit_count: Int!
+        values: [RefinementValue]
     }
 
     type CurrentFilter {
@@ -38,5 +47,14 @@ export const typeDef = gql`
     input Filter {
         id: String!
         value: String!
+    }
+
+    type ColorSwatch {
+        name: String!
+        value: String!
+        title: String
+        link: String
+        alt: String
+        style: String
     }
 `;

@@ -1,3 +1,9 @@
+/*
+    Copyright (c) 2020, salesforce.com, inc.
+    All rights reserved.
+    SPDX-License-Identifier: BSD-3-Clause
+    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+*/
 import { LightningElement, track } from 'lwc'
 
 import * as router from 'webruntime/routingService';
@@ -13,7 +19,6 @@ export default class SearchBar extends LightningElement {
 
     constructor() {
         super();
-        console.log('*************************** subs')
         this.routeSubscription = router.subscribe(this.routeSubHandler.bind(this));
     }
 
@@ -36,7 +41,7 @@ export default class SearchBar extends LightningElement {
     /**
      * Handles pressing 'Enter' in the search field
      */
-    handleKeyUp(event) {
+    handleKey(event) {
         this.query = (event.target.value || '').trim();
 
         if (event.key === 'Enter') {
@@ -47,12 +52,9 @@ export default class SearchBar extends LightningElement {
         }
     };
 
-    connectedCallback() {
-    }
-
-    renderedCallback() {
-    }
-
-    disconnectedCallback(){
+    handleIconClick() {
+        if (!!this.query) {
+            this.updateQueryEvent();
+        }
     }
 }

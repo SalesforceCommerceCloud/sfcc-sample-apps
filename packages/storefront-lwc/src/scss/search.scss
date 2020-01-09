@@ -2,7 +2,6 @@
 @import "bootstrap/scss/variables";
 @import "bootstrap/scss/mixins";
 @import "bootstrap/scss/mixins/breakpoints";
-@import "utilities/swatch";
 @import "components/categoryTiles";
 
 .refinement-bar {
@@ -331,10 +330,6 @@
 .show-more-content {
     padding: 0.938em;
     clear: both;
-}
-
-.swatch-mark {
-    @include swatch-check-mark();
 }
 
 .search-nav {

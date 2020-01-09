@@ -1,3 +1,9 @@
+/*
+    Copyright (c) 2020, salesforce.com, inc.
+    All rights reserved.
+    SPDX-License-Identifier: BSD-3-Clause
+    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+*/
 import { LightningElement, api, track } from 'lwc'
 
 // import PropTypes from 'prop-types';
@@ -5,6 +11,8 @@ import { LightningElement, api, track } from 'lwc'
 export default class Refinement extends LightningElement {
 
     @track _refinement;
+    @track cardClass = 'card collapsible-card refinement expanded';
+    @track expanded;
 
     @api
     get refinement() {
@@ -20,29 +28,13 @@ export default class Refinement extends LightningElement {
             values: []
         };
 
-        //
         // Decorate refinement.values for various template options.
-        //
         if (ref && ref.values && ref.values.length) {
             ref.values.forEach(refValue => {
-                const isColor = ref.attributeId === 'c_refinementColor';
-                console.log('======= ', refValue.value);
-                const isSelected = refValue.isSelected || false; // TODO <<<<<<<<<
-                const checkStateClasses = `fa ${ isSelected ? 'fa-check-circle' : 'fa-circle-o' }`;
-                const color = refValue.label.toLowerCase();
-                let newObj = {
-                    label: refValue.label,
-                    title: `Refine by ${ ref.label }: ${ refValue.label }`,
-                    key: ref.label + refValue.value,
-                    labelLowerClass: ref.label.toLowerCase() + '-attribute',
-                    isSelected,
-                    isColor,
-                    toggleRefinement: () => this.toggleRefinement(ref.attributeId, (isColor) ? refValue.label : refValue.value),
-                    checkStateClasses,
-                    colorClassNames: !isColor ? '' : `swatch-circle-${ color } swatch-circle color-value swatch-mark ${ isSelected ? 'selected' : '' }`
-                };
-                newRef.values.push(newObj);
+                newRef.values.push(this.buildRefinementObject(refValue, ref));
             })
+        } else {
+            newRef.values = null;
         }
         this._refinement = newRef;
     }
@@ -51,10 +43,38 @@ export default class Refinement extends LightningElement {
         super();
     }
 
-    toggleRefinement(refinement, value) {
-        // const refinement = event.currentTarget.getAttribute('data-refinement');
-        // const value = event.currentTarget.getAttribute('data-value');
+    buildRefinementObject(refValue, ref) {
+        const isColor = ref.attributeId === 'c_refinementColor';
+        const isCategory = ref.attributeId === 'cgid';
+        const isSelected = !!refValue.isSelected;
+        const color = refValue.label.toLowerCase();
+        let newObj = {
+            label: refValue.label,
+            title: `Refine by ${ ref.label }: ${ refValue.label }`,
+            key: ref.label + refValue.value,
+            labelLowerClass: ref.label.toLowerCase() + '-attribute',
+            isSelected,
+            hit_count: refValue.hit_count,
+            isColor,
+            toggleRefinement: () => this.toggleRefinement(ref.attributeId, (isColor) ? refValue.label : refValue.value),
+            categoryClasses: isSelected ? 'refinement-selected category-refinement-item' : 'refinement-not-selected category-refinement-item',
+            colorClassNames: !isColor ? '' : `swatch-circle-${ color } ${ isSelected ? 'selected' : '' }`,
+            toDisplay: refValue.hit_count > 0,
+            isCategory,
+            hasSubValues: refValue.values && refValue.values.length,
+            values: refValue.values && refValue.values.length ? [] : null
+        };
 
+        if (refValue.values && refValue.values.length) {
+            refValue.values.forEach(refSubValue => {
+                newObj.values.push(this.buildRefinementObject(refSubValue, ref));
+            });
+        }
+
+        return newObj;
+    }
+
+    toggleRefinement(refinement, value) {
         if (refinement && value) {
             const event = new CustomEvent('toggle-refinement', {
                 detail: {
@@ -65,9 +85,15 @@ export default class Refinement extends LightningElement {
 
             window.dispatchEvent(event);
         }
-        // html ...() => { this.props.toggleRefinement(refinement, refinement.value); }}>
-        //console.log('todo: toggleRefinement send message to productSearchResult component', event.currentTarget);
     }
 
+    toggleDropdown() {
+        if (this.expanded) {
+            this.cardClass = 'card collapsible-card refinement expanded';
+        } else {
+            this.cardClass = 'card collapsible-card refinement collapsed';
+        }
 
+        this.expanded = !this.expanded;
+    };
 }

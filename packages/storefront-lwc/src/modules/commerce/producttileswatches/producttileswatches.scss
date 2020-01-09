@@ -1,0 +1,76 @@
+@import "../../../scss/ux_variables";
+
+.color-swatches {
+    padding-top: 0.3125em;
+    
+    .swatches-ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        .swatch-li {
+            background-repeat: no-repeat;
+            background-position: 25%;
+            margin-right: 0.625em;
+            display: inline-block;
+        }
+
+        .more-swatches-li,
+        .more-swatches-li-sm {
+            display: inline-block;
+        }
+
+        @include mobile {
+            .swatch-li:nth-child(4),
+            .swatch-li:nth-child(5) {
+                display: none;
+            }
+
+            .more-swatches-li {
+                display: none;
+            }
+
+            .more-swatches-li-sm {
+                display: inline;
+            }
+        }
+
+        @include tablet {
+            .swatch-li:nth-child(4),
+            .swatch-li:nth-child(5) {
+                display: none;
+            }
+
+            .more-swatches-li {
+                display: none;
+            }
+
+            .more-swatches-li-sm {
+                display: inline;
+            }
+        }
+
+        @include desktop {
+            .swatch-li:nth-child(4),
+            .swatch-li:nth-child(5) {
+                display: inline;
+            }
+
+            .more-swatches-li {
+                display: inline;
+            }
+
+            .more-swatches-li-sm {
+                display: none;
+            }
+        }
+
+        .more-swatches,
+        .more-swatches-sm {
+            font-size: 1em;
+            font-weight: 300;
+            color: $product-tile-more-swatch-color;
+            vertical-align: bottom;
+        }
+    }
+}

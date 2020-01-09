@@ -1,3 +1,9 @@
+/*
+    Copyright (c) 2020, salesforce.com, inc.
+    All rights reserved.
+    SPDX-License-Identifier: BSD-3-Clause
+    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+*/
 import { LightningElement, wire, track } from 'lwc'
 import { getRoute, subscribe } from 'webruntime/routingService';
 import { productsByQuery } from 'commerce/data';
@@ -13,24 +19,17 @@ export default class Search extends LightningElement {
     @track refinements = [];
     @track query = '';
     @track loading = false;
+    @track refinementBar = 'refinement-bar col-md-3 d-none d-lg-block';
+    @track showRefinementBar = true;
+
     sortRule;
     selectedRefinements = {};
     routeSubscription;
 
-    @track sortOptions = [
-        {id: 'best-matches', label: 'Best Matches'},
-        {id: 'price-low-to-high', label: 'Price Low To High'},
-        {id: 'price-high-to-low', label: 'Price High to Low'},
-        {id: 'product-name-ascending', label: 'Product Name A - Z'},
-        {id: 'product-name-descending', label: 'Product Name Z - A'},
-        {id: 'most-popular', label: 'Most Popular'},
-        {id: 'top-sellers', label: 'Top Sellers'}
-    ];
-
     @wire(productsByQuery, {query: '$query', sortRule: '$sortRule', selectedRefinements: '$selectedRefinements'})
     updateProducts(json) {
 
-        console.log(this.query)
+        console.log(this.query);
         console.log('===============================');
         console.log('API', (json.data && json.data.productSearch) ? json.data.productSearch : 'no results or query');
         console.log('===============================');
@@ -70,24 +69,26 @@ export default class Search extends LightningElement {
 
         // Listen to search query from header search component
         window.addEventListener('update-query-event', e => {
-            this.loading = true;
-            // this.query = e.detail.query;
+            this.loading = (e.detail && e.detail.query !== this.query);
         });
 
         window.addEventListener('toggle-refinement', e => {
             this.toggleRefinement(e.detail.refinement, e.detail.value);
         });
 
-        this.updateSortOptions('best-matches');
+        window.addEventListener('toggle-refinement-bar', e => {
+            this.toggleRefinementBar();
+        });
+
+        // Listen to sort option change component
+        window.addEventListener('update-sort', e => {
+            this.sortRule = e.detail.sortRule;
+        });
     }
 
     routeSubHandler(view) {
         // Set query to trigger search.
         this.query = view.attributes.query;
-    }
-
-    disconnectedCallback() {
-        //this.routeSubscription.unsubscribe();
     }
 
     hasQuery() {
@@ -98,20 +99,19 @@ export default class Search extends LightningElement {
         return !!this.products && !!this.products.length;
     }
 
-    connectedCallback() {
-        console.log('ProductSearchResults.connectedCallback()')
-    }
-
     /**
      * Handles a refinement click
      */
     toggleRefinement = (refinement, value) => {
         this.selectedRefinements[refinement] = this.selectedRefinements[refinement] || [];
         const index = this.selectedRefinements[refinement].indexOf(value);
-        let isSelected = index === -1
-
+        let isSelected = index === -1;
         if (isSelected) {
-            this.selectedRefinements[refinement].push(value);
+            if (refinement !== 'cgid') {
+                this.selectedRefinements[refinement].push(value);
+            } else {
+                this.selectedRefinements[refinement][0] = value;
+            }
         } else {
             this.selectedRefinements[refinement].splice(index, 1);
         }
@@ -119,45 +119,18 @@ export default class Search extends LightningElement {
         this.selectedRefinements = Object.assign({}, this.selectedRefinements);
     };
 
-    updateSortOptions(newSortRuleId) {
-        this.sortRule = this.sortOptions[0];
-
-        this.sortOptions.forEach(option => {
-            if (option.id !== newSortRuleId && option.selected) {
-                option.selected = null;
-                delete option.selected;
-            } else if (option.id === newSortRuleId) {
-                option.selected = 'selected';
-                this.sortRule = option;
-            }
-        });
-    }
-
-    newSortRule = (event) => {
-        const newSortRule = event.target.value;
-        this.updateSortOptions(newSortRule);
-    }
-
-    renderedCallback() {
-        // TODO: ugh. why is LWC stripping 'option[selected]' attribute?
-        setTimeout(() => {
-            const sortSelect = this.template.querySelector('select[name=sort-order]');
-            if (sortSelect && sortSelect[0]) {
-                const option = sortSelect.querySelector(`option[class=${this.sortRule.id}]`);
-                if (option) {
-                    option.setAttribute('selected', 'selected');
-                }
-            }
-        })
-    }
-
     resetRefinements = () => {
         this.selectedRefinements = {};
-        this.sortRule = this.sortOptions[0];
+        this.sortRule = 'best-matches';
     }
 
-    renderedCallback() {
-        console.log('ProductSearchResults renderedCallback()');
-    }
+    toggleRefinementBar() {
+        if (this.showRefinementBar) {
+            this.refinementBar = 'refinement-bar col-md-3 d-lg-block';
+        } else {
+            this.refinementBar = 'refinement-bar col-md-3 d-none d-lg-block';
+        }
 
+        this.showRefinementBar = !this.showRefinementBar;
+    };
 }
