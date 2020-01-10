@@ -36,7 +36,7 @@
 
         <div class="container cart cart-page">
             <div class="row">
-                <div class="col-sm-7 col-md-8">
+                <div class="col-md-8">
                     <template for:each={products} for:item="product" for:index="index">
                         <div key={product.productId} class="card product-info  uuid-1ef92777cbf6c7daaaafdd1905">
                             <div class="line-item-header">
@@ -142,7 +142,7 @@
                     </template>
                 </div>
 
-                <div class="col-sm-5 col-md-4 totals" if:true={hasProducts}>
+                <div class="col-md-4 totals" if:true={hasProducts}>
                     <div class="row">
                         <div class="col-12 d-sm-none">
                             <p class="optional-promo">Enter promo code (optional)</p>
@@ -204,53 +204,8 @@
                         </div>
 
                     </div>
-                    <div class="row">
-                        <div class="col-8">
-                            <p>Shipping cost</p>
-                        </div>
-                        <div class="col-4">
-                            <p class="text-right shipping-cost">{shippingCost}</p>
-                        </div>
-                    </div>
 
-
-                    <div class="row shipping-discount hide-shipping-discount">
-                        <div class="col-8">
-                            <p>Shipping Discount</p>
-                        </div>
-                        <div class="col-4">
-                            <p class="text-right shipping-discount-total">- $0.00</p>
-                        </div>
-                    </div>
-
-                    <!-- Sales Tax -->
-                    <div class="row">
-                        <div class="col-8">
-                            <p>Sales Tax</p>
-                        </div>
-                        <div class="col-4">
-                            <p class="text-right tax-total">{salesTax}</p>
-                        </div>
-                    </div>
-
-
-                    <div class="row order-discount hide-order-discount">
-                        <div class="col-8">
-                            <p>Order Discount</p>
-                        </div>
-                        <div class="col-4">
-                            <p class="text-right order-discount-total"> - $0.00</p>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-8">
-                            <strong>Estimated Total</strong>
-                        </div>
-                        <div class="col-4">
-                            <p class="text-right grand-total">{totalEstimate}</p>
-                        </div>
-                    </div>
+                    <commerce-carttotals></commerce-carttotals>
 
                     <div class="row">
                         <div class="col-12 checkout-continue">
