@@ -8,7 +8,7 @@
 
 import Image from "./Image";
 
-const getImages = (imageGroups) => {
+const getImages = (imageGroups, matchingColor) => {
     return ({allImages, size}) => {
         let result = [];
 
@@ -30,7 +30,21 @@ const getImages = (imageGroups) => {
             let sizeImages = [];
             imageGroups.forEach(imageGroup => {
                 if (imageGroup.view_type === size) {
-                    sizeImages = sizeImages.concat(imageGroup.images);
+
+                    // If there is no matching color defined, take all images.
+                    // If there is matching color defined, only take images for that color.
+                    if (!matchingColor) {
+                        sizeImages = sizeImages.concat(imageGroup.images);
+                    } else {
+                        if (imageGroup.variation_attributes && imageGroup.variation_attributes.length > 0) {
+                            for (let variantion_attribute of imageGroup.variation_attributes) {
+                                if (variantion_attribute.id === 'color' && variantion_attribute.values[0].value === matchingColor) {
+                                    sizeImages = sizeImages.concat(imageGroup.images);
+                                    break;
+                                }
+                            };
+                        }
+                    }
                 }
             });
 
@@ -105,12 +119,14 @@ var getVariationAttributes = (variationAttributes, imageGroups) => {
 };
 
 class Product {
-    constructor(apiProduct) {
+    constructor(apiProduct, userSelectedColor) {
         this.id = apiProduct.id;
         this.name = apiProduct.name;
         this.masterId = apiProduct.master.master_id
         this.price = apiProduct.price;
-        this.images = getImages(apiProduct.image_groups);
+
+        let selectedColor = (userSelectedColor !== 'undefined') && (userSelectedColor !== 'null') ? userSelectedColor : null;
+        this.images = getImages(apiProduct.image_groups, selectedColor);
 
         console.log('Product.constructor(apiProduct)', apiProduct);
         Object.assign(this, apiProduct);
