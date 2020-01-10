@@ -16,15 +16,23 @@ export default class CartTotals extends LightningElement {
         return 5.15;
     }
 
+    get salesTax() {
+        return 5.15;
+    }
+
+    get orderDiscount() {
+        return 0.00;
+    }
+
+    get shippingDiscount() {
+        return 0.00;
+    }
+
     get totalEstimate() {
         const total = ShoppingCart.cart.products.reduce((a, b) => {
             return {price: a.price + b.price};
         });
         return (total.price + this.salesTax + this.shippingCost).toFixed(2);
-    }
-    
-    renderedCallback() {
-        
     }
 
     updateCartHandler() {
