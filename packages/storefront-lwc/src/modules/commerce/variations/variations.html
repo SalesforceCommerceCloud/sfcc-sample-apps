@@ -5,13 +5,14 @@
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 -->
 <template>
-    <div class="container variations-and-quantity">
+    <div class="variations-and-quantity">
         <!--Color Swatches -->
         <template if:true={colorAttribute}>
-            <div class="row color-swatches">
-                <div class="col">
+            <div class="color-swatches">
                     <div class="row">
-                        <p class="small-paragraph">{colorAttribute.name}: {selectedColorText}</p>
+                        <div class="col-12">
+                            <p class="small-paragraph">{colorAttribute.name}: {selectedColorText}</p>
+                        </div>
                     </div>
                     <div class="row">
                         <template for:each={colorAttributeValues} for:item="colorAttributeValue">
@@ -30,7 +31,6 @@
                             </template>
                         </template>
                     </div>
-                </div>
             </div>
         </template>
         <!-- Quantity and Size drop downs -->
@@ -38,7 +38,7 @@
             <!-- Size Drop Down -->
             <template if:true={sizeAttribute}>
                 <div class="col">
-                    <label>{sizeAttribute.name}</label>
+                    <label class="small-paragraph">{sizeAttribute.name}</label>
                     <select class="form-control" onchange={handleSize}>
                         <option selected data-size-value="-">-</option>
                         <template for:each={sizeAttributeValues} for:item="sizeAttributeValue">
@@ -56,7 +56,7 @@
             </template>
             <!-- Quantity Drop Down -->
             <div class="col">
-                <label>Quantity</label>
+                <label class="small-paragraph">Quantity</label>
                 <select class="form-control">
                     <option value="1">
                         1

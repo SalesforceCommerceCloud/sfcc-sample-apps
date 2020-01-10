@@ -5,3 +5,11 @@
     @include tablet { justify-content: left; }
     @include desktop { justify-content: left; }
 }
+
+.fa-shopping-bag {
+    margin-right: 0.625rem;
+}
+
+.descriptions {
+    margin-top: 1.875rem;
+}

@@ -90,13 +90,13 @@
                         <div class="row cart-and-ipay">
                             <div class="col-sm-12">
                                 <template if:false={readyToAddToCart}>
-                                    <button class="btn btn-primary" onclick={addToCartHandler}>
+                                    <button class="btn btn-primary btn-block" onclick={addToCartHandler}>
                                         <i class="fa fa-shopping-bag"></i>
                                         Add to Cart
                                     </button>
                                 </template>
                                 <template if:true={readyToAddToCart}>
-                                    <button class="btn btn-primary" disabled onclick={addToCartHandler}>
+                                    <button class="btn btn-primary btn-block" disabled onclick={addToCartHandler}>
                                         <i class="fa fa-shopping-bag"></i>
                                         Add to Cart
                                     </button>
@@ -112,14 +112,10 @@
             </div>
         </div>
 
-        <div class="recommendations"></div>
+        <div class="descriptions">
+            <commerce-collapsible title="Description" content={product.shortDescription}></commerce-collapsible>
+
+            <commerce-collapsible title="Details" content={product.longDescription}></commerce-collapsible>
+        </div>
     </div>
-    <commerce-collapsible
-        title="Description"
-        content={product.shortDescription}>
-    </commerce-collapsible>
-    <commerce-collapsible
-        title="Details"
-        content={product.longDescription}>
-    </commerce-collapsible>
 </template>
