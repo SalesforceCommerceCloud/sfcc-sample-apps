@@ -23,7 +23,7 @@ export default class Variations extends LightningElement {
     }
 
     get qtyValues() {
-        
+
         return this.createQtyLimit([], null);
     }
 
@@ -129,6 +129,5 @@ export default class Variations extends LightningElement {
     updateSelectQty(event) {
         this.selectedQty = event.target.value;
         this.updateProduct();
-        console.log('qty should be ' + event.target.value);
     }
 }

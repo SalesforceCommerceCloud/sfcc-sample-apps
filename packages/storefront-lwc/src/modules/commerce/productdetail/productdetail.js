@@ -22,7 +22,7 @@ export default class ProductDetail extends LightningElement {
         this.masterPid = product.masterId;
         this.setActiveImageCss(0);
     }
-    selectedQty
+    @track selectedQty;
     routeSubscription;
 
     constructor() {

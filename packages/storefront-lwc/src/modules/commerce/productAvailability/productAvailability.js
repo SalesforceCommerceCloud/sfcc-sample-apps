@@ -4,7 +4,7 @@ export default class ProductAvailability extends LightningElement {
     @api inventory;
     @api type;
 
-    @track quantity;
+    @api quantity;
 
     get availabilityMessage() {
         let availabilityMessage; // Message that will be returned and displayed
