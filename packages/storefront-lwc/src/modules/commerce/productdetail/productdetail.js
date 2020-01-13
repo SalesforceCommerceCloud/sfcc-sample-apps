@@ -8,6 +8,12 @@ import { LightningElement, api, wire, track } from 'lwc';
 import { subscribe } from 'webruntime/routingService';
 import { productDetailWireAdaptor, ShoppingCart } from 'commerce/data'
 
+/**
+ * A product detail component is an interactive component which fetches and displays details about a product.
+ * Such information may include the product name and description, any images, any pricing or promotions and more.
+ * The product detail component is interactive and will allow a user to select any variations and add the product to
+ * the current storefront shopping cart.
+ */
 export default class ProductDetail extends LightningElement {
 
     @api pid = '';
@@ -30,12 +36,12 @@ export default class ProductDetail extends LightningElement {
         this.routeSubscription = subscribe(this.routeSubHandler.bind(this));
 
         window.addEventListener('update-product', e => {
+            // TODO: Break this code block into functions and/or use modern map/filter/reduce collection methods
             this.selectedQty = e.detail.qty;
             let colorVariants = [];
             let sizeVariants = [];
             let variationPid = this.pid;
 
-            
             if (e.detail.allVariationsSelected) {
                 this.product.variants.forEach(variant => {
                     if (e.detail.hasColor) {
@@ -78,6 +84,10 @@ export default class ProductDetail extends LightningElement {
         });
     }
 
+    /**
+     * Get the price of the current product
+     * @return {string}
+     */
     get price() {
         if (this.product && this.product.price) {
             return this.product.price.toFixed(2);
@@ -91,10 +101,17 @@ export default class ProductDetail extends LightningElement {
         }
     }
 
+    /**
+     * Add product to cart when user clicks `Add to Cart` button
+     */
     addToCartHandler(event) {
         ShoppingCart.addToCart(this.product, this.selectedQty);
     }
 
+    /**
+     * The click handler for the product detail image carousel to cycle to the next or previous image, left or right.
+     * @param event the event object which includes the data from the button clicked, left or right.
+     */
     handleCarousel(event) {
         const slide = event.currentTarget.dataset.slide;
         if (slide === 'prev') {
@@ -104,6 +121,10 @@ export default class ProductDetail extends LightningElement {
         }
     }
 
+    /**
+     * Set the active image for the product detail carousel
+     * @param activeImage the url of the image to be displayed
+     */
     setActiveImageCss(activeImage) {
         this.product.cssClass = "carousel-item";
         this.activeImage = activeImage;

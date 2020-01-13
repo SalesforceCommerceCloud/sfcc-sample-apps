@@ -1,0 +1,11 @@
+{
+  "parser": "babel-eslint",
+  "plugins": [
+    "@lwc/eslint-plugin-lwc"
+  ],
+  "rules": {
+    "@lwc/lwc/no-deprecated": "error",
+    "@lwc/lwc/valid-api": "error",
+    "@lwc/lwc/no-document-query": "error"
+  }
+}

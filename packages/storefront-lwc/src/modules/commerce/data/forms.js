@@ -19,7 +19,8 @@ export const FormHelper = {
     },
 
     validate: (formData, name, control) => {
-        control = control || document.querySelector( `input[name="${name}"]` );
+        control = control || document.querySelector( `input[name="${name}"]` ); /* eslint-disable-line */
+
         let {value} = control;
 
         // // TODO: check required and other validation
