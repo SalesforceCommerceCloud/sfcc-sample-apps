@@ -13,11 +13,26 @@ export default class Variations extends LightningElement {
     @track selectedSize = "-"
     @track isSizeAndColorSelected = false
     @track selectedColorText = "Not Selected"
+    @api maxQtyValue = 10
+    @api selectedQty = 1;
     hasSize = false
     hasColor = false
 
     constructor() {
         super();
+    }
+
+    get qtyValues() {
+        
+        return this.createQtyLimit([], null);
+    }
+
+    createQtyLimit(array, n) {
+        let upperLimit = n ? n : this.maxQtyValue
+        for( let i = 1; i <= upperLimit; i++){
+            array.push(i);
+        }
+        return array
     }
 
     get colorAttribute() {
@@ -102,11 +117,18 @@ export default class Variations extends LightningElement {
             detail: {
                 selectedColor: this.selectedColor,
                 selectedSize: this.selectedSize,
+                qty: this.selectedQty,
                 allVariationsSelected: this.allVariationsSelected(),
                 hasColor: this.hasColor,
                 hasSize: this.hasSize
             }
         });
         window.dispatchEvent(event);
+    }
+
+    updateSelectQty(event) {
+        this.selectedQty = event.target.value;
+        this.updateProduct();
+        console.log('qty should be ' + event.target.value);
     }
 }

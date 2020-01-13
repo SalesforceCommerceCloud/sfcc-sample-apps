@@ -22,6 +22,7 @@ export default class ProductDetail extends LightningElement {
         this.masterPid = product.masterId;
         this.setActiveImageCss(0);
     }
+    selectedQty
     routeSubscription;
 
     constructor() {
@@ -29,6 +30,7 @@ export default class ProductDetail extends LightningElement {
         this.routeSubscription = subscribe(this.routeSubHandler.bind(this));
 
         window.addEventListener('update-product', e => {
+            this.selectedQty = e.detail.qty;
             let colorVariants = [];
             let sizeVariants = [];
             let variationPid = this.pid;
@@ -90,7 +92,7 @@ export default class ProductDetail extends LightningElement {
     }
 
     addToCartHandler(event) {
-        ShoppingCart.addToCart(this.product);
+        ShoppingCart.addToCart(this.product, this.selectedQty);
     }
 
     handleCarousel(event) {
