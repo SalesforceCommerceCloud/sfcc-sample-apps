@@ -12,21 +12,26 @@ import "@babel/polyfill";
 import color from 'colors';
 import express from 'express';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 import compression from 'compression';
 
-import {
-    compileErrorMiddleware,
-    resourceMiddleware,
-    contextService,
-    staticMiddleware,
-    templateMiddleware
-} from '@webruntime/compiler';
+import runtimeCompiler from '@webruntime/compiler';
 
 // ****************************************************
 // Instantiate the new Storefront Reference Application
 // ****************************************************
 import {sampleApp} from './sample-app';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+const {
+    compileErrorMiddleware,
+    resourceMiddleware,
+    contextService,
+    staticMiddleware,
+    templateMiddleware
+} = runtimeCompiler;
 
 /**
  * Constants

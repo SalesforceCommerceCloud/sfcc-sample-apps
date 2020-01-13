@@ -2,14 +2,13 @@
   "name": "@sfcc-bff/customerapi",
   "version": "0.0.1-sfcc-alpha-1",
   "description": "",
-  "main": "index.js",
+  "main": "./src/customerapi.js",
   "scripts": {
-    "build": "cross-env rollup -c ./scripts/rollup.config.js",
     "pack": "npm pack",
-    "clean": "./clean.sh",
-    "pub": "npm run build; npm pack; npm publish -f",
-    "publocal": "npm version patch && npm run build && npm publish --registry http://localhost:4873"
+    "pub": "npm pack; npm publish -f",
+    "publocal": "npm version patch && npm publish --registry http://localhost:4873"
   },
+	"type": "module",
   "author": "",
   "license": "MIT",
   "dependencies": {

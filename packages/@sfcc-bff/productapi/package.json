@@ -2,14 +2,13 @@
   "name": "@sfcc-bff/productapi",
   "version": "0.0.1-sfcc-alpha-1",
   "description": "",
-  "main": "index.js",
+  "main": "./src/productapi.js",
   "scripts": {
-    "build": "cross-env rollup -c ./scripts/rollup.config.js",
     "pack": "npm pack",
-    "clean": "./clean.sh",
-    "pub": "npm run build; npm pack; npm publish -f"
+    "pub": "npm pack; npm publish -f"
   },
   "author": "",
+  "type": "module",
   "license": "MIT",
   "dependencies": {
     "@sfcc-core/core": "0.0.1-sfcc-alpha-1",

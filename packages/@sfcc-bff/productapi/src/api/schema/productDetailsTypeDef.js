@@ -6,7 +6,9 @@
 */
 'use strict';
 
-import { gql } from 'apollo-server-core';
+import apolloServerCore from 'apollo-server-core';
+
+const { gql } = apolloServerCore;
 
 export const typeDef = gql`
     extend type Query {

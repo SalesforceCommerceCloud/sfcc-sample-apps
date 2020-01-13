@@ -6,7 +6,8 @@
 */
 'use strict';
 
-const { RESTDataSource } = require('apollo-datasource-rest');
+import datasource from 'apollo-datasource-rest';
+const { RESTDataSource } = datasource;
 
 class Login extends RESTDataSource {
     constructor (config) {

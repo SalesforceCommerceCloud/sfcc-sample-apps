@@ -5,10 +5,10 @@
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
 /* eslint-env node */
-require('colors');
+import colors from 'colors';
 
-const cpx = require('cpx');
-const mkdirp = require('mkdirp');
+import cpx from 'cpx';
+import mkdirp from 'mkdirp';
 const watch = process.argv.includes('--watch');
 
 const { log } = console;
