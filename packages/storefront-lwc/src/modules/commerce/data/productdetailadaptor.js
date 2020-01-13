@@ -6,9 +6,9 @@
 */
 import { register, ValueChangedEvent } from 'wire-service';
 
-export const productDetailById = Symbol('product-detail');
+export const productDetailWireAdaptor = Symbol('product-detail');
 
-register(productDetailById, (eventTarget) => {
+register(productDetailWireAdaptor, (eventTarget) => {
     console.log("Register wire adapter", eventTarget);
 
     /**
@@ -18,6 +18,7 @@ register(productDetailById, (eventTarget) => {
      */
     const fetchProductById = (options) => {
         const pid = options.pid;
+        const selectedColor = options.selectedColor;
 
         if (pid && pid.length) {
             try {
@@ -27,7 +28,7 @@ register(productDetailById, (eventTarget) => {
                 return client.query({
                     query: window.gql`
                     {
-                        product(id: "${ pid }") {
+                        product(id: "${ pid }", selectedColor: "${ selectedColor }") {
                             name
                             id
                             masterId

@@ -24,14 +24,14 @@ const getSdkProduct = async (id) => {
 export const resolver = (config) => {
     return {
         Query: {
-            product: async (_, {id}) => {
+            product: async (_, {id, selectedColor}) => {
                 let apiProduct;
                 if (id === "apple-ipod-shuffle") {
                     apiProduct = await getSdkProduct(id);
                 } else {
                     apiProduct = await getOcapiProduct(config, id);
                 }
-                return new Product(apiProduct);
+                return new Product(apiProduct, selectedColor);
             }
         }
     }

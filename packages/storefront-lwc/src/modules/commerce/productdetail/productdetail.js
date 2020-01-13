@@ -6,16 +6,17 @@
 */
 import { LightningElement, api, wire, track } from 'lwc';
 import { subscribe } from 'webruntime/routingService';
-import { productDetailById, ShoppingCart } from 'commerce/data'
+import { productDetailWireAdaptor, ShoppingCart } from 'commerce/data'
 
 export default class ProductDetail extends LightningElement {
 
     @api pid = '';
+    @api selectedColor;
     @track readyToAddToCart = false;
     @track product = { images : [] };
     @track masterPid;
     activeImage;
-    @wire(productDetailById, {pid: '$pid'})
+    @wire(productDetailWireAdaptor, {pid: '$pid', selectedColor: '$selectedColor'})
     updateProduct(product) {
         this.product = product;
         this.masterPid = product.masterId;
@@ -31,6 +32,8 @@ export default class ProductDetail extends LightningElement {
             let colorVariants = [];
             let sizeVariants = [];
             let variationPid = this.pid;
+
+            
             if (e.detail.allVariationsSelected) {
                 this.product.variants.forEach(variant => {
                     if (e.detail.hasColor) {
@@ -39,6 +42,7 @@ export default class ProductDetail extends LightningElement {
                                 colorVariants.push(variant);
                             }
                         });
+                        this.selectedColor = e.detail.selectedColor;
                     }
                     if (e.detail.hasSize) {
                         variant.variationValues.forEach(variationValue => {
@@ -60,11 +64,13 @@ export default class ProductDetail extends LightningElement {
                     variationPid = sizeVariants[0].id;
                 } else if (!e.detail.hasSize && e.detail.hasColor) {
                     variationPid = colorVariants[0].id;
+                    this.selectedColor = e.detail.selectedColor;
                 } else {
                     variationPid = this.masterPid;
                 }
             } else {
                 variationPid = this.masterPid;
+                this.selectedColor = e.detail.selectedColor;
             }
             this.pid = variationPid;
         });

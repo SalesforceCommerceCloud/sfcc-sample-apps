@@ -10,7 +10,7 @@ import { gql } from 'apollo-server-core';
 
 export const typeDef = gql`
     extend type Query {
-        product(id: String!): Product
+        product(id: String!, selectedColor:String!): Product
     }
 
     type Product {
