@@ -27,6 +27,11 @@ export default class Variations extends LightningElement {
         return this.createQtyLimit([], null);
     }
 
+    /*
+    This will take in an empty array and a number. 
+    Ther number passed in will be the cap on the number of options to display in the qty drop down
+    if null is passed in for the number it will defaul to the value this.maxQtyValue => (10)
+    */
     createQtyLimit(array, n) {
         let upperLimit = n ? n : this.maxQtyValue
         for( let i = 1; i <= upperLimit; i++){
@@ -126,6 +131,9 @@ export default class Variations extends LightningElement {
         window.dispatchEvent(event);
     }
 
+    /*
+    takes an event from the qty dropdown and calls the updateproduct function in this component
+    */
     updateSelectQty(event) {
         this.selectedQty = event.target.value;
         this.updateProduct();
