@@ -15,6 +15,7 @@ export default class Variations extends LightningElement {
     @track selectedColorText = "Not Selected"
     @api maxQtyValue = 10
     @api selectedQty = 1;
+    @api inventory
     hasSize = false
     hasColor = false
 
@@ -23,8 +24,12 @@ export default class Variations extends LightningElement {
     }
 
     get qtyValues() {
-
-        return this.createQtyLimit([], null);
+        let newAtsValue;
+        newAtsValue = this.inventory ? this.inventory.ats : null;
+        if(this.inventory && this.inventory.ats >= 10) {
+            newAtsValue = this.maxQtyValue;
+        }
+        return this.createQtyLimit([], newAtsValue);
     }
 
     /*
