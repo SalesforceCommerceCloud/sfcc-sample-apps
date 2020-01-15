@@ -69,7 +69,7 @@
                 </div>
 
                 <!-- Variations and Quantity -->
-                <commerce-variations variations={product.variations} variation-attributes={product.variationAttributes}></commerce-variations>
+                <commerce-variations variations={product.variations} variation-attributes={product.variationAttributes} inventory={product.inventory}></commerce-variations>
 
                 <!-- Product Availability -->
                 <commerce-product-availability inventory={product.inventory} type={product.type} quantity={selectedQty}></commerce-product-availability>
