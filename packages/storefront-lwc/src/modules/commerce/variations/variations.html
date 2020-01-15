@@ -57,10 +57,12 @@
             <!-- Quantity Drop Down -->
             <div class="col">
                 <label class="small-paragraph">Quantity</label>
-                <select class="form-control">
-                    <option value="1">
-                        1
-                    </option>
+                <select class="form-control" onchange={updateSelectQty}>
+                    <template for:each={qtyValues} for:item="qtyValue">
+                        <option value={qtyValue} key={qtyValue}>
+                            {qtyValue}
+                        </option>
+                    </template>
                 </select>
             </div>
         </div>

@@ -20,7 +20,7 @@ class Cart {
      */
 
     // TODO : wire up the UI quantity selector to pass in quantity to add
-    addToCart(product) {
+    addToCart(product, qty) {
         let pid = product.id;
         try {
             let client = new window.ApolloClient({
@@ -29,7 +29,7 @@ class Cart {
             return client.mutate({
                 mutation: window.gql`
                 mutation {
-                    addProductToCart(productId: "${ pid }", quantity: 1){
+                    addProductToCart(productId: "${ pid }", quantity: ${ qty }){
                       cartId
                       customerId
                       addProductMessage
