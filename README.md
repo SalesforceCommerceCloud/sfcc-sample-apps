@@ -24,3 +24,8 @@ e.g. Example live instance: https://sfcc-storefront-lwc.herokuapp.com/
 #### Monorepo Instructions
 
 sfcc-sample-apps is a monorepo with a sample application and bff dependency modules. Normally dependencies modules are published to a public npm server, but for the purpose of developing an application and the modules together everything is in a single repository here (monorepo).
+
+
+#### Contributing
+
+[See Contributing](CONTRIBUTING.md)
