@@ -121,12 +121,20 @@ var getVariationAttributes = (variationAttributes, imageGroups) => {
 const getLowestPromotionalPrice = (promotions) => {
     if (promotions && promotions.length) {
         let lowestPrice = promotions.reduce(function(prev, curr) {
-            if (prev.promotional_price && curr.promotional_price) {
-                return prev.promotional_price < curr.promotional_price ? prev : curr;
-            } else if (!prev.promotional_price && curr.promotional_price) {
+            if (prev && curr) {
+                if (prev.promotional_price && curr.promotional_price) {
+                    return prev.promotional_price < curr.promotional_price ? prev : curr;
+                } else if (!prev.promotional_price && curr.promotional_price) {
+                    return curr;
+                } else if (prev.promotional_price && !curr.promotional_price) {
+                    return  prev;
+                } else {
+                    return;
+                }
+            } else if (prev && !curr) {
+                return prev;
+            } else if (!prev && curr) {
                 return curr;
-            } else if (prev.promotional_price && !curr.promotional_price) {
-                return  prev;
             } else {
                 return;
             }
