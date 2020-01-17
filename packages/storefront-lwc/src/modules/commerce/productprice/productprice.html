@@ -6,11 +6,11 @@
 -->
 <template>
   <div class={context}>
-    <template if:true={promo}>
-      <span class="promo-price">${promo}</span><span if:true={price} class="strike-through">${price}</span>
+    <template if:true={listPrice}>
+      <span class="sale-price">${salePrice}</span><span if:true={listPrice} class="strike-through">${listPrice}</span>
     </template>
-    <template if:false={promo}>
-      <span if:true={price} class="price">${price}</span>
+    <template if:false={listPrice}>
+      <span class="price">${salePrice}</span>
     </template>
   </div>
 </template>

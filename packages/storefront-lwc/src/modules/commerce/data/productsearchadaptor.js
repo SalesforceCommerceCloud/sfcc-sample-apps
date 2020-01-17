@@ -73,7 +73,10 @@ register(productsByQuery, (eventTarget) => {
                                 productHits {
                                 id
                                 name
-                                price
+                                prices {
+                                    sale
+                                    list
+                                }
                                 image {
                                   title
                                   link

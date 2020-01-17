@@ -41,7 +41,9 @@ class SearchResultProduct {
     constructor(product) {
         this.id = product.product_id;
         this.name = product.product_name;
-        this.price = product.price;
+        this.prices = {
+            sale: product.price
+        }
         this.image = new Image(product.image);
         this.colorSwatches = getColorSwatches(product.variation_attributes);
         Object.assign(this, product);

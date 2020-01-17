@@ -140,10 +140,25 @@ const getLowestPromotionalPrice = (promotions) => {
             }
         });
 
-        return lowestPrice && lowestPrice.promotional_price ? lowestPrice.promotional_price.toFixed(2) : null;
+        return lowestPrice && lowestPrice.promotional_price ? lowestPrice.promotional_price : null;
     }
 
     return null;
+};
+
+const getPrices = (apiProduct) => {
+    let prices = {
+        sale: apiProduct.price
+    };
+    if (apiProduct.prices) {
+        let lowestPromotionalPrice = getLowestPromotionalPrice(apiProduct.product_promotions);
+        prices.sale = lowestPromotionalPrice ? lowestPromotionalPrice : apiProduct.prices['usd-m-sale-prices'];
+        prices.list = apiProduct.prices['usd-m-list-prices'];
+        if (prices.sale === prices.list) {
+            prices.list = null;
+        }
+    } 
+    return prices;
 };
 
 class Product {
@@ -165,7 +180,7 @@ class Product {
         this.image = apiProduct.image_groups[0].images[0].link;
         this.variants = getVariants(apiProduct.variants);
         this.variationAttributes = getVariationAttributes(apiProduct.variation_attributes, apiProduct.image_groups);
-        this.lowestPromotionalPrice = getLowestPromotionalPrice(apiProduct.product_promotions);
+        this.prices = getPrices(apiProduct);
     }
 }
 
