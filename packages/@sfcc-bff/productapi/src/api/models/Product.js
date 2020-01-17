@@ -118,6 +118,26 @@ var getVariationAttributes = (variationAttributes, imageGroups) => {
     }
 };
 
+const getLowestPromotionalPrice = (promotions) => {
+    if (promotions && promotions.length) {
+        let lowestPrice = promotions.reduce(function(prev, curr) {
+            if (prev.promotional_price && curr.promotional_price) {
+                return prev.promotional_price < curr.promotional_price ? prev : curr;
+            } else if (!prev.promotional_price && curr.promotional_price) {
+                return curr;
+            } else if (prev.promotional_price && !curr.promotional_price) {
+                return  prev;
+            } else {
+                return;
+            }
+        });
+
+        return lowestPrice && lowestPrice.promotional_price ? lowestPrice.promotional_price.toFixed(2) : null;
+    }
+
+    return null;
+};
+
 class Product {
     constructor(apiProduct, userSelectedColor) {
         this.id = apiProduct.id;
@@ -137,6 +157,7 @@ class Product {
         this.image = apiProduct.image_groups[0].images[0].link;
         this.variants = getVariants(apiProduct.variants);
         this.variationAttributes = getVariationAttributes(apiProduct.variation_attributes, apiProduct.image_groups);
+        this.lowestPromotionalPrice = getLowestPromotionalPrice(apiProduct.product_promotions);
     }
 }
 

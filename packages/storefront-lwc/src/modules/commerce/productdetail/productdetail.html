@@ -74,19 +74,25 @@
                 <!-- Product Availability -->
                 <commerce-product-availability inventory={product.inventory} type={product.type} quantity={selectedQty}></commerce-product-availability>
 
+                <template if:true={product.product_promotions}>
+                    <div class="promotions">
+                        <template for:each={product.product_promotions} for:item="promotion">
+                            <commerce-promotion
+                                    key={promotion.promotion_id}
+                                    promotion={promotion}>
+                            </commerce-promotion>
+                        </template>
+                    </div>
+                </template>
+
                 <div class="row">
-                    <!-- Size Chart -->
-
                     <div class="col-12">
-                        <div class="row justify-content-center">
-                            <div class="col price d-flex">
-                                <!-- Prices -->
-                                <h3>
-                                    ${price}
-                                </h3>
-                            </div>
-                        </div>
+                        <commerce-productprice price={product.price} promo={product.lowestPromotionalPrice} context="pdp"></commerce-productprice>
+                    </div>
+                </div>
 
+                <div class="row">
+                    <div class="col-12">
                         <div class="row cart-and-ipay">
                             <div class="col-sm-12">
                                 <template if:false={readyToAddToCart}>

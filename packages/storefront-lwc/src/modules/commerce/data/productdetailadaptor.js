@@ -81,6 +81,12 @@ register(productDetailWireAdaptor, (eventTarget) => {
                                 variant
                                 variationGroup
                             }
+                            product_promotions {
+                                callout_msg
+                                promotion_id
+                                promotional_price
+                            }
+                            lowestPromotionalPrice
                         }
                     }
                  `
