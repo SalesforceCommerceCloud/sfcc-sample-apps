@@ -7,7 +7,6 @@ lerna-debug.log
 .project
 .settings
 .sfdx
-.vscode
 coverage
 *.iml
 jest-report

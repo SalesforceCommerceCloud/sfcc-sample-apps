@@ -21,7 +21,7 @@
     "build:public:scss": "node-sass src/scss -o dist/public/assets/css --include-path node_modules",
     "build": "NODE_OPTIONS='--experimental-modules --es-module-specifier-resolution=node' yarn run build:validate && yarn run build:lib && yarn run build:resources && yarn run build:scss && yarn run build:components && yarn run build:common",
     "start": "NODE_OPTIONS='--experimental-modules --es-module-specifier-resolution=node' node ./scripts/runtime.js --max-old-space-size=2048",
-    "start:debug": "NODE_OPTIONS='--experimental-modules --es-module-specifier-resolution=node' nodemon --watch scripts --watch ../@sfcc-core --watch ../@sfcc-bff ./scripts/runtime.js --max-old-space-size=2048",
+    "start:debug": "NODE_OPTIONS='--experimental-modules --es-module-specifier-resolution=node' nodemon --watch scripts --watch ../@sfcc-core --watch ../@sfcc-bff --nolazy --inspect-brk=9229 ./scripts/runtime.js --max-old-space-size=2048",
     "stop": " lsof -t -i tcp:3000 | xargs kill",
     "start:watch": "NODE_OPTIONS='--experimental-modules --es-module-specifier-resolution=node' concurrently \"yarn start:debug\" \"node scripts/copy-resources.js --watch\" \"yarn watch:scss\"",
     "watch:scss": "yarn watch:public:scss && yarn watch:lwc:scss",
