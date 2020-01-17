@@ -5,7 +5,12 @@
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 -->
 <template>
-  <span class='sales'>
-    ${price}
-  </span>
+  <div class={context}>
+    <template if:true={promo}>
+      <span class="promo-price">${promo}</span><span if:true={price} class="strike-through">${price}</span>
+    </template>
+    <template if:false={promo}>
+      <span if:true={price} class="price">${price}</span>
+    </template>
+  </div>
 </template>
