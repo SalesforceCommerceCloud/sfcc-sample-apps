@@ -11,11 +11,13 @@ export const typeDef = gql`
         getCart: Cart!
         getCartByCustomerId(customerId: String!): Cart!
         getProductAvailability(productId: String!, quantity: Int!): Order!
+        getShippingMethods(cartId: String!, shipmentId: String!): ShippingMethods!
     }
     extend type Mutation {
         createCart: Cart!
         addProductToCart(productId: String!, quantity: Int!): Cart!
         deleteProductFromCart(itemId: String!): Cart!
+        updateShippingMethod(cartId: String!, shipmentId: String!, shippingMethodId: String!): Cart!
     }
     type Cart {
         cartId: String!
@@ -23,8 +25,17 @@ export const typeDef = gql`
         addProductMessage: String
         getCartMessage:String
         totalProductsQuantity: Int
+        shipmentId: String
+        shipmentTotal: Float
+        selectedShippingMethodId: String
         products: [ProductItem]
-
+        orderTotal: Float
+        orderLevelPriceAdjustment: OrderLevelPriceAdjustment
+        shippingTotal: Float
+        shippingTotalTax: Float
+        taxation: String
+        taxTotal: Float
+        shippingMethods: ShippingMethods
     }
     type ProductItem {
         productId: String!
@@ -35,5 +46,21 @@ export const typeDef = gql`
     }
     type Order {
         orderable: Boolean!
+    }
+    type ShippingMethods {
+        applicableShippingMethods: [ShippingMethod]
+        defaultShippingMethodId: String
+    }
+    type ShippingMethod {
+        id: String
+        name: String
+        description: String
+        price: Float
+        estimatedArrivalTime: String
+        storePickupEnabled: Boolean
+    }
+    type OrderLevelPriceAdjustment {
+        itemText: String
+        price: Float
     }
 `;

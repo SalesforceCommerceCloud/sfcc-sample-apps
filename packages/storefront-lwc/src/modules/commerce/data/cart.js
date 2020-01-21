@@ -29,7 +29,7 @@ class Cart {
             return client.mutate({
                 mutation: window.gql`
                 mutation {
-                    addProductToCart(productId: "${ pid }", quantity: ${ qty }){
+                    addProductToCart(productId: "${ pid }", quantity: ${ qty }) {
                       cartId
                       customerId
                       addProductMessage
@@ -60,6 +60,53 @@ class Cart {
         return this.cart;
     }
 
+    updateShippingMethod(cartId, shipmentId, shippingMethodId) {
+        try {
+            let client = new window.ApolloClient({
+                uri: window.apiconfig.COMMERCE_API_PATH || '/graphql'
+            });
+            return client.mutate({
+                mutation: window.gql `
+                    mutation {
+                        updateShippingMethod(cartId: "${cartId}", shipmentId: "${shipmentId}", shippingMethodId: "${shippingMethodId}") {
+                            cartId
+                            customerId
+                            getCartMessage
+                            totalProductsQuantity
+                            shipmentId
+                            shipmentTotal
+                            selectedShippingMethodId
+                            products {
+                                productId
+                                itemId
+                                quantity
+                                productName
+                                price
+                            }
+                            orderTotal
+                            orderLevelPriceAdjustment {
+                                itemText
+                                price
+                            }
+                            shippingTotal
+                            shippingTotalTax
+                            taxation
+                            taxTotal
+                        }
+                    }
+                 `
+            }).then(result => {
+                this.cart = result.data.updateShippingMethod;
+                return this.cart;
+            }).catch((error) => {
+                console.log('Update Shipping Method failed with message', error);
+            });
+        } catch (e) {
+            console.log('Update Shipping Method Exception received', e);
+        }
+        return this.cart;
+    }
+    
     // TODO : wire this call with BFF
     removeFromCart(index) {
         let cart = this.getCurrentCart();
@@ -110,12 +157,40 @@ class Cart {
                         customerId
                         getCartMessage
                         totalProductsQuantity
+                        shipmentId
+                        shipmentTotal
+                        selectedShippingMethodId
                         products {
                             productId
                             itemId
                             quantity
                             productName
                             price
+                        }
+                        orderTotal
+                        orderLevelPriceAdjustment {
+                            itemText
+                            price
+                        }
+                        shippingTotal
+                        shippingTotalTax
+                        taxation
+                        taxTotal
+                        shippingMethods {
+                            defaultShippingMethodId
+                            applicableShippingMethods {
+                                id
+                                name
+                                description
+                                price
+                                estimatedArrivalTime
+                                storePickupEnabled
+                                shippingPromotions {
+                                    promotionId
+                                    promotionName
+                                    calloutMsg
+                                }
+                            }
                         }
                     }
                 }

@@ -25,6 +25,26 @@ export default class Cart extends LightningElement {
         this.routeSubscription = subscribe(this.routeSubHandler.bind(this));
     }
 
+    get shippingMethods() {
+        let shippingMethods = ShoppingCart.cart.shippingMethods.applicableShippingMethods;
+        return this.filterStorePickupShippingMethods(shippingMethods);
+    }
+
+    filterStorePickupShippingMethods(shippingMethods) {
+        // Filter/Remove all Store Pickup Enabled Shipping Methods
+        var filteredMethods = [];
+        shippingMethods.forEach(shippingMethod => {
+            if (!shippingMethod.storePickupEnabled) {
+                filteredMethods.push(shippingMethod);
+            }
+        });
+        return filteredMethods;
+    }
+
+    get selectedShippingMethodId() {
+        return ShoppingCart.cart.selectedShippingMethodId;
+    }
+
     routeSubHandler(view) {
         this.isGuest = true;
     }

@@ -7,6 +7,7 @@
 import { ApolloError } from 'apollo-server';
 import Cart from '../models/Cart';
 import Order from '../models/Order';
+import ShippingMethods from '../models/ShippingMethods';
 import fetch from 'node-fetch';
 
 const getBearerToken = async (config) => {
@@ -52,21 +53,29 @@ const getProductAvailability = async (productId, quantity, config) => {
 const createCart = async (config) => {
     await getBearerToken(config);
     const createBasketUrl = `${config.COMMERCE_BASE_URL}/baskets`;
-    let result = await fetch(createBasketUrl, {
+    let cart = await fetch(createBasketUrl, {
         method: 'post',
         headers: { 'Content-Type': 'application/json', Authorization: Cart.authToken }
     }).then(res => res.json());
-    return result;
+
+    const cartId = cart.basket_id;
+    const shipmentId = cart.shipments[0].shipment_id;
+    // Get Shipping Methods
+    const shippingMethods = await getShippingMethods(cartId, shipmentId, config);
+    // Update Shipping Method to Default Method
+    cart = await updateShippingMethod(cartId, shipmentId, shippingMethods.default_shipping_method_id, config);
+    cart.shippingMethods = new ShippingMethods(shippingMethods);
+    return cart;
 };
 
 const getCart = async (config) => {
-    let customerCart = await getCartByCustomerId(Cart.customerId, config);
-    // if no cart found, return a message
-    if (customerCart.fault) {
-        customerCart.getCartMessage = "No Cart Found";
-        return customerCart;
+    // if no cart has been created yet, return No Cart Found message
+    if (Cart.cartId == null) {
+        return {
+            getCartMessage: "No Cart Found",
+            fault: true
+        };
     }
-    Cart.cartId = customerCart.baskets[0].basket_id;
     // else get cart with that id
     const getCartUrl = `${config.COMMERCE_BASE_URL}/baskets/${Cart.cartId}`;
     let result = await fetch(getCartUrl, {
@@ -74,23 +83,24 @@ const getCart = async (config) => {
         headers: { 'Content-Type': 'application/json', Authorization: Cart.authToken }
     }).then(res => res.json());
     result.getCartMessage = `Cart found with ID of ${Cart.cartId}`;
+    result.shippingMethods = Cart.shippingMethods;/*
+    console.log("#####################Get Cart#########################");
+    console.log(result);
+    console.log("######################################################");*/
     return result;
 };
 
 const addProductToCart = async (productId, quantity, config) => {
-    let customerCart = await getCartByCustomerId(Cart.customerId, config);
-    // if no cart found, create a new Cart
-    if (customerCart.fault) {
-        customerCart = await createCart(config);
-        Cart.customerId = customerCart.customer_info.customer_id;
+    // Check if there is already a Cart Created
+    if(Cart.cartId == null) {
+        const customerCart = await createCart(config);
         Cart.cartId = customerCart.basket_id;
-    } else {
-        Cart.cartId = customerCart.baskets[0].basket_id;
+        Cart.shippingMethods = customerCart.shippingMethods;
     }
     // validate if the product is orderable before add to Cart
-    const productIsOrderabled = await getProductAvailability(productId, quantity, config);
+    const productIsOrderable = await getProductAvailability(productId, quantity, config);
     // add product do Cart if product is orderable
-    if (productIsOrderabled) {
+    if (productIsOrderable) {
         const body = [{
             product_id: productId,
             quantity: quantity
@@ -102,6 +112,7 @@ const addProductToCart = async (productId, quantity, config) => {
             headers: { 'Content-Type': 'application/json', Authorization: Cart.authToken }
         }).then(res => res.json());
         result.addProductMessage = `${quantity} product(s) with id ${productId} added to Cart!`;
+        result.shippingMethods = Cart.shippingMethods;
         return result;
     } else {
         // If product is not orderable, return existing Cart with no change
@@ -110,6 +121,7 @@ const addProductToCart = async (productId, quantity, config) => {
         currentCart.fault = {
             message: `product id ${productId} quantity of ${quantity} not orderable`
         };
+        currentCart.shippingMethods = Cart.shippingMethods;
         return currentCart;
     }
 };
@@ -132,6 +144,30 @@ const deleteProductFromCart = async (itemId, config) => {
     }).then(res => res.json());
     return result;
 };
+
+const getShippingMethods = async (cartId, shipmentId, config) => {
+    const getShippingMethodsUrl = `${config.COMMERCE_BASE_URL}/baskets/${cartId}/shipments/${shipmentId}/shipping_methods`;
+    const shippingMethods = await fetch(getShippingMethodsUrl, {
+        method: 'get',
+        headers: { 'Content-Type': 'application/json', Authorization: Cart.authToken }
+    }).then(res => res.json());
+    return shippingMethods;
+}
+
+const updateShippingMethod = async (cartId, shipmentId, shippingMethodId, config) => {
+    const updateShippingMethodUrl = `${config.COMMERCE_BASE_URL}/baskets/${cartId}/shipments/${shipmentId}`;
+    const body = {
+        shipping_method: {
+            id: shippingMethodId
+        }
+    };
+    const cart = await fetch(updateShippingMethodUrl, {
+        method: 'patch',
+        body: JSON.stringify(body),
+        headers: { 'Content-Type': 'application/json', Authorization: Cart.authToken }
+    }).then(res => res.json());
+    return cart;
+}
 
 export const resolver = (config) => {
     return {
@@ -156,6 +192,10 @@ export const resolver = (config) => {
                     return new Order(checkAvailability);
                 }
                 throw new ApolloError(checkAvailability.fault.message);
+            },
+            getShippingMethods: async (_, { cartId, shipmentId }) => {
+                const shippingMethods = await getShippingMethods(cartId, shipmentId, config);
+                return new ShippingMethods(shippingMethods);
             }
         },
         Mutation: {
@@ -176,6 +216,13 @@ export const resolver = (config) => {
             },
             deleteProductFromCart: async (_, { itemId }) => {
                 const apiCart = await deleteProductFromCart(itemId, config);
+                if (!apiCart.fault) {
+                    return new Cart(apiCart);
+                }
+                throw new ApolloError(apiCart.fault.message);
+            },
+            updateShippingMethod: async (_, { cartId, shipmentId, shippingMethodId }) => {
+                const apiCart = await updateShippingMethod(cartId, shipmentId, shippingMethodId, config);
                 if (!apiCart.fault) {
                     return new Cart(apiCart);
                 }

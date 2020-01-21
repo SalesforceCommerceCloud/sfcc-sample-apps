@@ -177,33 +177,8 @@
 
                     <div class="coupons-and-promos">
                     </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label for="shippingMethods">Shipping</label>
-                                <select class="custom-select form-control shippingMethods" id="shippingMethods" name="shippingMethods" data-actionurl="/on/demandware.store/Sites-RefArch-Site/en_US/Cart-SelectShippingMethod">
 
-
-                                    <option selected="" data-shipping-id="001">Ground ( 7-10 Business Days )</option>
-
-
-                                    <option data-shipping-id="002">2-Day Express ( 2 Business Days )</option>
-
-
-                                    <option data-shipping-id="003">Overnight ( Next Day )</option>
-
-
-                                    <option data-shipping-id="012">Express ( 2-3 Business Days )</option>
-
-
-                                    <option data-shipping-id="021">USPS ( 7-10 Business Days )</option>
-
-
-                                </select>
-                            </div>
-                        </div>
-
-                    </div>
+                    <commerce-shippingmethods shipping-label="Shipping" shipping-methods={shippingMethods} selected-shipping-method-id={selectedShippingMethodId}></commerce-shippingmethods>
 
                     <commerce-carttotals></commerce-carttotals>
 

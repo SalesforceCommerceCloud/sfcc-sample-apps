@@ -9,41 +9,45 @@ import { ShoppingCart } from 'commerce/data';
 
 export default class CartTotals extends LightningElement {
 
+    @track shippingCost = 0.00;
+    @track salesTax = 0.00;
+    @track orderDiscount = 0.00;
+    @track shippingDiscount = 0.00;
+    @track totalEstimate = 0.00;
+    @track hasOrderDiscount = false;
+    @track hasShippingDiscount = false;
+
     constructor() {
         super();
-        ShoppingCart.updateCartListener(this.updateCartHandler.bind(this));
-    }
+        
+        this.shippingCost = ShoppingCart.cart.shippingTotal.toFixed(2);
+        this.salesTax = ShoppingCart.cart.taxTotal.toFixed(2);
+        this.totalEstimate = ShoppingCart.cart.orderTotal.toFixed(2);
+        let orderLevelPriceAdjustment = ShoppingCart.cart.orderLevelPriceAdjustment;
+        this.hasOrderDiscount = orderLevelPriceAdjustment && orderLevelPriceAdjustment.price;
+        this.orderDiscount = this.hasOrderDiscount ? orderLevelPriceAdjustment.price.toFixed(2) * -1.00 : 0.00;
+        //this.hasShippingDiscount = false;
+        //this.shippingDiscount = 0.00;
 
-    get shippingCost() {
-        return 7.99;
-    }
-
-    get salesTax() {
-        return 5.15;
-    }
-
-    get salesTax() {
-        return 5.15;
-    }
-
-    get orderDiscount() {
-        return 0.00;
-    }
-
-    get shippingDiscount() {
-        return 0.00;
-    }
-
-    get totalEstimate() {
-        const total = ShoppingCart.cart.products.reduce((a, b) => {
-            return {price: a.price + b.price};
+        // Listen to shippingmethods component change
+        window.addEventListener('update-shipping-method', e => {
+            this.updateCartTotals(e);
         });
-        return (total.price + this.salesTax + this.shippingCost).toFixed(2);
     }
 
-    updateCartHandler() {
-        // Dummy Values. Should be updated when the Cart is Updated.
-        this.shippingCost = 9.99;
-        this.salesTax = 100.99;
+    updateCartTotals(event) {
+        const cartId = ShoppingCart.cart.cartId;
+        const shipmentId = ShoppingCart.cart.shipmentId;
+        const shippingMethodId = event.detail.shippingMethodId;
+        ShoppingCart.updateShippingMethod(cartId, shipmentId, shippingMethodId).then(cart => {
+            this.shippingCost = cart.shippingTotal.toFixed(2);
+            this.salesTax = cart.taxTotal.toFixed(2);
+            this.totalEstimate = cart.orderTotal.toFixed(2);
+            let orderLevelPriceAdjustment = ShoppingCart.cart.orderLevelPriceAdjustment;
+            this.hasOrderDiscount = orderLevelPriceAdjustment && orderLevelPriceAdjustment.price;
+            this.orderDiscount = this.hasOrderDiscount ? orderLevelPriceAdjustment.price.toFixed(2) * -1.00 : 0.00;
+            //this.hasShippingDiscount = false;
+            //this.shippingDiscount = 0.00;
+        });
     }
 }

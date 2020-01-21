@@ -22,6 +22,20 @@ class Cart {
                 itemId: product.item_id
             };
         }) : [];
+        
+        this.orderTotal = apiCart.order_total;
+        this.orderLevelPriceAdjustment = {
+            itemText: apiCart.order_price_adjustments ? apiCart.order_price_adjustments[0].item_text : '',
+            price: apiCart.order_price_adjustments ? apiCart.order_price_adjustments[0].price : 0.00
+        };
+
+        this.shippingMethods = apiCart.shippingMethods;
+        this.shipmentId = apiCart.shipments ? apiCart.shipments[0].shipment_id : '';
+        this.shipmentTotal = apiCart.shipments ? apiCart.shipments[0].shipment_total : 0.00;
+        this.selectedShippingMethodId = apiCart.shipments[0].shipping_method ? apiCart.shipments[0].shipping_method.id : '';
+        this.shippingTotal = apiCart.shipments ? apiCart.shipments[0].shipping_total : 0.00;
+        this.shippingTotalTax = apiCart.shipments ? apiCart.shipments[0].shipping_total_tax : 0.00;
+        this.taxTotal = apiCart.tax_total;
         Object.assign(this, apiCart);
     }
 }
