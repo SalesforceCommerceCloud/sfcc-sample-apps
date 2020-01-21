@@ -68,51 +68,41 @@
                     </div>
                 </div>
 
-
                 <!-- Variations and Quantity -->
-                <commerce-variations variations={product.variations} variation-attributes={product.variationAttributes}></commerce-variations>
+                <commerce-variations variations={product.variations} variation-attributes={product.variationAttributes} inventory={product.inventory}></commerce-variations>
 
+                <!-- Product Availability -->
+                <commerce-product-availability inventory={product.inventory} type={product.type} quantity={selectedQty}></commerce-product-availability>
+
+                <template if:true={product.product_promotions}>
+                    <div class="promotions">
+                        <template for:each={product.product_promotions} for:item="promotion">
+                            <commerce-promotion
+                                    key={promotion.promotion_id}
+                                    promotion={promotion}>
+                            </commerce-promotion>
+                        </template>
+                    </div>
+                </template>
 
                 <div class="row">
-                    <!-- Size Chart -->
-                    <!-- Product Availability -->
-                    <!-- Availability -->
-                    <div class="availability col-md-10 col-12 product-availability" data-ready-to-order="false"
-                        data-available="true">
-                        <div class="row">
-                            <div class="col-12 col-sm-4">
-                                <label class="availability">
-                                    Availability:
-                                </label>
-                            </div>
-                            <div class="col-12 col-sm-8">
-                                <ul class="list-unstyled availability-msg">
-                                    <li>Select Styles for Availability</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="col-12">
-                        <div class="row justify-content-center">
-                            <div class="col price d-flex">
-                                <!-- Prices -->
-                                <h3>
-                                    ${price}
-                                </h3>
-                            </div>
-                        </div>
+                        <commerce-productprice price={product.price} promo={product.lowestPromotionalPrice} context="pdp"></commerce-productprice>
+                    </div>
+                </div>
 
+                <div class="row">
+                    <div class="col-12">
                         <div class="row cart-and-ipay">
                             <div class="col-sm-12">
                                 <template if:false={readyToAddToCart}>
-                                    <button class="btn btn-primary" onclick={addToCartHandler}>
+                                    <button class="btn btn-primary btn-block" onclick={addToCartHandler}>
                                         <i class="fa fa-shopping-bag"></i>
                                         Add to Cart
                                     </button>
                                 </template>
                                 <template if:true={readyToAddToCart}>
-                                    <button class="btn btn-primary" disabled onclick={addToCartHandler}>
+                                    <button class="btn btn-primary btn-block" disabled onclick={addToCartHandler}>
                                         <i class="fa fa-shopping-bag"></i>
                                         Add to Cart
                                     </button>
@@ -128,15 +118,10 @@
             </div>
         </div>
 
-        <div class="recommendations">
+        <div class="descriptions">
+            <commerce-collapsible title="Description" content={product.shortDescription}></commerce-collapsible>
+
+            <commerce-collapsible title="Details" content={product.longDescription}></commerce-collapsible>
         </div>
     </div>
-    <commerce-collapsible
-        title="Description"
-        content={product.shortDescription}>
-    </commerce-collapsible>
-    <commerce-collapsible
-        title="Details"
-        content={product.longDescription}>
-    </commerce-collapsible>
 </template>

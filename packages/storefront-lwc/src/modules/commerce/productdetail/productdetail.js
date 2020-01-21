@@ -6,22 +6,29 @@
 */
 import { LightningElement, api, wire, track } from 'lwc';
 import { subscribe } from 'webruntime/routingService';
-import { productDetailById, ShoppingCart } from 'commerce/data'
+import { productDetailWireAdaptor, ShoppingCart } from 'commerce/data'
 
+/**
+ * A product detail component is an interactive component which fetches and displays details about a product.
+ * Such information may include the product name and description, any images, any pricing or promotions and more.
+ * The product detail component is interactive and will allow a user to select any variations and add the product to
+ * the current storefront shopping cart.
+ */
 export default class ProductDetail extends LightningElement {
 
     @api pid = '';
+    @api selectedColor;
     @track readyToAddToCart = false;
-    @track product = { images : [] };
+    @track product = { images : [], product_promotions: [] };
     @track masterPid;
     activeImage;
-    @wire(productDetailById, {pid: '$pid'})
+    @wire(productDetailWireAdaptor, {pid: '$pid', selectedColor: '$selectedColor'})
     updateProduct(product) {
         this.product = product;
         this.masterPid = product.masterId;
         this.setActiveImageCss(0);
-
     }
+    @track selectedQty;
     routeSubscription;
 
     constructor() {
@@ -29,9 +36,12 @@ export default class ProductDetail extends LightningElement {
         this.routeSubscription = subscribe(this.routeSubHandler.bind(this));
 
         window.addEventListener('update-product', e => {
+            // TODO: Break this code block into functions and/or use modern map/filter/reduce collection methods
+            this.selectedQty = e.detail.qty;
             let colorVariants = [];
             let sizeVariants = [];
             let variationPid = this.pid;
+
             if (e.detail.allVariationsSelected) {
                 this.product.variants.forEach(variant => {
                     if (e.detail.hasColor) {
@@ -40,6 +50,7 @@ export default class ProductDetail extends LightningElement {
                                 colorVariants.push(variant);
                             }
                         });
+                        this.selectedColor = e.detail.selectedColor;
                     }
                     if (e.detail.hasSize) {
                         variant.variationValues.forEach(variationValue => {
@@ -61,16 +72,22 @@ export default class ProductDetail extends LightningElement {
                     variationPid = sizeVariants[0].id;
                 } else if (!e.detail.hasSize && e.detail.hasColor) {
                     variationPid = colorVariants[0].id;
+                    this.selectedColor = e.detail.selectedColor;
                 } else {
                     variationPid = this.masterPid;
                 }
             } else {
                 variationPid = this.masterPid;
+                this.selectedColor = e.detail.selectedColor;
             }
             this.pid = variationPid;
         });
     }
 
+    /**
+     * Get the price of the current product
+     * @return {string}
+     */
     get price() {
         if (this.product && this.product.price) {
             return this.product.price.toFixed(2);
@@ -84,10 +101,17 @@ export default class ProductDetail extends LightningElement {
         }
     }
 
+    /**
+     * Add product to cart when user clicks `Add to Cart` button
+     */
     addToCartHandler(event) {
-        ShoppingCart.addToCart(this.product);
+        ShoppingCart.addToCart(this.product, this.selectedQty);
     }
 
+    /**
+     * The click handler for the product detail image carousel to cycle to the next or previous image, left or right.
+     * @param event the event object which includes the data from the button clicked, left or right.
+     */
     handleCarousel(event) {
         const slide = event.currentTarget.dataset.slide;
         if (slide === 'prev') {
@@ -97,6 +121,10 @@ export default class ProductDetail extends LightningElement {
         }
     }
 
+    /**
+     * Set the active image for the product detail carousel
+     * @param activeImage the url of the image to be displayed
+     */
     setActiveImageCss(activeImage) {
         this.product.cssClass = "carousel-item";
         this.activeImage = activeImage;

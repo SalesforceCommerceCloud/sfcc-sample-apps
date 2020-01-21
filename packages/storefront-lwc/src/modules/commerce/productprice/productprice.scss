@@ -1,0 +1,30 @@
+@import "../../../scss/ux_variables";
+
+.pdp {
+  display: flex;
+  color: $dark-gray;
+  @include heavy;
+  @include mobile { font-size: 1.5 * $mobile-base; justify-content: center; }
+  @include tablet { font-size: 1.67 * $tablet-base; justify-content: left; }
+  @include desktop { font-size: 1.67 * $desktop-base; justify-content: left; }
+}
+
+.tile {
+  display: flex;
+  color: $dark-gray;
+  @include heavy;
+  @include mobile {justify-content: center; }
+  @include tablet {justify-content: left; }
+  @include desktop {justify-content: left; }
+}
+
+.promo-price {
+  margin-right: 0.625rem;
+  color: $red;
+}
+
+.strike-through {
+  text-decoration: line-through;
+  color: $light-gray;
+  font-weight: $font-weight-normal;
+}

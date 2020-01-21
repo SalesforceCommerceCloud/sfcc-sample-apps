@@ -13,11 +13,36 @@ export default class Variations extends LightningElement {
     @track selectedSize = "-"
     @track isSizeAndColorSelected = false
     @track selectedColorText = "Not Selected"
+    @api maxQtyValue = 10
+    @api selectedQty = 1;
+    @api inventory
     hasSize = false
     hasColor = false
 
     constructor() {
         super();
+    }
+
+    get qtyValues() {
+        let newAtsValue;
+        newAtsValue = this.inventory ? this.inventory.ats : null;
+        if(this.inventory && this.inventory.ats >= 10) {
+            newAtsValue = this.maxQtyValue;
+        }
+        return this.createQtyLimit([], newAtsValue);
+    }
+
+    /*
+    This will take in an empty array and a number. 
+    Ther number passed in will be the cap on the number of options to display in the qty drop down
+    if null is passed in for the number it will defaul to the value this.maxQtyValue => (10)
+    */
+    createQtyLimit(array, n) {
+        let upperLimit = n ? n : this.maxQtyValue
+        for( let i = 1; i <= upperLimit; i++){
+            array.push(i);
+        }
+        return array
     }
 
     get colorAttribute() {
@@ -102,11 +127,20 @@ export default class Variations extends LightningElement {
             detail: {
                 selectedColor: this.selectedColor,
                 selectedSize: this.selectedSize,
+                qty: this.selectedQty,
                 allVariationsSelected: this.allVariationsSelected(),
                 hasColor: this.hasColor,
                 hasSize: this.hasSize
             }
         });
         window.dispatchEvent(event);
+    }
+
+    /*
+    takes an event from the qty dropdown and calls the updateproduct function in this component
+    */
+    updateSelectQty(event) {
+        this.selectedQty = event.target.value;
+        this.updateProduct();
     }
 }

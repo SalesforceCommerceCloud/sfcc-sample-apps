@@ -12,7 +12,7 @@ const { gql } = apolloServerCore;
 
 export const typeDef = gql`
     extend type Query {
-        product(id: String!): Product
+        product(id: String!, selectedColor:String!): Product
     }
 
     type Product {
@@ -26,7 +26,27 @@ export const typeDef = gql`
         image: String!
         images(allImages: Boolean = true, size: String = "large"): [Image!]
         variants: [Variant],
-        variationAttributes: [VariationAttribute]
+        variationAttributes: [VariationAttribute],
+        type: ProductType,
+        inventory: Inventory!,
+        product_promotions: [ProductPromotion],
+        lowestPromotionalPrice: String
+    }
+    
+    type ProductType {
+        bundle: Boolean
+        item: Boolean
+        master: Boolean
+        option: Boolean
+        set: Boolean
+        variant: Boolean
+        variationGroup: Boolean
+    }
+    
+    type ProductPromotion {
+        callout_msg: String
+        promotion_id: String
+        promotional_price: Float
     }
 
     type Image {
@@ -34,6 +54,15 @@ export const typeDef = gql`
         alt: String!
         link: String!
         style: String
+    }
+    
+    type Inventory {
+        ats: Float
+        backorderable: Boolean
+        id: String!
+        orderable: Boolean
+        preorderable: Boolean
+        stock_level: Float
     }
 
     type Variant {

@@ -11,6 +11,7 @@
   "scripts": {
     "build": "lerna run build --stream",
     "build:app": "lerna run build --scope storefront-lwc --stream",
+    "lint": "lerna run lint --stream",
     "clean": "lerna run clean --stream",
     "start": "yarn start:lwc",
     "start:watch": "yarn start:lwc:watch",

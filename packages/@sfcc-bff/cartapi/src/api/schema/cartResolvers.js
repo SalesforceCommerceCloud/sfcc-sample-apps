@@ -105,10 +105,15 @@ const addProductToCart = async (productId, quantity, config) => {
         }).then(res => res.json());
         result.addProductMessage = `${quantity} product(s) with id ${productId} added to Cart!`;
         return result;
-    } // If product is not orderable, return existing Cart with no change
-    const currentCart = await getCart(config);
-    currentCart.addProductMessage = `product id ${productId} quantity of ${quantity} not orderable`;
-    return currentCart;
+    } else {
+        // If product is not orderable, return existing Cart with no change
+        const currentCart = await getCart(config);
+        currentCart.addProductMessage = `product id ${productId} quantity of ${quantity} not orderable`;
+        currentCart.fault = {
+            message: `product id ${productId} quantity of ${quantity} not orderable`
+        };
+        return currentCart;
+    }
 };
 
 const deleteProductFromCart = async (itemId, config) => {

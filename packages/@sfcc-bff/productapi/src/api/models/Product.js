@@ -8,7 +8,7 @@
 
 import Image from "./Image";
 
-const getImages = (imageGroups) => {
+const getImages = (imageGroups, matchingColor) => {
     return ({allImages, size}) => {
         let result = [];
 
@@ -30,7 +30,21 @@ const getImages = (imageGroups) => {
             let sizeImages = [];
             imageGroups.forEach(imageGroup => {
                 if (imageGroup.view_type === size) {
-                    sizeImages = sizeImages.concat(imageGroup.images);
+
+                    // If there is no matching color defined, take all images.
+                    // If there is matching color defined, only take images for that color.
+                    if (!matchingColor) {
+                        sizeImages = sizeImages.concat(imageGroup.images);
+                    } else {
+                        if (imageGroup.variation_attributes && imageGroup.variation_attributes.length > 0) {
+                            for (let variantion_attribute of imageGroup.variation_attributes) {
+                                if (variantion_attribute.id === 'color' && variantion_attribute.values[0].value === matchingColor) {
+                                    sizeImages = sizeImages.concat(imageGroup.images);
+                                    break;
+                                }
+                            };
+                        }
+                    }
                 }
             });
 
@@ -51,7 +65,7 @@ const getImages = (imageGroups) => {
 
         return result;
     };
-}
+};
 
 var getVariants = (variants) => {
     return () => {
@@ -71,10 +85,10 @@ var getVariants = (variants) => {
                     }
                 })
             }
-        })
+        });
         return result;
     };
-}
+};
 
 var getVariationAttributes = (variationAttributes, imageGroups) => {
     return () => {
@@ -102,15 +116,45 @@ var getVariationAttributes = (variationAttributes, imageGroups) => {
             }
         })
     }
-}
+};
+
+const getLowestPromotionalPrice = (promotions) => {
+    if (promotions && promotions.length) {
+        let lowestPrice = promotions.reduce(function(prev, curr) {
+            if (prev && curr) {
+                if (prev.promotional_price && curr.promotional_price) {
+                    return prev.promotional_price < curr.promotional_price ? prev : curr;
+                } else if (!prev.promotional_price && curr.promotional_price) {
+                    return curr;
+                } else if (prev.promotional_price && !curr.promotional_price) {
+                    return  prev;
+                } else {
+                    return;
+                }
+            } else if (prev && !curr) {
+                return prev;
+            } else if (!prev && curr) {
+                return curr;
+            } else {
+                return;
+            }
+        });
+
+        return lowestPrice && lowestPrice.promotional_price ? lowestPrice.promotional_price.toFixed(2) : null;
+    }
+
+    return null;
+};
 
 class Product {
-    constructor(apiProduct) {
+    constructor(apiProduct, userSelectedColor) {
         this.id = apiProduct.id;
         this.name = apiProduct.name;
         this.masterId = apiProduct.master.master_id
         this.price = apiProduct.price;
-        this.images = getImages(apiProduct.image_groups);
+
+        let selectedColor = (userSelectedColor !== 'undefined') && (userSelectedColor !== 'null') ? userSelectedColor : null;
+        this.images = getImages(apiProduct.image_groups, selectedColor);
 
         console.log('Product.constructor(apiProduct)', apiProduct);
         Object.assign(this, apiProduct);
@@ -121,6 +165,7 @@ class Product {
         this.image = apiProduct.image_groups[0].images[0].link;
         this.variants = getVariants(apiProduct.variants);
         this.variationAttributes = getVariationAttributes(apiProduct.variation_attributes, apiProduct.image_groups);
+        this.lowestPromotionalPrice = getLowestPromotionalPrice(apiProduct.product_promotions);
     }
 }
 
