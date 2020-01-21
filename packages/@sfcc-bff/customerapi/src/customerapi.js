@@ -12,7 +12,7 @@ import {
     customerTypeDef,
     customerResolver,
     customerDataSource
-} from './api/index';
+} from './api';
 
 export default class CustomerAPI {
     constructor(core) {

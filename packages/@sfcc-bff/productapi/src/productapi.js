@@ -13,7 +13,7 @@ import {
     productDetailsResolver,
     productSearchTypeDef,
     productSearchResolver
-} from './api/index';
+} from './api';
 
 export default class ProductAPI {
     constructor(core) {

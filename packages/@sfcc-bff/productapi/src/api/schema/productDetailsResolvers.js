@@ -8,7 +8,7 @@
 
 import fetch from 'node-fetch';
 import Product from '../models/Product';
-import {Product as SDKProduct} from 'commerce-sdk-generated';
+import commerceSDKGenerated from 'commerce-sdk-generated';
 
 const getOcapiProduct = async (config, productId) => {
     const URL_PARAMS = `&expand=availability,images,prices,promotions,variations&all_images=true`;
@@ -17,7 +17,7 @@ const getOcapiProduct = async (config, productId) => {
 };
 
 const getSdkProduct = async (id) => {
-    const client = new SDKProduct();
+    const client = new commerceSDKGenerated.SDKProduct();
     return await client.getProduct({id}).then(res => res.json());
 }
 

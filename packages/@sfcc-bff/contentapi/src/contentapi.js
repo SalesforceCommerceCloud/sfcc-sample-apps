@@ -8,7 +8,7 @@
 import { core, API_EXTENSIONS_KEY } from '@sfcc-core/core';
 import { resolverFactory, dataSourcesFactory } from "@sfcc-core/core-graphql";
 
-import {contentTypeDef, contentResolver} from './api/index';
+import {contentTypeDef, contentResolver} from './api';
 
 export default class ContentAPI {
     constructor(core) {

@@ -4,7 +4,7 @@
     SPDX-License-Identifier: BSD-3-Clause
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
-import {ApolloError} from 'apollo-server';
+import apollo from 'apollo-server';
 
 export const resolver = (config) => {
     return {
@@ -14,7 +14,7 @@ export const resolver = (config) => {
                 if (!login.fault) {
                     return login;
                 } else {
-                    throw new ApolloError(login.fault.message);
+                    throw new apollo.ApolloError(login.fault.message);
                 }
             }
         }

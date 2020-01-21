@@ -4,11 +4,14 @@
     SPDX-License-Identifier: BSD-3-Clause
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
-import { ApolloServer, gql } from 'apollo-server-express';
-import { makeExecutableSchema } from 'graphql-tools';
+import apolloServerExpress from 'apollo-server-express';
+import graphQLTools from 'graphql-tools';
 
 import { core, API_EXTENSIONS_KEY } from '@sfcc-core/core';
 import { API_CONFIG_KEY } from "@sfcc-core/apiconfig";
+
+const { makeExecutableSchema } = graphQLTools;
+const { ApolloServer, gql } = apolloServerExpress;
 
 export const CORE_GRAPHQL_KEY = Symbol( 'Core GraphQL with Apollo' );
 export const EXPRESS_KEY = Symbol( 'Node Express' );

@@ -12,7 +12,7 @@ import {
     loginTypeDef,
     loginResolver,
     loginDataSource
-} from './api/index';
+} from './api';
 
 export default class LoginAPI {
     constructor(core) {

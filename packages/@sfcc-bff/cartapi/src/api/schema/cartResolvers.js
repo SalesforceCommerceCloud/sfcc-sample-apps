@@ -4,10 +4,12 @@
     SPDX-License-Identifier: BSD-3-Clause
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
-import { ApolloError } from 'apollo-server';
+import apollo from 'apollo-server';
 import Cart from '../models/Cart';
 import Order from '../models/Order';
 import fetch from 'node-fetch';
+
+const { ApolloError } = apollo;
 
 const getBearerToken = async (config) => {
     const body = {

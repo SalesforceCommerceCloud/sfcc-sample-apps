@@ -11,7 +11,7 @@ import { resolverFactory, dataSourcesFactory } from "@sfcc-core/core-graphql";
 import {
     cartTypeDef,
     cartResolver
-} from './api/index';
+} from './api';
 
 export default class CartAPI {
     constructor(core) {
