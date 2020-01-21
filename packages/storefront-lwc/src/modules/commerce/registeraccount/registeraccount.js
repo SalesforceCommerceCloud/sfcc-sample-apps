@@ -99,13 +99,7 @@ export default class Register extends LightningElement {
             console.log( 'Form Valid', JSON.stringify( this.account ) );
 
             try {
-                var client = new window.ApolloClient( {
-                    uri: window.apiconfig.COMMERCE_API_PATH || "/graphql"
-                } );
-
-                let formData = {};
-
-                return client.mutate( {
+                return window.apiClient.mutate( {
                     mutation: window.gql`
                         mutation {
                           registerUser(email: "${this.account.email.value}", password: "${this.account.password.value}", firstName: "${this.account.firstname.value}" lastName: "${this.account.lastname.value}") {
