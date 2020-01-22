@@ -83,10 +83,7 @@ const getCart = async (config) => {
         headers: { 'Content-Type': 'application/json', Authorization: Cart.authToken }
     }).then(res => res.json());
     result.getCartMessage = `Cart found with ID of ${Cart.cartId}`;
-    result.shippingMethods = Cart.shippingMethods;/*
-    console.log("#####################Get Cart#########################");
-    console.log(result);
-    console.log("######################################################");*/
+    result.shippingMethods = Cart.shippingMethods;
     return result;
 };
 

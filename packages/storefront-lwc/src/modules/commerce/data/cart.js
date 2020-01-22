@@ -106,7 +106,7 @@ class Cart {
         }
         return this.cart;
     }
-    
+
     // TODO : wire this call with BFF
     removeFromCart(index) {
         let cart = this.getCurrentCart();
@@ -185,11 +185,6 @@ class Cart {
                                 price
                                 estimatedArrivalTime
                                 storePickupEnabled
-                                shippingPromotions {
-                                    promotionId
-                                    promotionName
-                                    calloutMsg
-                                }
                             }
                         }
                     }
