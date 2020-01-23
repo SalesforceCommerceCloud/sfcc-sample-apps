@@ -7,6 +7,7 @@
 import { LightningElement, api, wire, track } from 'lwc';
 import { subscribe } from 'webruntime/routingService';
 import { productDetailWireAdaptor, ShoppingCart } from 'commerce/data'
+import { canAddToCart } from './product.helper.js';
 
 /**
  * A product detail component is an interactive component which fetches and displays details about a product.
@@ -18,7 +19,6 @@ export default class ProductDetail extends LightningElement {
 
     @api pid = '';
     @api selectedColor;
-    @track readyToAddToCart = false;
     @track product = { images : [], product_promotions: [] };
     @track masterPid;
     activeImage;
@@ -82,6 +82,10 @@ export default class ProductDetail extends LightningElement {
             }
             this.pid = variationPid;
         });
+    }
+
+    get readyToAddToCart() {
+        return canAddToCart(this.product, this.selectedQty);
     }
 
     /**

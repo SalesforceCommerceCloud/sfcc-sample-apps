@@ -8,6 +8,7 @@
     "lwcVersion": "1.0.1",
     "talonVersion": "0.16.0"
   },
+  "browserslist": "> 0.25%",
   "scripts": {
     "clean": "rm -rf ./dist",
     "build:public": "cpx \"src/public/**/*\" dist/public --verbose",
@@ -27,7 +28,15 @@
     "start:watch": "NODE_OPTIONS='--experimental-modules --es-module-specifier-resolution=node' concurrently \"yarn start:debug\" \"node scripts/copy-resources.js --watch\" \"yarn watch:scss\"",
     "watch:scss": "yarn watch:public:scss && yarn watch:lwc:scss",
     "watch:lwc:scss": "yarn build:lwc:scss && node-sass src/modules/commerce -wo src/modules/commerce --include-path node_modules",
-    "watch:public:scss": "yarn build:public:scss && node-sass src/scss -wo dist/public/assets/css --include-path node_modules"
+    "watch:public:scss": "yarn build:public:scss && node-sass src/scss -wo dist/public/assets/css --include-path node_modules",
+    "test:unit": "jest",
+    "test:unit:watch": "jest --watch"
+  },
+  "jest": {
+    "preset": "@lwc/jest-preset",
+    "moduleNameMapper": {
+      "^commerce/(.+)": "<rootDir>/src/modules/commerce/$1/$1"
+    }
   },
   "dependencies": {
     "@babel/core": "^7.2.2",
@@ -39,7 +48,7 @@
     "@babel/preset-env": "^7.3.1",
     "@babel/register": "^7.0.0",
     "@babel/runtime": "^7.3.4",
-    "@lwc/engine": "1.0.2-222.17",
+    "@lwc/engine": "1.1.1",
     "@lwc/eslint-plugin-lwc": "^0.8.0",
     "@salesforce-ux/design-system": "^2.9.4",
     "@sfcc-bff/cartapi": "0.0.1-sfcc-alpha-1",
@@ -51,8 +60,9 @@
     "@sfcc-core/core": "0.0.1-sfcc-alpha-1",
     "@sfcc-core/core-graphql": "0.0.1-sfcc-alpha-1",
     "@sfcc-core/logger": "0.0.1-sfcc-alpha-1",
-    "@webruntime/cli": "^0.18.23",
-    "@webruntime/compiler": "^0.18.23",
+    "@webruntime/cli": "0.18.23",
+    "@webruntime/compiler": "0.18.23",
+    "@webruntime/webruntime-shim": "0.18.39",
     "apollo-boost": "^0.1.27",
     "apollo-client": "^2.4.12",
     "apollo-datasource-rest": "^0.3.2",
@@ -82,6 +92,10 @@
     "rollup-pluginutils": "^2.3.3"
   },
   "devDependencies": {
+    "@lwc/jest-preset": "^4.3.1",
+    "@lwc/synthetic-shadow": "^1.1.1",
+    "babel-plugin-transform-regenerator": "^6.26.0",
+    "jest": "^25.1.0",
     "nodemon": "^2.0.2"
   }
 }
