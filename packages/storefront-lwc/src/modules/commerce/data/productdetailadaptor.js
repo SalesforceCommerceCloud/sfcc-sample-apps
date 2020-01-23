@@ -36,6 +36,10 @@ register(productDetailWireAdaptor, (eventTarget) => {
                             shortDescription
                             currency
                             price
+                            prices {
+                                sale
+                                list
+                            }
                             image
                             images(allImages: true, size: "large") {
                                 title
@@ -86,7 +90,6 @@ register(productDetailWireAdaptor, (eventTarget) => {
                                 promotion_id
                                 promotional_price
                             }
-                            lowestPromotionalPrice
                         }
                     }
                  `

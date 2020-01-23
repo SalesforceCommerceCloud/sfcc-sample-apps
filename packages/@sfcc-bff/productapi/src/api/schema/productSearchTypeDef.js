@@ -22,7 +22,7 @@ export const typeDef = gql`
     type ProductHit {
         id: String!
         name: String!
-        price: Float!
+        prices: Prices
         image: Image!
         colorSwatches: [ColorSwatch]
     }
