@@ -7,21 +7,23 @@
 'use strict';
 
 import Image from "./Image";
+import get from 'lodash';
 
 const getImages = (imageGroups, matchingColor) => {
     return ({allImages, size}) => {
-        let result = [];
+        let result = new Map();
 
-        const tmpHash = {};
+        const isImage = (url) => {
+            return url && url.match(/\.(jpeg|jpg|gif|png)$/) != null;
+        };
 
         // Return all images if allImages and all sizes asked for
         if (allImages && size === 'all') {
             imageGroups.forEach(imageGroup => {
                 imageGroup.images.forEach((image) => {
                     // ensure unique image being returned
-                    if ( !tmpHash[image.link] ) {
-                        result.push(new Image(image));
-                        tmpHash[image.link] = true;
+                    if ( isImage(image.link) && !result.has(image.link) ) {
+                        result.set(image.link, new Image(image));
                     }
                 });
             });
@@ -29,20 +31,19 @@ const getImages = (imageGroups, matchingColor) => {
             // Find images of the size requested (default large)
             let sizeImages = [];
             imageGroups.forEach(imageGroup => {
-                if (imageGroup.view_type === size) {
-
+                if (imageGroup.viewType === size) {
                     // If there is no matching color defined, take all images.
                     // If there is matching color defined, only take images for that color.
                     if (!matchingColor) {
                         sizeImages = sizeImages.concat(imageGroup.images);
                     } else {
-                        if (imageGroup.variation_attributes && imageGroup.variation_attributes.length > 0) {
-                            for (let variantion_attribute of imageGroup.variation_attributes) {
-                                if (variantion_attribute.id === 'color' && variantion_attribute.values[0].value === matchingColor) {
+                        if (imageGroup.variationAttributes && imageGroup.variationAttributes.length > 0) {
+                            for (let variantionAttribute of imageGroup.variationAttributes) {
+                                if (variantionAttribute.id === 'color' && variantionAttribute.values[0].value === matchingColor) {
                                     sizeImages = sizeImages.concat(imageGroup.images);
                                     break;
                                 }
-                            };
+                            }
                         }
                     }
                 }
@@ -52,36 +53,35 @@ const getImages = (imageGroups, matchingColor) => {
             if (allImages) {
                 sizeImages.forEach((image) => {
                     // ensure unique image being returned
-                    if ( !tmpHash[image.link] ) {
-                        result.push(new Image(image));
-                        tmpHash[image.link] = true;
+                    if ( isImage(image.link) && !result.has(image.link) ) {
+                        result.set(image.link, new Image(image));
                     }
                 });
             } else {
                 // Only first of the size requested when all images false
-                result.push(new Image(sizeImages[0]));
+                result.set(sizeImages[0].link, new Image(sizeImages[0]));
             }
         }
 
-        return result;
+        return Array.from(result.values());
     };
 };
 
-var getVariants = (variants) => {
+const getVariants = (variants) => {
     return () => {
         let result = variants.map(variant => {
-            let variationValues = Object.keys(variant.variation_values).map(key => {
+            let variationValues = Object.keys(variant.variationValues).map(key => {
                 return {
                     key: key,
-                    value: variant.variation_values[key]
+                    value: variant.variationValues[key]
                 }
             });
             return {
-                id: variant.product_id,
-                variationValues: Object.keys(variant.variation_values).map(key => {
+                id: variant.productId,
+                variationValues: Object.keys(variant.variationValues).map(key => {
                     return {
                         key: key,
-                        value: variant.variation_values[key]
+                        value: variant.variationValues[key]
                     }
                 })
             }
@@ -90,7 +90,7 @@ var getVariants = (variants) => {
     };
 };
 
-var getVariationAttributes = (variationAttributes, imageGroups) => {
+const getVariationAttributes = (variationAttributes, imageGroups) => {
     return () => {
         return variationAttributes.map(variationAttribute => {
             return {
@@ -100,8 +100,8 @@ var getVariationAttributes = (variationAttributes, imageGroups) => {
                 },
                 variationAttributeValues: variationAttribute.values.map(variationAttributeValue => {
                     let swatchImage = imageGroups.find(imageGroup => {
-                        if(imageGroup.variation_attributes) {
-                            return (imageGroup.view_type === "swatch") && (imageGroup.variation_attributes[0].values[0].value === variationAttributeValue.value)
+                        if(imageGroup.variationAttributes) {
+                            return (imageGroup.viewType === "swatch") && (imageGroup.variationAttributes[0].values[0].value === variationAttributeValue.value)
                         } else {
                             return false;
                         }
@@ -122,11 +122,11 @@ const getLowestPromotionalPrice = (promotions) => {
     if (promotions && promotions.length) {
         let lowestPrice = promotions.reduce(function(prev, curr) {
             if (prev && curr) {
-                if (prev.promotional_price && curr.promotional_price) {
-                    return prev.promotional_price < curr.promotional_price ? prev : curr;
-                } else if (!prev.promotional_price && curr.promotional_price) {
+                if (prev.promotionalPrice && curr.promotionalPrice) {
+                    return prev.promotionalPrice < curr.promotionalPrice ? prev : curr;
+                } else if (!prev.promotionalPrice && curr.promotionalPrice) {
                     return curr;
-                } else if (prev.promotional_price && !curr.promotional_price) {
+                } else if (prev.promotionalPrice && !curr.promotionalPrice) {
                     return  prev;
                 } else {
                     return;
@@ -140,7 +140,7 @@ const getLowestPromotionalPrice = (promotions) => {
             }
         });
 
-        return lowestPrice && lowestPrice.promotional_price ? lowestPrice.promotional_price : null;
+        return lowestPrice && lowestPrice.promotionalPrice ? lowestPrice.promotionalPrice.toFixed(2) : null;
     }
 
     return null;
@@ -151,13 +151,13 @@ const getPrices = (apiProduct) => {
         sale: apiProduct.price
     };
     if (apiProduct.prices) {
-        let lowestPromotionalPrice = getLowestPromotionalPrice(apiProduct.product_promotions);
+        let lowestPromotionalPrice = getLowestPromotionalPrice(apiProduct.productPromotions);
         prices.sale = lowestPromotionalPrice ? lowestPromotionalPrice : apiProduct.prices['usd-m-sale-prices'];
         prices.list = apiProduct.prices['usd-m-list-prices'];
         if (prices.sale === prices.list) {
             prices.list = null;
         }
-    } 
+    }
     return prices;
 };
 
@@ -165,21 +165,21 @@ class Product {
     constructor(apiProduct, userSelectedColor) {
         this.id = apiProduct.id;
         this.name = apiProduct.name;
-        this.masterId = apiProduct.master.master_id
+        this.masterId = apiProduct.master.masterId
         this.price = apiProduct.price;
 
         let selectedColor = (userSelectedColor !== 'undefined') && (userSelectedColor !== 'null') ? userSelectedColor : null;
-        this.images = getImages(apiProduct.image_groups, selectedColor);
+        this.images = getImages(apiProduct.imageGroups, selectedColor);
 
-        console.log('Product.constructor(apiProduct)', apiProduct);
         Object.assign(this, apiProduct);
-        this.longDescription = apiProduct.long_description;
-        this.shortDescription = apiProduct.short_description;
+        this.longDescription = apiProduct.longDescription;
+        this.shortDescription = apiProduct.shortDescription;
 
-        // TODO: remove the following and use the above this.images
-        this.image = apiProduct.image_groups[0].images[0].link;
+        // Set a default image
+        this.image = get(apiProduct, 'this.images[0].link');
+
         this.variants = getVariants(apiProduct.variants);
-        this.variationAttributes = getVariationAttributes(apiProduct.variation_attributes, apiProduct.image_groups);
+        this.variationAttributes = getVariationAttributes(apiProduct.variationAttributes, apiProduct.imageGroups);
         this.prices = getPrices(apiProduct);
     }
 }

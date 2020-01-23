@@ -74,7 +74,7 @@ register(productDetailWireAdaptor, (eventTarget) => {
                                 id
                                 orderable
                                 preorderable
-                                stock_level
+                                stockLevel
                             }
                             type {
                                 bundle
@@ -85,10 +85,10 @@ register(productDetailWireAdaptor, (eventTarget) => {
                                 variant
                                 variationGroup
                             }
-                            product_promotions {
-                                callout_msg
-                                promotion_id
-                                promotional_price
+                            productPromotions {
+                                calloutMsg
+                                promotionId
+                                promotionalPrice
                             }
                         }
                     }

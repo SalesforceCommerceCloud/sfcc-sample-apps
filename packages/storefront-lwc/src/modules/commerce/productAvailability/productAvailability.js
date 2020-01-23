@@ -32,7 +32,7 @@ export default class ProductAvailability extends LightningElement {
             }
 
             let availabilityMessages = []; // Could have multiple messages due to availability levels and back order and pre order
-            let inventoryStockLevel = this.inventory.stock_level ? this.inventory.stock_level : 0;
+            let inventoryStockLevel = this.inventory.stockLevel ? this.inventory.stockLevel : 0;
             let allocation = this.inventory.ats - inventoryStockLevel;
             let selectedQuantity = this.quantity ? this.quantity : 1;
             let levels = {

@@ -30,7 +30,7 @@ export const typeDef = gql`
         variationAttributes: [VariationAttribute],
         type: ProductType,
         inventory: Inventory!,
-        product_promotions: [ProductPromotion]
+        productPromotions: [ProductPromotion]
     }
 
     type Prices {
@@ -49,9 +49,9 @@ export const typeDef = gql`
     }
     
     type ProductPromotion {
-        callout_msg: String
-        promotion_id: String
-        promotional_price: Float
+        calloutMsg: String
+        promotionId: String
+        promotionalPrice: Float
     }
 
     type Image {
@@ -67,7 +67,7 @@ export const typeDef = gql`
         id: String!
         orderable: Boolean
         preorderable: Boolean
-        stock_level: Float
+        stockLevel: Float
     }
 
     type Variant {
