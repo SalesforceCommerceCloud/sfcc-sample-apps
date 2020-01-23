@@ -8,6 +8,7 @@
     "lwcVersion": "1.0.1",
     "talonVersion": "0.16.0"
   },
+  "browserslist": "> 0.25%",
   "scripts": {
     "clean": "rm -rf ./dist",
     "build:public": "cpx \"src/public/**/*\" dist/public --verbose",
