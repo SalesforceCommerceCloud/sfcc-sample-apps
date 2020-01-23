@@ -96,13 +96,13 @@
                         <div class="row cart-and-ipay">
                             <div class="col-sm-12">
                                 <template if:false={readyToAddToCart}>
-                                    <button class="btn btn-primary btn-block" onclick={addToCartHandler}>
+                                    <button class="btn btn-primary btn-block" disabled onclick={addToCartHandler}>
                                         <i class="fa fa-shopping-bag"></i>
                                         Add to Cart
                                     </button>
                                 </template>
                                 <template if:true={readyToAddToCart}>
-                                    <button class="btn btn-primary btn-block" disabled onclick={addToCartHandler}>
+                                    <button class="btn btn-primary btn-block" onclick={addToCartHandler}>
                                         <i class="fa fa-shopping-bag"></i>
                                         Add to Cart
                                     </button>

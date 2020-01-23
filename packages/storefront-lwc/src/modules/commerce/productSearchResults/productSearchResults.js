@@ -8,7 +8,6 @@ import { LightningElement, wire, track } from 'lwc'
 import { getRoute, subscribe } from 'webruntime/routingService';
 import { productsByQuery } from 'commerce/data';
 
-
 /**
  * Displays search results
  */
