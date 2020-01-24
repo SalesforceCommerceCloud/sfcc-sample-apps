@@ -74,11 +74,11 @@
                 <!-- Product Availability -->
                 <commerce-product-availability inventory={product.inventory} type={product.type} quantity={selectedQty}></commerce-product-availability>
 
-                <template if:true={product.product_promotions}>
+                <template if:true={product.productPromotions}>
                     <div class="promotions">
-                        <template for:each={product.product_promotions} for:item="promotion">
+                        <template for:each={product.productPromotions} for:item="promotion">
                             <commerce-promotion
-                                    key={promotion.promotion_id}
+                                    key={promotion.promotionId}
                                     promotion={promotion}>
                             </commerce-promotion>
                         </template>

@@ -19,7 +19,7 @@ export default class ProductDetail extends LightningElement {
 
     @api pid = '';
     @api selectedColor;
-    @track product = { images : [], product_promotions: [] };
+    @track product = { images : [], productPromotions: [] };
     @track masterPid;
     activeImage;
     @wire(productDetailWireAdaptor, {pid: '$pid', selectedColor: '$selectedColor'})
