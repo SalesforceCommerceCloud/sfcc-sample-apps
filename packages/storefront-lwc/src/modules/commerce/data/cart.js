@@ -7,6 +7,7 @@
 /**
  * A cart service to add to cart, load cart and blast off events
  */
+
 class Cart {
     cart = {};
 
@@ -23,13 +24,11 @@ class Cart {
     addToCart(product, qty) {
         let pid = product.id;
         try {
-            let client = new window.ApolloClient({
-                uri: window.apiconfig.COMMERCE_API_PATH || '/graphql'
-            });
-            return client.mutate({
+            return window.apiClient.mutate({
                 mutation: window.gql`
                 mutation {
                     addProductToCart(productId: "${ pid }", quantity: ${ qty }) {
+                      authToken
                       cartId
                       customerId
                       addProductMessage
@@ -42,13 +41,16 @@ class Cart {
                         productName
                         price
                       }
-                    }
-                  }
+                }
+            }
              `
             }).then(result => {
                 this.cart = result.data.addProductToCart;
+                localStorage.setItem('auth_token', this.cart.authToken);
+                localStorage.setItem('cart_id', this.cart.cartId);
                 this.isCartLoaded = true;
                 this.updateCart('add-to-cart');
+                return this.cart;
             }).catch((error) => {
                 console.log('addToCart failed with message', error);
                 this.updateCart('failed-add-to-cart');
@@ -62,10 +64,7 @@ class Cart {
 
     updateShippingMethod(cartId, shipmentId, shippingMethodId) {
         try {
-            let client = new window.ApolloClient({
-                uri: window.apiconfig.COMMERCE_API_PATH || '/graphql'
-            });
-            return client.mutate({
+            return window.apiClient.mutate({
                 mutation: window.gql `
                     mutation {
                         updateShippingMethod(cartId: "${cartId}", shipmentId: "${shipmentId}", shippingMethodId: "${shippingMethodId}") {
@@ -145,14 +144,12 @@ class Cart {
      * @returns {Object} cart object
      */
     getCurrentCart() {
+        console.log("Getting Current Cart");
         try {
-            let client = new window.ApolloClient({
-                uri: window.apiconfig.COMMERCE_API_PATH || '/graphql'
-            });
-            return client.query({
+            return window.apiClient.query({
                 query: window.gql`
                 {
-                    getCart{
+                    getCart {
                         cartId
                         customerId
                         getCartMessage
@@ -197,6 +194,7 @@ class Cart {
                 return this.cart;
             }).catch((error) => {
                 console.log('Warning: No Cart has been created yet!', error);
+                return this.cart;
             });
         } catch (e) {
             console.log('Exception loading cart', e);

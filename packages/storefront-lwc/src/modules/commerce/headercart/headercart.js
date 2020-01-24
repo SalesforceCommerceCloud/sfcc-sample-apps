@@ -19,14 +19,17 @@ export default class HeaderCart extends LightningElement {
     }
 
     updateCartHandler() {
-        this.quantity = ShoppingCart.getCartQuantity();
+        console.log("Inside updateCartHandler in HeaderCart");
+        this.quantity = ShoppingCart.cart.totalProductsQuantity || 0;
     }
 
     // eslint-disable-next-line class-methods-use-this
     renderedCallback() {
+        console.log("Inside renderedCallback in HeaderCart");
     }
 
     connectedCallback() {
-        this.quantity = ShoppingCart.getCartQuantity();
+        console.log("Inside connectedCallback in HeaderCart");
+        this.quantity = ShoppingCart.cart.totalProductsQuantity || 0;
     }
 }

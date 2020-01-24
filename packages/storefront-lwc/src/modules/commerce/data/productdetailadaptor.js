@@ -22,10 +22,7 @@ register(productDetailWireAdaptor, (eventTarget) => {
 
         if (pid && pid.length) {
             try {
-                var client = new window.ApolloClient({
-                    uri: window.apiconfig.COMMERCE_API_PATH || "/graphql"
-                });
-                return client.query({
+                return window.apiClient.query({
                     query: window.gql`
                     {
                         product(id: "${ pid }", selectedColor: "${ selectedColor }") {

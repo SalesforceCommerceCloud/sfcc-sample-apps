@@ -129,15 +129,16 @@ export default class CoreGraphQL {
             this.apolloServer = new ApolloServer({
                 schema,
                 dataSources: () => this.dataSources,
-                context: () => {
+                context: ({ req }) => {
                     return {
-                        token: ''
+                        auth_token: req.headers.auth_token || '',
+                        cart_id: req.headers.cart_id
                     }
                 }
             });
 
             this.apolloServer.applyMiddleware( {app: expressApp, path: apiPath} );
-            core.logger.log( ' CoreGraphQL apolloServer middleware applied to express!' );
+            core.logger.log('CoreGraphQL apolloServer middleware applied to express!');
         } else {
             const msg = 'Error: An express application needs to be registered as a core service.';
             core.logger.error( msg );

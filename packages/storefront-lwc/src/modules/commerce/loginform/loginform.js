@@ -52,12 +52,7 @@ export default class LoginForm extends LightningElement {
             console.log( 'Form Valid', JSON.stringify( this.formData ) );
 
             try {
-                var client = new window.ApolloClient( {
-                    uri: window.apiconfig.COMMERCE_API_PATH || "/graphql"
-                } );
-
-
-                return client.mutate( {
+                return window.apiClient.mutate( {
                     mutation: window.gql`
                         mutation {
                           login(email: "${this.formData.loginEmail.value}", password: "${this.formData.loginPassword.value}") {

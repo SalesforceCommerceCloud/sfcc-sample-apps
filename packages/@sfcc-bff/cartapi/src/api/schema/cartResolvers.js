@@ -20,20 +20,18 @@ const getBearerToken = async (config) => {
         body: JSON.stringify(body),
         headers: { 'Content-Type': 'application/json' }
     });
-    const result = await response.json();
-    Cart.authToken = response.headers.get('Authorization');
-    Cart.customerId = result.customer_id;
-    return result;
+    await response.json();
+    return response.headers.get('Authorization');
 };
 
-const getCartByCustomerId = async (customerId, config) => {
+const getCartByCustomerId = async (authToken, customerId, config) => {
     if (!customerId) {
         return { fault: true };
     }
     const getCartByCustomerIdUrl = `${config.COMMERCE_BASE_URL}/customers/${customerId}/baskets`;
     let result = await fetch(getCartByCustomerIdUrl, {
         method: 'get',
-        headers: { 'Content-Type': 'application/json', Authorization: Cart.authToken }
+        headers: { 'Content-Type': 'application/json', Authorization: authToken }
     }).then(res => res.json());
     return result;
 };
@@ -51,48 +49,58 @@ const getProductAvailability = async (productId, quantity, config) => {
 };
 
 const createCart = async (config) => {
-    await getBearerToken(config);
+    let authToken = await getBearerToken(config);
     const createBasketUrl = `${config.COMMERCE_BASE_URL}/baskets`;
     let cart = await fetch(createBasketUrl, {
         method: 'post',
-        headers: { 'Content-Type': 'application/json', Authorization: Cart.authToken }
+        headers: { 'Content-Type': 'application/json', Authorization: authToken }
     }).then(res => res.json());
-
-    const cartId = cart.basket_id;
-    const shipmentId = cart.shipments[0].shipment_id;
-    // Get Shipping Methods
-    const shippingMethods = await getShippingMethods(cartId, shipmentId, config);
-    // Update Shipping Method to Default Method
-    cart = await updateShippingMethod(cartId, shipmentId, shippingMethods.default_shipping_method_id, config);
-    cart.shippingMethods = new ShippingMethods(shippingMethods);
+    cart.auth_token = authToken;
     return cart;
 };
 
-const getCart = async (config) => {
-    // if no cart has been created yet, return No Cart Found message
-    if (Cart.cartId == null) {
+const getCart = async (authToken, cartId, config) => {
+    // If No Cart has been created yet, return error
+    if(authToken == '' || cartId == '') {
         return {
-            getCartMessage: "No Cart Found",
-            fault: true
+            fault: {
+                type: "NoCartCreated",
+                message: "No Cart has been created yet."
+            }
         };
-    }
-    // else get cart with that id
-    const getCartUrl = `${config.COMMERCE_BASE_URL}/baskets/${Cart.cartId}`;
-    let result = await fetch(getCartUrl, {
-        method: 'get',
-        headers: { 'Content-Type': 'application/json', Authorization: Cart.authToken }
-    }).then(res => res.json());
-    result.getCartMessage = `Cart found with ID of ${Cart.cartId}`;
-    result.shippingMethods = Cart.shippingMethods;
-    return result;
+    } else {
+        // else get cart with that id
+        const getCartUrl = `${config.COMMERCE_BASE_URL}/baskets/${cartId}`;
+        let cart = await fetch(getCartUrl, {
+            method: 'get',
+            headers: { 'Content-Type': 'application/json', Authorization: authToken }
+        }).then(res => res.json());
+
+        if(cart.fault) {
+            return cart;
+        }
+
+        cart.getCartMessage = `Cart found with ID of ${cartId}`;
+
+        const shipmentId = cart.shipments[0].shipment_id;
+        // Get Shipping Methods
+        const shippingMethods = await getShippingMethods(authToken, cartId, shipmentId, config);
+        // Update Shipping Method to Default Method
+        let selectedShippingMethodId = cart.shipments[0].shipping_method ? cart.shipments[0].shipping_method.id : shippingMethods.default_shipping_method_id;
+        cart = await updateShippingMethod(authToken, cartId, shipmentId, selectedShippingMethodId, config);
+        cart.shippingMethods = new ShippingMethods(shippingMethods);
+        cart.auth_token = authToken;
+        return cart;
+    }  
 };
 
-const addProductToCart = async (productId, quantity, config) => {
+const addProductToCart = async (authToken, cartId, productId, quantity, config) => {
     // Check if there is already a Cart Created
-    if(Cart.cartId == null) {
-        const customerCart = await createCart(config);
-        Cart.cartId = customerCart.basket_id;
-        Cart.shippingMethods = customerCart.shippingMethods;
+    let customerCart = null;
+    if(authToken == '' || cartId == '') {
+        customerCart = await createCart(config);
+        authToken = customerCart.auth_token;
+        cartId = customerCart.basket_id;
     }
     // validate if the product is orderable before add to Cart
     const productIsOrderable = await getProductAvailability(productId, quantity, config);
@@ -102,23 +110,22 @@ const addProductToCart = async (productId, quantity, config) => {
             product_id: productId,
             quantity: quantity
         }];
-        const addToCartUrl = `${config.COMMERCE_BASE_URL}/baskets/${Cart.cartId}/items`;
+        const addToCartUrl = `${config.COMMERCE_BASE_URL}/baskets/${cartId}/items`;
         const result = await fetch(addToCartUrl, {
             method: 'post',
             body: JSON.stringify(body),
-            headers: { 'Content-Type': 'application/json', Authorization: Cart.authToken }
+            headers: { 'Content-Type': 'application/json', Authorization: authToken }
         }).then(res => res.json());
         result.addProductMessage = `${quantity} product(s) with id ${productId} added to Cart!`;
-        result.shippingMethods = Cart.shippingMethods;
+        result.auth_token = authToken;
         return result;
     } else {
         // If product is not orderable, return existing Cart with no change
-        const currentCart = await getCart(config);
+        const currentCart = await getCart(authToken, cartId, config);
         currentCart.addProductMessage = `product id ${productId} quantity of ${quantity} not orderable`;
         currentCart.fault = {
             message: `product id ${productId} quantity of ${quantity} not orderable`
         };
-        currentCart.shippingMethods = Cart.shippingMethods;
         return currentCart;
     }
 };
@@ -129,29 +136,29 @@ const deleteProductFromCart = async (itemId, config) => {
             fault: { message: `A valid ${itemId} is needed!` }
         };
     }
-    let customerCart = await getCartByCustomerId(Cart.customerId, config);
+    let customerCart = await getCartByCustomerId(authToken, customerId, config);
     if (customerCart.fault) {
         return customerCart;
     }
-    Cart.cartId = customerCart.baskets[0].basket_id;
-    const deleteFromCartUrl = `${config.COMMERCE_BASE_URL}/baskets/${Cart.cartId}/items/${itemId}`;
+    let cartId = customerCart.baskets[0].basket_id;
+    const deleteFromCartUrl = `${config.COMMERCE_BASE_URL}/baskets/${cartId}/items/${itemId}`;
     let result = await fetch(deleteFromCartUrl, {
         method: 'delete',
-        headers: { 'Content-Type': 'application/json', Authorization: Cart.authToken }
+        headers: { 'Content-Type': 'application/json', Authorization: authToken }
     }).then(res => res.json());
     return result;
 };
 
-const getShippingMethods = async (cartId, shipmentId, config) => {
+const getShippingMethods = async (authToken, cartId, shipmentId, config) => {
     const getShippingMethodsUrl = `${config.COMMERCE_BASE_URL}/baskets/${cartId}/shipments/${shipmentId}/shipping_methods`;
     const shippingMethods = await fetch(getShippingMethodsUrl, {
         method: 'get',
-        headers: { 'Content-Type': 'application/json', Authorization: Cart.authToken }
+        headers: { 'Content-Type': 'application/json', Authorization: authToken }
     }).then(res => res.json());
     return shippingMethods;
 }
 
-const updateShippingMethod = async (cartId, shipmentId, shippingMethodId, config) => {
+const updateShippingMethod = async (authToken, cartId, shipmentId, shippingMethodId, config) => {
     const updateShippingMethodUrl = `${config.COMMERCE_BASE_URL}/baskets/${cartId}/shipments/${shipmentId}`;
     const body = {
         shipping_method: {
@@ -161,7 +168,7 @@ const updateShippingMethod = async (cartId, shipmentId, shippingMethodId, config
     const cart = await fetch(updateShippingMethodUrl, {
         method: 'patch',
         body: JSON.stringify(body),
-        headers: { 'Content-Type': 'application/json', Authorization: Cart.authToken }
+        headers: { 'Content-Type': 'application/json', Authorization: authToken }
     }).then(res => res.json());
     return cart;
 }
@@ -169,15 +176,20 @@ const updateShippingMethod = async (cartId, shipmentId, shippingMethodId, config
 export const resolver = (config) => {
     return {
         Query: {
-            getCart: async () => {
-                const apiCart = await getCart(config);
-                if (!apiCart.fault) {
+            getCart: async (_, {}, context) => {
+                const authToken = context.auth_token;
+                const cartId = context.cart_id;
+                const apiCart = await getCart(authToken, cartId, config);
+                if (apiCart.fault) {
+                    console.log("ERROR Received when getting cart", apiCart.fault.message);
+                    throw new ApolloError(apiCart.fault.message);
+                } else {
                     return new Cart(apiCart);
                 }
-                throw new ApolloError(apiCart.getCartMessage);
             },
-            getCartByCustomerId: async (_, { customerId }) => {
-                const apiCart = await getCartByCustomerId(customerId, config);
+            getCartByCustomerId: async (_, { customerId }, context) => {
+                const authToken = context.auth_token;
+                const apiCart = await getCartByCustomerId(authToken, customerId, config);
                 if (!apiCart.fault) {
                     return new Cart(apiCart.baskets[0]);
                 }
@@ -198,32 +210,51 @@ export const resolver = (config) => {
         Mutation: {
             createCart: async () => {
                 const apiCart = await createCart(config);
-                if (!apiCart.fault) {
-                    return new Cart(apiCart);
-                }
-                throw new ApolloError(apiCart.fault.message);
-            },
-            addProductToCart: async (_, { productId, quantity }) => {
-                const apiCart = await addProductToCart(productId, quantity, config);
                 if (apiCart.fault) {
+                    console.log("ERROR!!!!! in createCart", apiCart);
+                    throw new ApolloError(apiCart.fault.message);
+                } else {
+                    return new Cart(apiCart);
+                } 
+            },
+            addProductToCart: async (_, { productId, quantity }, context) => {
+                const authToken = context.auth_token;
+                const cartId = context.cart_id;
+                let apiCart = await addProductToCart(authToken, cartId, productId, quantity, config);
+                if (apiCart.fault) {
+                    console.log("ERROR!!!!! in addProductToCart", apiCart.fault);
+                    if(apiCart.fault.type == 'ExpiredTokenException') {
+                        apiCart = await addProductToCart('', '', productId, quantity, config);
+                        if(apiCart.fault) {
+                            throw new ApolloError(apiCart.fault.message);
+                        }
+                    } else {
+                        throw new ApolloError(apiCart.fault.message);
+                    }
+                }
+                return new Cart(apiCart);
+            },
+            deleteProductFromCart: async (_, { itemId }, context) => {
+                const authToken = context.auth_token;
+                const cartId = context.cart_id;
+                const apiCart = await deleteProductFromCart(authToken, cartId, itemId, config);
+                if (apiCart.fault) {
+                    console.log("ERROR!!!!! in deleteProductFromCart", apiCart);
                     throw new ApolloError(apiCart.fault.message);
                 } else {
                     return new Cart(apiCart);
                 }
             },
-            deleteProductFromCart: async (_, { itemId }) => {
-                const apiCart = await deleteProductFromCart(itemId, config);
-                if (!apiCart.fault) {
+            updateShippingMethod: async (_, { shipmentId, shippingMethodId }, context) => {
+                const authToken = context.auth_token;
+                const cartId = context.cart_id;
+                const apiCart = await updateShippingMethod(authToken, cartId, shipmentId, shippingMethodId, config);
+                if (apiCart.fault) {
+                    console.log("ERROR!!!!! in updateShippingMethod", apiCart);
+                    throw new ApolloError(apiCart.fault.message);
+                } else {
                     return new Cart(apiCart);
                 }
-                throw new ApolloError(apiCart.fault.message);
-            },
-            updateShippingMethod: async (_, { cartId, shipmentId, shippingMethodId }) => {
-                const apiCart = await updateShippingMethod(cartId, shipmentId, shippingMethodId, config);
-                if (!apiCart.fault) {
-                    return new Cart(apiCart);
-                }
-                throw new ApolloError(apiCart.fault.message);
             }
         }
     };

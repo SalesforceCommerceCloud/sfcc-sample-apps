@@ -6,7 +6,7 @@
 */
 class Cart {
     constructor(apiCart) {
-        this.authToken = '';
+        this.authToken = apiCart.auth_token;
         this.customerId = apiCart.customer_info && apiCart.customer_info.customer_id ? apiCart.customer_info.customer_id : '';
         this.cartId = apiCart.basket_id ? apiCart.basket_id : '';
         this.addProductMessage = '';

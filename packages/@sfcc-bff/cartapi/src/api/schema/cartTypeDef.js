@@ -20,6 +20,7 @@ export const typeDef = gql`
         updateShippingMethod(cartId: String!, shipmentId: String!, shippingMethodId: String!): Cart!
     }
     type Cart {
+        authToken: String!
         cartId: String!
         customerId : String
         addProductMessage: String
