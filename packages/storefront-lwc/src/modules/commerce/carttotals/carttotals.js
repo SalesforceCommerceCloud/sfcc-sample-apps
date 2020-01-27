@@ -19,16 +19,7 @@ export default class CartTotals extends LightningElement {
 
     constructor() {
         super();
-        
-        this.shippingCost = ShoppingCart.cart.shippingTotal.toFixed(2);
-        this.salesTax = ShoppingCart.cart.taxTotal.toFixed(2);
-        this.totalEstimate = ShoppingCart.cart.orderTotal.toFixed(2);
-        let orderLevelPriceAdjustment = ShoppingCart.cart.orderLevelPriceAdjustment;
-        this.hasOrderDiscount = orderLevelPriceAdjustment && orderLevelPriceAdjustment.price;
-        this.orderDiscount = this.hasOrderDiscount ? orderLevelPriceAdjustment.price.toFixed(2) * -1.00 : 0.00;
-        //this.hasShippingDiscount = false;
-        //this.shippingDiscount = 0.00;
-
+        setTotals(ShoppingCart.cart);
         // Listen to shippingmethods component change
         window.addEventListener('update-shipping-method', e => {
             this.updateCartTotals(e);
@@ -40,14 +31,18 @@ export default class CartTotals extends LightningElement {
         const shipmentId = ShoppingCart.cart.shipmentId;
         const shippingMethodId = event.detail.shippingMethodId;
         ShoppingCart.updateShippingMethod(cartId, shipmentId, shippingMethodId).then(cart => {
-            this.shippingCost = cart.shippingTotal.toFixed(2);
-            this.salesTax = cart.taxTotal.toFixed(2);
-            this.totalEstimate = cart.orderTotal.toFixed(2);
-            let orderLevelPriceAdjustment = ShoppingCart.cart.orderLevelPriceAdjustment;
-            this.hasOrderDiscount = orderLevelPriceAdjustment && orderLevelPriceAdjustment.price;
-            this.orderDiscount = this.hasOrderDiscount ? orderLevelPriceAdjustment.price.toFixed(2) * -1.00 : 0.00;
-            //this.hasShippingDiscount = false;
-            //this.shippingDiscount = 0.00;
+            setTotals(cart);
         });
+    }
+
+    setTotals(cart) {
+        this.shippingCost = cart.shippingTotal.toFixed(2);
+        this.salesTax = cart.taxTotal.toFixed(2);
+        this.totalEstimate = cart.orderTotal.toFixed(2);
+        let orderLevelPriceAdjustment = cart.orderLevelPriceAdjustment;
+        this.hasOrderDiscount = orderLevelPriceAdjustment && orderLevelPriceAdjustment.price;
+        this.orderDiscount = this.hasOrderDiscount ? orderLevelPriceAdjustment.price.toFixed(2) * -1.00 : 0.00;
+        //this.hasShippingDiscount = false;
+        //this.shippingDiscount = 0.00;
     }
 }

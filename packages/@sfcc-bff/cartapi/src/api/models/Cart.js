@@ -30,11 +30,21 @@ class Cart {
         };
 
         this.shippingMethods = apiCart.shippingMethods;
-        this.shipmentId = apiCart.shipments ? apiCart.shipments[0].shipment_id : '';
-        this.shipmentTotal = apiCart.shipments ? apiCart.shipments[0].shipment_total : 0.00;
-        this.selectedShippingMethodId = apiCart.shipments[0].shipping_method ? apiCart.shipments[0].shipping_method.id : '';
-        this.shippingTotal = apiCart.shipments ? apiCart.shipments[0].shipping_total : 0.00;
-        this.shippingTotalTax = apiCart.shipments ? apiCart.shipments[0].shipping_total_tax : 0.00;
+
+        if(apiCart.shipments && apiCart.shipments.length) {
+            this.shipmentId = apiCart.shipments[0].shipment_id;
+            this.shipmentTotal = apiCart.shipments[0].shipment_total;
+            this.selectedShippingMethodId = apiCart.shipments[0].shipping_method.id;
+            this.shippingTotal = apiCart.shipments[0].shipping_total;
+            this.shippingTotalTax = apiCart.shipments[0].shipping_total_tax;
+        } else {
+            this.shipmentId = '';
+            this.shipmentTotal = 0.00;
+            this.selectedShippingMethodId = '';
+            this.shippingTotal = 0.00;
+            this.shippingTotalTax = 0.00;
+        }
+
         this.taxTotal = apiCart.tax_total;
         Object.assign(this, apiCart);
     }
