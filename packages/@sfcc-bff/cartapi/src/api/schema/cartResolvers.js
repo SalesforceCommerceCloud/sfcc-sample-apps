@@ -212,7 +212,7 @@ export const resolver = (config) => {
             getShippingMethods: async (_, { cartId, shipmentId }) => {
                 const shippingMethods = await getShippingMethods(cartId, shipmentId, config);
                 if(shippingMethods.fault) {
-                    throw new ApolloError(apiCart.fault); 
+                    throw new ApolloError(shippingMethods.fault);
                 }
                 return new ShippingMethods(shippingMethods);
             }
