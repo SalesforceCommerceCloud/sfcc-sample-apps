@@ -17,8 +17,8 @@
     <script nonce="{{ sourceNonce }}">
         window.process = window.process || { env: { DEBUG: undefined } }
     </script>
-    <script src="{{ basePath }}/assets/js/libs.js?{{ versionKey }}"></script>
     <script src="/apiconfig.js?{{ versionKey }}"></script>
+    <script src="{{ basePath }}/assets/js/libs.js?{{ versionKey }}"></script>
 
     {{ webruntimeInit }}
     {{ webruntimeViews }}

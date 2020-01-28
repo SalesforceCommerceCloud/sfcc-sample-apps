@@ -13,7 +13,7 @@
 const APP_API_INSTANCE = "dev11-sitegenesis-dw.demandware.net";
 const APP_API_SITE_ID = "RefArch";
 const COMMERCE_APP_API_CLIENT_ID = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-const COMMERCE_BASE_URL = `https://${APP_API_INSTANCE}/s/${APP_API_SITE_ID}/dw/shop/v19_10/`;
+const COMMERCE_BASE_URL = `https://${APP_API_INSTANCE}/s/${APP_API_SITE_ID}/dw/shop/v19_10`;
 const COMMERCE_API_PATH = "/api";
 
 // New APIs

@@ -6,7 +6,7 @@
 */
 class Cart {
     constructor(apiCart) {
-        this.authToken = '';
+        this.authToken = apiCart.auth_token;
         this.customerId = apiCart.customer_info && apiCart.customer_info.customer_id ? apiCart.customer_info.customer_id : '';
         this.cartId = apiCart.basket_id ? apiCart.basket_id : '';
         this.addProductMessage = '';
@@ -22,6 +22,30 @@ class Cart {
                 itemId: product.item_id
             };
         }) : [];
+        
+        this.orderTotal = apiCart.order_total;
+        this.orderLevelPriceAdjustment = {
+            itemText: apiCart.order_price_adjustments ? apiCart.order_price_adjustments[0].item_text : '',
+            price: apiCart.order_price_adjustments ? apiCart.order_price_adjustments[0].price : 0.00
+        };
+
+        this.shippingMethods = apiCart.shippingMethods;
+
+        if(apiCart.shipments && apiCart.shipments.length) {
+            this.shipmentId = apiCart.shipments[0].shipment_id;
+            this.shipmentTotal = apiCart.shipments[0].shipment_total;
+            this.selectedShippingMethodId = apiCart.shipments[0].shipping_method ? apiCart.shipments[0].shipping_method.id : '';
+            this.shippingTotal = apiCart.shipments[0].shipping_total;
+            this.shippingTotalTax = apiCart.shipments[0].shipping_total_tax;
+        } else {
+            this.shipmentId = '';
+            this.shipmentTotal = 0.00;
+            this.selectedShippingMethodId = '';
+            this.shippingTotal = 0.00;
+            this.shippingTotalTax = 0.00;
+        }
+
+        this.taxTotal = apiCart.tax_total;
         Object.assign(this, apiCart);
     }
 }

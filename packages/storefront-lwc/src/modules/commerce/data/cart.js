@@ -7,6 +7,7 @@
 /**
  * A cart service to add to cart, load cart and blast off events
  */
+
 class Cart {
     cart = {};
 
@@ -23,13 +24,11 @@ class Cart {
     addToCart(product, qty) {
         let pid = product.id;
         try {
-            let client = new window.ApolloClient({
-                uri: window.apiconfig.COMMERCE_API_PATH || '/graphql'
-            });
-            return client.mutate({
+            return window.apiClient.mutate({
                 mutation: window.gql`
                 mutation {
-                    addProductToCart(productId: "${ pid }", quantity: ${ qty }){
+                    addProductToCart(productId: "${ pid }", quantity: ${ qty }) {
+                      authToken
                       cartId
                       customerId
                       addProductMessage
@@ -42,13 +41,16 @@ class Cart {
                         productName
                         price
                       }
-                    }
-                  }
+                }
+            }
              `
             }).then(result => {
                 this.cart = result.data.addProductToCart;
+                localStorage.setItem('auth_token', this.cart.authToken);
+                localStorage.setItem('cart_id', this.cart.cartId);
                 this.isCartLoaded = true;
                 this.updateCart('add-to-cart');
+                return this.cart;
             }).catch((error) => {
                 console.log('addToCart failed with message', error);
                 this.updateCart('failed-add-to-cart');
@@ -56,6 +58,50 @@ class Cart {
         } catch (e) {
             console.log('addToCart Exception received', e);
             this.updateCart('failed-add-to-cart');
+        }
+        return this.cart;
+    }
+
+    updateShippingMethod(cartId, shipmentId, shippingMethodId) {
+        try {
+            return window.apiClient.mutate({
+                mutation: window.gql `
+                    mutation {
+                        updateShippingMethod(cartId: "${cartId}", shipmentId: "${shipmentId}", shippingMethodId: "${shippingMethodId}") {
+                            cartId
+                            customerId
+                            getCartMessage
+                            totalProductsQuantity
+                            shipmentId
+                            shipmentTotal
+                            selectedShippingMethodId
+                            products {
+                                productId
+                                itemId
+                                quantity
+                                productName
+                                price
+                            }
+                            orderTotal
+                            orderLevelPriceAdjustment {
+                                itemText
+                                price
+                            }
+                            shippingTotal
+                            shippingTotalTax
+                            taxation
+                            taxTotal
+                        }
+                    }
+                 `
+            }).then(result => {
+                this.cart = result.data.updateShippingMethod;
+                return this.cart;
+            }).catch((error) => {
+                console.log('Update Shipping Method failed with message', error);
+            });
+        } catch (e) {
+            console.log('Update Shipping Method Exception received', e);
         }
         return this.cart;
     }
@@ -98,24 +144,45 @@ class Cart {
      * @returns {Object} cart object
      */
     getCurrentCart() {
+        console.log("Getting Current Cart");
         try {
-            let client = new window.ApolloClient({
-                uri: window.apiconfig.COMMERCE_API_PATH || '/graphql'
-            });
-            return client.query({
+            return window.apiClient.query({
                 query: window.gql`
                 {
-                    getCart{
+                    getCart {
                         cartId
                         customerId
                         getCartMessage
                         totalProductsQuantity
+                        shipmentId
+                        shipmentTotal
+                        selectedShippingMethodId
                         products {
                             productId
                             itemId
                             quantity
                             productName
                             price
+                        }
+                        orderTotal
+                        orderLevelPriceAdjustment {
+                            itemText
+                            price
+                        }
+                        shippingTotal
+                        shippingTotalTax
+                        taxation
+                        taxTotal
+                        shippingMethods {
+                            defaultShippingMethodId
+                            applicableShippingMethods {
+                                id
+                                name
+                                description
+                                price
+                                estimatedArrivalTime
+                                storePickupEnabled
+                            }
                         }
                     }
                 }
@@ -127,6 +194,7 @@ class Cart {
                 return this.cart;
             }).catch((error) => {
                 console.log('Warning: No Cart has been created yet!', error);
+                return this.cart;
             });
         } catch (e) {
             console.log('Exception loading cart', e);

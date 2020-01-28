@@ -62,11 +62,7 @@ register(productsByQuery, (eventTarget) => {
                 let params = { query: query };
 
                 try {
-                    var client = new window.ApolloClient({
-                        uri: window.apiconfig.COMMERCE_API_PATH || "/graphql"
-                    });
-
-                    return client.query({
+                    return window.apiClient.query({
                         query: window.gql`
                         {
                             productSearch(query: "${ query }" ${ filters }) {
