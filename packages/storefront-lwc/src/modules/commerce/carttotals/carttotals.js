@@ -19,7 +19,7 @@ export default class CartTotals extends LightningElement {
 
     constructor() {
         super();
-        setTotals(ShoppingCart.cart);
+        this.setTotals(ShoppingCart.cart);
         // Listen to shippingmethods component change
         window.addEventListener('update-shipping-method', e => {
             this.updateCartTotals(e);
@@ -31,7 +31,7 @@ export default class CartTotals extends LightningElement {
         const shipmentId = ShoppingCart.cart.shipmentId;
         const shippingMethodId = event.detail.shippingMethodId;
         ShoppingCart.updateShippingMethod(cartId, shipmentId, shippingMethodId).then(cart => {
-            setTotals(cart);
+            this.setTotals(cart);
         });
     }
 

@@ -111,14 +111,18 @@ const addProductToCart = async (authToken, cartId, productId, quantity, config) 
             quantity: quantity
         }];
         const addToCartUrl = `${config.COMMERCE_BASE_URL}/baskets/${cartId}/items`;
-        const result = await fetch(addToCartUrl, {
+        
+        let cart = await fetch(addToCartUrl, {
             method: 'post',
             body: JSON.stringify(body),
             headers: { 'Content-Type': 'application/json', Authorization: authToken }
         }).then(res => res.json());
-        result.addProductMessage = `${quantity} product(s) with id ${productId} added to Cart!`;
-        result.auth_token = authToken;
-        return result;
+
+        if(!cart.fault) {
+            cart.addProductMessage = `${quantity} product(s) with id ${productId} added to Cart!`;
+        }
+        cart.auth_token = authToken;
+        return cart;
     } else {
         // If product is not orderable, return existing Cart with no change
         const currentCart = await getCart(authToken, cartId, config);

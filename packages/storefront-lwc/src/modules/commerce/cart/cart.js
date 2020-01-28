@@ -58,7 +58,7 @@ export default class Cart extends LightningElement {
             this.products = cart.products ? cart.products : [];
         }).catch((error) => {
             console.log('error received ', error);
-        })
+        });
     }
 
     removeHandler(event) {

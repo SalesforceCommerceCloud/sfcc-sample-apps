@@ -34,7 +34,7 @@ class Cart {
         if(apiCart.shipments && apiCart.shipments.length) {
             this.shipmentId = apiCart.shipments[0].shipment_id;
             this.shipmentTotal = apiCart.shipments[0].shipment_total;
-            this.selectedShippingMethodId = apiCart.shipments[0].shipping_method.id;
+            this.selectedShippingMethodId = apiCart.shipments[0].shipping_method ? apiCart.shipments[0].shipping_method.id : '';
             this.shippingTotal = apiCart.shipments[0].shipping_total;
             this.shippingTotalTax = apiCart.shipments[0].shipping_total_tax;
         } else {
