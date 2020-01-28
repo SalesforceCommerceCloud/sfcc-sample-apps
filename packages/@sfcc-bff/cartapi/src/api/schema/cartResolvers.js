@@ -84,7 +84,53 @@ const getCart = async (config) => {
     }).then(res => res.json());
     result.getCartMessage = `Cart found with ID of ${Cart.cartId}`;
     result.shippingMethods = Cart.shippingMethods;
+    let productIds = result.product_items ? result.product_items.map((product) => product.product_id).join(): '';
+    let productDetails = await getProductsDetailsInfo(config,productIds);
+    if(result.product_items) {
+        result.product_items.map((product) => {
+            productDetails.find((item) => {
+                if (item.pid === product.product_id) {
+                    product.image = item.imageURL ? item.imageURL : '';
+                    product.selectedAttributes = item.selectedAttributes ? item.selectedAttributes : {};
+                    product.inventory = item.inventory ? item.inventory : {};
+                    product.productType = item.type ? item.type : {};
+                    product.productType.master = item.type && item.type.variant ? false : true;
+                }
+            })
+        })
+    };
+    console.log('$$$$$$$$ But the result is correct!', JSON.stringify(result.product_items));
     return result;
+};
+
+const getProductsDetailsInfo = async (config, productIds) => {
+    let product_items = [];
+    
+    const URL_PARAMS = `&expand=availability,images,prices,promotions,variations&variation_attribute=true`;
+    const PRODUCT_URL = `${config.COMMERCE_BASE_URL}/products/(${productIds})?client_id=${config.COMMERCE_APP_API_CLIENT_ID}${URL_PARAMS}`;
+    const result = await fetch(PRODUCT_URL).then(res => res.json());
+    result.data.forEach((product) => {
+        let productDetailsInfo = {pid: '', selectedAttributes: {}, imageURL: '', inventory: {}, type: {}};
+        productDetailsInfo.pid = product.id;
+        const variation_values = product.variation_values;
+        const variation_attributes = product.variation_attributes;
+        const imageGroups = product.image_groups;
+        if (imageGroups) {
+            let imageArray = imageGroups.find((image) => image.view_type === "small").images;
+            productDetailsInfo.imageURL = imageArray.find((smallImage) => smallImage.link.endsWith('PZ.jpg')).link;
+        }
+        productDetailsInfo.inventory = product.inventory || {};
+        productDetailsInfo.type = product.type || {};
+        if (variation_attributes && variation_values) {
+            Object.keys(variation_values).forEach(function(key) {
+                let variationAttributesArray = variation_attributes.find((variation_attribute) => variation_attribute.id === key).values;
+                let variationAttributesName = variationAttributesArray.find((variation_attribute_item) => variation_attribute_item.value === variation_values[key]).name;
+                productDetailsInfo.selectedAttributes[key] = variationAttributesName;
+            });
+        };
+        product_items.push(productDetailsInfo);
+    })
+    return product_items;
 };
 
 const addProductToCart = async (productId, quantity, config) => {
@@ -113,7 +159,7 @@ const addProductToCart = async (productId, quantity, config) => {
         return result;
     } else {
         // If product is not orderable, return existing Cart with no change
-        const currentCart = await getCart(config);
+        // const currentCart = await getCart(config);
         currentCart.addProductMessage = `product id ${productId} quantity of ${quantity} not orderable`;
         currentCart.fault = {
             message: `product id ${productId} quantity of ${quantity} not orderable`

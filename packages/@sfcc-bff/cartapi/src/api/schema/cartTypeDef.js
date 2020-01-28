@@ -43,6 +43,14 @@ export const typeDef = gql`
         price: Float!
         quantity: Int!
         itemId: String!
+        image: String
+        selectedAttributes: SelectedAttributes
+        inventory: Inventory
+        productType: ProductType
+    }
+    type SelectedAttributes {
+        color: String
+        size: String
     }
     type Order {
         orderable: Boolean!

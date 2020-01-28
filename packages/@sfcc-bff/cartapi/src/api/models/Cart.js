@@ -19,7 +19,14 @@ class Cart {
                 productName: product.product_name,
                 price: product.price,
                 quantity: product.quantity,
-                itemId: product.item_id
+                itemId: product.item_id,
+                image: product.image,
+                inventory: product.inventory,
+                productType: product.productType,
+                selectedAttributes: {
+                    color: product.selectedAttributes && product.selectedAttributes.color || '',
+                    size: product.selectedAttributes && product.selectedAttributes.size || ''
+                }
             };
         }) : [];
         
@@ -36,6 +43,7 @@ class Cart {
         this.shippingTotal = apiCart.shipments ? apiCart.shipments[0].shipping_total : 0.00;
         this.shippingTotalTax = apiCart.shipments ? apiCart.shipments[0].shipping_total_tax : 0.00;
         this.taxTotal = apiCart.tax_total;
+        console.log('???????????????? this is correct ', JSON.stringify(apiCart));
         Object.assign(this, apiCart);
     }
 }

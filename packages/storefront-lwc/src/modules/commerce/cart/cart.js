@@ -15,6 +15,8 @@ export default class Cart extends LightningElement {
     @track isGuest = true;
 
     @track products = [];
+    @track cart = {};
+
 
     get hasProducts() {
         return this.products.length > 0;
@@ -56,6 +58,7 @@ export default class Cart extends LightningElement {
     connectedCallback() {
         ShoppingCart.getCurrentCart()
         .then(cart => {
+            this.cart = cart;
             this.products = cart.products;
         })
         .catch((error) => {

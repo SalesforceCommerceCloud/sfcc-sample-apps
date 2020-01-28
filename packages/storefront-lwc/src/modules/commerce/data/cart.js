@@ -157,16 +157,32 @@ class Cart {
                         customerId
                         getCartMessage
                         totalProductsQuantity
-                        shipmentId
-                        shipmentTotal
-                        selectedShippingMethodId
                         products {
                             productId
                             itemId
                             quantity
                             productName
                             price
-                        }
+                            inventory {
+                              ats
+                              orderable
+                              backorderable
+                              preorderable
+                              id
+                              stock_level
+                            }
+                            productType {
+                              master
+                            }
+                            selectedAttributes {
+                                  color
+                                  size
+                            }
+                           image
+                          }
+                        shipmentId
+                        shipmentTotal
+                        selectedShippingMethodId
                         orderTotal
                         orderLevelPriceAdjustment {
                             itemText
@@ -192,6 +208,7 @@ class Cart {
              `
             }).then(result => {
                 this.cart = result.data.getCart;
+                console.log('%%%%%%%%%%%%%% why is this wrong? ', result);
                 this.isCartLoaded = true;
                 this.updateCart('cart-loaded');
                 return this.cart;
