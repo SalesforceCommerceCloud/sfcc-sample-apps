@@ -69,30 +69,32 @@ const getCart = async (authToken, cartId, config) => {
                 message: "No Cart has been created yet."
             }
         };
-    } else {
-        // else get cart with that id
-        const getCartUrl = `${config.COMMERCE_BASE_URL}/baskets/${cartId}`;
-        let cart = await fetch(getCartUrl, {
-            method: 'get',
-            headers: { 'Content-Type': 'application/json', Authorization: authToken }
-        }).then(res => res.json());
+    }
+    // else get cart with that id
+    const getCartUrl = `${config.COMMERCE_BASE_URL}/baskets/${cartId}`;
+    let cart = await fetch(getCartUrl, {
+        method: 'get',
+        headers: { 'Content-Type': 'application/json', Authorization: authToken }
+    }).then(res => res.json());
 
-        if(cart.fault) {
-            return cart;
-        }
-
-        cart.getCartMessage = `Cart found with ID of ${cartId}`;
-
-        const shipmentId = cart.shipments[0].shipment_id;
-        // Get Shipping Methods
-        const shippingMethods = await getShippingMethods(authToken, cartId, shipmentId, config);
-        // Update Shipping Method to Default Method
-        let selectedShippingMethodId = cart.shipments[0].shipping_method ? cart.shipments[0].shipping_method.id : shippingMethods.default_shipping_method_id;
-        cart = await updateShippingMethod(authToken, cartId, shipmentId, selectedShippingMethodId, config);
-        cart.shippingMethods = new ShippingMethods(shippingMethods);
-        cart.auth_token = authToken;
+    if(cart.fault) {
         return cart;
-    }  
+    }
+
+    cart.getCartMessage = `Cart found with ID of ${cartId}`;
+
+    const shipmentId = cart.shipments[0].shipment_id;
+    // Get Shipping Methods
+    const shippingMethods = await getShippingMethods(authToken, cartId, shipmentId, config);
+    if(shippingMethods.fault) {
+        return shippingMethods;
+    }
+    // Update Shipping Method to Default Method
+    let selectedShippingMethodId = cart.shipments[0].shipping_method ? cart.shipments[0].shipping_method.id : shippingMethods.default_shipping_method_id;
+    cart = await updateShippingMethod(authToken, cartId, shipmentId, selectedShippingMethodId, config);
+    cart.shippingMethods = new ShippingMethods(shippingMethods);
+    cart.auth_token = authToken;
+    return cart;
 };
 
 const addProductToCart = async (authToken, cartId, productId, quantity, config) => {
@@ -209,6 +211,9 @@ export const resolver = (config) => {
             },
             getShippingMethods: async (_, { cartId, shipmentId }) => {
                 const shippingMethods = await getShippingMethods(cartId, shipmentId, config);
+                if(shippingMethods.fault) {
+                    throw new ApolloError(apiCart.fault); 
+                }
                 return new ShippingMethods(shippingMethods);
             }
         },
