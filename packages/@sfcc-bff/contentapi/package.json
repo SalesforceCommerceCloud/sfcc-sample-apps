@@ -4,6 +4,8 @@
   "description": "",
   "main": "./src/contentapi.js",
   "scripts": {
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
     "pack": "npm pack",
     "pub": "npm pack; npm publish -f"
   },
