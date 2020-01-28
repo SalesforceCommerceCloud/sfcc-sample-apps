@@ -22,7 +22,6 @@ const getBearerToken = async (config) => {
         body: JSON.stringify(body),
         headers: { 'Content-Type': 'application/json' }
     });
-    await response.json();
     return response.headers.get('Authorization');
 };
 

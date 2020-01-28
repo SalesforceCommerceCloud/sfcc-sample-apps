@@ -27,6 +27,13 @@ export default class ShippingMethods extends LightningElement {
         });
         window.dispatchEvent(event);
     }
+
+    get viewShippingMethods() {
+        return this.shippingMethods.map(shippingMethod => ({
+            ...shippingMethod,
+            selected: shippingMethod.id === this.selectedShippingMethodId
+        }));
+    }
  
     renderedCallback() {
         setTimeout(() => {
