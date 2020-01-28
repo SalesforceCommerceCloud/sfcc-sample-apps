@@ -34,16 +34,4 @@ export default class ShippingMethods extends LightningElement {
             selected: shippingMethod.id === this.selectedShippingMethodId
         }));
     }
- 
-    renderedCallback() {
-        setTimeout(() => {
-            const shippingMethodSelect = this.template.querySelector('select[name=shipping-method-select]');
-            if (shippingMethodSelect && shippingMethodSelect[0]) {
-                const option = shippingMethodSelect.querySelector(`option[class="${this.selectedShippingMethodId}"]`);
-                if (option) {
-                    option.setAttribute('selected', 'selected');
-                }
-            }
-        });
-    }
 }
