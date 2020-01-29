@@ -1,7 +1,5 @@
 version: 2
 jobs:
-    docker:
-      - image: circleci/node:12
     build:
     working_directory: ~/build_only
     executor:
