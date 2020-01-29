@@ -18,16 +18,11 @@ import API_CONFIG_DATA from './api'; // Our Application Specific API Configurati
 // SFRA Extensions/Services
 //
 import '@sfcc-bff/productapi';
-import '@sfcc-bff/contentapi';
-import '@sfcc-bff/customerapi';
-import '@sfcc-bff/loginapi';
-import '@sfcc-bff/cartapi';
 
 //
 // Import Keys needed to access core services end extensions
 //
 import {CORE_GRAPHQL_KEY, EXPRESS_KEY} from '@sfcc-core/core-graphql';
-import {LOGGER_KEY, API_EXTENSIONS_KEY} from '@sfcc-core/core';
 import {API_CONFIG_KEY} from "@sfcc-core/apiconfig";
 
 class SampleApp {
@@ -42,11 +37,11 @@ class SampleApp {
         this.apiConfig = core.getService(API_CONFIG_KEY);
 
         Object.assign(config, this.apiConfig.config);
-        console.log(config);
+        core.logger.log(config);
 
         this.apiConfig.config = config;
 
-        console.log(this.apiConfig.config)
+        core.logger.log(this.apiConfig.config)
     }
 
     set expressApplication(expressApp) {
