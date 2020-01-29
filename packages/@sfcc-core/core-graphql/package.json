@@ -20,9 +20,7 @@
     "@sfcc-core/apiconfig": "0.0.1-sfcc-alpha-1",
     "@sfcc-core/core": "0.0.1-sfcc-alpha-1",
     "apollo-server": "^2.3.3",
-    "cross-env": "5.2.0",
     "graphql-tag": "^2.10.1",
-    "graphql-tools": "^4.0.4",
-    "rollup": "1.1.0"
+    "graphql-tools": "^4.0.4"
   }
 }
