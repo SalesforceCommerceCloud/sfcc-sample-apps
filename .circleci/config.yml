@@ -1,4 +1,7 @@
+version: 2
 jobs:
+    docker:
+      - image: circleci/node:12
     build:
     working_directory: ~/build_only
     executor:
@@ -6,9 +9,7 @@ jobs:
       tag: '10.16'
     steps:
       - checkout
-      - node/with-cache:
-          steps:
-            - run: yarn
+      - run: yarn install
       - run: yarn build
       - run: yarn start
       - run: yarn test
