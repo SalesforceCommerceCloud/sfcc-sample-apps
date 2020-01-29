@@ -4,27 +4,14 @@
     SPDX-License-Identifier: BSD-3-Clause
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
-import { LightningElement, track } from 'lwc'
-
-import * as router from 'webruntime/routingService';
-import { navigate } from 'webruntime/routingService';
+import { LightningElement, api } from 'lwc'
 
 /**
  * Search Bar where visitors can search for stuff
  */
 export default class SearchBar extends LightningElement {
 
-    @track query = '';
-    routeSubscription;
-
-    constructor() {
-        super();
-        this.routeSubscription = router.subscribe(this.routeSubHandler.bind(this));
-    }
-
-    routeSubHandler(view) {
-        this.query = view.attributes.query || '';
-    }
+    @api query = '';
 
     updateQueryEvent() {
         const updateQueryEvent = new CustomEvent('update-query-event', {detail: {query: this.query}});

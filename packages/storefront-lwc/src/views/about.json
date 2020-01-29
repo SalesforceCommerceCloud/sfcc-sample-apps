@@ -1,8 +1,0 @@
-{
-    "name": "about",
-    "label": "About",
-    "themeLayoutType": "default",
-    "component": {
-        "name": "commerce/about"
-    }
-}

@@ -5,11 +5,8 @@
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
 import { LightningElement, api, track } from 'lwc'
-import * as router from 'webruntime/routingService';
 
 export default class Login extends LightningElement {
-
-    routeSubscription;
 
     @track loginActive = true;
 
@@ -27,15 +24,6 @@ export default class Login extends LightningElement {
 
     get loginTabLinkClass() {
         return this.loginActive ? 'nav-link active' : 'nav-link';
-    }
-
-    constructor() {
-        super();
-        this.routeSubscription = router.subscribe(this.routeSubHandler.bind(this));
-    }
-
-    routeSubHandler( view ) {
-        this.loginActive = !!view.attributes && view.attributes.pageName === 'login';
     }
 }
 

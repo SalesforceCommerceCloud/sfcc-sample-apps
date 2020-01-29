@@ -5,7 +5,6 @@
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
 import { LightningElement, wire, track } from 'lwc'
-import { getRoute, subscribe } from 'webruntime/routingService';
 import { productsByQuery } from 'commerce/data';
 
 /**
@@ -23,7 +22,6 @@ export default class Search extends LightningElement {
 
     sortRule;
     selectedRefinements = {};
-    routeSubscription;
 
     @wire(productsByQuery, {query: '$query', sortRule: '$sortRule', selectedRefinements: '$selectedRefinements'})
     updateProducts(json) {
@@ -64,8 +62,6 @@ export default class Search extends LightningElement {
     constructor() {
         super();
 
-        this.routeSubscription = subscribe(this.routeSubHandler.bind(this));
-
         // Listen to search query from header search component
         window.addEventListener('update-query-event', e => {
             this.loading = (e.detail && e.detail.query !== this.query);
@@ -83,11 +79,6 @@ export default class Search extends LightningElement {
         window.addEventListener('update-sort', e => {
             this.sortRule = e.detail.sortRule;
         });
-    }
-
-    routeSubHandler(view) {
-        // Set query to trigger search.
-        this.query = view.attributes.query;
     }
 
     hasQuery() {

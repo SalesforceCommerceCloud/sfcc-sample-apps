@@ -7,6 +7,8 @@
 /**
  * A cart service to add to cart, load cart and blast off events
  */
+import { apiClient } from '../api/client';
+import gql from 'graphql-tag';
 
 class Cart {
     cart = {};
@@ -24,8 +26,8 @@ class Cart {
     addToCart(product, qty) {
         let pid = product.id;
         try {
-            return window.apiClient.mutate({
-                mutation: window.gql`
+            return apiClient.mutate({
+                mutation: gql`
                 mutation {
                     addProductToCart(productId: "${ pid }", quantity: ${ qty }) {
                       authToken
@@ -64,8 +66,8 @@ class Cart {
 
     updateShippingMethod(cartId, shipmentId, shippingMethodId) {
         try {
-            return window.apiClient.mutate({
-                mutation: window.gql `
+            return apiClient.mutate({
+                mutation: gql `
                     mutation {
                         updateShippingMethod(cartId: "${cartId}", shipmentId: "${shipmentId}", shippingMethodId: "${shippingMethodId}") {
                             cartId
@@ -146,8 +148,8 @@ class Cart {
     getCurrentCart() {
         console.log("Getting Current Cart");
         try {
-            return window.apiClient.query({
-                query: window.gql`
+            return apiClient.query({
+                query: gql`
                 {
                     getCart {
                         cartId
