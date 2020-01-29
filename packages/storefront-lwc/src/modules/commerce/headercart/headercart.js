@@ -5,7 +5,6 @@
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
 import { LightningElement, track } from 'lwc';
-import { ShoppingCart } from 'commerce/data';
 
 /**
  * Header cart component that should show up in the header
@@ -15,11 +14,10 @@ export default class HeaderCart extends LightningElement {
 
     constructor() {
         super();
-        ShoppingCart.updateCartListener(this.updateCartHandler.bind(this));
     }
 
     updateCartHandler() {
-        this.quantity = ShoppingCart.getCartQuantity();
+    
     }
 
     // eslint-disable-next-line class-methods-use-this
@@ -27,6 +25,6 @@ export default class HeaderCart extends LightningElement {
     }
 
     connectedCallback() {
-        this.quantity = ShoppingCart.getCartQuantity();
+    
     }
 }
