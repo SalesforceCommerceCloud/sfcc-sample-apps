@@ -1,0 +1,11 @@
+{
+  "name": "sfcc-base",
+  "version": "0.0.1-sfcc-alpha-1",
+  "description": "A Base Config for any Sample App Monorepo packages.",
+  "license": "MIT",
+  "files": [
+    "eslint.config.js"
+  ],
+  "dependencies": {
+  }
+}
