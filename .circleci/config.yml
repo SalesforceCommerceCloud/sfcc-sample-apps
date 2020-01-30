@@ -1,15 +1,16 @@
 jobs:
     build:
+      working_directory: ~/build_only
       executor:
         name: node/default
         tag: '12.14'
       steps:
         - checkout
-        - run: pwd
-        - run: ls -l
         - run: yarn install
         - run: yarn build
         - run: yarn test
+        - store_test_results:
+            path: ~/
 orbs:
   node: circleci/node@1.1
 version: 2.1
