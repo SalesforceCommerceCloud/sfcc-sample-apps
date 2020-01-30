@@ -13,7 +13,7 @@ export {LOGGER_KEY};
 export default class Logger {
 
     constructor(core) {
-        apilog.setDefaultLevel(apilog.levels.DEBUG);
+        apilog.setDefaultLevel(apilog.levels.ERROR);
     }
 
     setLevel(level) {

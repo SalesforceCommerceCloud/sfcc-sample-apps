@@ -37,8 +37,10 @@ class SampleApp {
         this.apiConfig = core.getService(API_CONFIG_KEY);
         Object.assign(config, this.apiConfig.config);
         this.apiConfig.config = config;
-        this.logger = core.getService(LOGGER_KEY);
-        this.logger.setLevel(this.apiConfig.config.COMMERCE_LOG_LEVEL);
+        if(this.apiConfig.config.COMMERCE_LOG_LEVEL) {
+            this.logger = core.getService(LOGGER_KEY);
+            this.logger.setLevel(this.apiConfig.config.COMMERCE_LOG_LEVEL);
+        }
     }
 
     set expressApplication(expressApp) {
@@ -69,15 +71,15 @@ class SampleApp {
 
     // Just some development output
     status() {
-        core.logger.log('Is Express Registered?', !!core.getService(EXPRESS_KEY));
-        core.logger.log('Is GraphQL Registered?', !!core.getService(CORE_GRAPHQL_KEY));
+        this.logger.debug('Is Express Registered?', !!core.getService(EXPRESS_KEY));
+        this.logger.debug('Is GraphQL Registered?', !!core.getService(CORE_GRAPHQL_KEY));
 
         Object.getOwnPropertySymbols(core.services).forEach(key => {
-            core.logger.log(`Registered Core Service: ${key.toString()}.`);
+            this.logger.debug(`Registered Core Service: ${key.toString()}.`);
         });
 
         Object.getOwnPropertySymbols(core.extensions).forEach(key => {
-            core.logger.log(`Registered Core Extensions: ${key.toString()}. ${core.getExtension(key).length} Extensions Registered.`);
+            this.logger.debug(`Registered Core Extensions: ${key.toString()}. ${core.getExtension(key).length} Extensions Registered.`);
         });
     }
 }
