@@ -5,6 +5,7 @@
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
 import { LightningElement, api } from 'lwc'
+import { navigate } from 'commerce/router';
 
 /**
  * Search Bar where visitors can search for stuff
@@ -17,12 +18,7 @@ export default class SearchBar extends LightningElement {
         const updateQueryEvent = new CustomEvent('update-query-event', {detail: {query: this.query}});
         window.dispatchEvent(updateQueryEvent);
 
-        navigate({
-            id: 'search',
-            attributes: {
-                query: this.query
-            }
-        });
+        navigate(`/search/${encodeURIComponent(this.query)}`);
     }
 
     /**

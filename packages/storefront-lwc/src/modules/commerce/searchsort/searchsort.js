@@ -7,9 +7,9 @@
 import { LightningElement, track } from 'lwc'
 
 export default class SearchSort extends LightningElement {
-    sortRule;
     constructor() {
         super();
+        this.sortRule = this.sortOptions[0];
     }
 
     @track sortOptions = [

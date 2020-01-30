@@ -4,7 +4,7 @@
     SPDX-License-Identifier: BSD-3-Clause
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
-import { LightningElement, wire, track } from 'lwc'
+import { LightningElement, wire, track, api } from 'lwc'
 import { productsByQuery } from 'commerce/data';
 
 /**
@@ -15,7 +15,7 @@ export default class Search extends LightningElement {
     @track state = {};
     @track products = [];
     @track refinements = [];
-    @track query = '';
+    @api query = '';
     @track loading = false;
     @track refinementBar = 'refinement-bar col-md-3 d-none d-lg-block';
     @track showRefinementBar = true;
@@ -25,7 +25,6 @@ export default class Search extends LightningElement {
 
     @wire(productsByQuery, {query: '$query', sortRule: '$sortRule', selectedRefinements: '$selectedRefinements'})
     updateProducts(json) {
-
         console.log(this.query);
         console.log('===============================');
         console.log('API', (json.data && json.data.productSearch) ? json.data.productSearch : 'no results or query');

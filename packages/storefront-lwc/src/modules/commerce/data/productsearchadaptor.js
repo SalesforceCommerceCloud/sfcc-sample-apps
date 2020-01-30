@@ -5,6 +5,8 @@
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
 import { register, ValueChangedEvent } from '@lwc/wire-service';
+import gql from 'graphql-tag';
+import { apiClient } from '../api/client';
 
 //
 // Declarative access: register a wire adapter factory for  @wire(getTodo).
@@ -62,8 +64,8 @@ register(productsByQuery, (eventTarget) => {
                 let params = { query: query };
 
                 try {
-                    return window.apiClient.query({
-                        query: window.gql`
+                    return apiClient.query({
+                        query: gql`
                         {
                             productSearch(query: "${ query }" ${ filters }) {
                                 productHits {
@@ -123,7 +125,7 @@ register(productsByQuery, (eventTarget) => {
                         };
                     });
                 } catch (e) {
-                    return null;
+                    console.error(e);
                 }
             }
 

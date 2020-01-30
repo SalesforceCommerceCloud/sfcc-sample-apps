@@ -9,9 +9,12 @@ module.exports = {
     },
     devServer: {
         proxy: { 
-            '/': 'http://localhost:3002',
+            '/api': 'http://localhost:3002',
+            '/assets': 'http://localhost:3002',
+            '/manifest.json': 'http://localhost:3002',
             '/apiconfig.js': 'http://localhost:3002'
         },
+        historyApiFallback: true,
         port: 3000
     }
 };
