@@ -14,15 +14,11 @@ export default class ProductTile extends LightningElement {
     @api product;
 
     productDetail() {
-        console.log(this.product.id);
-        //router.navigateToRoute(`product`, {pid: this.product.id})
-
         navigate({
             id: 'product',
             attributes: {
                 pid: this.product.id
             }
         });
-
     }
 }

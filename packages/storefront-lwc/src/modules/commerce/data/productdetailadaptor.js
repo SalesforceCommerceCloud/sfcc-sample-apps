@@ -9,8 +9,6 @@ import { register, ValueChangedEvent } from 'wire-service';
 export const productDetailWireAdaptor = Symbol('product-detail');
 
 register(productDetailWireAdaptor, (eventTarget) => {
-    console.log("Register wire adapter", eventTarget);
-
     /**
      * Make the server request for product data
      * @param options
@@ -93,11 +91,11 @@ register(productDetailWireAdaptor, (eventTarget) => {
                 }).then(result => {
                     return result.data.product;
                 }).catch((error) => {
-                    console.log('Error fetching product by ID ', error);
+                    console.error('Error fetching product by ID ', error);
                     return {};
                 });
             } catch (e) {
-                console.log('Exception fetching product by ID ', e);
+                console.error('Exception fetching product by ID ', e);
                 return {};
             }
         } else {
