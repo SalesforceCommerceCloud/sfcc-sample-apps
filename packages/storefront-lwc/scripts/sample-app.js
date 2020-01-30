@@ -7,7 +7,7 @@
 //
 // SFCC Core registry and core extensions/services
 //
-import {core} from '@sfcc-core/core';
+import { core, LOGGER_KEY } from '@sfcc-core/core';
 import '@sfcc-core/logger';
 import '@sfcc-core/apiconfig';
 import '@sfcc-core/core-graphql';
@@ -35,13 +35,10 @@ class SampleApp {
         // Need to set api config data before any API extensions are instantiated.
         //
         this.apiConfig = core.getService(API_CONFIG_KEY);
-
         Object.assign(config, this.apiConfig.config);
-        core.logger.log(config);
-
         this.apiConfig.config = config;
-
-        core.logger.log(this.apiConfig.config)
+        this.logger = core.getService(LOGGER_KEY);
+        this.logger.setLevel(this.apiConfig.config.COMMERCE_LOG_LEVEL);
     }
 
     set expressApplication(expressApp) {
