@@ -1,6 +1,5 @@
 jobs:
     build:
-      working_directory: ~/build_only
       executor:
         name: node/default
         tag: '12.14'
