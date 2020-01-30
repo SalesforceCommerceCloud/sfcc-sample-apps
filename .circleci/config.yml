@@ -5,6 +5,9 @@ jobs:
         tag: '12.14'
       steps:
         - checkout
+        - run: mkdir reports
+        - run: pwd
+        - run: ls -l
         - run: yarn install
         - run: yarn build
         - run: yarn test
