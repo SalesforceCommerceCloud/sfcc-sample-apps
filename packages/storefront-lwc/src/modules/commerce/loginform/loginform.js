@@ -68,11 +68,11 @@ export default class LoginForm extends LightningElement {
                 } ).catch( (error) => {
                     this.loggedIn = false;
                     this.authError = true;
-                    console.error( "error", error );
+                    console.error( 'error', error );
                     return {};
                 } );
             } catch (e) {
-                console.error( "exception", e );
+                console.error( 'exception', e );
                 this.loggedIn = true;
                 return {};
             }
@@ -84,11 +84,11 @@ export default class LoginForm extends LightningElement {
 
     handleGoogle() {
         //https://dev11-sitegenesis-dw.demandware.net/on/demandware.store/Sites-RefArch-Site/en_US/Login-OAuthLogin?oauthProvider=Google&amp;oauthLoginTargetEndPoint=1
-        console.info( "google" );
+        console.info( 'google' );
     }
 
     handleFacebook() {
         //https://dev11-sitegenesis-dw.demandware.net/on/demandware.store/Sites-RefArch-Site/en_US/Login-OAuthLogin?oauthProvider=Facebook&amp;oauthLoginTargetEndPoint=1
-        console.info( "facebook" );
+        console.info( 'facebook' );
     }
 }

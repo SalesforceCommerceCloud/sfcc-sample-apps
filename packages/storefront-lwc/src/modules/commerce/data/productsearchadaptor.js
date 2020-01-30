@@ -113,7 +113,7 @@ register(productsByQuery, (eventTarget) => {
                     }).then(result => {
                         return result;
                     }).catch((error) => {
-                        console.error("error", error);
+                        console.error('error', error);
                         return {
                             error
                         };
@@ -134,7 +134,7 @@ register(productsByQuery, (eventTarget) => {
         const productsOrPromise = getProductByQuery(wireConfigData);
 
         if (productsOrPromise === null) {
-            console.error("error loading products");
+            console.error('error loading products');
             return;
         }
 
@@ -145,7 +145,7 @@ register(productsByQuery, (eventTarget) => {
             productsOrPromise.then((data) => {
                 eventTarget.dispatchEvent(new ValueChangedEvent(Object.assign({ error: undefined }, data)));
             }, (error) => {
-                console.error("Reject Load Product, error", error);
+                console.error('Reject Load Product, error', error);
                 eventTarget.dispatchEvent(new ValueChangedEvent({ data: undefined, error }));
             });
         } else {

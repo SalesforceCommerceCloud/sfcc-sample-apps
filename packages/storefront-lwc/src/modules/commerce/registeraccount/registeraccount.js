@@ -113,11 +113,11 @@ export default class Register extends LightningElement {
                 } ).catch( (error) => {
                     this.accountCreated = false;
                     this.accountCreateError = true;
-                    console.error( "error", error );
+                    console.error( 'error', error );
                     return {};
                 } );
             } catch (e) {
-                console.error( "exception", e );
+                console.error( 'exception', e );
                 this.accountCreateError = true;
                 return {};
             }

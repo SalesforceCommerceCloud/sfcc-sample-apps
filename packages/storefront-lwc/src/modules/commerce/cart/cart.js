@@ -53,7 +53,7 @@ export default class Cart extends LightningElement {
         ShoppingCart.getCurrentCart().then(cart => {
             this.products = cart.products ? cart.products : [];
         }).catch((error) => {
-            console.error("error received", error);
+            console.error('error received', error);
         });
     }
 

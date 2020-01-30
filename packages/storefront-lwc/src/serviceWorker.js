@@ -54,7 +54,7 @@ self.addEventListener("activate", function(event) {
             })
             .catch(function(error) {
               console.error(
-                "[PWA Builder] Network request failed and no cache." + error
+                '[PWA Builder] Network request failed and no cache.' + error
               );
             });
         }

@@ -53,10 +53,10 @@ export const resolver = (config) => {
         Query: {
             productSearch: (_, {query, filterParams}) => {
                 const result = searchProduct(config, query, filterParams).then((searchResult) => {
-                    logger.debug("---- Received Search Results from API ----");
+                    logger.debug('---- Received Search Results from API ----');
                     return new SearchResult(searchResult, filterParams);
                 });
-                logger.debug("==================");
+                logger.debug('==================');
                 logger.debug(result);
                 return result;
             }
