@@ -12,7 +12,18 @@ import '@sfcc-core/logger';
 import '@sfcc-core/apiconfig';
 import '@sfcc-core/core-graphql';
 
-import API_CONFIG_DATA from './api'; // Our Application Specific API Configuration
+let API_CONFIG_DATA = {};
+
+// Our Application Specific API Configuration
+import('./api')
+    .then(data => API_CONFIG_DATA = data)
+    .catch(e => {
+        core.logger.error('Error importing api configuration data:', e);
+        throw e;
+    })
+    .finally(()=>{
+        process.exit();
+    });
 
 //
 // SFRA Extensions/Services
