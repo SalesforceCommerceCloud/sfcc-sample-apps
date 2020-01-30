@@ -49,15 +49,11 @@ export default class Cart extends LightningElement {
         this.isGuest = true;
     }
 
-    renderedCallback() {
-        console.log('rend', JSON.stringify(this.products));
-    }
-
     connectedCallback() {
         ShoppingCart.getCurrentCart().then(cart => {
             this.products = cart.products ? cart.products : [];
         }).catch((error) => {
-            console.log('error received ', error);
+            console.error("error received", error);
         });
     }
 

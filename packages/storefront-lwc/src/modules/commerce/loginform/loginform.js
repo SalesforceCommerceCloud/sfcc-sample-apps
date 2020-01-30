@@ -43,14 +43,11 @@ export default class LoginForm extends LightningElement {
     }
 
     handleSubmit(event) {
-        console.log( 'submit login' );
         const isValid = FormHelper.validateForm( this.formData );
         // const authHeader = `Basic ${btoa(`${this.formData.loginEmail.value}:${this.formData.loginPassword.value}`)}`;
 
         this.authError = false;
         if (isValid) {
-            console.log( 'Form Valid', JSON.stringify( this.formData ) );
-
             try {
                 return window.apiClient.mutate( {
                     mutation: window.gql`
@@ -66,17 +63,16 @@ export default class LoginForm extends LightningElement {
                         }
                      `
                 } ).then( result => {
-                    console.log( result);
                     this.loggedIn = true;
                     return result;
                 } ).catch( (error) => {
                     this.loggedIn = false;
                     this.authError = true;
-                    console.log( error );
+                    console.error( "error", error );
                     return {};
                 } );
             } catch (e) {
-                console.log( "error", e );
+                console.error( "exception", e );
                 this.loggedIn = true;
                 return {};
             }
@@ -88,11 +84,11 @@ export default class LoginForm extends LightningElement {
 
     handleGoogle() {
         //https://dev11-sitegenesis-dw.demandware.net/on/demandware.store/Sites-RefArch-Site/en_US/Login-OAuthLogin?oauthProvider=Google&amp;oauthLoginTargetEndPoint=1
-        console.log( 'google' );
+        console.info( "google" );
     }
 
     handleFacebook() {
         //https://dev11-sitegenesis-dw.demandware.net/on/demandware.store/Sites-RefArch-Site/en_US/Login-OAuthLogin?oauthProvider=Facebook&amp;oauthLoginTargetEndPoint=1
-        console.log( 'facebook' );
+        console.info( "facebook" );
     }
 }

@@ -93,11 +93,7 @@ export default class Register extends LightningElement {
 
         const isValid = FormHelper.validateForm(this.account);
 
-        console.log( 'submit clicked! Save Account', JSON.stringify( this.account ) );
-
         if (isValid) {
-            console.log( 'Form Valid', JSON.stringify( this.account ) );
-
             try {
                 return window.apiClient.mutate( {
                     mutation: window.gql`
@@ -112,17 +108,16 @@ export default class Register extends LightningElement {
                         }
                      `
                 } ).then( result => {
-                    console.log( result);
                     this.accountCreated = true;
                     return result;
                 } ).catch( (error) => {
                     this.accountCreated = false;
                     this.accountCreateError = true;
-                    console.log( error );
+                    console.error( "error", error );
                     return {};
                 } );
             } catch (e) {
-                console.log( "error", e );
+                console.error( "exception", e );
                 this.accountCreateError = true;
                 return {};
             }
@@ -130,9 +125,5 @@ export default class Register extends LightningElement {
 
         event.stopPropagation();
         return false;
-    }
-
-    renderedCallback() {
-        console.log( 'renderedCallback: ' );
     }
 }

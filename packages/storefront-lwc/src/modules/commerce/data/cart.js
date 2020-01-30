@@ -52,11 +52,11 @@ class Cart {
                 this.updateCart('add-to-cart');
                 return this.cart;
             }).catch((error) => {
-                console.log('addToCart failed with message', error);
+                console.error('addToCart failed with message', error);
                 this.updateCart('failed-add-to-cart');
             });
         } catch (e) {
-            console.log('addToCart Exception received', e);
+            console.error('addToCart Exception received', e);
             this.updateCart('failed-add-to-cart');
         }
         return this.cart;
@@ -98,10 +98,10 @@ class Cart {
                 this.cart = result.data.updateShippingMethod;
                 return this.cart;
             }).catch((error) => {
-                console.log('Update Shipping Method failed with message', error);
+                console.error('Update Shipping Method failed with message', error);
             });
         } catch (e) {
-            console.log('Update Shipping Method Exception received', e);
+            console.error('Update Shipping Method Exception received', e);
         }
         return this.cart;
     }
@@ -144,7 +144,6 @@ class Cart {
      * @returns {Object} cart object
      */
     getCurrentCart() {
-        console.log("Getting Current Cart");
         try {
             return window.apiClient.query({
                 query: window.gql`
@@ -193,11 +192,11 @@ class Cart {
                 this.updateCart('cart-loaded');
                 return this.cart;
             }).catch((error) => {
-                console.log('Warning: No Cart has been created yet!', error);
+                console.error('Warning: No Cart has been created yet!', error);
                 return this.cart;
             });
         } catch (e) {
-            console.log('Exception loading cart', e);
+            console.error('Exception loading cart', e);
         }
         return this.cart;
     }

@@ -29,7 +29,6 @@ export const FormHelper = {
         Object.keys( validation ).forEach( validationKey => {
             switch (validationKey) {
                 case 'required':
-                    console.log( 'switch req' )
                     if (!value) {
                         formData[ name ].errors.push( {
                             id: validationKey,
@@ -38,9 +37,7 @@ export const FormHelper = {
                     }
                     break;
                 case 'match':
-                    console.log( 'switch match' )
                     const matchFieldName = validation[ validationKey ];
-                    console.log( value, matchFieldName, formData[ matchFieldName ].value )
                     if (value !== formData[ matchFieldName ].value
                         && !(value === '' && formData[ matchFieldName ].value === '')) {
                         formData[ name ].errors.push( {

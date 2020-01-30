@@ -21,7 +21,6 @@ register(productsByQuery, (eventTarget) => {
 
         if (wcdataStore && wcdataStore['product']) {
             products = wcdataStore['product'];
-            console.log('wcdataStore', products);
         }
 
         const query = options.query;
@@ -57,8 +56,6 @@ register(productsByQuery, (eventTarget) => {
             const selectedRefinements = options.selectedRefinements;
             const localCacheKey = `${ query }:${ (sortRule && sortRule.id) ? sortRule.id : '' }`;
             if (!products.hasOwnProperty(localCacheKey) || Object.keys(options.selectedRefinements).length) {
-                console.log('Load Products by query: ' + JSON.stringify(options));
-
                 let params = { query: query };
 
                 try {
@@ -114,10 +111,9 @@ register(productsByQuery, (eventTarget) => {
                     }
                      `
                     }).then(result => {
-                        console.log(result);
                         return result;
                     }).catch((error) => {
-                        console.log(error);
+                        console.error("error", error);
                         return {
                             error
                         };
@@ -135,11 +131,10 @@ register(productsByQuery, (eventTarget) => {
         if (!wireConfigData) {
             return;
         }
-        console.log("Load Product", wireConfigData);
         const productsOrPromise = getProductByQuery(wireConfigData);
 
         if (productsOrPromise === null) {
-            console.error('error loading products')
+            console.error("error loading products");
             return;
         }
 
@@ -148,23 +143,20 @@ register(productsByQuery, (eventTarget) => {
             // From the promise resolve dispatch the wire-service value change event.
             // This will update the component data.
             productsOrPromise.then((data) => {
-                console.log("Resolve Product Loaded, data", data);
                 eventTarget.dispatchEvent(new ValueChangedEvent(Object.assign({ error: undefined }, data)));
             }, (error) => {
-                console.log("Reject Load Product, error", error);
+                console.error("Reject Load Product, error", error);
                 eventTarget.dispatchEvent(new ValueChangedEvent({ data: undefined, error }));
             });
         } else {
             // From cached data dispatch the wire-service value change event.
             // This will update the component data
-            console.log("Cached Product Loaded, data", productsOrPromise);
             eventTarget.dispatchEvent(new ValueChangedEvent(Object.assign({ error: undefined }, productsOrPromise)));
         }
     }
 
     // Invoked when wireConfigData is updated.
     eventTarget.addEventListener('config', (newWireConfigData) => {
-        console.log("Event config, " + JSON.stringify(newWireConfigData));
         // Capture config for use during subscription.
         wireConfigData = newWireConfigData;
         //if (connected) {
@@ -173,15 +165,13 @@ register(productsByQuery, (eventTarget) => {
     });
 
     // Invoked when component connected.
-    eventTarget.addEventListener('connect', () => {
-        console.log("Event connect, " + JSON.stringify(wireConfigData));
+    eventTarget.addEventListener('connect', () => {\
         connected = true;
         loadProduct();
     })
 
     // Invoked when component disconnected.
     eventTarget.addEventListener('disconnect', () => {
-        console.log("Event disconnect");
         connected = false;
     });
 });
