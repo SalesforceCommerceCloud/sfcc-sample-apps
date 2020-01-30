@@ -165,7 +165,7 @@ register(productsByQuery, (eventTarget) => {
     });
 
     // Invoked when component connected.
-    eventTarget.addEventListener('connect', () => {\
+    eventTarget.addEventListener('connect', () => {
         connected = true;
         loadProduct();
     })
