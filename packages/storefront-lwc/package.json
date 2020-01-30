@@ -10,15 +10,16 @@
   },
   "nodemonConfig": {
     "watch": [
-      "src/server/**/*.js",
-      "scripts/express-dev.js"
+      "../@sfcc-core",
+      "../@sfcc-bff",
+      "scripts"
     ],
     "ext": "js",
     "ignore": [
       "src/**/*.spec.js",
       "src/**/*.test.js"
     ],
-    "exec": "NODE_OPTIONS='--experimental-modules --es-module-specifier-resolution=node' node ./scripts/runtime.js"
+    "exec": "NODE_OPTIONS='--experimental-modules --es-module-specifier-resolution=node' node --nolazy --inspect=9229 ./scripts/runtime.js"
   },
   "browserslist": "> 0.25%",
   "scripts": {
@@ -40,7 +41,7 @@
     "build:scss": "yarn build:public:scss && yarn build:lwc:scss",
     "build:lwc:scss": "node-sass src/modules/commerce -o src/modules/commerce --include-path node_modules",
     "build:public:scss": "node-sass src/scss -o dist/public/assets/css --include-path node_modules",
-    "watch:scss": "yarn watch:public:scss && yarn watch:lwc:scss",
+    "watch:scss": "yarn watch:lwc:scss",
     "watch:lwc:scss": "yarn build:lwc:scss && node-sass src/modules/commerce -wo src/modules/commerce --include-path node_modules",
     "watch:public:scss": "yarn build:public:scss && node-sass src/scss -wo dist/public/assets/css --include-path node_modules",
     "sniff": "NODE_OPTIONS='--experimental-modules --es-module-specifier-resolution=node' lwc-services sniff"
