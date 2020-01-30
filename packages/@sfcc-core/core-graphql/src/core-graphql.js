@@ -7,11 +7,12 @@
 import apolloServerExpress from 'apollo-server-express';
 import graphQLTools from 'graphql-tools';
 
-import { core, API_EXTENSIONS_KEY } from '@sfcc-core/core';
+import { core, LOGGER_KEY, API_EXTENSIONS_KEY } from '@sfcc-core/core';
 import { API_CONFIG_KEY } from "@sfcc-core/apiconfig";
 
 const { makeExecutableSchema } = graphQLTools;
 const { ApolloServer, gql } = apolloServerExpress;
+const logger = core.getService(LOGGER_KEY);
 
 export const CORE_GRAPHQL_KEY = Symbol( 'Core GraphQL with Apollo' );
 export const EXPRESS_KEY = Symbol( 'Node Express' );
@@ -46,8 +47,8 @@ export const dataSourcesFactory = (config, dataSourcesArray) => {
  */
 export default class CoreGraphQL {
 
-    constructor(core) {
-        core.logger.log( 'CoreGraphQL.constructor(core)' );
+    constructor() {
+        logger.info( 'CoreGraphQL.constructor()' );
         this._typeDef =
             [ gql`
                 type Query {
@@ -86,15 +87,15 @@ export default class CoreGraphQL {
     }
 
     start() {
-        core.logger.log( 'Start CoreGraphQL' );
+        logger.info( 'Start CoreGraphQL' );
         const expressApp = core.getService( EXPRESS_KEY );
         const apiConfig = core.getService( API_CONFIG_KEY ).config;
-        console.log( apiConfig );
+        logger.info( apiConfig );
 
         if (expressApp) {
             const apiPath = (apiConfig) ? apiConfig.COMMERCE_API_PATH : '/graphql';
             if (!apiConfig) {
-                core.logger.warn( `No APIConfig COMMERCE_API_PATH provided; Apollo using default path '/graphql` );
+                logger.warn( `No APIConfig COMMERCE_API_PATH provided; Apollo using default path '/graphql` );
             }
 
             // Ensure API Extensions are initialized
@@ -115,15 +116,6 @@ export default class CoreGraphQL {
                 Object.assign(this.dataSources, api.getDataSources && api.getDataSources(apiConfig))
             });
 
-            console.log("*******************************");
-            console.log("*******************************");
-            console.log("Type Defs", this.typeDef);
-            console.log("*******************************");
-            console.log("*******************************");
-            console.log("Data Sources", this.dataSources);
-            console.log("*******************************");
-            console.log("*******************************");
-
             const schema = makeExecutableSchema( {
                 typeDefs: this.typeDef,
                 resolvers: this.resolvers
@@ -141,10 +133,10 @@ export default class CoreGraphQL {
             });
 
             this.apolloServer.applyMiddleware( {app: expressApp, path: apiPath} );
-            core.logger.log('CoreGraphQL apolloServer middleware applied to express!');
+            logger.info('CoreGraphQL apolloServer middleware applied to express!');
         } else {
             const msg = 'Error: An express application needs to be registered as a core service.';
-            core.logger.error( msg );
+            logger.error( msg );
             throw new Error( msg )
         }
     }

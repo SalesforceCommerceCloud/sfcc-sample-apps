@@ -25,11 +25,6 @@ export default class Search extends LightningElement {
 
     @wire(productsByQuery, {query: '$query', sortRule: '$sortRule', selectedRefinements: '$selectedRefinements'})
     updateProducts(json) {
-        console.log(this.query);
-        console.log('===============================');
-        console.log('API', (json.data && json.data.productSearch) ? json.data.productSearch : 'no results or query');
-        console.log('===============================');
-
         if (json.data && json.data.productSearch) {
             this.products = json.data.productSearch.productHits || [];
             this.refinements = json.data.productSearch.refinements || [];

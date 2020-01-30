@@ -47,7 +47,6 @@ class SearchResultProduct {
         this.image = new Image(product.image);
         this.colorSwatches = getColorSwatches(product.variation_attributes);
         Object.assign(this, product);
-        console.log(product);
     }
 }
 

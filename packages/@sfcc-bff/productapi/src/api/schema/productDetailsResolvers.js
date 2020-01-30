@@ -13,13 +13,13 @@ import {core, LOGGER_KEY} from '@sfcc-core/core';
 const logger = core.getService(LOGGER_KEY);
 
 const getClientProduct = async (config, id) => {
-    const product = new CommerceClient.Product.Client({
+    const product = new CommerceClient.Product.ShopperProducts.default({
         baseUri: config.COMMERCE_CLIENT_BASE_URI,
         authHost: config.COMMERCE_CLIENT_AUTH_HOST,
         clientId: config.COMMERCE_CLIENT_CLIENT_ID
     });
 
-    return await product.getProductByID({
+    return await product.getProduct({
         parameters: {
             organizationId: config.COMMERCE_CLIENT_ORGANIZATION_ID,
             id: id,
@@ -42,7 +42,7 @@ export const resolver = (config) => {
                     apiProduct = await getClientProduct(config, id);
 
                 } catch (e) {
-                    logger.error(`Error in productDetailResolver(). ${e.response}`);
+                    logger.error(`Error in productDetailResolver(). ${e}`);
                     throw e;
                 }
                 return new Product(apiProduct, selectedColor);

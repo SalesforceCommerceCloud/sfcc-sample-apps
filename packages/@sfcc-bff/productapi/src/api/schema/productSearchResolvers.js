@@ -7,6 +7,9 @@
 import rp from 'request-promise';
 //import SearchResultProduct from '../models/SearchResultProduct';
 import SearchResult from '../models/SearchResult';
+import {core, LOGGER_KEY} from '@sfcc-core/core';
+
+const logger = core.getService(LOGGER_KEY);
 
 const processFilterParams = (filterParams) => {
     let filterParamQuery = '';
@@ -29,8 +32,8 @@ const searchProduct = (config, query, filterParams) => {
     if (URL_FILTER_PARAMS) {
         searchUrl = searchUrl + URL_FILTER_PARAMS;
     }
-    console.log('---- GETTING PRODUCT SEARCH RESULTS ---- ');
-    console.log('---- URL ---- ' + searchUrl);
+    logger.debug('---- GETTING PRODUCT SEARCH RESULTS ---- ');
+    logger.debug('---- URL ---- ' + searchUrl);
     return new Promise((resolve, reject) => {
         Promise.all([
             rp.get({
@@ -50,11 +53,11 @@ export const resolver = (config) => {
         Query: {
             productSearch: (_, {query, filterParams}) => {
                 const result = searchProduct(config, query, filterParams).then((searchResult) => {
-                    console.log("---- Received Search Results from API ----");
+                    logger.debug('---- Received Search Results from API ----');
                     return new SearchResult(searchResult, filterParams);
                 });
-                console.log("==================");
-                console.log(result);
+                logger.debug('==================');
+                logger.debug(result);
                 return result;
             }
         }
