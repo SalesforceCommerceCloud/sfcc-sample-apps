@@ -8,7 +8,7 @@ jobs:
         - checkout
         - run: yarn install
         - run: yarn build
-        - run: yarn start
+        - run: yarn test
         - store_test_results:
             path: reports
 orbs:
