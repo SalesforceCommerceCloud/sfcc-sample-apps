@@ -1,4 +1,3 @@
-version: 2.1
 jobs:
     build:
       working_directory: ~/build_only
@@ -13,3 +12,6 @@ jobs:
         - run: yarn test
         - store_test_results:
             path: reports
+orbs:
+  node: circleci/node@1.1
+version: 2.1
