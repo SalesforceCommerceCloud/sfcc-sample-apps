@@ -13,13 +13,6 @@ class PopularCategory extends LightningElement {
     @api categoryName;
     @api categoryLink;
     @api categoryImageSrc;
-
-    constructor() {
-        super();
-    }
-
-    renderedCallback() {
-    }
 }
 
 export default PopularCategory;

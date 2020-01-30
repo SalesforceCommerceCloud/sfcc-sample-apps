@@ -6,16 +6,14 @@
 -->
 <template>
     <div class="container-fluid">
-        <div class="row banner hero-image banner-image">
-            <div class="col-12">
+        <div class="row">
+            <div class="col-12 px-0">
                 <a href={bannerLink}>
                     <img class="image-hero common-image-filter" src={bannerImageSrc}
                          alt={bannerImageAlt} title={bannerImageTitle}>
-                    <div class="row hero-banner-text text-sm-left text-center">
-                        <span>
-                            <h1>{bannerTitle}</h1>
-                            <h3>{bannerText}</h3>
-                        </span>
+                    <div class="hero-banner-text text-sm-left text-center">
+                        <h1>{bannerTitle}</h1>
+                        <p>{bannerText}</p>
                     </div>
                 </a>
             </div>

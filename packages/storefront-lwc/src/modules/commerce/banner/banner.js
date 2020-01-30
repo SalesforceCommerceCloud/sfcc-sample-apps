@@ -16,13 +16,6 @@ class Banner extends LightningElement {
     @api bannerImageSrc;
     @api bannerImageAlt;
     @api bannerImageTitle;
-
-    constructor() {
-        super();
-    }
-
-    renderedCallback() {
-    }
 }
 
 export default Banner;

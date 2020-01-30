@@ -79,17 +79,11 @@ p {
   @include grid-gutter
 }
 
-
 /**
  * Miscellaneous UX Options
  */
 .common-image-filter {
   filter: brightness(40%);
-}
-
-.storepage .col-12 {
-  padding-right: 0;
-  padding-left: 0;
 }
 
 hr {
