@@ -43,8 +43,7 @@
     "build:public:scss": "node-sass src/scss -o dist/public/assets/css --include-path node_modules",
     "watch:scss": "yarn watch:lwc:scss",
     "watch:lwc:scss": "yarn build:lwc:scss && node-sass src/modules/commerce -wo src/modules/commerce --include-path node_modules",
-    "watch:public:scss": "yarn build:public:scss && node-sass src/scss -wo dist/public/assets/css --include-path node_modules",
-    "sniff": "NODE_OPTIONS='--experimental-modules --es-module-specifier-resolution=node' lwc-services sniff"
+    "watch:public:scss": "yarn build:public:scss && node-sass src/scss -wo dist/public/assets/css --include-path node_modules"
   },
   "jest": {
     "preset": "@lwc/jest-preset",
@@ -84,9 +83,6 @@
   },
   "devDependencies": {
     "@lwc/jest-preset": "^4.3.1",
-    "babel-plugin-transform-regenerator": "^6.26.0",
-    "error-overlay-webpack-plugin": "^0.4.1",
-    "html-webpack-plugin": "^3.2.0",
     "jest": "^25.1.0",
     "lwc-services": "^1.3.12",
     "nodemon": "^2.0.2",
