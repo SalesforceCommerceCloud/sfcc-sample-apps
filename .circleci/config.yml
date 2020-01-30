@@ -1,10 +1,10 @@
-version: 2
+version: 2.1
 jobs:
     build:
       working_directory: ~/build_only
       executor:
         name: node/default
-        tag: '10.16'
+        tag: '12.14'
       steps:
         - checkout
         - run: yarn install
