@@ -6,7 +6,7 @@
 */
 import { LightningElement, api, wire, track } from 'lwc';
 import { subscribe } from 'webruntime/routingService';
-import { productDetailWireAdaptor, ShoppingCart } from 'commerce/data'
+import { productDetailWireAdaptor} from 'commerce/data'
 import { canAddToCart } from './product.helper.js';
 
 /**
@@ -108,8 +108,8 @@ export default class ProductDetail extends LightningElement {
     /**
      * Add product to cart when user clicks `Add to Cart` button
      */
-    addToCartHandler(event) {
-        ShoppingCart.addToCart(this.product, this.selectedQty);
+    addToCartHandler() {
+        console.info('AddToCart button has been clicked!');
     }
 
     /**
