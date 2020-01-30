@@ -1,15 +1,15 @@
 version: 2
 jobs:
     build:
-    working_directory: ~/build_only
-    executor:
-      name: node/default
-      tag: '10.16'
-    steps:
-      - checkout
-      - run: yarn install
-      - run: yarn build
-      - run: yarn start
-      - run: yarn test
-      - store_test_results:
-          path: reports
+      working_directory: ~/build_only
+      executor:
+        name: node/default
+        tag: '10.16'
+      steps:
+        - checkout
+        - run: yarn install
+        - run: yarn build
+        - run: yarn start
+        - run: yarn test
+        - store_test_results:
+            path: reports
