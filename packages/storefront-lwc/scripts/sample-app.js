@@ -7,7 +7,7 @@
 //
 // SFCC Core registry and core extensions/services
 //
-import {core} from '@sfcc-core/core';
+import { core, LOGGER_KEY } from '@sfcc-core/core';
 import '@sfcc-core/logger';
 import '@sfcc-core/apiconfig';
 import '@sfcc-core/core-graphql';
@@ -35,13 +35,12 @@ class SampleApp {
         // Need to set api config data before any API extensions are instantiated.
         //
         this.apiConfig = core.getService(API_CONFIG_KEY);
-
         Object.assign(config, this.apiConfig.config);
-        core.logger.log(config);
-
         this.apiConfig.config = config;
-
-        core.logger.log(this.apiConfig.config)
+        if(this.apiConfig.config.COMMERCE_LOG_LEVEL) {
+            this.logger = core.getService(LOGGER_KEY);
+            this.logger.setLevel(this.apiConfig.config.COMMERCE_LOG_LEVEL);
+        }
     }
 
     set expressApplication(expressApp) {
@@ -72,15 +71,15 @@ class SampleApp {
 
     // Just some development output
     status() {
-        core.logger.log('Is Express Registered?', !!core.getService(EXPRESS_KEY));
-        core.logger.log('Is GraphQL Registered?', !!core.getService(CORE_GRAPHQL_KEY));
+        this.logger.debug('Is Express Registered?', !!core.getService(EXPRESS_KEY));
+        this.logger.debug('Is GraphQL Registered?', !!core.getService(CORE_GRAPHQL_KEY));
 
         Object.getOwnPropertySymbols(core.services).forEach(key => {
-            core.logger.log(`Registered Core Service: ${key.toString()}.`);
+            this.logger.debug(`Registered Core Service: ${key.toString()}.`);
         });
 
         Object.getOwnPropertySymbols(core.extensions).forEach(key => {
-            core.logger.log(`Registered Core Extensions: ${key.toString()}. ${core.getExtension(key).length} Extensions Registered.`);
+            this.logger.debug(`Registered Core Extensions: ${key.toString()}. ${core.getExtension(key).length} Extensions Registered.`);
         });
     }
 }

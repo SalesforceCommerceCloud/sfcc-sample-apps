@@ -7,31 +7,37 @@
 // make export singleton
 
 import {core, LOGGER_KEY} from '@sfcc-core/core';
+import apilog from 'loglevel';
 export {LOGGER_KEY};
 
 export default class Logger {
 
     constructor(core) {
+        apilog.setDefaultLevel(apilog.levels.ERROR);
+    }
+
+    setLevel(level) {
+        apilog.setLevel(level);
     }
 
     log(...args) {
-        console.log(args);
+        apilog.log(args);
     }
 
     info(...args) {
-        console.info(args);
+        apilog.info(args);
     }
 
     debug(...args) {
-        console.debug(args);
+        apilog.debug(args);
     }
 
     warn(...args) {
-        console.warn(args);
+        apilog.warn(args);
     }
 
     error(...args) {
-        console.error(args);
+        apilog.error(args);
     }
 }
 

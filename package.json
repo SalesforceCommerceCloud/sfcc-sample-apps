@@ -41,7 +41,8 @@
     "node": ">=12"
   },
   "dependencies": {
-    "lerna": "^3.17.0"
+    "lerna": "^3.17.0",
+    "loglevel": "^1.6.6"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.3",
