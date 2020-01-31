@@ -11,13 +11,6 @@ import { LightningElement, api } from 'lwc';
  */
 class ShopCategory extends LightningElement {
     @api shopCategoryHeading;
-
-    constructor() {
-        super();
-    }
-
-    renderedCallback() {
-    }
 }
 
 export default ShopCategory;

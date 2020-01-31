@@ -11,13 +11,6 @@ import { LightningElement, api } from 'lwc';
  */
 class PopularCategories extends LightningElement {
     @api popularCategoriesHeading;
-
-    constructor() {
-        super();
-    }
-
-    renderedCallback() {
-    }
 }
 
 export default PopularCategories;
