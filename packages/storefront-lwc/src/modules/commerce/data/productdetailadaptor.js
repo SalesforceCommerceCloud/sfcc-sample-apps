@@ -4,7 +4,9 @@
     SPDX-License-Identifier: BSD-3-Clause
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
-import { register, ValueChangedEvent } from 'wire-service';
+import { register, ValueChangedEvent } from '@lwc/wire-service';
+import gql from 'graphql-tag';
+import { apiClient } from '../api/client';
 
 export const productDetailWireAdaptor = Symbol('product-detail');
 
@@ -20,8 +22,8 @@ register(productDetailWireAdaptor, (eventTarget) => {
 
         if (pid && pid.length) {
             try {
-                return window.apiClient.query({
-                    query: window.gql`
+                return apiClient.query({
+                    query: gql`
                     {
                         product(id: "${ pid }", selectedColor: "${ selectedColor }") {
                             name

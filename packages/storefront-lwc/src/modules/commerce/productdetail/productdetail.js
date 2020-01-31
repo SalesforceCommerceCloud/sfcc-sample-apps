@@ -5,8 +5,7 @@
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
 import { LightningElement, api, wire, track } from 'lwc';
-import { subscribe } from 'webruntime/routingService';
-import { productDetailWireAdaptor} from 'commerce/data'
+import { productDetailWireAdaptor } from 'commerce/data'
 import { canAddToCart } from './product.helper.js';
 
 /**
@@ -29,11 +28,9 @@ export default class ProductDetail extends LightningElement {
         this.setActiveImageCss(0);
     }
     @track selectedQty;
-    routeSubscription;
 
     constructor() {
         super();
-        this.routeSubscription = subscribe(this.routeSubHandler.bind(this));
 
         window.addEventListener('update-product', e => {
             // TODO: Break this code block into functions and/or use modern map/filter/reduce collection methods
@@ -97,12 +94,6 @@ export default class ProductDetail extends LightningElement {
             return this.product.price.toFixed(2);
         }
         return;
-    }
-
-    routeSubHandler(view) {
-        if (view && view.attributes) {
-            this.pid = view.attributes.pid;
-        }
     }
 
     /**
