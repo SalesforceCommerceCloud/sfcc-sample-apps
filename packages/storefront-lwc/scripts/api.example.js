@@ -8,7 +8,7 @@
 //
 // The following values are default if env variables are not set.
 // To utilize this file rename this file to api.js and replace the values below.
-// Please ensure that api.js is added to the .gitignore
+// Please ensure that api.js is added to the .gitignore   
 //
 
 // OCAPI
