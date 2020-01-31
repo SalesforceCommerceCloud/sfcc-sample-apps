@@ -7,9 +7,9 @@
 import rp from 'request-promise';
 //import SearchResultProduct from '../models/SearchResultProduct';
 import SearchResult from '../models/SearchResult';
-import {core, LOGGER_KEY} from '@sfcc-core/core';
+import {core} from '@sfcc-core/core';
 
-const logger = core.getService(LOGGER_KEY);
+const logger = core.logger;
 
 const processFilterParams = (filterParams) => {
     let filterParamQuery = '';

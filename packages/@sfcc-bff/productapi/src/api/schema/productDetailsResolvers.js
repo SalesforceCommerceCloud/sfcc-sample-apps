@@ -8,9 +8,9 @@
 
 import Product from '../models/Product';
 import CommerceClient from 'commerce-sdk';
-import {core, LOGGER_KEY} from '@sfcc-core/core';
+import {core} from '@sfcc-core/core';
 
-const logger = core.getService(LOGGER_KEY);
+const logger = core.logger;
 
 const getClientProduct = async (config, id) => {
     const product = new CommerceClient.Product.ShopperProducts.default({
