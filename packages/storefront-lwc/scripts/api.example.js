@@ -26,7 +26,7 @@ const COMMERCE_CLIENT_INSTANCE = '';
 const COMMERCE_CLIENT_ORGANIZATION_ID = `f_ecom_${COMMERCE_CLIENT_REALM}_${ COMMERCE_CLIENT_INSTANCE}`;
 const COMMERCE_CLIENT_AUTH_HOST = `https://your.instance.api.commercecloud.salesforce.com/customer/shopper-customers/v1/organizations/${COMMERCE_CLIENT_ORGANIZATION_ID}/customers/auth?siteId=${APP_API_SITE_ID}`;
 // Available Log Levels for the Application
-const LOG_LEVEL_MAP = { "TRACE": 0, "DEBUG": 1, "INFO": 2, "WARN": 3, "ERROR": 4, "SILENT": 5};
+const LOG_LEVEL_MAP = { 'TRACE': 0, 'DEBUG': 1, 'INFO': 2, 'WARN': 3, 'ERROR': 4, 'SILENT': 5};
 // Default Log Level is set to ERROR within the Application. It can be overwritten here
 const COMMERCE_LOG_LEVEL = LOG_LEVEL_MAP.DEBUG;
 
