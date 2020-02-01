@@ -7,12 +7,12 @@
 import apolloServerExpress from 'apollo-server-express';
 import graphQLTools from 'graphql-tools';
 
-import { core, LOGGER_KEY, API_EXTENSIONS_KEY } from '@sfcc-core/core';
+import { core, API_EXTENSIONS_KEY } from '@sfcc-core/core';
 import { API_CONFIG_KEY } from "@sfcc-core/apiconfig";
 
 const { makeExecutableSchema } = graphQLTools;
 const { ApolloServer, gql } = apolloServerExpress;
-const logger = core.getService(LOGGER_KEY);
+const logger = core.logger;
 
 export const CORE_GRAPHQL_KEY = Symbol( 'Core GraphQL with Apollo' );
 export const EXPRESS_KEY = Symbol( 'Node Express' );
