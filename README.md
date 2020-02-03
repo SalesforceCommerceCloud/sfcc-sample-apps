@@ -13,12 +13,12 @@ Reference apps and libraries based on `LWC`, `sfcc-core` and `sfcc-bff`.
 2) yarn (install using `npm install yarn -g`)
 
 ### To Learn
-* **[NodeJS] (https://nodejs.org/en/docs/)**
-* **[ECMAScript 6] (http://www.ecma-international.org/ecma-262/6.0/)**
-* **[SASS] (https://sass-lang.com/guide)**
-* **[GraphQL and Apollo] (https://www.apollographql.com/docs/tutorial/introduction/)**
-* **[Lightning Web Components] (https://developer.salesforce.com/docs/component-library/documentation/lwc)**
-* **[Jest] (https://jestjs.io/docs/en/getting-started)**
+* **[NodeJS](https://nodejs.org/en/docs/)**
+* **[ECMAScript 6](http://www.ecma-international.org/ecma-262/6.0/)**
+* **[SASS](https://sass-lang.com/guide)**
+* **[GraphQL and Apollo](https://www.apollographql.com/docs/tutorial/introduction/)**
+* **[Lightning Web Components](https://developer.salesforce.com/docs/component-library/documentation/lwc)**
+* **[Jest](https://jestjs.io/docs/en/getting-started)**
 
 ## Setup
 1) `git clone git@github.com:SalesforceCommerceCloud/sfcc-sample-apps.git`
