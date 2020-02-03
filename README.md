@@ -13,12 +13,12 @@ Reference apps and libraries based on `LWC`, `sfcc-core` and `sfcc-bff`.
 2) yarn (install using `npm install yarn -g`)
 
 ### To Learn
-* [NodeJS] (https://nodejs.org/en/docs/)
-* [ECMAScript 6] (http://www.ecma-international.org/ecma-262/6.0/)
-* [SASS] (https://sass-lang.com/guide) 
-* [GraphQL and Apollo] (https://www.apollographql.com/docs/tutorial/introduction/)
-* [Lightning Web Components] (https://developer.salesforce.com/docs/component-library/documentation/lwc)
-* [Jest] (https://jestjs.io/docs/en/getting-started)
+* **[NodeJS] (https://nodejs.org/en/docs/)**
+* **[ECMAScript 6] (http://www.ecma-international.org/ecma-262/6.0/)**
+* **[SASS] (https://sass-lang.com/guide)**
+* **[GraphQL and Apollo] (https://www.apollographql.com/docs/tutorial/introduction/)**
+* **[Lightning Web Components] (https://developer.salesforce.com/docs/component-library/documentation/lwc)**
+* **[Jest] (https://jestjs.io/docs/en/getting-started)**
 
 ## Setup
 1) `git clone git@github.com:SalesforceCommerceCloud/sfcc-sample-apps.git`
@@ -34,8 +34,8 @@ Reference apps and libraries based on `LWC`, `sfcc-core` and `sfcc-bff`.
 2) TODO - Debugging
 
 ## Configurations
-1) Logging Level can be changed in api.js. The supported log levels are `{ 'TRACE': 0, 'DEBUG': 1, 'INFO': 2, 'WARN': 3, 'ERROR': 4, 'SILENT': 5}`. Change `COMMERCE_LOG_LEVEL = LOG_LEVEL_MAP.DEBUG;` accordingly.
-2) Listening Port can be changed in `lwc-services.config.js`
+* Logging Level can be changed in api.js. The supported log levels are `{ 'TRACE': 0, 'DEBUG': 1, 'INFO': 2, 'WARN': 3, 'ERROR': 4, 'SILENT': 5}`. Change `COMMERCE_LOG_LEVEL = LOG_LEVEL_MAP.DEBUG;` accordingly.
+*2)* Listening Port can be changed in `lwc-services.config.js`
 
 ## Developer Heroku Deploy
 1) `heroku login` to open browser and login with `youremail@yourdomain.com`
