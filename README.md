@@ -35,12 +35,14 @@ Reference apps and libraries based on `LWC`, `sfcc-core` and `sfcc-bff`.
 
 ## Configurations
 * Logging Level can be changed in `api.js`. The supported log levels are
+
     * `TRACE`
     * `DEBUG`
     * `INFO`
     * `WARN`
     * `ERROR`
     * `SILENT`
+
     Change `COMMERCE_LOG_LEVEL` property accordingly.
 * Server Listening Port can be changed in `lwc-services.config.js`
 
