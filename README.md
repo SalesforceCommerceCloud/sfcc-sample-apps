@@ -41,7 +41,7 @@ Reference apps and libraries based on `LWC`, `sfcc-core` and `sfcc-bff`.
     * `WARN`
     * `ERROR`
     * `SILENT`
-Change `COMMERCE_LOG_LEVEL` property accordingly.
+    Change `COMMERCE_LOG_LEVEL` property accordingly.
 * Server Listening Port can be changed in `lwc-services.config.js`
 
 ## Developer Heroku Deploy
