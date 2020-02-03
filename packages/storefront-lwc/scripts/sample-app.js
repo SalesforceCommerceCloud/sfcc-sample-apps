@@ -37,8 +37,8 @@ class SampleApp {
         this.apiConfig = core.getService(API_CONFIG_KEY);
         Object.assign(config, this.apiConfig.config);
         this.apiConfig.config = config;
+        this.logger = core.getService(LOGGER_KEY);
         if(this.apiConfig.config.COMMERCE_LOG_LEVEL) {
-            this.logger = core.getService(LOGGER_KEY);
             this.logger.setLevel(this.apiConfig.config.COMMERCE_LOG_LEVEL);
         }
     }
