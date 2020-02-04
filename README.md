@@ -19,7 +19,7 @@ Visit the [Commerce Cloud Developer Center](https://developer.commercecloud.com/
 ### To Learn
 * **[NodeJS](https://nodejs.org/en/docs/)**
 * **[ECMAScript 6](https://hacks.mozilla.org/category/es6-in-depth/)**
-* **[SASS](https://sass-lang.com/guide)**
+* **[Sass](https://sass-lang.com/guide)**
 * **[GraphQL](https://graphql.org/learn/)**
 * **[Apollo](https://www.apollographql.com/docs/tutorial/introduction/)**
 * **[Lightning Web Components](https://lwc.dev/)**
