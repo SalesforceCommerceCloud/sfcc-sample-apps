@@ -18,10 +18,11 @@ Visit the [Commerce Cloud Developer Center](https://developer.commercecloud.com/
 
 ### To Learn
 * **[NodeJS](https://nodejs.org/en/docs/)**
-* **[ECMAScript 6](http://www.ecma-international.org/ecma-262/6.0/)**
+* **[ECMAScript 6](https://hacks.mozilla.org/category/es6-in-depth/)**
 * **[SASS](https://sass-lang.com/guide)**
-* **[GraphQL and Apollo](https://www.apollographql.com/docs/tutorial/introduction/)**
-* **[Lightning Web Components](https://developer.salesforce.com/docs/component-library/documentation/lwc)**
+* **[GraphQL](https://graphql.org/learn/)**
+* **[Apollo](https://www.apollographql.com/docs/tutorial/introduction/)**
+* **[Lightning Web Components](https://lwc.dev/)**
 * **[Jest](https://jestjs.io/docs/en/getting-started)**
 
 ## Setup
