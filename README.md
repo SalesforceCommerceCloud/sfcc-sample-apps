@@ -77,11 +77,11 @@ sfcc-sample-apps is a monorepo with a sample application and bff dependency modu
 
 ## Contributing
 
-[See Contributing](CONTRIBUTING.md)
+* **[See Contributing](CONTRIBUTING.md)**
 
 ## Legal Notice
 
-[See Legal](LEGAL.md)
+* **[See Legal](LEGAL.md)**
 
 <!-- Markdown link & img dfn's -->
 [circleci-image]: https://circleci.com/gh/SalesforceCommerceCloud/sfcc-sample-apps.svg?style=shield&circle-token=f34a55a59d7dfc30402e719996edf10092780b66
