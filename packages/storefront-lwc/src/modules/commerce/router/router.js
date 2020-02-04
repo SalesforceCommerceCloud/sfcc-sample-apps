@@ -20,7 +20,7 @@ const router = new UniversalRouter(
         {
             path: "/product/:pid",
             action: location =>
-                `<commerce-productdetail pid="${location.params.pid}"></commerce-productdetail>`,
+                `<commerce-product-detail pid="${location.params.pid}"></commerce-product-detail>`,
         },
     ],
     {
