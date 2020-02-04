@@ -10,13 +10,27 @@ The Commerce Storefront Sample Application demonstrates how to build a storefron
 
 Visit the [Commerce Cloud Developer Center](https://developer.commercecloud.com/) to learn more about Salesforce B2C Commerce. The developer center has API documentation, getting started guides, community forums, and more.
 
-## Legal Notice
+## Packages
 
-[See Legal](LEGAL.md)
+### storefront-lwc
+
+<PLACEHOLDER>
+
+### sfcc-bff
+
+<PLACEHOLDER>
+
+### sfcc-core
+
+<PLACEHOLDER>
+
+### sfcc-base
+
+<PLACEHOLDER>
 
 ## Pre-requisites
 
-### For Intallation and Setup
+### For Installation and Setup
 1) **[Node](https://nodejs.org/en/download/)** >=v12
 2) yarn (install using `npm install yarn -g`)
 
@@ -69,6 +83,10 @@ sfcc-sample-apps is a monorepo with a sample application and bff dependency modu
 ## Contributing
 
 [See Contributing](CONTRIBUTING.md)
+
+## Legal Notice
+
+[See Legal](LEGAL.md)
 
 <!-- Markdown link & img dfn's -->
 [circleci-image]: https://circleci.com/gh/SalesforceCommerceCloud/sfcc-sample-apps.svg?style=shield&circle-token=f34a55a59d7dfc30402e719996edf10092780b66
