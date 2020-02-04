@@ -2,6 +2,8 @@
 
 Reference apps and libraries based on `LWC`, `sfcc-core` and `sfcc-bff`.
 
+[![CircleCI][circleci-image]][circleci-url]
+
 ## Legal Notice
 
 [See Legal](LEGAL.md)
@@ -61,3 +63,7 @@ sfcc-sample-apps is a monorepo with a sample application and bff dependency modu
 ## Contributing
 
 [See Contributing](CONTRIBUTING.md)
+
+<!-- Markdown link & img dfn's -->
+[circleci-image]: https://circleci.com/gh/SalesforceCommerceCloud/sfcc-sample-apps.svg?style=svg&circle-token=f34a55a59d7dfc30402e719996edf10092780b66
+[circleci-url]: https://circleci.com/gh/SalesforceCommerceCloud/sfcc-sample-apps
