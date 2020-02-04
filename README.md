@@ -71,9 +71,9 @@ sfcc-sample-apps is a monorepo with a sample application and bff dependency modu
 
 ## Useful Links
 
-    * **[Architecture Guide](ARCHITECTURE_GUIDE.md)**
-    * **[Implementation Details](IMPLEMENTATION_DETAILS.md)**
-    * **[FAQ](FAQ.md)**
+* **[Architecture Guide](ARCHITECTURE_GUIDE.md)**
+* **[Implementation Details](IMPLEMENTATION_DETAILS.md)**
+* **[FAQ](FAQ.md)**
 
 ## Contributing
 
