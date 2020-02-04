@@ -10,10 +10,6 @@ The Commerce Storefront Sample Application demonstrates how to build a storefron
 
 Visit the [Commerce Cloud Developer Center](https://developer.commercecloud.com/) to learn more about Salesforce B2C Commerce. The developer center has API documentation, getting started guides, community forums, and more.
 
-## Project Structure
-
-<PLACEHOLDER>
-
 ## Pre-requisites
 
 ### For Installation and Setup
