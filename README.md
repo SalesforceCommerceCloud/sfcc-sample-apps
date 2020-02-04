@@ -58,6 +58,7 @@ Visit the [Commerce Cloud Developer Center](https://developer.commercecloud.com/
 * Server Listening Port can be changed in `lwc-services.config.js`
 
 ## Developer Heroku Deploy
+
 1) `heroku login` to open browser and login with `youremail@yourdomain.com`
 2) `heroku create` to create your own Heroku app.
 3) `git remote -v` to ensure you have a repo in the Heroku git server. 
