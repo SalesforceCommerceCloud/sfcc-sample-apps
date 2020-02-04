@@ -43,13 +43,13 @@ Visit the [Commerce Cloud Developer Center](https://developer.commercecloud.com/
 * **[Jest](https://jestjs.io/docs/en/getting-started)**
 
 ## Setup
-1) `git clone git@github.com:SalesforceCommerceCloud/sfcc-sample-apps.git`
-2) `cd sfcc-sample-apps`
-3) `yarn` (install if needed `npm install yarn -g`)
-4) Rename `api.example.js` to `api.js` and update the environment variables with your values.
-5) `yarn build`
-6) `yarn start`
-7) Open browser with http://localhost:3000 to go to storefront.
+    git clone git@github.com:SalesforceCommerceCloud/sfcc-sample-apps.git
+    cd sfcc-sample-apps
+    yarn
+    # Rename `api.example.js` to `api.js` and update the environment variables with your values.
+    yarn build
+    yarn start
+    Open browser with http://localhost:3000 to go to storefront.
 
 ## Testing & Debugging
 1) `yarn test`
