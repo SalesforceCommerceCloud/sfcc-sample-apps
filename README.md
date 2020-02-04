@@ -1,6 +1,8 @@
-# SFCC Sample Applications
+# Commerce Storefront Sample Application
 
-Reference apps and libraries based on `LWC`, `sfcc-core` and `sfcc-bff`.
+The Commerce Storefront Sample Application demonstrates how to build a storefront experience using our latest Commerce Platform innovations. Using this sample app, developers can quickly learn how to build apps with the Lightning Web Components `(LWC)`, `Commerce Cloud NodeJS SDK`, `GraphQL`, and `Salesforce Commerce APIs`. The Sample Application shows an implementation of a product detail page, product list page, and homepage - which will help development teams quickly understand how to use these technologies and begin their own journey of building amazing commerce experiences.
+
+> Note: This implementation is NOT a full-fledged e-commerce storefront and is not intended to be used as one.
 
 [![CircleCI][circleci-image]][circleci-url]
 
