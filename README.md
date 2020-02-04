@@ -1,8 +1,14 @@
 # Commerce Storefront Sample Application &middot; [![CircleCI][circleci-image]][circleci-url]
 
+Use our storefront sample application to learn how to build amazing commerce experiences with the latest Commerce Platform technologies.
+
+## What is this?
+
 The Commerce Storefront Sample Application demonstrates how to build a storefront experience using our latest Commerce Platform innovations. Using this sample app, developers can quickly learn how to build apps with the Lightning Web Components `(LWC)`, `Commerce Cloud NodeJS SDK`, `GraphQL`, and `Salesforce Commerce APIs`. The Sample Application shows an implementation of a product detail page, product list page, and homepage - which will help development teams quickly understand how to use these technologies and begin their own journey of building amazing commerce experiences.
 
 > Note: This implementation is NOT a full-fledged e-commerce storefront and is not intended to be used as one.
+
+Visit the [Commerce Cloud Developer Center](https://developer.commercecloud.com/) to learn more about Salesforce B2C Commerce. The developer center has API documentation, getting started guides, community forums, and more.
 
 ## Legal Notice
 
