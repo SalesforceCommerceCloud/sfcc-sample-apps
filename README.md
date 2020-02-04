@@ -10,21 +10,7 @@ The Commerce Storefront Sample Application demonstrates how to build a storefron
 
 Visit the [Commerce Cloud Developer Center](https://developer.commercecloud.com/) to learn more about Salesforce B2C Commerce. The developer center has API documentation, getting started guides, community forums, and more.
 
-## Packages
-
-### storefront-lwc
-
-<PLACEHOLDER>
-
-### sfcc-bff
-
-<PLACEHOLDER>
-
-### sfcc-core
-
-<PLACEHOLDER>
-
-### sfcc-base
+## Project Structure
 
 <PLACEHOLDER>
 
@@ -82,6 +68,12 @@ Visit the [Commerce Cloud Developer Center](https://developer.commercecloud.com/
 ## Monorepo Instructions
 
 sfcc-sample-apps is a monorepo with a sample application and bff dependency modules. Normally dependencies modules are published to a public npm server, but for the purpose of developing an application and the modules together everything is in a single repository here (monorepo).
+
+## Useful Links
+
+    * **[Architecture Guide](ARCHITECTURE_GUIDE.md)**
+    * **[Implementation Details](IMPLEMENTATION_DETAILS.md)**
+    * **[FAQ](FAQ.md)**
 
 ## Contributing
 
