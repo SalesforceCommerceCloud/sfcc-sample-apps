@@ -9,7 +9,7 @@ Reference apps and libraries based on `LWC`, `sfcc-core` and `sfcc-bff`.
 ## Pre-requisites
 
 ### For Intallation and Setup
-1) **[Node](https://nodejs.org/en/download/)** >v12.0
+1) **[Node](https://nodejs.org/en/download/)** >=v12
 2) yarn (install using `npm install yarn -g`)
 
 ### To Learn
