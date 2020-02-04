@@ -46,10 +46,13 @@ Visit the [Commerce Cloud Developer Center](https://developer.commercecloud.com/
     git clone git@github.com:SalesforceCommerceCloud/sfcc-sample-apps.git
     cd sfcc-sample-apps
     yarn
+
     # Rename `api.example.js` to `api.js` and update the environment variables with your values.
+
     yarn build
     yarn start
-    Open browser with http://localhost:3000 to go to storefront.
+    
+    # Open browser with http://localhost:3000 to go to storefront.
 
 ## Testing & Debugging
 1) `yarn test`
