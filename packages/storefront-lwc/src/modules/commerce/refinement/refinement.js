@@ -23,7 +23,7 @@ export default class Refinement extends LightningElement {
         // Manual clone to Bypass Proxy and read-only objects
         const newRef = {
             _type: ref._type,
-            attribute_id: ref.attributeId,
+            attributeId: ref.attributeId,
             label: ref.label,
             values: []
         };
@@ -54,12 +54,12 @@ export default class Refinement extends LightningElement {
             key: ref.label + refValue.value,
             labelLowerClass: ref.label.toLowerCase() + '-attribute',
             isSelected,
-            hit_count: refValue.hit_count,
+            hitCount: refValue.hitCount,
             isColor,
             toggleRefinement: () => this.toggleRefinement(ref.attributeId, (isColor) ? refValue.label : refValue.value),
             categoryClasses: isSelected ? 'refinement-selected category-refinement-item' : 'refinement-not-selected category-refinement-item',
             colorClassNames: !isColor ? '' : `swatch-circle-${ color } ${ isSelected ? 'selected' : '' }`,
-            toDisplay: refValue.hit_count > 0,
+            toDisplay: refValue.hitCount > 0,
             isCategory,
             hasSubValues: refValue.values && refValue.values.length,
             values: refValue.values && refValue.values.length ? [] : null

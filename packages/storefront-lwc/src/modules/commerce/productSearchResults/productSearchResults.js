@@ -70,7 +70,7 @@ export default class Search extends LightningElement {
         });
 
         // Listen to sort option change component
-        window.addEventListener('update-sort', e => {
+        window.addEventListener('update_sort', e => {
             this.sortRule = e.detail.sortRule;
         });
     }

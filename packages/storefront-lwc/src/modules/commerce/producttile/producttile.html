@@ -5,7 +5,7 @@
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 -->
 <template>
-      <div key={product.id} class='product-tile'>
+      <div key={product.productId} class='product-tile'>
         <div class='image-container' onclick={productDetail}>
           <!--<Link to={'/product/' + product.product_id}>-->
             <!--<img class='tile-image' src={image.dis_base_link + '?sw=400&sh=400'} alt={image.alt} />-->
@@ -17,7 +17,7 @@
 
           <div class='pdp-link' onclick={productDetail}>
             <!--<Link to={'/product/' + product.product_id}>{product.product_name}</Link>-->
-            <a href="#">{product.name}</a>
+            <a href="#">{product.productName}</a>
           </div>
 
           <div class='price'>

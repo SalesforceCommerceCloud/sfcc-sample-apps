@@ -12,6 +12,6 @@ export default class ProductTile extends LightningElement {
     @api product;
 
     productDetail() {
-        navigate(`/product/${this.product.id}`);
+        navigate(`/product/${this.product.productId}`);
     }
 }

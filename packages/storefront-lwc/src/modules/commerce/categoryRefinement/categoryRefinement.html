@@ -7,7 +7,7 @@
 <template>
     <ul class="category-list">
         <li class={refinement.categoryClasses} onclick={refinement.toggleRefinement}>
-            {refinement.label} ({refinement.hit_count})
+            {refinement.label} ({refinement.hitCount})
         </li>
         <li if:true={refinement.hasSubValues} class="category-refinement-sub-list">
             <template for:each={refinement.values} for:item="catRefinementSubCat">
