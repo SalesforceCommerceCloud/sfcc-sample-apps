@@ -16,7 +16,7 @@ Visit the [Commerce Cloud Developer Center](https://developer.commercecloud.com/
 1) **[Node](https://nodejs.org/en/download/)** >=v12
 2) yarn (install using `npm install yarn -g`)
 
-### To Learn
+### Learning Technologies & Tools Used
 * **[NodeJS](https://nodejs.org/en/docs/)**
 * **[ECMAScript 6](https://hacks.mozilla.org/category/es6-in-depth/)**
 * **[Sass](https://sass-lang.com/guide)**
@@ -24,8 +24,9 @@ Visit the [Commerce Cloud Developer Center](https://developer.commercecloud.com/
 * **[Apollo](https://www.apollographql.com/docs/tutorial/introduction/)**
 * **[Lightning Web Components](https://lwc.dev/)**
 * **[Jest](https://jestjs.io/docs/en/getting-started)**
+* **[Visual Studio Code](https://code.visualstudio.com/docs)**
 
-## Setup
+## Setup, Build, Test & Start
     git clone git@github.com:SalesforceCommerceCloud/sfcc-sample-apps.git
     cd sfcc-sample-apps
     yarn
@@ -33,13 +34,14 @@ Visit the [Commerce Cloud Developer Center](https://developer.commercecloud.com/
     # Rename `api.example.js` to `api.js` and update the environment variables with your values.
 
     yarn build
+    yarn test
     yarn start
     
     # Open browser with http://localhost:3000 to go to storefront.
 
-## Testing & Debugging
-1) `yarn test`
-2) TODO - Debugging
+## Debugging
+
+We recommend using Visual Studio Code inbuilt debugger for code troubleshooting purposes. `.vscode` launch configuration is included within the repo to be used out of the box. For more information on how to debug using VSCode, please check **[VS Code Debugging](https://code.visualstudio.com/docs/editor/debugging)** documentation.
 
 ## Configurations
 * Logging Level can be changed in `api.js`. The supported log levels are
