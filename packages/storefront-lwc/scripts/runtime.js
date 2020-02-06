@@ -29,6 +29,8 @@ const publicDir = `${templateDir}/dist/public/`;
 const port = process.env.PORT || 3002;
 const mode = process.env.NODE_ENV || 'development';
 
+console.log(publicDir);
+
 /**
  * Setup and Start Server
  */
@@ -38,7 +40,7 @@ const mode = process.env.NODE_ENV || 'development';
 
     // Serve up static files
     sampleApp.expressApplication.use('/', express.static(publicDir, {
-        index: false,
+        index: ['index.html'],
         immutable: true,
         maxAge: 31536000
     }));
