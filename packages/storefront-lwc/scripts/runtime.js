@@ -29,8 +29,6 @@ const publicDir = `${templateDir}/dist/public/`;
 const port = process.env.PORT || 3002;
 const mode = process.env.NODE_ENV || 'development';
 
-console.log(publicDir);
-
 /**
  * Setup and Start Server
  */
