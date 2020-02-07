@@ -10,9 +10,9 @@
             <!-- colorSwatches will never be more than 5-->
             <template for:each={colorSwatches} for:item="colorSwatch" for:index="index">
                 <li key={colorSwatch.value} class="swatch-li">
-                        <commerce-producttileswatch key={colorSwatch.value} color-swatch={colorSwatch}></commerce-producttileswatch>
+                        <commerce-product-tile-swatch key={colorSwatch.value} color-swatch={colorSwatch}></commerce-product-tile-swatch>
                 </li>
-            </template>   
+            </template>
             <template if:true={showMore}>
                 <li  class="more-swatches-li">
                         <span class="more-swatches"> + More </span>

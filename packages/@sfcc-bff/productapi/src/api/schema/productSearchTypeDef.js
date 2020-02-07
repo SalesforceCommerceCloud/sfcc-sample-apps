@@ -36,7 +36,7 @@ export const typeDef = gql`
     type RefinementValue {
         label: String!
         value: String!
-        hitCount: Int!
+        hitCount: Int
         values: [RefinementValue]
     }
 

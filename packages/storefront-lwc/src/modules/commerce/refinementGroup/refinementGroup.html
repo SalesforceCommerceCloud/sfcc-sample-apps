@@ -1,0 +1,33 @@
+<!--
+    Copyright (c) 2020, salesforce.com, inc.
+    All rights reserved.
+    SPDX-License-Identifier: BSD-3-Clause
+    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+-->
+<template>
+    <div if:true={displayRefinementGroup.values} key={displayRefinementGroup.attributeId} class={cardClass}>
+        <div class='card-header'>
+            <h5 class="collapsible-card-title" aria-expanded={expanded} onclick={toggleDropdown}>{displayRefinementGroup.label}</h5>
+        </div>
+
+        <div class='card-body'>
+            <div class="container-fluid">
+                <div class="row">
+                    <template for:each={displayRefinementGroup.values} for:item="refinementValue">
+                        <template if:false={refinementValue.isCategory} >
+                            <div if:true={refinementValue.toDisplay} key={refinementValue.key} class="form-check col-sm-3 col-md-12">
+                                <commerce-refinement refinement={refinementValue} ></commerce-refinement>
+                            </div>
+                        </template>
+
+                        <template if:true={refinementValue.isCategory}>
+                            <div class="col-12 category-refinement" key={refinementValue.key}>
+                                <commerce-category-refinement refinement={refinementValue}></commerce-category-refinement>
+                            </div>
+                        </template>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
