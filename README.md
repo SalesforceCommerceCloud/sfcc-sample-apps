@@ -1,22 +1,22 @@
 # Commerce Storefront Sample Application &middot; [![CircleCI][circleci-image]][circleci-url]
 
-Use our storefront sample application to learn how to build amazing commerce experiences with the latest Commerce Platform technologies.
+Use our storefront sample application to build amazing commerce experiences with the latest Commerce platform technologies.
 
 ## What is this?
 
-The Commerce Storefront Sample Application demonstrates how to build a storefront experience using our latest Commerce Platform innovations. Using this sample app, developers can quickly learn how to build apps with the Lightning Web Components `(LWC)`, `Commerce Cloud NodeJS SDK`, `GraphQL`, and `Salesforce Commerce APIs`. The Sample Application shows an implementation of a product detail page, product list page, and homepage - which will help development teams quickly understand how to use these technologies and begin their own journey of building amazing commerce experiences.
+Use this sample app to quickly build apps with the Lightning Web Components `(LWC)`, `Commerce Cloud NodeJS SDK`, `GraphQL`, and `Salesforce Commerce APIs`. The sample application shows you how to create a product detail page, product list page, and home page. 
 
-> Note: This implementation is NOT a full-fledged e-commerce storefront and is not intended to be used as one.
+> Note: The sample application isn't an actual commerce storefront. Use it only as a guide to help you build your own commerce storefront. 
 
-Visit the [Commerce Cloud Developer Center](https://developer.commercecloud.com/) to learn more about Salesforce B2C Commerce. The developer center has API documentation, getting started guides, community forums, and more.
+Visit the [Commerce Cloud Developer Center](https://developer.commercecloud.com/) to learn more about Salesforce B2C Commerce, its API documentation, getting started guides, community forums, and more.
 
-## Pre-requisites
+## Prerequisites
 
-### For Installation and Setup
-1) **[Node](https://nodejs.org/en/download/)** >=v12
-2) yarn (install using `npm install yarn -g`)
+### Installation
+Download and install Node.js v12 **[here](https://nodejs.org/en/download/)**
+Install yarn using `npm install yarn -g`
 
-### Learning Technologies & Tools Used
+### Technologies & Tools
 * **[NodeJS](https://nodejs.org/en/docs/)**
 * **[ECMAScript 6](https://hacks.mozilla.org/category/es6-in-depth/)**
 * **[Sass](https://sass-lang.com/guide)**
@@ -26,25 +26,35 @@ Visit the [Commerce Cloud Developer Center](https://developer.commercecloud.com/
 * **[Jest](https://jestjs.io/docs/en/getting-started)**
 * **[Visual Studio Code](https://code.visualstudio.com/docs)**
 
-## Setup, Build, Test & Start
+## Set Up
+
+    # To setup
+
     git clone git@github.com:SalesforceCommerceCloud/sfcc-sample-apps.git
     cd sfcc-sample-apps
     yarn
-
     # Rename `api.example.js` to `api.js` and update the environment variables with your values.
 
+    # To build
+
     yarn build
+
+    # To test
+
     yarn test
+
+    # To start
+
     yarn start
-    
-    # Open browser with http://localhost:3000 to go to storefront.
 
-## Debugging
+    # Open the browser with http://localhost:3000 to go to the storefront.
 
-We recommend using Visual Studio Code inbuilt debugger for code troubleshooting purposes. `.vscode` launch configuration is included within the repo to be used out of the box. For more information on how to debug using VSCode, please check **[VS Code Debugging](https://code.visualstudio.com/docs/editor/debugging)** documentation.
+## Debug
 
-## Configurations
-* Logging Level can be changed in `api.js`. The supported log levels are
+We recommend Visual Studio Code inbuilt debugger to troubleshoot the code. `.vscode` launch configuration is included in the repo. To debug using VSCode, see **[VS Code Debugging](https://code.visualstudio.com/docs/editor/debugging)**.
+
+## Configuration
+* The logging level can be changed in `api.js`. The supported log levels are as follows:
 
     * `TRACE`
     * `DEBUG`
@@ -53,12 +63,12 @@ We recommend using Visual Studio Code inbuilt debugger for code troubleshooting 
     * `ERROR`
     * `SILENT`
 
-    Change `COMMERCE_LOG_LEVEL` property accordingly.
-* Server Listening Port can be changed in `lwc-services.config.js`
+    Change `COMMERCE_LOG_LEVEL` property, as needed.
+* The server listening port can be changed in `lwc-services.config.js`
 
 ## Monorepo Instructions
 
-sfcc-sample-apps is a monorepo with a sample application and bff dependency modules. Normally dependencies modules are published to a public npm server, but for the purpose of developing an application and the modules together everything is in a single repository here (monorepo).
+sfcc-sample-apps is a monorepo with a sample application and bff dependency modules. Typically, dependencies modules are published to a public npm server. However to develop an application, the modules are included together in a single repository.
 
 ## Useful Links
 
