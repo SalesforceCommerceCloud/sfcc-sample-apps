@@ -34,6 +34,7 @@ Install yarn using `npm install yarn -g`
     cd sfcc-sample-apps
     yarn
     # Rename `api.example.js` to `api.js` and update the environment variables with your values.
+    # Ensure that api.js is added the .gitignore file
 
     # To build
 
