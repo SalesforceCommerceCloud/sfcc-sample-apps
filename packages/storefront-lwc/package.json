@@ -19,7 +19,7 @@
       "src/**/*.spec.js",
       "src/**/*.test.js"
     ],
-    "exec": "NODE_OPTIONS='--experimental-modules --es-module-specifier-resolution=node' node --nolazy --inspect=9229 ./scripts/runtime.js"
+    "exec": "SFCC_DEV_MODE='true' NODE_OPTIONS='--experimental-modules --es-module-specifier-resolution=node' node --nolazy --inspect=9229 ./scripts/runtime.js"
   },
   "browserslist": "> 0.25%",
   "scripts": {

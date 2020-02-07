@@ -17,7 +17,9 @@ import { fileURLToPath } from 'url';
 // ****************************************************
 // Instantiate the new Storefront Reference Application
 // ****************************************************
-import {sampleApp} from './sample-app';
+import { getSampleApp } from './sample-app';
+
+
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -33,6 +35,7 @@ const mode = process.env.NODE_ENV || 'development';
  * Setup and Start Server
  */
 (async () => {
+    const sampleApp = await getSampleApp();
     // Create Express Instance, register it with demo app and start demo app.
     sampleApp.expressApplication = express();
 
