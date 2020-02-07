@@ -18,7 +18,8 @@ const getClientProduct = async (config, id) => {
         authHost: config.COMMERCE_CLIENT_AUTH_HOST,
         clientId: config.COMMERCE_CLIENT_CLIENT_ID
     });
-
+    console.log('here!!!!',config.COMMERCE_CLIENT_BASE_URI,config.COMMERCE_CLIENT_AUTH_HOST,config.COMMERCE_CLIENT_CLIENT_ID )
+    console.log('there!!!',config.COMMERCE_CLIENT_ORGANIZATION_ID,config.COMMERCE_APP_API_SITE_ID);
     return await product.getProduct({
         parameters: {
             organizationId: config.COMMERCE_CLIENT_ORGANIZATION_ID,
@@ -28,6 +29,7 @@ const getClientProduct = async (config, id) => {
             siteId: config.COMMERCE_APP_API_SITE_ID
         }
     }).catch((e) => {
+        logger.error(config.COMMERCE_CLIENT_ORGANIZATION_ID,config.COMMERCE_APP_API_SITE_ID);
         logger.error(`Error in getClientProduct() for product ${id}`);
         throw e;
     });
