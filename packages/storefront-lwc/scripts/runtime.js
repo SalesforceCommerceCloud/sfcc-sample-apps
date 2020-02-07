@@ -12,7 +12,7 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import compression from 'compression';
+// import compression from 'compression';
 
 // ****************************************************
 // Instantiate the new Storefront Reference Application
@@ -43,7 +43,7 @@ const mode = process.env.NODE_ENV || 'development';
         maxAge: 31536000
     }));
     sampleApp.start();
-    sampleApp.expressApplication.use(compression());
+    //sampleApp.expressApplication.use(compression());
 
     // provide route for service-worker
     sampleApp.expressApplication.use("/service-worker.js", (req, res) => {
