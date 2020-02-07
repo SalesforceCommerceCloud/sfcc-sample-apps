@@ -25,7 +25,7 @@ const getClientProduct = async (config, id) => {
             id: id,
             expand: 'availability,prices,promotions,variations,images',
             allImages: true,
-            siteId: config.APP_API_SITE_ID
+            siteId: config.COMMERCE_APP_API_SITE_ID
         }
     }).catch((e) => {
         logger.error(`Error in getClientProduct() for product ${id}`);
