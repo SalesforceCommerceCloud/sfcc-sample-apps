@@ -1,6 +1,6 @@
 # Architectural Overview
 
-The sample app showcases the capabilities and best practices of building an ecommerce application on top of the Salesforce Commerce API (a headless RESTul API). _It's not a complete reference architecture._ The sample app consists of a NodeJS web server that acts as a back-end for front-end (BFF) to a storefront built with Lightning Web Components.
+The sample app showcases the capabilities and best practices of building an ecommerce application on top of the Salesforce Commerce API (a headless RESTful API). _It's not a complete reference architecture._ The sample app consists of a NodeJS web server that acts as a back-end for front-end (BFF) to a storefront built with Lightning Web Components.
 
 ## Tech Stack
 
