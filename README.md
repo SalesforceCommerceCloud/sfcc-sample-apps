@@ -4,7 +4,7 @@ Use our storefront sample application to build amazing commerce experiences with
 
 ## What is this?
 
-Use this sample app to quickly build apps with the Lightning Web Components `(LWC)`, `Commerce Cloud NodeJS SDK`, `GraphQL`, and `Salesforce Commerce APIs`. The sample application shows you how to create a product detail page, product list page, and home page. 
+Use this sample app to quickly build apps with the Lightning Web Components `(LWC)`, `Salesforce Commerce Node.js SDK`, `GraphQL`, and `Salesforce Commerce APIs`. The sample application shows you how to create a product detail page, product list page, and home page. 
 
 > Note: The sample application isn't an actual commerce storefront. Use it only as a guide to help you build your own commerce storefront. 
 
@@ -47,7 +47,7 @@ Install yarn using `npm install yarn -g`
 
     yarn start
 
-    # Open the browser with http://localhost:3000 to go to the storefront.
+    # To access the storefront, open the browser with http://localhost:3000
 
 ## Debug
 
@@ -72,7 +72,7 @@ sfcc-sample-apps is a monorepo with a sample application and bff dependency modu
 
 ## Useful Links
 
-* **[Architecture Guide](ARCHITECTURE_GUIDE.md)**
+* **[Architecture Guide](docs/architecture.md)**
 * **[Implementation Details](IMPLEMENTATION_DETAILS.md)**
 * **[FAQ](FAQ.md)**
 
