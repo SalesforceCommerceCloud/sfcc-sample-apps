@@ -43,7 +43,7 @@ const mode = process.env.NODE_ENV || 'development';
     sampleApp.expressApplication.use('/', express.static(publicDir, {
         index: ['index.html'],
         immutable: true,
-        maxAge: 31536000
+        maxAge: 31536000,
     }));
     sampleApp.start();
     sampleApp.expressApplication.use(compression());
@@ -53,6 +53,9 @@ const mode = process.env.NODE_ENV || 'development';
         res.sendFile(path.resolve(__dirname, "service-worker.js"));
     });
 
+    sampleApp.expressApplication.get('/*', (req, res) => {
+        res.sendFile(path.resolve(publicDir, 'index.html'));
+    });
 
     // start the server
     const server = sampleApp.expressApplication.listen(port, () => {
