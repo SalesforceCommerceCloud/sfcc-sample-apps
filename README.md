@@ -28,7 +28,7 @@ Install yarn using `npm install yarn -g`
 
 ## Set Up
 
-    # To setup
+To setup
 
     git clone git@github.com:SalesforceCommerceCloud/sfcc-sample-apps.git
     cd sfcc-sample-apps
@@ -36,19 +36,19 @@ Install yarn using `npm install yarn -g`
     # Rename `api.example.js` to `api.js` and update the environment variables with your values.
     # Ensure that `api.js` is added in the `.gitignore` file.
 
-    # To build
+To build
 
     yarn build
 
-    # To test
+To test
 
     yarn test
 
-    # To start
+To start
 
     yarn start
 
-    # To access the storefront, open the browser with http://localhost:3000
+To access the storefront, open the browser with http://localhost:3000
 
 ## Debug
 
