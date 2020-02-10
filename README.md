@@ -1,6 +1,6 @@
 # Commerce Storefront Sample Application &middot; [![CircleCI][circleci-image]][circleci-url]
 
-Use our storefront sample application to build amazing commerce experiences with the latest Commerce platform technologies.
+Use our storefront sample application to learn how to build amazing commerce experiences with the latest Commerce platform technologies.
 
 ## What is this?
 
@@ -69,7 +69,7 @@ We recommend Visual Studio Code inbuilt debugger to troubleshoot the code. `.vsc
 
 ## Monorepo Instructions
 
-sfcc-sample-apps is a monorepo with a sample application and bff dependency modules. Typically, dependencies modules are published to a public npm server. However to develop an application, the modules are included together in a single repository.
+sfcc-sample-apps is a monorepo with a sample application and Backend For Frontend (BFF) dependency modules. Typically, dependencies modules are published to a public npm server. However to develop an application, the modules are included together in a single repository.
 
 ## Useful Links
 
