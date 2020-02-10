@@ -10,8 +10,6 @@ The sample application shows you a recommended approach for building a storefron
 1. Download and install Node.js v12 [here](https://nodejs.org/en/download/).
 2. Install yarn: 
 `npm install yarn -g`
-Note: You might have to run this command as root/Administrator.
-
 
 
 ## Setup
