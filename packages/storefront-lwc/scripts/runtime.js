@@ -12,12 +12,12 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import compression from 'compression';
-
 // ****************************************************
 // Instantiate the new Storefront Reference Application
 // ****************************************************
-import {sampleApp} from './sample-app';
+import { getSampleApp } from './sample-app';
+
+
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -33,23 +33,26 @@ const mode = process.env.NODE_ENV || 'development';
  * Setup and Start Server
  */
 (async () => {
+    const sampleApp = await getSampleApp();
     // Create Express Instance, register it with demo app and start demo app.
     sampleApp.expressApplication = express();
 
     // Serve up static files
     sampleApp.expressApplication.use('/', express.static(publicDir, {
-        index: false,
+        index: ['index.html'],
         immutable: true,
-        maxAge: 31536000
+        maxAge: 31536000,
     }));
     sampleApp.start();
-    sampleApp.expressApplication.use(compression());
 
     // provide route for service-worker
     sampleApp.expressApplication.use("/service-worker.js", (req, res) => {
         res.sendFile(path.resolve(__dirname, "service-worker.js"));
     });
 
+    sampleApp.expressApplication.get('/*', (req, res) => {
+        res.sendFile(path.resolve(publicDir, 'index.html'));
+    });
 
     // start the server
     const server = sampleApp.expressApplication.listen(port, () => {

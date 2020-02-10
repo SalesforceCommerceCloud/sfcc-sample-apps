@@ -12,7 +12,7 @@
         "restart": true,
         "runtimeArgs": [
             "run-script",
-            "start"
+            "start:dev"
         ],
         "port": 9229,
         "skipFiles": [

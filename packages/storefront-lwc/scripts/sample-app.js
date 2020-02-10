@@ -12,8 +12,6 @@ import '@sfcc-core/logger';
 import '@sfcc-core/apiconfig';
 import '@sfcc-core/core-graphql';
 
-import API_CONFIG_DATA from './api'; // Our Application Specific API Configuration
-
 //
 // SFRA Extensions/Services
 //
@@ -84,5 +82,16 @@ class SampleApp {
     }
 }
 
-const singleton = new SampleApp(API_CONFIG_DATA);
-export const sampleApp = singleton;
+export async function getSampleApp(){
+    let API_CONFIG_DATA = {};
+    try{
+        const API = await import ('./api');
+        API_CONFIG_DATA = API.default;
+    }catch(e) {
+        if(process.env.SFCC_DEV_MODE === 'true'){
+            console.error('WARNING: There is no api.js found! Copy the api.example.js in api.js and customize with your own variables');
+            process.exit(1);
+        };
+    };
+    return new SampleApp(API_CONFIG_DATA);
+}

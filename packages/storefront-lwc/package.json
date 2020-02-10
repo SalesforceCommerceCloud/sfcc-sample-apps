@@ -19,7 +19,7 @@
       "src/**/*.spec.js",
       "src/**/*.test.js"
     ],
-    "exec": "NODE_OPTIONS='--experimental-modules --es-module-specifier-resolution=node' node --nolazy --inspect=9229 ./scripts/runtime.js"
+    "exec": "SFCC_DEV_MODE='true' NODE_OPTIONS='--experimental-modules --es-module-specifier-resolution=node' node --nolazy --inspect=9229 ./scripts/runtime.js"
   },
   "browserslist": "> 0.25%",
   "scripts": {
@@ -30,12 +30,12 @@
     "lint": "eslint ./src/**/*.js",
     "prettier": "prettier --write \"**/*.{css,html,js,json,md,ts,yaml,yml}\"",
     "prettier:verify": "prettier --list-different \"**/*.{css,html,js,json,md,ts,yaml,yml}\"",
-    "serve": "NODE_OPTIONS='--experimental-modules --es-module-specifier-resolution=node' lwc-services serve",
+    "start": "NODE_OPTIONS='--experimental-modules --es-module-specifier-resolution=node' node ./scripts/runtime.js",
     "test": "lwc-services test:unit",
     "test:unit:coverage": "lwc-services test:unit --coverage",
     "test:unit:debug": "lwc-services test:unit --debug",
     "test:unit:watch": "lwc-services test:unit --watch",
-    "start": "run-p watch:client watch:server watch:scss",
+    "start:dev": "run-p watch:client watch:server watch:scss",
     "watch:client": "lwc-services watch",
     "watch:server": "nodemon",
     "build:scss": "yarn build:public:scss && yarn build:lwc:scss",
