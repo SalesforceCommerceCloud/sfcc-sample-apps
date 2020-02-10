@@ -11,20 +11,4 @@ import { LightningElement, track } from 'lwc';
  */
 export default class HeaderCart extends LightningElement {
     @track quantity = 0;
-
-    constructor() {
-        super();
-    }
-
-    updateCartHandler() {
-    
-    }
-
-    // eslint-disable-next-line class-methods-use-this
-    renderedCallback() {
-    }
-
-    connectedCallback() {
-    
-    }
 }
