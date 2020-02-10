@@ -22,7 +22,7 @@ To set up the sample application, perform the following steps:
 2. Change into the `sfcc-sample-apps` folder:
 `cd sfcc-sample-apps`
 
-3. Copy the `api.example.js` file, save it as `api.js`, and make sure it is added to your `.gitignore` file.
+3. Copy `api.example.js` file located at `/packages/storefront-lwc/scripts/`, save it as `api.js`, and make sure it is added to your `.gitignore` file.
 
 4. In the `api.js`, provide values for the following variables (you can obtain these values from your Account Executive (AE) or Customer Support Manager (CSM)):
 <table>
@@ -41,9 +41,11 @@ To set up the sample application, perform the following steps:
 `yarn build`
 
 7. Start the sample application:
-`yarn start`
+`yarn start:dev` (development mode) or
+`yarn start` (production mode)
 
-8. To access the sample application, open the browser to http://localhost:3000.
+
+8. To access the sample application in developmnet mode, open the browser to http://localhost:3000 and for production mode http://localhost:3002
 
 You can optionally test the sample application:
 `yarn test`
