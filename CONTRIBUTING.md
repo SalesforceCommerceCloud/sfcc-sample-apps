@@ -1,23 +1,23 @@
-# Table of contents
+# Table of Contents
 
-- [Submitting your first Pull Request ](#submitting-your-first-Pull-request)
+- [Submitting Your First Pull Request ](#submitting-Your-First-Pull-Request)
 
-- [Submitting a Pull Request ](#submitting-a-Pull-request)
+- [Submitting a Pull Request ](#Submitting-a-Pull-Request)
 
-- [What to expect](#what-to-expect)
+- [What to Expect](#What-to-Expect)
 
-- [Team members](#_SFCC-SAMPLE-APPS_-team-members)
+- [Team Members](#sfcc-sample-apps-Team-Members)
 
 - [Back to README](./README.md)
 
-# Contributing to _sfcc-sample-apps_
+# Contributing to sfcc-sample-apps
 
-To contribute to _SFCC-SAMPLE-APPS_ , follow the guidelines below. This helps us address your pull request in a more timely manner. 
+To contribute to sfcc-sample-apps, follow the guidelines below. This helps us address your pull request in a more timely manner. 
 
-## Submitting your first pull request
+## Submitting Your First Pull Request
 If this is your first pull request, follow these steps:
 
-  1. Create a fork of the _SFCC-SAMPLE-APPS_ repository 
+  1. Create a fork of the sfcc-sample-apps repository 
 
   2. Download the forked repository
 
@@ -27,7 +27,7 @@ If this is your first pull request, follow these steps:
 
   5. Create a pull request against the integration branch
 
-## Submitting a pull request
+## Submitting a Pull Request
   1. Create a branch off the integration branch.
 
        * To reduce merge conflicts, squash and rebase your branch before submitting your pull request.
@@ -44,7 +44,7 @@ If this is your first pull request, follow these steps:
    
        * Error logs
    
-  3. Grant _SFCC-SAMPLE-APPS_ team members access to your fork so we can run an automated test on your pull request prior to merging it into our integration branch.
+  3. Grant sfcc-sample-apps team members access to your fork so we can run an automated test on your pull request prior to merging it into our integration branch.
 
        * From within your forked repository, find the 'Settings' link (see the site navigation on left of the page).
    
@@ -66,7 +66,7 @@ If this is your first pull request, follow these steps:
        
        * we may close abandoned pull requests.
 
-## What to expect
+## What to Expect
 
 After you submit your pull request, we'll look it over and consider it for merging.
 
@@ -74,7 +74,7 @@ As long as your submission has met the above guidelines, we should merge it in a
 
 Our sprints run for about two weeks; in that period of time, we typically review all pull requests, give feedback, and merge the request (depending on our current sprint priorities).
 
-## _SFCC-SAMPLE-APPS_ team members 
+## sfcc-sample-apps Team Members 
 
 To speed up the process of reviewing and merging your pull request, grant the following team members access to your fork:
 
