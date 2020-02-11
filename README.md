@@ -14,19 +14,7 @@ The sample application shows you a recommended approach for building a storefron
 
 ## Setup
 
-### Learn More about Supporting Technologies
-* [NodeJS](https://nodejs.org/en/docs/)
-* [ECMAScript 6](https://hacks.mozilla.org/category/es6-in-depth/)
-* [Sass](https://sass-lang.com/guide)
-* [GraphQL](https://graphql.org/learn/)
-* [Apollo](https://www.apollographql.com/docs/tutorial/introduction/)
-* [Lightning Web Components](https://lwc.dev/)
-* [Jest](https://jestjs.io/docs/en/getting-started)
-* [Visual Studio Code](https://code.visualstudio.com/docs)
-
-## Set Up
-
-To setup the sample application, perform the following steps:
+To set up the sample application, perform the following steps:
 
 1. Clone the sfcc-sample-apps repository:
 `git clone git@github.com:SalesforceCommerceCloud/sfcc-sample-apps.git`
@@ -40,7 +28,7 @@ To setup the sample application, perform the following steps:
 <table>
 <tr><th>Variable</th><th>Description</th></tr>
 <tr><td><code>APP_API_INSTANCE</code></td><td>Fully qualified domain name (FQDN) for your instance (for example, dev01.web.mycompany.demandware.net).</td></tr>
-<tr><td><code>APP_API_SITE_ID</code></td><td>A unique site ID (for example, RefArch or SiteGenesis)</td></tr>
+<tr><td><code>APP_API_SITE_ID</code></td><td>A unique site ID (for example, RefArch or SiteGenesis).</td></tr>
 <tr><td><code>COMMERCE_CLIENT_CLIENT_ID</code></td><td>A unique ID used exclusively for API access. See <a href="https://documentation.b2c.commercecloud.salesforce.com/DOC1/topic/com.demandware.dochelp/AccountManager/AccountManagerAddAPIClientID.html">Add a Client API</a> for more information.</td></tr>
 <tr><td><code>COMMERCE_CLIENT_REALM</code></td><td>A unique four-character ID (for example, bblx).</td></tr>
 <tr><td><code>COMMERCE_CLIENT_INSTANCE</code></td><td>Instance ID within a realm (for example, 015).</td></tr>
@@ -79,18 +67,20 @@ We recommend Visual Studio Code inbuilt debugger to troubleshoot the code. `.vsc
 
 sfcc-sample-apps is a monorepo with a sample application and Backend For Frontend (BFF) dependency modules. Typically, dependencies modules are published to a public npm server. However to develop an application, the modules are included together in a single repository.
 
-## Useful Links
-
-* [Implementation Details](IMPLEMENTATION_DETAILS.md)
-* [FAQ](FAQ.md)
+### Learn More about Supporting Technologies
+* [NodeJS](https://nodejs.org/en/docs/)
+* [ECMAScript 6](https://hacks.mozilla.org/category/es6-in-depth/)
+* [Sass](https://sass-lang.com/guide)
+* [GraphQL](https://graphql.org/learn/)
+* [Apollo](https://www.apollographql.com/docs/tutorial/introduction/)
+* [Lightning Web Components](https://lwc.dev/)
+* [Jest](https://jestjs.io/docs/en/getting-started)
+* [Visual Studio Code](https://code.visualstudio.com/docs)
 
 ## Contributing
 
 * [See Contributing](CONTRIBUTING.md)
 
-## Legal Notice
-
-* [See Legal](LEGAL.md)
 
 <!-- Markdown link & img dfn's -->
 [circleci-image]: https://circleci.com/gh/SalesforceCommerceCloud/sfcc-sample-apps.svg?style=shield&circle-token=f34a55a59d7dfc30402e719996edf10092780b66
