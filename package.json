@@ -17,6 +17,7 @@
     "test": "lerna run test:unit --stream",
     "test:watch": "lerna run test:unit:watch --stream",
     "start": "yarn start:lwc",
+    "start:dev": "lerna run start:dev --scope storefront-lwc --stream",
     "start:watch": "yarn start:lwc:watch",
     "stop": "yarn stop:lwc",
     "start:lwc": "lerna run start --scope storefront-lwc --stream",
@@ -38,7 +39,7 @@
   },
   "engines": {
     "yarn": ">=1.10.1",
-    "node": ">=12"
+    "node": "12"
   },
   "dependencies": {
     "lerna": "^3.17.0",

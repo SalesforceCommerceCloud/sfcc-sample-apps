@@ -6,7 +6,7 @@ import {
 } from "apollo-boost";
 
 const httpLink = new HttpLink({
-    uri: window.apiconfig.COMMERCE_API_PATH || "/graphql",
+    uri: window.apiconfig.COMMERCE_API_PATH || "/api",
 });
 
 const authLink = new ApolloLink((operation, forward) => {

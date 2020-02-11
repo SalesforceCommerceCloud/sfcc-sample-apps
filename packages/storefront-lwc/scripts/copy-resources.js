@@ -41,12 +41,8 @@ function copy(src, dest) {
 }
 
 mkdirp.sync('dist/public');
-mkdirp.sync('dist/views');
 
-copy('src/!(modules)', 'dist');
 copy('src/public/**/*', 'dist/public');
-copy('src/views/*', 'dist/views');
-copy('src/partials/*', 'dist/partials');
 copy('node_modules/@salesforce-ux/design-system/assets/**/symbols.svg', 'dist/public/assets');
 copy(
     'node_modules/@salesforce-ux/design-system/assets/**/*.{woff2,css}',
