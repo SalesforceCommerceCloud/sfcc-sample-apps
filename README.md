@@ -2,12 +2,14 @@
 
 Our storefront sample application shows how you can build amazing commerce experiences with the latest Commerce platform technologies. The application back end is built on the new Salesforce Commerce API (a RESTful headless API), and the front end is built with Lightning Web Components (LWC). In between, it uses GraphQL and the Salesforce Commerce Node.js SDK. 
 
-Read more about the architecture [here](docs/architecture.md).
+Read more about the [architecture](docs/architecture.md).
 
 The sample application shows you a recommended approach for building a storefront, but it is not a complete and fully functional storefront reference application. At present, the sample application includes a home page, product list page, and product detail page. More great features are coming soon!
 
+Note: sfcc-sample-apps is a monorepo with a sample application and Backend For Frontend (BFF) dependency modules. Typically, dependencies modules are published to a public npm server. However to develop an application, the modules are included together in a single repository.
+
 ## Prerequisites
-1. Download and install Node.js v12 [here](https://nodejs.org/en/download/).
+1. Download and install [Node.js v12](https://nodejs.org/en/download/).
 2. Install yarn: 
 `npm install yarn -g`
 
@@ -22,9 +24,9 @@ To set up the sample application, perform the following steps:
 2. Change into the `sfcc-sample-apps` folder:
 `cd sfcc-sample-apps`
 
-3. Copy the `api.example.js` file, save it as `api.js`, and make sure it is added to your `.gitignore` file.
+3. Copy the `packages/storefront-lwc/scripts/api.example.js` file, save it as `packages/storefront-lwc/scripts/api.js`, and make sure it is added to your `.gitignore` file.
 
-4. In the `api.js`, provide values for the following variables (you can obtain these values from your Account Executive (AE) or Customer Support Manager (CSM)):
+4. In the `api.js` file, provide values for the following variables (you can obtain these values from your Account Executive (AE) or Customer Support Manager (CSM)):
 <table>
 <tr><th>Variable</th><th>Description</th></tr>
 <tr><td><code>COMMERCE_CLIENT_API_SITE_ID</code></td><td>A unique site ID (for example, RefArch or SiteGenesis).</td></tr>
@@ -43,7 +45,7 @@ To set up the sample application, perform the following steps:
 7. Start the sample application:
 `yarn start`
 
-8. To access the sample application, open the browser to http://localhost:3000.
+8. Access the sample application by opening your browser to http://localhost:3000.
 
 You can optionally test the sample application:
 `yarn test`
@@ -53,19 +55,15 @@ You can optionally test the sample application:
 We recommend Visual Studio Code inbuilt debugger to troubleshoot the code. `.vscode` launch configuration is included in the repo. To debug using VSCode, see [VS Code Debugging](https://code.visualstudio.com/docs/editor/debugging).
 
 ## Configuration
-* The logging level can be changed in `api.js`. The supported log levels are as follows:
+* You can change the logging levels by modifying the `COMMERCE_LOG_LEVEL` property in `api.js`. The supported log levels are:
     * `TRACE`
     * `DEBUG`
     * `INFO`
     * `WARN`
     * `ERROR`
     * `SILENT`
-    Change `COMMERCE_LOG_LEVEL` property, as needed.
-* The server listening port can be changed in `lwc-services.config.js`
+* You can also change the server listening port by changing the `port` property in `scff-sample-apps/packages/storefront-lwc/lwc-services.config.js` file.
 
-## Monorepo Instructions
-
-sfcc-sample-apps is a monorepo with a sample application and Backend For Frontend (BFF) dependency modules. Typically, dependencies modules are published to a public npm server. However to develop an application, the modules are included together in a single repository.
 
 ### Learn More about Supporting Technologies
 * [NodeJS](https://nodejs.org/en/docs/)
@@ -79,7 +77,7 @@ sfcc-sample-apps is a monorepo with a sample application and Backend For Fronten
 
 ## Contributing
 
-* [See Contributing](CONTRIBUTING.md)
+* See [Contributing](CONTRIBUTING.md)
 
 
 <!-- Markdown link & img dfn's -->
