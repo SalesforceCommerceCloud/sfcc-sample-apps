@@ -13,15 +13,15 @@ export const typeDef = gql`
     }
 
     type SearchResult {
-        count: Int!
+        limit: Int!
         productHits: [ProductHit]
         currentFilters: [CurrentFilter]
         refinements: [Refinement]
     }
 
     type ProductHit {
-        id: String!
-        name: String!
+        productId: String!
+        productName: String!
         prices: Prices
         image: Image!
         colorSwatches: [ColorSwatch]
@@ -36,7 +36,7 @@ export const typeDef = gql`
     type RefinementValue {
         label: String!
         value: String!
-        hit_count: Int!
+        hitCount: Int!
         values: [RefinementValue]
     }
 

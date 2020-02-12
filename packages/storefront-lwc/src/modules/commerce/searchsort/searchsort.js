@@ -32,7 +32,7 @@ export default class SearchSort extends LightningElement {
     newSortRule = (event) => {
         const newSortRuleId = event.target.value;
         this.sortRule = this.sortOptions.find(sortOption => sortOption.id === newSortRuleId);
-        this.dispatchEvent(new CustomEvent('update-sort', {
+        this.dispatchEvent(new CustomEvent('update_sort', {
             bubbles: true,
             composed: true,
             detail: {

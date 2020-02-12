@@ -65,8 +65,8 @@ register(productsByQuery, (eventTarget) => {
                         {
                             productSearch(query: "${ query }" ${ filters }) {
                                 productHits {
-                                id
-                                name
+                                productId
+                                productName
                                 prices {
                                     sale
                                     list
@@ -89,15 +89,15 @@ register(productsByQuery, (eventTarget) => {
                                 values {
                                     label
                                     value
-                                    hit_count
+                                    hitCount
                                     values {
                                         label
                                         value
-                                        hit_count
+                                        hitCount
                                         values {
                                             label
                                             value
-                                            hit_count
+                                            hitCount
                                         }
                                     }
                                 }

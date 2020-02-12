@@ -27,11 +27,11 @@ To set up the sample application, perform the following steps:
 4. In the `api.js`, provide values for the following variables (you can obtain these values from your Account Executive (AE) or Customer Support Manager (CSM)):
 <table>
 <tr><th>Variable</th><th>Description</th></tr>
-<tr><td><code>APP_API_INSTANCE</code></td><td>Fully qualified domain name (FQDN) for your instance (for example, dev01.web.mycompany.demandware.net).</td></tr>
-<tr><td><code>APP_API_SITE_ID</code></td><td>A unique site ID (for example, RefArch or SiteGenesis).</td></tr>
+<tr><td><code>COMMERCE_CLIENT_API_SITE_ID</code></td><td>A unique site ID (for example, RefArch or SiteGenesis).</td></tr>
 <tr><td><code>COMMERCE_CLIENT_CLIENT_ID</code></td><td>A unique ID used exclusively for API access. See <a href="https://documentation.b2c.commercecloud.salesforce.com/DOC1/topic/com.demandware.dochelp/AccountManager/AccountManagerAddAPIClientID.html">Add a Client API</a> for more information.</td></tr>
 <tr><td><code>COMMERCE_CLIENT_REALM</code></td><td>A unique four-character ID (for example, bblx).</td></tr>
 <tr><td><code>COMMERCE_CLIENT_INSTANCE</code></td><td>Instance ID within a realm (for example, 015).</td></tr>
+<tr><td><code>COMMERCE_CLIENT_SHORT_CODE</code></td><td>Region-specific merchant identifier (for example, staging-001).</td></tr>
 </table>
 
 5. Install dependencies:
