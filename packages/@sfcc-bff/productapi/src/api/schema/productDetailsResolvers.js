@@ -7,24 +7,43 @@
 'use strict';
 
 import Product from '../models/Product';
-import CommerceClient from 'commerce-sdk';
+import CommerceSdk from 'commerce-sdk';
 import {core} from '@sfcc-core/core';
 
 const logger = core.logger;
 
 const getClientProduct = async (config, id) => {
-    const product = new CommerceClient.Product.ShopperProducts.default({
-        baseUri: config.COMMERCE_CLIENT_BASE_URI,
-        authHost: config.COMMERCE_CLIENT_AUTH_HOST,
-        clientId: config.COMMERCE_CLIENT_CLIENT_ID
-    });
-    return await product.getProduct({
+    const clientId = config.COMMERCE_CLIENT_CLIENT_ID;
+    const organizationId = config.COMMERCE_CLIENT_ORGANIZATION_ID;
+    const shortCode = config.COMMERCE_CLIENT_SHORT_CODE;
+    const siteId = config.COMMERCE_CLIENT_API_SITE_ID;
+
+    const token = await CommerceSdk.helpers.getAuthToken({
         parameters: {
-            organizationId: config.COMMERCE_CLIENT_ORGANIZATION_ID,
+            clientId: clientId,
+            organizationId: organizationId,
+            shortCode: shortCode,
+            siteId: siteId
+        },
+        body: {
+            type: "guest"
+        }
+    });
+
+    const product = new CommerceSdk.Product.ShopperProducts.Client({
+        headers: { authorization: token.getBearerHeader() },
+        parameters: {
+            organizationId: organizationId,
+            shortCode: shortCode,
+            siteId: siteId
+        }
+    });
+
+    return product.getProduct({
+        parameters: {
             id: id,
             expand: 'availability,prices,promotions,variations,images',
             allImages: true,
-            siteId: config.COMMERCE_APP_API_SITE_ID
         }
     }).catch((e) => {
         logger.error(`Error in getClientProduct() for product ${id}`);

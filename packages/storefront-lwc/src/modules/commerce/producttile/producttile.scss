@@ -12,4 +12,17 @@
             padding-top: 0.3125em;
         }
     }
+
+    .image-container {
+        position: relative;
+        overflow: auto;
+
+        a {
+            display: block;
+
+            .tile-image {
+                width: 100%;
+            }
+        }
+    }
 }

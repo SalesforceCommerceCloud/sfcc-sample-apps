@@ -5,7 +5,7 @@ import CommerceProductSearchResults from "commerce/productSearchResults";
 import CommerceHome from "commerce/home";
 import CommerceLayout from "commerce/layout";
 import CommerceHeader from "commerce/header";
-import CommerceProductDetail from 'commerce/productdetail'
+import CommerceProductDetail from 'commerce/productDetail'
 
 import { registerWireService } from '@lwc/wire-service';
 import { register } from 'lwc'
@@ -21,7 +21,7 @@ customElements.define(
     buildCustomElementConstructor(CommerceProductSearchResults)
 );
 customElements.define(
-    "commerce-productdetail",
+    "commerce-product-detail",
     buildCustomElementConstructor(CommerceProductDetail)
 );
 customElements.define(

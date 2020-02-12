@@ -14,16 +14,12 @@
                             onclick={toggledropdown}
                             class="title text-left"
                             aria-expanded="false"
-                            data-title={titleTitle}
-                            lwc:dom="manual">
+                        >
+                            <span>{title}</span>
                         </h4>
                     </div>
                     <div class="collapse">
-                        <div
-                            lwc:dom="manual"
-                            class="card-body"
-                            data-title={titleContent}>
-                        </div>
+                        <div lwc:dom="manual" class="card-body" data-content={content}></div>
                     </div>
                 </div>
             </div>
