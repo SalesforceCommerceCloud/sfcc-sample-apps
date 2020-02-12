@@ -10,7 +10,7 @@
 import color from 'colors';
 import express from 'express';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import {fileURLToPath} from 'url';
 
 // ****************************************************
 // Instantiate the new Storefront Reference Application

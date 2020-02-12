@@ -22,7 +22,7 @@ const getImages = (imageGroups, matchingColor) => {
             imageGroups.forEach(imageGroup => {
                 imageGroup.images.forEach((image) => {
                     // ensure unique image being returned
-                    if ( isImage(image.link) && !result.has(image.link) ) {
+                    if (isImage(image.link) && !result.has(image.link)) {
                         result.set(image.link, new Image(image));
                     }
                 });
@@ -53,7 +53,7 @@ const getImages = (imageGroups, matchingColor) => {
             if (allImages) {
                 sizeImages.forEach((image) => {
                     // ensure unique image being returned
-                    if ( isImage(image.link) && !result.has(image.link) ) {
+                    if (isImage(image.link) && !result.has(image.link)) {
                         result.set(image.link, new Image(image));
                     }
                 });
@@ -96,11 +96,11 @@ const getVariationAttributes = (variationAttributes, imageGroups) => {
             return {
                 variationAttributeType: {
                     id: variationAttribute.id,
-                    name: variationAttribute.name,
+                    name: variationAttribute.name
                 },
                 variationAttributeValues: variationAttribute.values.map(variationAttributeValue => {
                     let swatchImage = imageGroups.find(imageGroup => {
-                        if(imageGroup.variationAttributes) {
+                        if (imageGroup.variationAttributes) {
                             return (imageGroup.viewType === "swatch") && (imageGroup.variationAttributes[0].values[0].value === variationAttributeValue.value)
                         } else {
                             return false;
@@ -120,14 +120,14 @@ const getVariationAttributes = (variationAttributes, imageGroups) => {
 
 const getLowestPromotionalPrice = (promotions) => {
     if (promotions && promotions.length) {
-        let lowestPrice = promotions.reduce(function(prev, curr) {
+        let lowestPrice = promotions.reduce(function (prev, curr) {
             if (prev && curr) {
                 if (prev.promotionalPrice && curr.promotionalPrice) {
                     return prev.promotionalPrice < curr.promotionalPrice ? prev : curr;
                 } else if (!prev.promotionalPrice && curr.promotionalPrice) {
                     return curr;
                 } else if (prev.promotionalPrice && !curr.promotionalPrice) {
-                    return  prev;
+                    return prev;
                 } else {
                     return;
                 }
@@ -162,7 +162,7 @@ const getPrices = (apiProduct) => {
 };
 
 class Product {
-    constructor(apiProduct, userSelectedColor) {
+    constructor (apiProduct, userSelectedColor) {
         this.id = apiProduct.id;
         this.name = apiProduct.name;
         this.masterId = apiProduct.master.masterId

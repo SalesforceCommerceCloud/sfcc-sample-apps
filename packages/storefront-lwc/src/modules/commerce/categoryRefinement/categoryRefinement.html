@@ -6,12 +6,14 @@
 -->
 <template>
     <ul class="category-list">
-        <li class={refinement.categoryClasses} onclick={refinement.toggleRefinement}>
+        <li class={displayRefinement.categoryClasses} onclick={toggleRefinementHandler}>
             {refinement.label} ({refinement.hitCount})
         </li>
-        <li if:true={refinement.hasSubValues} class="category-refinement-sub-list">
-            <template for:each={refinement.values} for:item="catRefinementSubCat">
-                <commerce-category-refinement key={catRefinementSubCat.key} refinement={catRefinementSubCat}></commerce-category-refinement>
+        <li if:true={displayRefinement.hasSubValues} class="category-refinement-sub-list">
+            <template for:each={displayRefinement.values} for:item="catRefinementSubCat">
+                <commerce-category-refinement key={catRefinementSubCat.key}
+                                              refinement={catRefinementSubCat}>
+                </commerce-category-refinement>
             </template>
         </li>
     </ul>

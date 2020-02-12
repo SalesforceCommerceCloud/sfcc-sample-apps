@@ -14,7 +14,10 @@
     </div>
     <div class='row product-grid'>
         <div class='col-6 col-sm-4 grid-gutter d-lg-none'>
-            <button class="btn btn-primary btn-lg btn-block filter-button" onclick={toggleRefinementBar}>Filter</button>
+            <button class="btn btn-primary btn-lg btn-block filter-button"
+                    onclick={toggleRefinementBar}>
+                Filter
+            </button>
         </div>
         <div class='col-6 col-sm-4 grid-gutter d-none d-sm-block'>
             <p class="text-center text-lg-left result-count">
@@ -28,7 +31,7 @@
         <template for:each={products} for:item="product">
             <div class='col-6 col-sm-4 grid-gutter' key={product.productId} >
                 <div class='product' >
-                    <commerce-producttile product={product}></commerce-producttile>
+                    <commerce-product-tile product={product}></commerce-product-tile>
                 </div>
             </div>
         </template>

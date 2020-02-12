@@ -121,15 +121,6 @@
     font-size: 1rem;
 }
 
-.search-banner {
-    background-image: url('../images/search.jpg');
-    background-position-y: 40%;
-}
-
-.search-keywords {
-    font-weight: bold;
-}
-
 .tab-content {
 
     @include media-breakpoint-down(xs) {
@@ -148,46 +139,4 @@
             padding-right: 5px;
         }
     }
-}
-
-.search-tips {
-    text-align: left;
-    margin-top: 1.875rem;
-}
-
-.category-item {
-    margin-bottom: 0.938rem;
-}
-
-.show-more,
-.show-more-content {
-    padding: 0.938em;
-    clear: both;
-}
-
-.search-nav {
-    margin-bottom: 1em;
-    border-bottom: 0.063em solid $grey3;
-
-    .nav-tabs-wrapper {
-        padding: 0;
-
-        @include media-breakpoint-down(xs) {
-            width: 100%;
-        }
-
-        .nav-tabs {
-            border-bottom: 0 none;
-        }
-    }
-
-    .nav-link:focus {
-        background-color: $grey1;
-    }
-}
-
-.product-options .quantity {
-    position: absolute;
-    bottom: 0;
-    right: 0;
 }

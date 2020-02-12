@@ -8,7 +8,7 @@
 
 import SearchResultProduct from "./SearchResultProduct";
 
-class SearchResult {
+export default class SearchResult {
     constructor(searchResult, filterParams) {
         this.limit = searchResult.limit;
         this.productHits = searchResult['hits'] && searchResult['hits'].length ? searchResult.hits.map((product) => new SearchResultProduct(product)) : [];
@@ -29,4 +29,4 @@ class SearchResult {
         })
     }
 }
-export default SearchResult;
+

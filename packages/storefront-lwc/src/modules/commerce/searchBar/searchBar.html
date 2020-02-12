@@ -11,7 +11,8 @@
                placeholder="Search (keywords, brands, etc)"
                type='search'
                value={query}
-               onkeyup={handleKey}
+               oninput={searchInputHandler}
+               onkeyup={searchKeyUpHandler}
                autofocus>
         <i class='fa fa-search' onclick={handleIconClick}></i>
     </div>
