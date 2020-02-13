@@ -10,8 +10,8 @@ class Image {
     constructor(image) {
         this.title = image.title;
         this.alt = image.alt;
-        this.link = image.link;
-        this.style = `background: url(${image.link});`;
+        this.link = image.disBaseLink || image.link;
+        this.style = `background: url(${this.link});`;
     }
 }
 export default Image;

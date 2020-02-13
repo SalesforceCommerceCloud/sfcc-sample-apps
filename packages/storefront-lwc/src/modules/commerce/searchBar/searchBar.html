@@ -1,0 +1,19 @@
+<!--
+    Copyright (c) 2020, salesforce.com, inc.
+    All rights reserved.
+    SPDX-License-Identifier: BSD-3-Clause
+    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+-->
+<template>
+    <div class="site-search">
+        <span class='fa fa-search'></span>
+        <input class='form-control search-field'
+               placeholder="Search (keywords, brands, etc)"
+               type='search'
+               value={query}
+               oninput={searchInputHandler}
+               onkeyup={searchKeyUpHandler}
+               autofocus>
+        <i class='fa fa-search' onclick={handleIconClick}></i>
+    </div>
+</template>

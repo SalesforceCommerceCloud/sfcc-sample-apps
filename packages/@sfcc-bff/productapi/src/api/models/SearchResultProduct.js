@@ -21,11 +21,11 @@ var getColorSwatches = (variationAttributes) => {
                         value: colorAttr.value
                     }
 
-                    if (colorAttr.image_swatch) {
-                        colorAttributes.title = colorAttr.image_swatch.title,
-                        colorAttributes.link = colorAttr.image_swatch.link,
-                        colorAttributes.alt = colorAttr.image_swatch.alt,
-                        colorAttributes.style = `background: url(${colorAttr.image_swatch.link});  background-position:0px;background-color:transparent;`
+                    if (colorAttr.imageSwatch) {
+                        colorAttributes.title = colorAttr.imageSwatch.title,
+                        colorAttributes.link = colorAttr.imageSwatch.disBaseLink || colorAttr.imageSwatch.link,
+                        colorAttributes.alt = colorAttr.imageSwatch.alt,
+                        colorAttributes.style = `background: url(${colorAttributes.link});  background-position:0px;background-color:transparent;`
                     }
 
                     return colorAttributes;
@@ -39,13 +39,13 @@ var getColorSwatches = (variationAttributes) => {
 
 class SearchResultProduct {
     constructor(product) {
-        this.id = product.product_id;
-        this.name = product.product_name;
+        this.productId = product.productId;
+        this.name = product.productName;
         this.prices = {
             sale: product.price
         }
         this.image = new Image(product.image);
-        this.colorSwatches = getColorSwatches(product.variation_attributes);
+        this.colorSwatches = getColorSwatches(product.variationAttributes);
         Object.assign(this, product);
     }
 }

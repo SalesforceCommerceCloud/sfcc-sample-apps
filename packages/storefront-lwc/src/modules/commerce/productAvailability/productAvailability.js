@@ -1,16 +1,19 @@
-import { LightningElement, api, track } from 'lwc';
+import {LightningElement, api} from 'lwc';
 
 export default class ProductAvailability extends LightningElement {
     @api inventory;
     @api type;
-
     @api quantity;
 
-    get availabilityMessage() {
-        let availabilityMessage; // Message that will be returned and displayed
+    /**
+     * Checks the availability of a product and returns the appropriate availability message
+     */
+    get availabilityMessage () {
+        // Message that will be returned and displayed
+        let availabilityMessage = '';
 
         // If product is a master product user must select variant for availability
-        let isMasterProduct = this.type && this.type.master;
+        const isMasterProduct = this.type && this.type.master;
         if (isMasterProduct) {
             availabilityMessage = 'Select Styles for Availability';
             return availabilityMessage;
@@ -22,27 +25,28 @@ export default class ProductAvailability extends LightningElement {
         // StockLevel = max(0, allocation - turnover – on-order)
 
         if (!this.inventory || !this.inventory.ats) {
-            availabilityMessage =  'This item is currently not available';
+            availabilityMessage = 'This item is currently not available';
         } else {
             // Check to see if the product has perpetual inventory. OCAPI returns ats with value 9999 if product is infinite
-            let isPerpetual = this.inventory && this.inventory.ats && this.inventory.ats === 9999;
+            const isPerpetual = this.inventory && this.inventory.ats && this.inventory.ats === 9999;
             if (isPerpetual) {
-                availabilityMessage =  'In Stock';
+                availabilityMessage = 'In Stock';
                 return availabilityMessage;
             }
 
-            let availabilityMessages = []; // Could have multiple messages due to availability levels and back order and pre order
-            let inventoryStockLevel = this.inventory.stockLevel ? this.inventory.stockLevel : 0;
-            let allocation = this.inventory.ats - inventoryStockLevel;
-            let selectedQuantity = this.quantity ? this.quantity : 1;
-            let levels = {
-                inStock : selectedQuantity <= inventoryStockLevel ? selectedQuantity : inventoryStockLevel,
-                preorder : 0,
-                backorder : 0,
-                notAvailable : 0
+            // Could have multiple messages due to availability levels and back order and pre order
+            const availabilityMessages = [];
+            const inventoryStockLevel = this.inventory.stockLevel ? this.inventory.stockLevel : 0;
+            const allocation = this.inventory.ats - inventoryStockLevel;
+            const selectedQuantity = this.quantity ? this.quantity : 1;
+            const levels = {
+                inStock: selectedQuantity <= inventoryStockLevel ? selectedQuantity : inventoryStockLevel,
+                preorder: 0,
+                backorder: 0,
+                notAvailable: 0
             };
+            let selectedQuantityLeft = selectedQuantity <= inventoryStockLevel ? 0 : selectedQuantity - inventoryStockLevel;
 
-            let selectedQuantityLeft =  selectedQuantity <= inventoryStockLevel ? 0 : selectedQuantity - inventoryStockLevel;
             // Determine backorder levels
             if (selectedQuantityLeft && this.inventory.backorderable) {
                 if (selectedQuantityLeft <= allocation) {
@@ -113,5 +117,4 @@ export default class ProductAvailability extends LightningElement {
 
         return availabilityMessage;
     }
-
 }

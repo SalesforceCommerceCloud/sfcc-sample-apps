@@ -13,6 +13,7 @@ module.exports = {
         "sourceType": "module"
     },
     "rules": {
+
         "accessor-pairs": "error",
         "array-bracket-newline": "error",
         "array-bracket-spacing": [
@@ -88,7 +89,7 @@ module.exports = {
         "id-length": "off",
         "id-match": "error",
         "implicit-arrow-linebreak": "error",
-        "indent": "error",
+        "indent": "off",
         "indent-legacy": "error",
         "init-declarations": "error",
         "jsx-quotes": "error",
@@ -284,10 +285,7 @@ module.exports = {
         "strict": "error",
         "switch-colon-spacing": "error",
         "symbol-description": "error",
-        "template-curly-spacing": [
-            "error",
-            "never"
-        ],
+        "template-curly-spacing": "off",
         "template-tag-spacing": "error",
         "unicode-bom": [
             "error",
