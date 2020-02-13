@@ -4,20 +4,19 @@
     SPDX-License-Identifier: BSD-3-Clause
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
-import {LightningElement, api} from 'lwc'
-import {navigate} from 'commerce/router';
+import { LightningElement, api } from 'lwc';
+import { navigate } from 'commerce/router';
 
 /**
  * Search Bar where visitors can search for stuff
  */
 export default class SearchBar extends LightningElement {
-
     @api query = '';
 
     /**
      * Use router to make query search
      */
-    performSearch () {
+    performSearch() {
         if (!!this.query) {
             navigate(`/search/${encodeURIComponent(this.query)}`);
         }
@@ -26,25 +25,25 @@ export default class SearchBar extends LightningElement {
     /**
      * Handles pressing 'Enter' in the search field
      */
-    searchInputHandler (event) {
+    searchInputHandler(event) {
         this.query = (event.target.value || '').trim();
-    };
+    }
 
     /**
      * Perform the search when enter key pressed
      * @param event
      */
-    searchKeyUpHandler (event) {
+    searchKeyUpHandler(event) {
         if (event.key === 'Enter') {
             this.performSearch();
             event.preventDefault();
         }
-    };
+    }
 
     /**
      * User may click the search icon also.
      */
-    handleIconClick () {
+    handleIconClick() {
         this.performSearch();
-    };
+    }
 }

@@ -10,14 +10,12 @@
 import color from 'colors';
 import express from 'express';
 import path from 'path';
-import {fileURLToPath} from 'url';
+import { fileURLToPath } from 'url';
 
 // ****************************************************
 // Instantiate the new Storefront Reference Application
 // ****************************************************
 import { getSampleApp } from './sample-app';
-
-
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -38,16 +36,19 @@ const mode = process.env.NODE_ENV || 'development';
     sampleApp.expressApplication = express();
 
     // Serve up static files
-    sampleApp.expressApplication.use('/', express.static(publicDir, {
-        index: ['index.html'],
-        immutable: true,
-        maxAge: 31536000,
-    }));
+    sampleApp.expressApplication.use(
+        '/',
+        express.static(publicDir, {
+            index: ['index.html'],
+            immutable: true,
+            maxAge: 31536000,
+        }),
+    );
     sampleApp.start();
 
     // provide route for service-worker
-    sampleApp.expressApplication.use("/service-worker.js", (req, res) => {
-        res.sendFile(path.resolve(__dirname, "service-worker.js"));
+    sampleApp.expressApplication.use('/service-worker.js', (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'service-worker.js'));
     });
 
     sampleApp.expressApplication.get('/*', (req, res) => {
@@ -57,8 +58,18 @@ const mode = process.env.NODE_ENV || 'development';
     // start the server
     const server = sampleApp.expressApplication.listen(port, () => {
         console.log('======== Example SFRA runtime ======== ');
-        console.log(`🌩 Client Server up on ==============> http://localhost:${server.address().port} <=========== Client UI ========== 🌩`.yellow);
-        console.log(`🚀 Apollo GraphQL Server up on ======> http://localhost:${server.address().port}${sampleApp.apiConfig.config.COMMERCE_API_PATH} <=== Apollo GraphQL ===== 🚀`.blue);
+        console.log(
+            `🌩 Client Server up on ==============> http://localhost:${
+                server.address().port
+            } <=========== Client UI ========== 🌩`.yellow,
+        );
+        console.log(
+            `🚀 Apollo GraphQL Server up on ======> http://localhost:${
+                server.address().port
+            }${
+                sampleApp.apiConfig.config.COMMERCE_API_PATH
+            } <=== Apollo GraphQL ===== 🚀`.blue,
+        );
     });
 
     return server;

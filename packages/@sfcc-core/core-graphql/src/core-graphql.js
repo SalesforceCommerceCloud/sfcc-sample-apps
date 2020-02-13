@@ -8,56 +8,59 @@ import apolloServerExpress from 'apollo-server-express';
 import graphQLTools from 'graphql-tools';
 
 import { core, API_EXTENSIONS_KEY } from '@sfcc-core/core';
-import { API_CONFIG_KEY } from "@sfcc-core/apiconfig";
+import { API_CONFIG_KEY } from '@sfcc-core/apiconfig';
 
 const { makeExecutableSchema } = graphQLTools;
 const { ApolloServer, gql } = apolloServerExpress;
 const logger = core.logger;
 
-export const CORE_GRAPHQL_KEY = Symbol( 'Core GraphQL with Apollo' );
-export const EXPRESS_KEY = Symbol( 'Node Express' );
+export const CORE_GRAPHQL_KEY = Symbol('Core GraphQL with Apollo');
+export const EXPRESS_KEY = Symbol('Node Express');
 
 export const resolverFactory = (config, resolversArray) => {
     let combinedResolvers = {};
-    resolversArray.forEach((resolver) => {
+    resolversArray.forEach(resolver => {
         const resolverInst = resolver(config); // instantiate factory
         const keys = Object.keys(resolverInst);
-        keys.forEach((key) => {
+        keys.forEach(key => {
             if (combinedResolvers[key]) {
-                combinedResolvers[key] = {...combinedResolvers[key], ...resolverInst[key]};
+                combinedResolvers[key] = {
+                    ...combinedResolvers[key],
+                    ...resolverInst[key],
+                };
             } else {
                 combinedResolvers[key] = resolverInst[key];
             }
         });
     });
     return combinedResolvers;
-}
+};
 
 export const dataSourcesFactory = (config, dataSourcesArray) => {
     let dataSources = {};
-    dataSourcesArray.forEach((dataSource) => {
+    dataSourcesArray.forEach(dataSource => {
         const dataSourceInst = dataSource(config);
         Object.assign(dataSources, dataSourceInst);
     });
     return dataSources;
-}
+};
 
 /**
  * Core GraphQL and Apollo Server services - requires express to be registered.
  */
 export default class CoreGraphQL {
-
     constructor() {
-        logger.info( 'CoreGraphQL.constructor()' );
-        this._typeDef =
-            [ gql`
+        logger.info('CoreGraphQL.constructor()');
+        this._typeDef = [
+            gql`
                 type Query {
                     _empty: String
                 }
                 type Mutation {
                     _empty: String
                 }
-            `];
+            `,
+        ];
         this._resolvers = {};
         this._dataSources = {};
     }
@@ -87,39 +90,49 @@ export default class CoreGraphQL {
     }
 
     start() {
-        logger.info( 'Start CoreGraphQL' );
-        const expressApp = core.getService( EXPRESS_KEY );
-        const apiConfig = core.getService( API_CONFIG_KEY ).config;
-        logger.info( apiConfig );
+        logger.info('Start CoreGraphQL');
+        const expressApp = core.getService(EXPRESS_KEY);
+        const apiConfig = core.getService(API_CONFIG_KEY).config;
+        logger.info(apiConfig);
 
         if (expressApp) {
-            const apiPath = (apiConfig) ? apiConfig.COMMERCE_API_PATH : '/graphql';
+            const apiPath = apiConfig
+                ? apiConfig.COMMERCE_API_PATH
+                : '/graphql';
             if (!apiConfig) {
-                logger.warn( `No APIConfig COMMERCE_API_PATH provided; Apollo using default path '/graphql` );
+                logger.warn(
+                    `No APIConfig COMMERCE_API_PATH provided; Apollo using default path '/graphql`,
+                );
             }
 
             // Ensure API Extensions are initialized
             // Aggregate schemas and resolvers
-            const apis = core.getExtension( API_EXTENSIONS_KEY );
-            apis.forEach( apiFactory => {
+            const apis = core.getExtension(API_EXTENSIONS_KEY);
+            apis.forEach(apiFactory => {
                 const api = apiFactory();
                 this.typeDef = [...this.typeDef, ...api.typeDefs];
                 let apiResolvers = api.getResolvers(apiConfig);
                 const keys = Object.keys(apiResolvers);
-                keys.forEach((key) => {
+                keys.forEach(key => {
                     if (this.resolvers[key]) {
-                        this.resolvers[key] = {...this.resolvers[key], ...apiResolvers[key]}
+                        this.resolvers[key] = {
+                            ...this.resolvers[key],
+                            ...apiResolvers[key],
+                        };
                     } else {
-                        this.resolvers[key] = apiResolvers[key]
+                        this.resolvers[key] = apiResolvers[key];
                     }
                 });
-                Object.assign(this.dataSources, api.getDataSources && api.getDataSources(apiConfig))
+                Object.assign(
+                    this.dataSources,
+                    api.getDataSources && api.getDataSources(apiConfig),
+                );
             });
 
-            const schema = makeExecutableSchema( {
+            const schema = makeExecutableSchema({
                 typeDefs: this.typeDef,
-                resolvers: this.resolvers
-            } );
+                resolvers: this.resolvers,
+            });
 
             this.apolloServer = new ApolloServer({
                 schema,
@@ -127,17 +140,23 @@ export default class CoreGraphQL {
                 context: ({ req }) => {
                     return {
                         auth_token: req.headers.auth_token || '',
-                        cart_id: req.headers.cart_id
-                    }
-                }
+                        cart_id: req.headers.cart_id,
+                    };
+                },
             });
 
-            this.apolloServer.applyMiddleware( {app: expressApp, path: apiPath} );
-            logger.info('CoreGraphQL apolloServer middleware applied to express!');
+            this.apolloServer.applyMiddleware({
+                app: expressApp,
+                path: apiPath,
+            });
+            logger.info(
+                'CoreGraphQL apolloServer middleware applied to express!',
+            );
         } else {
-            const msg = 'Error: An express application needs to be registered as a core service.';
-            logger.error( msg );
-            throw new Error( msg )
+            const msg =
+                'Error: An express application needs to be registered as a core service.';
+            logger.error(msg);
+            throw new Error(msg);
         }
     }
 
@@ -148,9 +167,8 @@ export default class CoreGraphQL {
     get apolloServer() {
         return this._apolloServer;
     }
-
 }
 
-core.registerService( CORE_GRAPHQL_KEY, function () {
+core.registerService(CORE_GRAPHQL_KEY, function() {
     return new CoreGraphQL(core);
 });

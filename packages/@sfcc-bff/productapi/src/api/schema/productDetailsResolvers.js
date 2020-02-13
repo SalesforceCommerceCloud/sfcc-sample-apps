@@ -8,7 +8,7 @@
 
 import Product from '../models/Product';
 import CommerceSdk from 'commerce-sdk';
-import {core} from '@sfcc-core/core';
+import { core } from '@sfcc-core/core';
 
 const logger = core.logger;
 
@@ -23,11 +23,11 @@ const getClientProduct = async (config, id) => {
             clientId: clientId,
             organizationId: organizationId,
             shortCode: shortCode,
-            siteId: siteId
+            siteId: siteId,
         },
         body: {
-            type: "guest"
-        }
+            type: 'guest',
+        },
     });
 
     const product = new CommerceSdk.Product.ShopperProducts.Client({
@@ -35,36 +35,37 @@ const getClientProduct = async (config, id) => {
         parameters: {
             organizationId: organizationId,
             shortCode: shortCode,
-            siteId: siteId
-        }
+            siteId: siteId,
+        },
     });
 
-    return product.getProduct({
-        parameters: {
-            id: id,
-            expand: 'availability,prices,promotions,variations,images',
-            allImages: true,
-        }
-    }).catch((e) => {
-        logger.error(`Error in getClientProduct() for product ${id}`);
-        throw e;
-    });
+    return product
+        .getProduct({
+            parameters: {
+                id: id,
+                expand: 'availability,prices,promotions,variations,images',
+                allImages: true,
+            },
+        })
+        .catch(e => {
+            logger.error(`Error in getClientProduct() for product ${id}`);
+            throw e;
+        });
 };
 
-export const resolver = (config) => {
+export const resolver = config => {
     return {
         Query: {
-            product: async (_, {id, selectedColor}) => {
+            product: async (_, { id, selectedColor }) => {
                 let apiProduct;
                 try {
                     apiProduct = await getClientProduct(config, id);
-
                 } catch (e) {
                     logger.error(`Error in productDetailResolver(). ${e}`);
                     throw e;
                 }
                 return new Product(apiProduct, selectedColor);
-            }
-        }
-    }
+            },
+        },
+    };
 };

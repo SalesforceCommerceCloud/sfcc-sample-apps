@@ -6,27 +6,33 @@
 */
 'use strict';
 
-import SearchResultProduct from "./SearchResultProduct";
+import SearchResultProduct from './SearchResultProduct';
 
 export default class SearchResult {
     constructor(searchResult, filterParams) {
         this.limit = searchResult.limit;
-        this.productHits = searchResult['hits'] && searchResult['hits'].length ? searchResult.hits.map((product) => new SearchResultProduct(product)) : [];
+        this.productHits =
+            searchResult['hits'] && searchResult['hits'].length
+                ? searchResult.hits.map(
+                      product => new SearchResultProduct(product),
+                  )
+                : [];
         this.currentFilters = filterParams ? filterParams : null;
-        this.refinements = searchResult.refinements.map((refinement) => {
+        this.refinements = searchResult.refinements.map(refinement => {
             return {
                 attributeId: refinement.attributeId,
                 label: refinement.label,
-                values: refinement.values ? refinement.values.map((value) => {
-                    return {
-                        label: value.label,
-                        value: value.value,
-                        hitCount: value.hitCount,
-                        values: value.values
-                    }
-                }) : null
-            }
-        })
+                values: refinement.values
+                    ? refinement.values.map(value => {
+                          return {
+                              label: value.label,
+                              value: value.value,
+                              hitCount: value.hitCount,
+                              values: value.values,
+                          };
+                      })
+                    : null,
+            };
+        });
     }
 }
-

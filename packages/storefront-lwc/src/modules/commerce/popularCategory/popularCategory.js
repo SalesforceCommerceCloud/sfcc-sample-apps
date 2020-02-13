@@ -16,4 +16,3 @@ class PopularCategory extends LightningElement {
 }
 
 export default PopularCategory;
-

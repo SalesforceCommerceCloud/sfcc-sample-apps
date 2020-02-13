@@ -4,21 +4,20 @@
     SPDX-License-Identifier: BSD-3-Clause
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
-//
-// SFRA Core Code
-//
+/*
+   SFRA Core Code
+    */
 
 export const LOGGER_KEY = Symbol('Logger Service');
 export const API_EXTENSIONS_KEY = Symbol('API Extensions');
 
 class Core {
-
-    // singletons (logger, etc)
+    //singletons (logger, etc)
     get services() {
         return this._services;
     }
 
-    // multi-values
+    //multi-values
     get extensions() {
         return this._factoryExtensions;
     }
@@ -57,23 +56,25 @@ class Core {
      *
      * @param key The specific extension(s) to instantiate. If undefined Otherwise instantiate all.
      */
-    initializeExtensions(key) {
-        this.logger.log(`initializeExtensions(${key.toString()})`);
+    initializeExtensions(_key) {
+        this.logger.log(`initializeExtensions(${_key.toString()})`);
 
-        const keys = (key) ? [key] : Object.getOwnPropertySymbols(this._factoryExtensions);
+        const keys = _key
+            ? [_key]
+            : Object.getOwnPropertySymbols(this._factoryExtensions);
 
         keys.forEach(key => {
-            if (key && !!this._extensions[key]) {
+            if (key && Boolean(this._extensions[key])) {
                 const msg = `Error: ${key.toString()} extensions already initialized`;
-                core.logger.error(msg);
+                this.logger.error(msg);
                 throw new Error(msg);
             }
             this._extensions[key] = [];
             this.getExtension(key).forEach(extension => {
-                // instantiate extension
+                //instantiate extension
                 this._extensions[key].push(extension());
-            })
-        })
+            });
+        });
     }
 
     /**
@@ -85,15 +86,14 @@ class Core {
         if (this._services[key]) {
             return this._services[key];
         } else if (this._factoryServices[key]) {
-            // create the service instance
-            return this._services[key] = new this._factoryServices[key]();
-        } else if ( key === LOGGER_KEY ){
-            // A logger isn't registered yet
+            //create the service instance
+            this._services[key] = new this._factoryServices[key]();
+            return this._services[key];
+        } else if (key === LOGGER_KEY) {
+            //A logger isn't registered yet
             return console;
-        } else {
-            throw new Error(`Service ${key.toString()} does not exist`);
-
         }
+        throw new Error(`Service ${key.toString()} does not exist`);
     }
 
     get logger() {
@@ -111,17 +111,19 @@ class Core {
     }
 
     constructor() {
-        // just to debug
+        //just to debug
         this.INSTANCE = 'Core Instance: ' + new Date().getTime();
 
-        // Instance maps for services and extensions
+        //Instance maps for services and extensions
         this._services = {};
-        this._extensions = {}; // unused at the moment
+        this._extensions = {}; //unused at the moment
 
-        // Factory maps for services and extensions
+        //Factory maps for services and extensions
         this._factoryServices = {};
         this._factoryExtensions = {};
-        this.logger.log('Create the Core instance used to register services and extensions.');
+        this.logger.log(
+            'Create the Core instance used to register services and extensions.',
+        );
     }
 }
 
