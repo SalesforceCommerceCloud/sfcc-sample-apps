@@ -31,8 +31,8 @@ To set up the sample application, perform the following steps:
 <tr><th>Variable</th><th>Description</th></tr>
 <tr><td><code>COMMERCE_CLIENT_API_SITE_ID</code></td><td>A unique site ID (for example, RefArch or SiteGenesis).</td></tr>
 <tr><td><code>COMMERCE_CLIENT_CLIENT_ID</code></td><td>A unique ID used exclusively for API access. See <a href="https://documentation.b2c.commercecloud.salesforce.com/DOC1/topic/com.demandware.dochelp/AccountManager/AccountManagerAddAPIClientID.html">Add a Client API</a> for more information.</td></tr>
-<tr><td><code>COMMERCE_CLIENT_REALM</code></td><td>A unique four-character ID (for example, bblx).</td></tr>
-<tr><td><code>COMMERCE_CLIENT_INSTANCE</code></td><td>Instance ID within a realm (for example, 015).</td></tr>
+<tr><td><code>COMMERCE_CLIENT_REALM_ID</code></td><td>A unique four-character ID (for example, bblx).</td></tr>
+<tr><td><code>COMMERCE_CLIENT_INSTANCE_ID</code></td><td>Instance ID within a realm (for example, 015).</td></tr>
 <tr><td><code>COMMERCE_CLIENT_SHORT_CODE</code></td><td>Region-specific merchant identifier (for example, staging-001).</td></tr>
 </table>
 
