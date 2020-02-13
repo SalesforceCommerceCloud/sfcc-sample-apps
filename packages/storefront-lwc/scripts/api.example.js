@@ -18,11 +18,18 @@ const COMMERCE_CLIENT_API_SITE_ID = 'your.site.id';
 const COMMERCE_CLIENT_CLIENT_ID = '';
 const COMMERCE_CLIENT_REALM_ID = '';
 const COMMERCE_CLIENT_INSTANCE_ID = '';
-const COMMERCE_CLIENT_ORGANIZATION_ID = `f_ecom_${COMMERCE_CLIENT_REALM_ID}_${ COMMERCE_CLIENT_INSTANCE_ID}`;
-const COMMERCE_CLIENT_SHORT_CODE = 'your.instance'
+const COMMERCE_CLIENT_ORGANIZATION_ID = `f_ecom_${COMMERCE_CLIENT_REALM_ID}_${COMMERCE_CLIENT_INSTANCE_ID}`;
+const COMMERCE_CLIENT_SHORT_CODE = 'your.instance';
 
 // Available Log Levels for the Application
-const LOG_LEVEL_MAP = { 'TRACE': 0, 'DEBUG': 1, 'INFO': 2, 'WARN': 3, 'ERROR': 4, 'SILENT': 5};
+const LOG_LEVEL_MAP = {
+    TRACE: 0,
+    DEBUG: 1,
+    INFO: 2,
+    WARN: 3,
+    ERROR: 4,
+    SILENT: 5,
+};
 // Default Log Level is set to ERROR within the Application. It can be overwritten here
 const COMMERCE_LOG_LEVEL = LOG_LEVEL_MAP.DEBUG;
 
@@ -34,5 +41,5 @@ export default {
     COMMERCE_CLIENT_INSTANCE_ID,
     COMMERCE_CLIENT_ORGANIZATION_ID,
     COMMERCE_CLIENT_SHORT_CODE,
-    COMMERCE_LOG_LEVEL
+    COMMERCE_LOG_LEVEL,
 };

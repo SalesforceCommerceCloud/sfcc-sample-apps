@@ -6,13 +6,12 @@
 */
 // make export singleton
 
-import {core, LOGGER_KEY} from '@sfcc-core/core';
+import { core, LOGGER_KEY } from '@sfcc-core/core';
 import apilog from 'loglevel';
-export {LOGGER_KEY};
+export { LOGGER_KEY };
 
 export default class Logger {
-
-    constructor(core) {
+    constructor() {
         apilog.setDefaultLevel(apilog.levels.ERROR);
     }
 
@@ -41,6 +40,6 @@ export default class Logger {
     }
 }
 
-core.registerService(LOGGER_KEY, function () {
+core.registerService(LOGGER_KEY, function() {
     return new Logger(core);
 });

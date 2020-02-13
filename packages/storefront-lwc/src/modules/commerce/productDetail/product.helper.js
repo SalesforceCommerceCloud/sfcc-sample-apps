@@ -1,6 +1,6 @@
-const variationSelected = (product) => {
+const variationSelected = product => {
     return !product.type.master;
-}
+};
 
 const inventoryAvailable = (inventory, quantity) => {
     if (inventory.orderable && inventory.ats >= quantity) {
@@ -9,7 +9,7 @@ const inventoryAvailable = (inventory, quantity) => {
         return true;
     }
     return false;
-}
+};
 
 export const canAddToCart = (product, quantity) => {
     const inventory = product && product.inventory;
@@ -22,4 +22,4 @@ export const canAddToCart = (product, quantity) => {
     return (
         variationSelected(product) && inventoryAvailable(inventory, quantity)
     );
-}
+};

@@ -15,5 +15,5 @@ export const messagehelper = {
             obj.isVisible = false;
             return obj;
         }, ms);
-    }
+    },
 };

@@ -4,38 +4,37 @@
     SPDX-License-Identifier: BSD-3-Clause
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
-import {LightningElement, api, track} from 'lwc'
+import { LightningElement, api, track } from 'lwc';
 
 export default class RefinementGroup extends LightningElement {
-
     @track cardClass = 'card collapsible-card refinement expanded';
     @track expanded;
     @track displayRefinementGroup = {};
 
     @api
-    get refinementgroup () {
+    get refinementgroup() {
         return this.displayRefinementGroup;
     }
 
-    set refinementgroup (ref) {
+    set refinementgroup(ref) {
         // Manual clone to Bypass Proxy and read-only objects
         const newRef = {
             _type: ref._type,
             attributeId: ref.attributeId,
             label: ref.label,
             hitCount: ref.hitCount,
-            values: ref.values ? [...ref.values] : []
+            values: ref.values ? [...ref.values] : [],
         };
 
         // Decorate refinement.values for various template options.
-        newRef.values = newRef.values.map((refValue) => {
+        newRef.values = newRef.values.map(refValue => {
             return this.buildRefinementObject(refValue, ref);
         });
 
         this.displayRefinementGroup = newRef;
     }
 
-    buildRefinementObject (refValue, ref) {
+    buildRefinementObject(refValue, ref) {
         const isColor = ref.attributeId === 'c_refinementColor';
         const isCategory = ref.attributeId === 'cgid';
         const isSelected = !!refValue.isSelected;
@@ -49,31 +48,36 @@ export default class RefinementGroup extends LightningElement {
             isSelected,
             hitCount: refValue.hitCount || refValue.hitCount,
             isColor,
-            categoryClasses: isSelected ? 'refinement-selected category-refinement-item' : 'refinement-not-selected category-refinement-item',
-            colorClassNames: !isColor ? '' : `swatch-circle-${color} ${isSelected ? 'selected' : ''}`,
+            categoryClasses: isSelected
+                ? 'refinement-selected category-refinement-item'
+                : 'refinement-not-selected category-refinement-item',
+            colorClassNames: !isColor
+                ? ''
+                : `swatch-circle-${color} ${isSelected ? 'selected' : ''}`,
             toDisplay: refValue.hitCount > 0,
             isCategory,
             hasSubValues: refValue.values && refValue.values.length,
             value: refValue.value,
-            values: refValue.values && refValue.values.length ? [...refValue.values] : []
+            values:
+                refValue.values && refValue.values.length
+                    ? [...refValue.values]
+                    : [],
         };
 
-
         // Decorate refinement.values for various template options.
-        newObj.values = newObj.values.map((refSubValue) => {
+        newObj.values = newObj.values.map(refSubValue => {
             return this.buildRefinementObject(refSubValue, ref);
         });
 
         return newObj;
-    };
+    }
 
-    toggleDropdown () {
+    toggleDropdown() {
         if (this.expanded) {
             this.cardClass = 'card collapsible-card refinement expanded';
         } else {
             this.cardClass = 'card collapsible-card refinement collapsed';
         }
         this.expanded = !this.expanded;
-    };
-
+    }
 }
