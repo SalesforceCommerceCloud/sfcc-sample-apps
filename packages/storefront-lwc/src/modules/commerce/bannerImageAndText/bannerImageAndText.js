@@ -17,6 +17,7 @@ class BannerImageAndText extends LightningElement {
     @api bannerImageSrc;
     @api bannerImageAlt;
     @api bannerImageTitle;
+    @api bannerLink;
 }
 
 export default BannerImageAndText;

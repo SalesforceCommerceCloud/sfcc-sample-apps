@@ -4,7 +4,7 @@ Our storefront sample application shows how you can build amazing commerce exper
 
 Read more about the [architecture](docs/architecture.md).
 
-The sample application shows you a recommended approach for building a storefront, but it is not a complete and fully functional storefront reference application. At present, the sample application includes a home page, product list page, and product detail page. More great features are coming soon!
+The sample application shows you a recommended approach for building a storefront, but it is not a complete and fully functional storefront reference application. The sample application now includes a home page, product list page, and product detail page. More great features are coming soon!
 
 Note: sfcc-sample-apps is a monorepo with a sample application and Backend For Frontend (BFF) dependency modules. Typically, dependencies modules are published to a public npm server. However to develop an application, the modules are included together in a single repository.
 
@@ -12,7 +12,6 @@ Note: sfcc-sample-apps is a monorepo with a sample application and Backend For F
 1. Download and install [Node.js v12](https://nodejs.org/en/download/).
 2. Install yarn: 
 `npm install yarn -g`
-
 
 ## Setup
 
@@ -24,7 +23,7 @@ To set up the sample application:
 2. Change into the `sfcc-sample-apps` folder:
 `cd sfcc-sample-apps`
 
-3. Copy the `packages/storefront-lwc/scripts/api.example.js` file, save it as `packages/storefront-lwc/scripts/api.js`, and make sure `api.js` is added to your `.gitignore` file.
+3. Copy the `api.example.js` file located at `/packages/storefront-lwc/scripts/`, save it as `api.js`, and make sure `api.js` is added to your `.gitignore` file.
 
 4. In the `api.js` file, provide values for the following variables (you can obtain these values from your Account Executive (AE) or Customer Support Manager (CSM)):
 <table>
@@ -43,9 +42,10 @@ To set up the sample application:
 `yarn build`
 
 7. Start the sample application:
-`yarn start`
+`yarn start:dev` (development mode) or
+`yarn start` (production mode)
 
-8. Access the sample application by opening your browser to http://localhost:3000.
+8. To access the sample application in development mode, open the browser to http://localhost:3000 (for production mode, open to http://localhost:3002).
 
 You can optionally test the sample application:
 `yarn test`
@@ -64,7 +64,6 @@ We recommend Visual Studio Code inbuilt debugger to troubleshoot the code. The `
     * `SILENT`
 * You can also change the server listening port by changing the `port` property in `scff-sample-apps/packages/storefront-lwc/lwc-services.config.js`.
 
-
 ### Learn More About Supporting Technologies
 * [NodeJS](https://nodejs.org/en/docs/)
 * [ECMAScript 6](https://hacks.mozilla.org/category/es6-in-depth/)
@@ -78,7 +77,6 @@ We recommend Visual Studio Code inbuilt debugger to troubleshoot the code. The `
 ## Contributing
 
 * See [Contributing](CONTRIBUTING.md)
-
 
 <!-- Markdown link & img dfn's -->
 [circleci-image]: https://circleci.com/gh/SalesforceCommerceCloud/sfcc-sample-apps.svg?style=shield&circle-token=f34a55a59d7dfc30402e719996edf10092780b66
