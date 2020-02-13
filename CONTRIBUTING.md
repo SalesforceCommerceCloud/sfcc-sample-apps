@@ -70,7 +70,12 @@ If this is your first pull request, follow these steps:
 
 After you submit your pull request, we'll look it over and consider it for merging.
 
-As long as your submission has met the above guidelines, we should merge it in a timely manner.
+As long as your submission has met the above guidelines, we should merge it in a timely manner. However; please keep in
+mind the following:
+* If the changes affect security (including but not limited to PCI, PII, Session Management). The changes will need to be reviewed by a member of our product security team.
+* All UX changes (even trivial ones) will require a UX approval before it can be merged.
+* If there is a change to the documentation or UI text the documentation team will need to review the proposed changes and sign off of them.
+* PM sign off on value of the enhancements in the domain.
 
 Our sprints run for about two weeks; in that period of time, we typically review all pull requests, give feedback, and merge the request (depending on our current sprint priorities).
 
@@ -78,7 +83,7 @@ Our sprints run for about two weeks; in that period of time, we typically review
 
 To speed up the process of reviewing and merging your pull request, grant the following team members access to your fork:
 
-  * _SFRA_ team 
+  * _SFRA_ Admins 
   
  
 ## Contributer License Agreement (CLA)
