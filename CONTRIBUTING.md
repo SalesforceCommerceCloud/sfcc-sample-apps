@@ -88,3 +88,7 @@ To speed up the process of reviewing and merging your pull request, grant the fo
 ## Contributer License Agreement (CLA)
 
 All external contributors must sign our Contributor License Agreement (CLA).  
+
+## Commit Signing
+
+All contributors must set up [commit signing](https://help.github.com/en/github/authenticating-to-github/signing-commits).
