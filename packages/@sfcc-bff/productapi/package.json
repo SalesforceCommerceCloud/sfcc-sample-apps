@@ -1,0 +1,22 @@
+{
+  "name": "@sfcc-bff/productapi",
+  "version": "0.0.1-sfcc-alpha-1",
+  "description": "",
+  "main": "./src/productapi.js",
+  "scripts": {
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "pack": "npm pack",
+    "pub": "npm pack; npm publish -f"
+  },
+  "author": "",
+  "type": "module",
+  "license": "MIT",
+  "dependencies": {
+    "@sfcc-core/core": "0.0.1-sfcc-alpha-1",
+    "@sfcc-core/core-graphql": "0.0.1-sfcc-alpha-1",
+    "commerce-sdk": "0.2.0-alpha.6",
+    "lodash": "^4.17.15",
+    "request-promise": "^4.2.5"
+  }
+}

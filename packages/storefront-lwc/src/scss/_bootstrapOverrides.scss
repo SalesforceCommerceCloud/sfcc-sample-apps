@@ -1,0 +1,86 @@
+.carousel {
+    .icon-prev,
+    .icon-next {
+        background-color: $white;
+        font-size: 1.875em;
+        // width and height here need to use rem units because the font size used here is 30px
+        height: 3rem;
+        padding-top: 0.24em;
+        width: 3rem;
+
+        &::before {
+            color: black;
+            font-family: 'FontAwesome';
+        }
+    }
+
+    .icon-prev {
+        &::before {
+            content: '\f104';
+        }
+    }
+
+    .icon-next {
+        &::before {
+            content: '\f105';
+        }
+    }
+
+    .carousel-control-prev {
+        justify-content: flex-start;
+    }
+
+    .carousel-control-next {
+        justify-content: flex-end;
+    }
+}
+
+.nav-tabs {
+    border-bottom: $border-width solid $grey3;
+
+    .nav-link {
+        font-size: 1.1rem;
+        color: $nav-tabs-link-hover-border-color;
+
+        &.active {
+            border-bottom: 0.188em solid $primary;
+        }
+    }
+}
+
+.card {
+    margin-bottom: 1em;
+}
+
+.card-header h4 {
+    margin-bottom: 0;
+}
+
+.modal .modal-body {
+    flex: 0 0 auto;
+}
+
+dt {
+    color: $gray-700;
+    font-weight: normal;
+}
+
+.custom-checkbox .custom-control-label::before {
+    border: 1px solid black;
+    background: $grey1; /* For browsers that do not support gradients */
+    background: linear-gradient($grey1, $grey3); /* Standard syntax */
+}
+
+.custom-checkbox .custom-control-input:checked ~ .custom-control-label::after {
+    background-image: $svg-check;
+}
+
+.custom-radio .custom-control-label::before {
+    border: 1px solid black;
+    background: $grey3; /* For browsers that do not support gradients */
+    background: linear-gradient($grey3, $grey5); /* Standard syntax */
+}
+
+.form-control.is-invalid {
+    background-image: none;
+}

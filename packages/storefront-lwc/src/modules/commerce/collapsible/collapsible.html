@@ -1,0 +1,28 @@
+<!--
+    Copyright (c) 2020, salesforce.com, inc.
+    All rights reserved.
+    SPDX-License-Identifier: BSD-3-Clause
+    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+-->
+<template>
+    <div class="collapsible">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4
+                            onclick={toggledropdown}
+                            class="title text-left"
+                            aria-expanded="false"
+                        >
+                            <span>{title}</span>
+                        </h4>
+                    </div>
+                    <div class="collapse">
+                        <div lwc:dom="manual" class="card-body" data-content={content}></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

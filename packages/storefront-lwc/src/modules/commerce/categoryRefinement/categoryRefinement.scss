@@ -1,0 +1,27 @@
+.category-list {
+  padding-inline-start: 0rem;
+}
+
+.category-refinement-sub-list .category-list {
+  padding-inline-start: 1.25rem;
+}
+
+.category-refinement-sub-list .category-refinement-item {
+  padding-top: 0.625rem;
+}
+
+.category-refinement-sub-list {
+  list-style: none;
+}
+.category-refinement-item {
+  text-decoration: underline;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.refinement-selected.category-refinement-item {
+  text-decoration: none;
+  font-weight: bold;
+}

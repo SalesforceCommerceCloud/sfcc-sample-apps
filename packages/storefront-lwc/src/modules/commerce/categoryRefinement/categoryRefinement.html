@@ -1,0 +1,20 @@
+<!--
+    Copyright (c) 2020, salesforce.com, inc.
+    All rights reserved.
+    SPDX-License-Identifier: BSD-3-Clause
+    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+-->
+<template>
+    <ul class="category-list">
+        <li class={displayRefinement.categoryClasses} onclick={toggleRefinementHandler}>
+            {refinement.label} ({refinement.hitCount})
+        </li>
+        <li if:true={displayRefinement.hasSubValues} class="category-refinement-sub-list">
+            <template for:each={displayRefinement.values} for:item="catRefinementSubCat">
+                <commerce-category-refinement key={catRefinementSubCat.key}
+                                              refinement={catRefinementSubCat}>
+                </commerce-category-refinement>
+            </template>
+        </li>
+    </ul>
+</template>

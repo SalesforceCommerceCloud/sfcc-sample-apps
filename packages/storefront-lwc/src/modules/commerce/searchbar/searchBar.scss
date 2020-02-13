@@ -1,0 +1,33 @@
+@import "../../../scss/ux_variables";
+
+.site-search {
+  position: relative;
+  height: 2.5em; /* 40/16 */
+
+  .fa-close,
+  .fa-search {
+    position: absolute;
+    border: none;
+    cursor: pointer;
+    top: 0.5625em; /* 9/16 */
+    right: 0.5625em; /* 9/16 */
+    padding: 0;
+    background-color: transparent;
+  }
+
+  .reset-button {
+    position: absolute;
+    border: none;
+    top: 0.5625em; /* 9/16 */
+    right: 2em; /* 32/16 */
+    padding: 0;
+    background-color: transparent;
+  }
+
+  input {
+    border: 1px solid $medium-gray;
+    padding-right: 2rem;
+    height: 100%;
+  }
+
+}

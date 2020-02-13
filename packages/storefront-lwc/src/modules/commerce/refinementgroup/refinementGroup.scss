@@ -1,0 +1,42 @@
+@import "../../../scss/ux_variables";
+
+.collapsible-card-title::after {
+  float: right;
+  content: "\f078";
+  font-family: "FontAwesome";
+}
+
+.expanded .collapsible-card-title::after {
+  content: "\f077";
+  margin-top: -0.125em;
+}
+
+.collapsed .card-body {
+  display: none;
+}
+
+.expanded .card-body {
+  display: block;
+}
+
+.collapsible-card-title {
+  margin: 0;
+}
+
+.color-refinement-label {
+  position: absolute;
+  top: 0;
+}
+
+.refinement .form-check:not(:last-child) {
+  margin-bottom: 0.714rem;
+}
+
+.collapsible-card,
+.card-header {
+  border-color: $medium-gray;
+}
+
+.collapsed .card-header {
+  border-bottom: none;
+}

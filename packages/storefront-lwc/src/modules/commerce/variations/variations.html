@@ -1,0 +1,70 @@
+<!--
+    Copyright (c) 2020, salesforce.com, inc.
+    All rights reserved.
+    SPDX-License-Identifier: BSD-3-Clause
+    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+-->
+<template>
+    <div class="variations-and-quantity">
+        <!--Color Swatches -->
+        <template if:true={colorAttribute}>
+            <div class="color-swatches">
+                    <div class="row">
+                        <div class="col-12">
+                            <p class="small-paragraph">{colorAttribute.name}: {selectedColorText}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <template for:each={colorAttributeValues} for:item="colorAttributeValue">
+                            <template if:true={colorAttributeValue.orderable}>
+                                <div class="col-auto swatch" key={colorAttributeValue.value}>
+                                    <button
+                                        class="color-swatch"
+                                        data-color-name={colorAttributeValue.name}
+                                        data-color-value={colorAttributeValue.value}
+                                        data-color-swatch={colorAttributeValue.swatchImage.link}
+                                        style={colorAttributeValue.swatchImage.style}
+                                        onclick={toggleSwatch}
+                                    >
+                                    </button>
+                                </div>
+                            </template>
+                        </template>
+                    </div>
+            </div>
+        </template>
+        <!-- Quantity and Size drop downs -->
+        <div class="row dropdowns">
+            <!-- Size Drop Down -->
+            <template if:true={sizeAttribute}>
+                <div class="col">
+                    <label class="small-paragraph">{sizeAttribute.name}</label>
+                    <select class="form-control" onchange={handleSize}>
+                        <option selected data-size-value="-">-</option>
+                        <template for:each={sizeAttributeValues} for:item="sizeAttributeValue">
+                            <option
+                                key={sizeAttributeValue.value}
+                                data-size-name={sizeAttributeValue.name}
+                                data-size-value={sizeAttributeValue.value}
+                                data-size-orderable={sizeAttributeValue.orderable}
+                            >
+                                {sizeAttributeValue.name}
+                            </option>
+                        </template>
+                    </select>
+                </div>
+            </template>
+            <!-- Quantity Drop Down -->
+            <div class="col">
+                <label class="small-paragraph">Quantity</label>
+                <select class="form-control" onchange={updateSelectQty}>
+                    <template for:each={qtyValues} for:item="qtyValue">
+                        <option value={qtyValue} key={qtyValue}>
+                            {qtyValue}
+                        </option>
+                    </template>
+                </select>
+            </div>
+        </div>
+    </div>
+</template>

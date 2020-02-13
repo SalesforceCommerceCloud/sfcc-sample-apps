@@ -1,0 +1,90 @@
+{
+  "name": "storefront-lwc",
+  "version": "0.0.1",
+  "description": "Sample Storefront Application with Lightning Web Components",
+  "license": "MIT",
+  "type": "module",
+  "config": {
+    "lwcVersion": "1.0.1",
+    "talonVersion": "0.16.0"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "../@sfcc-core",
+      "../@sfcc-bff",
+      "scripts"
+    ],
+    "ext": "js",
+    "ignore": [
+      "src/**/*.spec.js",
+      "src/**/*.test.js"
+    ],
+    "exec": "SFCC_DEV_MODE='true' NODE_OPTIONS='--experimental-modules --es-module-specifier-resolution=node' node --nolazy --inspect=9229 ./scripts/runtime.js"
+  },
+  "browserslist": "> 0.25%",
+  "scripts": {
+    "build": "yarn build:scss && yarn build:public && yarn build:resources && lwc-services build -m production --noclear",
+    "build:public": "cpx \"src/public/**/*\" dist/public --verbose",
+    "build:resources": "NODE_OPTIONS='--experimental-modules --es-module-specifier-resolution=node' node scripts/copy-resources.js",
+    "build:development": "lwc-services build --noclear",
+    "lint": "eslint ./src/**/*.js",
+    "prettier": "prettier --write \"**/*.{css,html,js,json,md,ts,yaml,yml}\"",
+    "prettier:verify": "prettier --list-different \"**/*.{css,html,js,json,md,ts,yaml,yml}\"",
+    "start": "NODE_OPTIONS='--experimental-modules --es-module-specifier-resolution=node' node ./scripts/runtime.js",
+    "test": "lwc-services test:unit",
+    "test:unit:coverage": "lwc-services test:unit --coverage",
+    "test:unit:debug": "lwc-services test:unit --debug",
+    "test:unit:watch": "lwc-services test:unit --watch",
+    "start:dev": "run-p watch:client watch:server watch:scss",
+    "watch:client": "lwc-services watch",
+    "watch:server": "nodemon",
+    "build:scss": "yarn build:public:scss && yarn build:lwc:scss",
+    "build:lwc:scss": "node-sass src/modules/commerce -o src/modules/commerce --include-path node_modules",
+    "build:public:scss": "node-sass src/scss -o dist/public/assets/css --include-path node_modules",
+    "watch:scss": "yarn watch:lwc:scss",
+    "watch:lwc:scss": "yarn build:lwc:scss && node-sass src/modules/commerce -wo src/modules/commerce --include-path node_modules",
+    "watch:public:scss": "yarn build:public:scss && node-sass src/scss -wo dist/public/assets/css --include-path node_modules"
+  },
+  "jest": {
+    "preset": "@lwc/jest-preset",
+    "moduleNameMapper": {
+      "^commerce/(.+)": "<rootDir>/src/modules/commerce/$1/$1"
+    }
+  },
+  "dependencies": {
+    "@babel/core": "^7.2.2",
+    "@lwc/eslint-plugin-lwc": "^0.8.0",
+    "@lwc/synthetic-shadow": "^1.1.1",
+    "@salesforce-ux/design-system": "^2.9.4",
+    "@sfcc-bff/productapi": "0.0.1-sfcc-alpha-1",
+    "@sfcc-core/apiconfig": "0.0.1-sfcc-alpha-1",
+    "@sfcc-core/core": "0.0.1-sfcc-alpha-1",
+    "@sfcc-core/core-graphql": "0.0.1-sfcc-alpha-1",
+    "@sfcc-core/logger": "0.0.1-sfcc-alpha-1",
+    "apollo-boost": "^0.4.7",
+    "apollo-datasource-rest": "^0.3.2",
+    "apollo-server": "^2.3.2",
+    "apollo-server-express": "^2.3.2",
+    "babel-eslint": "^10.0.3",
+    "bootstrap": "^4.3.1",
+    "colors": "^1.3.2",
+    "concurrently": "^5.0.0",
+    "cpx": "^1.5.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.19.1",
+    "font-awesome": "^4.7.0",
+    "graphql": "0.13.1",
+    "graphql-tag": "^2.10.1",
+    "history": "^4.10.1",
+    "node-sass": "^4.12.0",
+    "universal-router": "^8.3.0"
+  },
+  "devDependencies": {
+    "@lwc/jest-preset": "^4.3.1",
+    "jest": "^25.1.0",
+    "lwc-services": "^1.3.12",
+    "nodemon": "^2.0.2",
+    "npm-run-all": "^4.1.5"
+  }
+}

@@ -1,0 +1,41 @@
+$pull: left, right;
+
+@mixin media($size) {
+
+    @if $size == xs {
+
+        @include media-breakpoint-up($size) {
+            @content;
+        }
+    } @else {
+
+        @include media-breakpoint-only($size) {
+            @content;
+        }
+    }
+}
+
+@each $size in map-keys($grid-breakpoints) {
+
+    @include media($size) {
+
+        @each $side in $pull {
+            .pull-#{$side}-#{$size} {
+                float: $side;
+            }
+        }
+    }
+}
+
+@each $bp in map-keys($grid-breakpoints) {
+    .hidden-#{$bp}-down {
+
+        @include media-breakpoint-down($bp) {
+            display: none !important;
+        }
+    }
+}
+
+.row.equal-height > [class^="col"] {
+    display: flex;
+}

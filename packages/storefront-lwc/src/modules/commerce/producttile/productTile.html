@@ -1,0 +1,29 @@
+<!--
+    Copyright (c) 2020, salesforce.com, inc.
+    All rights reserved.
+    SPDX-License-Identifier: BSD-3-Clause
+    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+-->
+<template>
+    <div key={product.productId} class='product-tile'>
+        <div class='image-container' onclick={productDetail}>
+            <a>
+                <img class='tile-image' src={product.image.link} alt={product.image.alt}/>
+            </a>
+        </div>
+
+        <div class='tile-body'>
+
+            <div class='pdp-link' onclick={productDetail}>
+                <a href="#">{product.name}</a>
+            </div>
+
+            <div class='price'>
+                <commerce-product-price product={product} context="tile"></commerce-product-price>
+            </div>
+
+            <commerce-product-tile-swatches color-swatches={product.colorSwatches}></commerce-product-tile-swatches>
+
+        </div>
+    </div>
+</template>

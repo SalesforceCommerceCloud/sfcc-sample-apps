@@ -1,0 +1,56 @@
+{
+  "name": "sfcc-sample-apps",
+  "version": "0.0.1",
+  "description": "Sample Talon Application with Lightning Web Components",
+  "license": "MIT",
+  "private": true,
+  "config": {
+    "lwcVersion": "1.0.1",
+    "talonVersion": "0.18.12"
+  },
+  "scripts": {
+    "build": "lerna run build --stream",
+    "build:app": "lerna run build --scope storefront-lwc --stream",
+    "lint": "lerna run lint --stream",
+    "lint:fix": "lerna run lint:fix --stream",
+    "clean": "lerna run clean --stream",
+    "test": "lerna run test:unit --stream",
+    "test:watch": "lerna run test:unit:watch --stream",
+    "start": "yarn start:lwc",
+    "start:dev": "lerna run start:dev --scope storefront-lwc --stream",
+    "start:watch": "yarn start:lwc:watch",
+    "stop": "yarn stop:lwc",
+    "start:lwc": "lerna run start --scope storefront-lwc --stream",
+    "start:lwc:watch": "lerna run start:watch --scope storefront-lwc --stream",
+    "stop:lwc": "lerna run stop --scope storefront-lwc --stream"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/sfcc-base",
+      "packages/@sfcc-core/*",
+      "packages/@sfcc-bff/*",
+      "packages/storefront-lwc"
+    ],
+    "nohoist": [
+      "**/bootstrap",
+      "**/bootstrap/**",
+      "**/font-awesome"
+    ]
+  },
+  "engines": {
+    "yarn": ">=1.10.1",
+    "node": "12"
+  },
+  "dependencies": {
+    "lerna": "^3.17.0",
+    "loglevel": "^1.6.6"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.7.2",
+    "eslint-plugin-import": "^2.19.1"
+  },
+  "resolutions": {
+    "@babel/types": "7.7.2"
+  }
+}

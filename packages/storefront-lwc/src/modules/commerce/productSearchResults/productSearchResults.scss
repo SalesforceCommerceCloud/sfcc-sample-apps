@@ -1,0 +1,142 @@
+@import "../../../scss/variables";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/mixins/breakpoints";
+
+.search-results {
+  padding: 5px;
+}
+
+.refinement-bar {
+    overflow: auto;
+
+    ul {
+        padding-left: 0;
+    }
+
+    @include media-breakpoint-down(sm) {
+        background-color: $white;
+        box-shadow: 0 0.313em 0.938em rgba(0, 0, 0, 0.5);
+        left: 0;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1;
+    }
+
+    @include media-breakpoint-down(xs) {
+        position: fixed;
+        height: 100%;
+    }
+
+    @include media-breakpoint-up(lg) {
+        display: block !important;
+        padding-right: 0.625em;
+        padding-left: 1.5625em;
+    }
+}
+
+.product-list-grid {
+    @include media-breakpoint-up(md) {
+        padding-left: 0;
+    }
+}
+
+.filter-header {
+    margin-left: $grid-gutter-width / 2 * -1;
+    margin-right: $grid-gutter-width / 2 * -1;
+}
+
+.header-bar {
+    background-color: $grey2;
+    border-bottom: 0.063em solid $grey2;
+
+    button.close {
+        font-size: 1rem;
+        font-weight: normal;
+        opacity: 1;
+    }
+
+    .fa.fa-close::before {
+        font-size: 1.25em;
+    }
+
+    @include media-breakpoint-only(sm) {
+        padding: 0.938em 2.813em;
+    }
+
+    @include media-breakpoint-only(xs) {
+        padding: 0.938em;
+    }
+}
+
+.secondary-bar {
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 1em;
+    overflow: auto;
+
+    button.reset {
+
+        @include media-breakpoint-down(sm) {
+            float: right;
+        }
+    }
+
+    @include media-breakpoint-only(sm) {
+        padding: 0.938em 2.813em;
+    }
+
+    @include media-breakpoint-only(xs) {
+        padding: 0.938em;
+    }
+}
+
+.disabled {
+    pointer-events: none;
+}
+
+.grid-header,
+.content-grid-header {
+    margin-top: 1em;
+    margin-bottom: 1em;
+
+    @include media-breakpoint-only(xs) {
+        .result-count {
+            padding-bottom: 0.938em;
+        }
+
+        .filter-results {
+            display: block;
+            width: 100%;
+        }
+    }
+
+    select {
+        width: 100%;
+    }
+}
+
+.result-count {
+    font-size: 1rem;
+}
+
+.tab-content {
+
+    @include media-breakpoint-down(xs) {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+.product-grid {
+
+    @include media-breakpoint-down(xs) {
+        padding-top: 0.938em;
+
+        .col-6 {
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+    }
+}

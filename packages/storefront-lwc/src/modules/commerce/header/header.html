@@ -1,0 +1,58 @@
+<!--
+    Copyright (c) 2020, salesforce.com, inc.
+    All rights reserved.
+    SPDX-License-Identifier: BSD-3-Clause
+    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+-->
+<template>
+    <nav role="navigation">
+        <div class="container-fluid">
+            <div class="row header">
+
+                <!-- Desktop -->
+                <div class="col text-right d-none d-md-block logo">
+                    <a href="/">
+                        <img class="" src="/assets/images/logo-small.svg" alt="Logo">
+                    </a>
+                </div>
+                <div class="col text-right d-none d-md-block">
+                    <!-- language -->
+                </div>
+
+                <!-- MOBILE -->
+                <div class="col text-left d-md-none mobile-menu">
+                    <button class="navbar-toggler d-md-none text-left" type="button">
+                        <span class="menu-icon">☰</span>
+                        <span class="hidden-xs-down">Menu</span>
+                    </button>
+                </div>
+                <div class="col text-center d-md-none logo">
+                    <a href="/">
+                        <img class="" src="/assets/images/logo-small.svg" alt="Logo">
+                    </a>
+                </div>
+                <div class="col text-right d-md-none mini-cart">
+                    <commerce-header-cart></commerce-header-cart>
+                </div>
+
+                <!-- Mobile/Tablet/Desktop -->
+                <div class="col-12 col-md-6 text-center searchbar">
+                    <commerce-search-bar></commerce-search-bar>
+                </div>
+
+                <!-- Desktop -->
+                <div class="col text-right d-none d-md-block sign-in">
+                    <a href="#" title="Sign In">
+                        <i class=" fa fa-user"></i>
+                        <span>Sign In</span>
+                    </a>
+                </div>
+                <div class="col text-left d-none d-md-block">
+                    <commerce-header-cart></commerce-header-cart>
+                </div>
+            </div>
+        </div>
+    </nav>
+</template>
+
+

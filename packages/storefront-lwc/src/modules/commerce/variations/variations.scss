@@ -1,0 +1,29 @@
+@import "../../../scss/ux_variables";
+
+.variations-and-quantity {
+    button.color-swatch {
+        border-radius: 50%;
+        width: 2.5em;
+        height: 2.5em;
+        border: 0.25em solid $white;
+        box-shadow: 0 0 0 0.125em $light-gray;
+    }
+
+    button.color-swatch.swatch-unselected {
+        box-shadow: 0 0 0 0.125em $light-gray !important;
+    }
+
+    button.color-swatch.swatch-selected {
+        box-shadow: 0 0 0 0.125em $dark-gray !important;
+    }
+
+    .color-swatches {
+        @include mobile { padding-top: 1em; }
+        @include tablet { padding-top: 2em; }
+        @include desktop { padding-top: 2em; }
+    }
+
+    .dropdowns {
+        padding-top: 1em;
+    }
+}

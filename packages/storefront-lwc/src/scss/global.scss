@@ -1,0 +1,10 @@
+@charset "UTF-8";
+
+// @import "ux_variables";
+@import "variables";
+@import "bootstrap-custom-import";
+@import "bootstrapOverrides";
+@import "utilities/responsiveUtils";
+@import "font-awesome/scss/font-awesome";
+@import url("https://fonts.googleapis.com/css?family=Dosis&subset=latin-ext");
+@import "ux_defaults";

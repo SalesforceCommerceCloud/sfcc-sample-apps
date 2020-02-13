@@ -1,0 +1,53 @@
+@import "../../../scss/ux_variables";
+
+.image-hero {
+  width: 100%
+}
+
+.hero-banner-text {
+  position: absolute;
+  top: 57%;
+  transform: translate(-50%, -50%);
+}
+
+.hero-banner-text p {
+  text-decoration: underline;
+  margin-top: 1em;
+  color: $white;
+  font-weight: $font-weight-normal;
+}
+
+@include mobile {
+  .hero-banner-text {
+    top: 50%;
+    left: 50%;
+    white-space: nowrap;
+  }
+
+  .hero-banner-text p {
+    text-align: center;
+    font-size: 1.5 * $mobile-base;
+  }
+}
+
+@include tablet {
+  .hero-banner-text {
+    left: 35%;
+    text-align: left;
+  }
+
+  .hero-banner-text p {
+    font-size: 1.67 * $tablet-base;
+  }
+}
+
+@include desktop {
+  .hero-banner-text {
+    left: 25%;
+    text-align: left;
+  }
+
+  .hero-banner-text p {
+    font-size: 1.67 * $desktop-base;
+  }
+}

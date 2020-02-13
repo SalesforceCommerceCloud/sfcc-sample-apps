@@ -1,0 +1,28 @@
+<!--
+    Copyright (c) 2020, salesforce.com, inc.
+    All rights reserved.
+    SPDX-License-Identifier: BSD-3-Clause
+    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+-->
+<template>
+    <div class='color-swatches'>
+        <ul class="swatches-ul">
+            <!-- colorSwatches will never be more than 5-->
+            <template for:each={colorSwatches} for:item="colorSwatch" for:index="index">
+                <li key={colorSwatch.value} class="swatch-li">
+                        <commerce-product-tile-swatch key={colorSwatch.value} color-swatch={colorSwatch}></commerce-product-tile-swatch>
+                </li>
+            </template>
+            <template if:true={showMore}>
+                <li  class="more-swatches-li">
+                        <span class="more-swatches"> + More </span>
+                </li>
+            </template>
+            <template if:true={showMoreOnMobile}>
+                <li class="more-swatches-li-sm">
+                        <span class="more-swatches-sm"> + More </span>
+                </li>
+            </template>
+        </ul>
+    </div>
+</template>

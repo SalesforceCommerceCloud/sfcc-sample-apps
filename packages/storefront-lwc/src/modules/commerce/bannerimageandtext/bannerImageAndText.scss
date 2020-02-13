@@ -1,0 +1,46 @@
+@import "../../../scss/ux_variables";
+
+.shop-now {
+  margin-top: 1em;
+}
+
+.shop-now-image {
+  width: 100%;
+}
+
+.shop-now-text {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  h2 {
+    color: $white;
+  }
+
+  p {
+    margin-top: 0.53em;
+  }
+}
+
+.shop-now-text .large-paragraph {
+  color: $white;
+}
+@include mobile {
+  .shop-now-text {
+    left: 50%;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
+@include tablet {
+  .shop-now-text {
+    left: 50%;
+  }
+}
+
+@include desktop {
+  .shop-now-text {
+    left: 15%;
+  }
+}

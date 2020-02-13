@@ -1,0 +1,39 @@
+<!--
+    Copyright (c) 2020, salesforce.com, inc.
+    All rights reserved.
+    SPDX-License-Identifier: BSD-3-Clause
+    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+-->
+<template>
+    <div class='row d-sm-none'>
+        <div class='col-12'>
+            <p class="text-center result-count">
+                <span if:false={loading}>{products.length} Results</span>
+            </p>
+        </div>
+    </div>
+    <div class='row product-grid'>
+        <div class='col-6 col-sm-4 grid-gutter d-lg-none'>
+            <button class="btn btn-primary btn-lg btn-block filter-button"
+                    onclick={toggleRefinementBar}>
+                Filter
+            </button>
+        </div>
+        <div class='col-6 col-sm-4 grid-gutter d-none d-sm-block'>
+            <p class="text-center text-lg-left result-count">
+                <span if:false={loading}>{products.length} Results</span>
+            </p>
+        </div>
+        <div class='col-6 col-sm-4 grid-gutter d-none d-lg-block'></div>
+        <div class='col-6 col-sm-4 grid-gutter'>
+            <commerce-search-sort></commerce-search-sort>
+        </div>
+        <template for:each={products} for:item="product">
+            <div class='col-6 col-sm-4 grid-gutter' key={product.productId} >
+                <div class='product' >
+                    <commerce-product-tile product={product}></commerce-product-tile>
+                </div>
+            </div>
+        </template>
+    </div>
+</template>

@@ -1,0 +1,43 @@
+<!--
+    Copyright (c) 2020, salesforce.com, inc.
+    All rights reserved.
+    SPDX-License-Identifier: BSD-3-Clause
+    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Salesforce Headless Commerce with LWC and Talon</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="/apiconfig.js"></script>
+
+    <!-- iOS PWA Code -->
+
+    <!-- iPhone X (portrait) SPLASHSCREEN -->
+    <link
+      href="/assets/images/splash/LaunchImage-1125@3x~iphoneX-portrait_1125x2436.png"
+      media="(device-width: 375px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 3)"
+      rel="apple-touch-startup-image"
+    />
+
+    <!-- Apple iOS Icon -->
+    <link rel="apple-touch-icon" href="/assets/images/icons/icon-192x192.png" />
+
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href="/assets/favicon.ico">
+    <link rel="stylesheet" href="/assets/css/global.css">
+
+</head>
+
+<body>
+    <commerce-layout>
+        <commerce-header slot="header"></commerce-header>
+        <div id="content"></div>
+    </commerce-layout>
+</body>
+</html>

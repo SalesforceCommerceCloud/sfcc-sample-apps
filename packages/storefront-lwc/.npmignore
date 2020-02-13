@@ -1,0 +1,16 @@
+**/node_modules
+**/.DS_Store
+**/target
+lerna-debug.log
+.classpath
+.project
+.settings
+.sfdx
+.vscode
+coverage
+*.iml
+jest-report
+yarn-error.log
+tsconfig.json
+.idea
+dist

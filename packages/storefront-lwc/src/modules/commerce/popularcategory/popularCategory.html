@@ -1,0 +1,21 @@
+<!--
+    Copyright (c) 2020, salesforce.com, inc.
+    All rights reserved.
+    SPDX-License-Identifier: BSD-3-Clause
+    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+-->
+<template>
+    <div class="row">
+        <div class="col-12">
+            <div class="image-cropper">
+                <a href={categoryLink}>
+                    <img src={categoryImageSrc} class="image-wrapper">
+                    <span role="img" aria-label={categoryName} class="background-image"></span>
+                </a>
+            </div>
+            <div class="popular-category-link d-flex justify-content-center">
+                <a href={categoryLink} class="popular-category-label-a popular-cat-link"> {categoryName} </a>
+            </div>
+        </div>
+    </div>
+</template>

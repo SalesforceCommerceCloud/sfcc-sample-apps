@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`commerce/about renders correctly 1`] = `
+<commerce-about>
+  #shadow-root(open)
+    <div
+      class="hero slant-down content-page-image"
+    >
+      <h1
+        class="page-title"
+      >
+        About Us
+      </h1>
+    </div>
+    <div
+      class="container content-asset-container"
+    >
+      <h1
+        class="content-header"
+      >
+        About Us
+      </h1>
+      <h2>
+        It all started with a series of observations:
+      </h2>
+      <ul>
+        <li>
+          eCommerce merchandising and marketing innovation is what generates revenue, yet most operations are spending 80% of their budgets simply maintaining current infrastructure.
+        </li>
+        <li>
+          The pace of eCommerce accelerates daily, yet most operations are scrambling only to stand still.
+        </li>
+        <li>
+          Merchandisers and marketers are supremely frustrated, spending more time chasing outsourced providers and internal IT organizations than actually merchandising and marketing their own businesses.
+        </li>
+      </ul>
+      <h2>
+        There had to be a better way...
+      </h2>
+      <p>
+        So in 2004, we set out to find it. The vision—then and now—was clear: bring to market an enterprise-class eCommerce solution that would put more power and innovation in the hands of merchandisers and at the same time would remove the technical costs, risks and complexities of running an ecommerce operation. We took what we knew of great eCommerce merchandising (our founders have been in ecommerce since 1994) and applied to it the then-emerging advancements in Software-as-a-Service architectures and dynamic grid computing. Then we just worked hard. We stayed up late. We drank lots of coffee. And ultimately, in late 2005, we delivered the market’s first on-demand enterprise ecommerce platform.
+      </p>
+      <h2>
+        Our customers could not be happier with the results.
+      </h2>
+      <p>
+        With Commerce Cloud eCommerce, they're spending more time leading with merchandising and marketing. They're in complete control of their site, making changes and launching new storefronts whenever they like. They're spending more time developing their own proprietary innovations (versus building commodity functionality). They receive new software upgrades from Commerce Cloud continuously. And they never ever worry about site uptime, availability and security.
+      </p>
+      <p>
+        In short, they're free. Free to merchandise. Free to grow. Free to innovate. Free to change. Isn't that how eCommerce is supposed to be?
+      </p>
+      <p>
+        For more information please browse our
+        <a
+          href="https://rsa-inside-ap02-dw.demandware.net/s/MobileFirst/about%20commerce%20cloud/?lang=en_US"
+          title="About Us Content"
+        >
+          About Us
+        </a>
+        and
+        <a
+          href="https://rsa-inside-ap02-dw.demandware.net/s/MobileFirst/customer%20service-2/?lang=en_US"
+          title="About Us Content"
+        >
+          Login Service
+        </a>
+        pages.
+      </p>
+    </div>
+</commerce-about>
+`;

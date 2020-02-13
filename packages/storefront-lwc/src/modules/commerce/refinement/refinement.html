@@ -1,0 +1,23 @@
+<!--
+    Copyright (c) 2020, salesforce.com, inc.
+    All rights reserved.
+    SPDX-License-Identifier: BSD-3-Clause
+    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+-->
+<template>
+    <input class="form-check-input"
+           type="checkbox"
+           value={refinement.title}
+           id={refinement.key}
+           onclick={toggleRefinementHandler}>
+    <label class="form-check-label refinement-label" for={refinement.key}>
+        <div if:false={refinement.isColor} title={refinement.title}>
+            <div>{refinement.label} ({refinement.hitCount})</div>
+        </div>
+
+        <div if:true={refinement.isColor} title={refinement.title}>
+            <div class={refinement.colorClassNames}></div>
+            <div class="color-refinement-label d-inline">{refinement.label} ({refinement.hitCount})</div>
+        </div>
+    </label>
+</template>

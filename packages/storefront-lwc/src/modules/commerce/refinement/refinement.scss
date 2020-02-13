@@ -1,0 +1,76 @@
+@import "../../../scss/ux_variables";
+
+.color-refinement-label {
+  position: absolute;
+  top: 0;
+}
+
+.refinement .form-check:not(:last-child) {
+  margin-bottom: 0.714rem;
+}
+
+.collapsible-card,
+.card-header {
+  border-color: $medium-gray;
+}
+
+.collapsed .card-header {
+  border-bottom: none;
+}
+
+@mixin color-refinement($color) {
+  border-radius: 50%;
+  width: 1.2rem;
+  height: 1.2rem;
+  padding: 0;
+  box-sizing: content-box;
+  box-shadow: 0 0 0 0.05em $gray-4;
+  background: $color;
+  border: 0.1875em solid white;
+  margin-right: 0.375rem;
+  display: inline-block;
+  position: relative;
+}
+
+$swatch-colors: (
+  'beige': $beige,
+  'black': $black,
+  'blue': $blue,
+  'brown': $brown,
+  'green': $green,
+  'grey': $grey,
+  'navy': $navy,
+  'orange': $orange,
+  'pink': $pink,
+  'purple': $purple,
+  'red': $red,
+  'white': $white,
+  'yellow': $yellow
+);
+
+@each $color in map-keys($swatch-colors) {
+  $colorValue: #{map-get($swatch-colors, $color)};
+
+  .swatch-circle-#{$color} {
+
+    @include color-refinement($colorValue);
+  }
+}
+
+.swatch-circle-miscellaneous {
+
+  @include color-refinement(linear-gradient(
+                  0deg,
+                  rgba(130, 30, 145, 1) 0,
+                  rgba(130, 30, 145, 1) 25%,
+                  rgba(237, 209, 52, 1) 25%,
+                  rgba(255, 255, 0, 1) 50%,
+                  rgba(237, 209, 52, 1) 50%,
+                  #59ba00 50%,
+                  #59ba00 76%,
+                  #111 76%,
+                  #111 100%
+  ));
+  background-repeat: repeat-y, repeat;
+}
+
