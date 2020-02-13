@@ -91,4 +91,4 @@ All external contributors must sign our Contributor License Agreement (CLA).
 
 ## Commit Signing
 
-All contributors **must** setup commit signing
+All contributors must set up [commit signing](https://help.github.com/en/github/authenticating-to-github/signing-commits).
