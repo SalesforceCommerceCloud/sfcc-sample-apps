@@ -6,7 +6,7 @@
 */
 import {LightningElement, api} from 'lwc'
 
-export default class Cleanupproductprice extends LightningElement {
+export default class ProductPrice extends LightningElement {
     @api product;
     contextValue = '';
 
