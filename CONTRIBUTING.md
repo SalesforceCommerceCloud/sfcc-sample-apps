@@ -15,7 +15,7 @@
 To contribute to sfcc-sample-apps, follow the guidelines below. This helps us address your pull request in a more timely manner. 
 
 ## Submitting Your First Pull Request
-If this is your first pull request, follow these steps:
+If this is your first pull request:
 
   1. Create a fork of the sfcc-sample-apps repository 
 
@@ -62,23 +62,27 @@ If this is your first pull request, follow these steps:
          `yarn test`
   6. Monitor your pull requests.
        
-       * please respond in a timely manner to hany comments, questions for changes requested.
+       * Please respond in a timely manner to any comments or questions about your requested changes.
        
-       * we may close abandoned pull requests.
+       * We may close abandoned pull requests.
 
 ## What to Expect
 
 After you submit your pull request, we'll look it over and consider it for merging.
 
-As long as your submission has met the above guidelines, we should merge it in a timely manner.
+As long as your submission has met the above guidelines, we should merge it in a timely manner. However, please keep the following points in mind:
+* All security-related changes (including but not limited to PCI, PII, and Session Management) must be approved by our Product Security team.
+* All User Experience (UX) changes must be approved by our UX team.
+* All documentation or UI text changes must be approved by our Content Experience team.
+* All enhancements must be approved by our Product Management team.
 
-Our sprints run for about two weeks; in that period of time, we typically review all pull requests, give feedback, and merge the request (depending on our current sprint priorities).
+Our sprints run for about two weeks. In that period of time, we typically review all pull requests, give feedback, and merge the requests (depending on our current sprint priorities).
 
 ## sfcc-sample-apps Team Members 
 
 To speed up the process of reviewing and merging your pull request, grant the following team members access to your fork:
 
-  * _SFRA_ team 
+  * SFRA Admins 
   
  
 ## Contributer License Agreement (CLA)
