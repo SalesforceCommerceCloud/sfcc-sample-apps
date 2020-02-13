@@ -1,6 +1,6 @@
 # Commerce Storefront Sample Application &middot; [![CircleCI][circleci-image]][circleci-url]
 
-Our storefront sample application shows how you can build amazing commerce experiences with the latest Commerce platform technologies. The application back end is built on the new Salesforce Commerce API (a RESTful headless API), and the front end is built with Lightning Web Components (LWC). In between, it uses GraphQL and the Salesforce Commerce Node.js SDK. 
+Our storefront sample application shows how you can build amazing commerce experiences with the latest Commerce platform technologies. The application back end is built on the new Salesforce Commerce API (a RESTful headless API). The front end is built with Lightning Web Components (LWC). In between, it uses GraphQL and the Salesforce Commerce Node.js SDK. 
 
 Read more about the [architecture](docs/architecture.md).
 
@@ -16,7 +16,7 @@ Note: sfcc-sample-apps is a monorepo with a sample application and Backend For F
 
 ## Setup
 
-To set up the sample application, perform the following steps:
+To set up the sample application:
 
 1. Clone the sfcc-sample-apps repository:
 `git clone git@github.com:SalesforceCommerceCloud/sfcc-sample-apps.git`
@@ -24,7 +24,7 @@ To set up the sample application, perform the following steps:
 2. Change into the `sfcc-sample-apps` folder:
 `cd sfcc-sample-apps`
 
-3. Copy the `packages/storefront-lwc/scripts/api.example.js` file, save it as `packages/storefront-lwc/scripts/api.js`, and make sure it is added to your `.gitignore` file.
+3. Copy the `packages/storefront-lwc/scripts/api.example.js` file, save it as `packages/storefront-lwc/scripts/api.js`, and make sure `api.js` is added to your `.gitignore` file.
 
 4. In the `api.js` file, provide values for the following variables (you can obtain these values from your Account Executive (AE) or Customer Support Manager (CSM)):
 <table>
@@ -52,7 +52,7 @@ You can optionally test the sample application:
 
 ## Debug
 
-We recommend Visual Studio Code inbuilt debugger to troubleshoot the code. `.vscode` launch configuration is included in the repo. To debug using VSCode, see [VS Code Debugging](https://code.visualstudio.com/docs/editor/debugging).
+We recommend Visual Studio Code inbuilt debugger to troubleshoot the code. THe `.vscode` launch configuration is included in the repo. To debug using VSCode, see [VS Code Debugging](https://code.visualstudio.com/docs/editor/debugging).
 
 ## Configuration
 * You can change the logging levels by modifying the `COMMERCE_LOG_LEVEL` property in `api.js`. The supported log levels are:
@@ -62,10 +62,10 @@ We recommend Visual Studio Code inbuilt debugger to troubleshoot the code. `.vsc
     * `WARN`
     * `ERROR`
     * `SILENT`
-* You can also change the server listening port by changing the `port` property in `scff-sample-apps/packages/storefront-lwc/lwc-services.config.js` file.
+* You can also change the server listening port by changing the `port` property in `scff-sample-apps/packages/storefront-lwc/lwc-services.config.js`.
 
 
-### Learn More about Supporting Technologies
+### Learn More About Supporting Technologies
 * [NodeJS](https://nodejs.org/en/docs/)
 * [ECMAScript 6](https://hacks.mozilla.org/category/es6-in-depth/)
 * [Sass](https://sass-lang.com/guide)
