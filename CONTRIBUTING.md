@@ -15,7 +15,7 @@
 To contribute to sfcc-sample-apps, follow the guidelines below. This helps us address your pull request in a more timely manner. 
 
 ## Submitting Your First Pull Request
-If this is your first pull request, follow these steps:
+If this is your first pull request:
 
   1. Create a fork of the sfcc-sample-apps repository 
 
@@ -62,28 +62,27 @@ If this is your first pull request, follow these steps:
          `yarn test`
   6. Monitor your pull requests.
        
-       * please respond in a timely manner to hany comments, questions for changes requested.
+       * Please respond in a timely manner to any comments or questions about your requested changes.
        
-       * we may close abandoned pull requests.
+       * We may close abandoned pull requests.
 
 ## What to Expect
 
 After you submit your pull request, we'll look it over and consider it for merging.
 
-As long as your submission has met the above guidelines, we should merge it in a timely manner. However; please keep in
-mind the following:
-* If the changes affect security (including but not limited to PCI, PII, Session Management). The changes will need to be reviewed by a member of our product security team.
-* All UX changes (even trivial ones) will require a UX approval before it can be merged.
-* If there is a change to the documentation or UI text the documentation team will need to review the proposed changes and sign off of them.
-* PM sign off on value of the enhancements in the domain.
+As long as your submission has met the above guidelines, we should merge it in a timely manner. However, please keep the following points in mind:
+* All security-related changes (including but not limited to PCI, PII, and Session Management) must be approved by our Product Security team.
+* All User Experience (UX) changes must be approved by our UX team.
+* All documentation or UI text changes must be approved by our Content Experience team.
+* All enhancements must be approved by our Product Management team.
 
-Our sprints run for about two weeks; in that period of time, we typically review all pull requests, give feedback, and merge the request (depending on our current sprint priorities).
+Our sprints run for about two weeks. In that period of time, we typically review all pull requests, give feedback, and merge the requests (depending on our current sprint priorities).
 
 ## sfcc-sample-apps Team Members 
 
 To speed up the process of reviewing and merging your pull request, grant the following team members access to your fork:
 
-  * _SFRA_ Admins 
+  * SFRA Admins 
   
  
 ## Contributer License Agreement (CLA)
