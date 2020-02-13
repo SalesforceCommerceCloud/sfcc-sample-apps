@@ -16,5 +16,3 @@ tsconfig.json
 
 **/package-lock.json
 package-lock.json
-packages/storefront-lwc/scripts/api.js
-packages/storefront-lwc/scripts/runtime.js
