@@ -52,7 +52,7 @@ You can optionally test the sample application:
 
 ## Debug
 
-We recommend Visual Studio Code inbuilt debugger to troubleshoot the code. THe `.vscode` launch configuration is included in the repo. To debug using VSCode, see [VS Code Debugging](https://code.visualstudio.com/docs/editor/debugging).
+We recommend Visual Studio Code inbuilt debugger to troubleshoot the code. The `.vscode` launch configuration is included in the repo. To debug using VSCode, see [VS Code Debugging](https://code.visualstudio.com/docs/editor/debugging).
 
 ## Configuration
 * You can change the logging levels by modifying the `COMMERCE_LOG_LEVEL` property in `api.js`. The supported log levels are:
