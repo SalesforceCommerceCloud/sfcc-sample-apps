@@ -41,5 +41,5 @@ export default class Logger {
 }
 
 core.registerService(LOGGER_KEY, function() {
-    return new Logger(core);
+    return new Logger();
 });

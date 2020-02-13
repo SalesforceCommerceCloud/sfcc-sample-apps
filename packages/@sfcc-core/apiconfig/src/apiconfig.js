@@ -18,7 +18,7 @@ Object.keys(process.env).forEach(key => {
 });
 
 export default class APIConfig {
-    constructor(core) {
+    constructor() {
         this.config = APP_CONFIG_DATA;
 
         /*
@@ -48,6 +48,6 @@ export default class APIConfig {
        writable: false
    }); */
 
-core.registerService(API_CONFIG_KEY, () => {
-    return new APIConfig(core);
+core.registerService(API_CONFIG_KEY, function() {
+    return new APIConfig();
 });
