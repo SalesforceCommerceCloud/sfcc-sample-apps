@@ -1,6 +1,6 @@
 {
   "name": "@sfcc-core/core-graphql",
-  "version": "0.0.1-sfcc-alpha-1",
+  "version": "1.0.0-alpha.1",
   "description": "sfcc default core graphql",
   "main": "./src/core-graphql.js",
   "type": "module",

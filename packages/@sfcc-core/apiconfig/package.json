@@ -1,6 +1,6 @@
 {
   "name": "@sfcc-core/apiconfig",
-  "version": "0.0.1-sfcc-alpha-1",
+  "version": "1.0.0-alpha.1",
   "description": "sfcc backend for frontend api service",
   "main": "./src/apiconfig.js",
   "type": "module",

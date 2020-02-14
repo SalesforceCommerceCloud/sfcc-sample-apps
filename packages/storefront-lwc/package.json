@@ -1,6 +1,6 @@
 {
   "name": "storefront-lwc",
-  "version": "0.0.1",
+  "version": "1.0.0-alpha.1",
   "description": "Sample Storefront Application with Lightning Web Components",
   "license": "MIT",
   "type": "module",
