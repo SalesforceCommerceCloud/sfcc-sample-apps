@@ -43,7 +43,6 @@ const getClientProduct = async (config, id) => {
         .getProduct({
             parameters: {
                 id: id,
-                expand: 'availability,prices,promotions,variations,images',
                 allImages: true,
             },
         })
