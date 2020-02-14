@@ -23,8 +23,8 @@
   },
   "browserslist": "> 0.25%",
   "scripts": {
-    "build": "yarn build:scss && yarn build:public && yarn build:resources && lwc-services build -m production --noclear",
-    "build:public": "cpx \"src/public/**/*\" dist/public --verbose",
+    "build": "lwc-services build -m production --noclear && yarn build:scss && yarn build:public && yarn build:resources",
+    "build:public": "cpx \"src/public/**/*\" dist/public --verbose && cpx \"dist/*.*\" dist/public",
     "build:resources": "NODE_OPTIONS='--experimental-modules --experimental-specifier-resolution=node' node scripts/copy-resources.js",
     "build:development": "lwc-services build --noclear",
     "lint": "eslint ./src/**/*.js",
