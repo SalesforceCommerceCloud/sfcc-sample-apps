@@ -3,7 +3,7 @@ jobs:
       working_directory: ~/build_only
       executor:
         name: node/default
-        tag: '12.14'
+        tag: '12.16'
       steps:
         - checkout
         - run: yarn install

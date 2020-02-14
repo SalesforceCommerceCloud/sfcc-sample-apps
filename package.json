@@ -39,7 +39,7 @@
   },
   "engines": {
     "yarn": ">=1.10.1",
-    "node": "12"
+    "node": ">=12.16 <13"
   },
   "dependencies": {
     "lerna": "^3.17.0",
