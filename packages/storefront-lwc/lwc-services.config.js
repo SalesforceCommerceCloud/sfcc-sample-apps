@@ -6,7 +6,7 @@ module.exports = {
     sourceDir: './src',
     moduleDir: './src/modules',
     server: {
-        customConfig: './server/sample-app.js',
+        customConfig: './server/sample-app.mjs',
     },
     devServer: {
         proxy: {

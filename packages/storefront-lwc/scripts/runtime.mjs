@@ -15,7 +15,7 @@ import { fileURLToPath } from 'url';
 // ****************************************************
 // Instantiate the new Storefront Reference Application
 // ****************************************************
-import { getSampleApp } from './sample-app';
+import { getSampleApp } from './sample-app.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -41,7 +41,7 @@ function validateConfig(config) {
     REQUIRED_KEYS.forEach(KEY => {
         if (!config[KEY]) {
             console.log(
-                `Make sure ${KEY} is defined within api.js or as an environment variable`
+                `Make sure ${KEY} is defined within api.mjs or as an environment variable`
                     .red,
             );
             process.exit(1);

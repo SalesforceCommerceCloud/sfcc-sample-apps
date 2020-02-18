@@ -102,7 +102,7 @@ export async function getSampleApp() {
     } catch (e) {
         if (process.env.SFCC_DEV_MODE === 'true') {
             console.error(
-                'WARNING: There is no api.mjs found! Copy the api.example.js in api.js and customize with your own variables'
+                'WARNING: There is no api.mjs found! Copy the api.example.mjs in api.mjs and customize with your own variables'
                     .red,
             );
             process.exit(1);
