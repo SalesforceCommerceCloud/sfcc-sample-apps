@@ -97,12 +97,13 @@ class SampleApp {
 export async function getSampleApp() {
     let API_CONFIG_DATA = {};
     try {
-        const API = await import('./api');
+        const API = await import('./api.mjs');
         API_CONFIG_DATA = API.default;
     } catch (e) {
         if (process.env.SFCC_DEV_MODE === 'true') {
             console.error(
-                'WARNING: There is no api.js found! Copy the api.example.js in api.js and customize with your own variables',
+                'WARNING: There is no api.mjs found! Copy the api.example.mjs in api.mjs and customize with your own variables'
+                    .red,
             );
             process.exit(1);
         }

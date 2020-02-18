@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "description": "Sample Storefront Application with Lightning Web Components",
   "license": "MIT",
-  "type": "module",
   "config": {
     "lwcVersion": "1.0.1",
     "talonVersion": "0.16.0"
@@ -19,18 +18,18 @@
       "src/**/*.spec.js",
       "src/**/*.test.js"
     ],
-    "exec": "SFCC_DEV_MODE='true' NODE_OPTIONS='--experimental-modules --experimental-specifier-resolution=node' node --nolazy --inspect=9229 ./scripts/runtime.js"
+    "exec": "SFCC_DEV_MODE='true' NODE_OPTIONS='--experimental-modules --experimental-specifier-resolution=node' node --nolazy --inspect=9229 ./scripts/runtime.mjs"
   },
   "browserslist": "> 0.25%",
   "scripts": {
     "build": "lwc-services build -m production --noclear && yarn build:scss && yarn build:public && yarn build:resources",
     "build:public": "cpx \"src/public/**/*\" dist/public --verbose && cpx \"dist/*.*\" dist/public",
-    "build:resources": "NODE_OPTIONS='--experimental-modules --experimental-specifier-resolution=node' node scripts/copy-resources.js",
+    "build:resources": "NODE_OPTIONS='--experimental-modules --experimental-specifier-resolution=node' node scripts/copy-resources.mjs",
     "build:development": "lwc-services build --noclear",
     "lint": "eslint ./src/**/*.js",
     "prettier": "prettier --write \"**/*.{css,html,js,json,md,ts,yaml,yml}\"",
     "prettier:verify": "prettier --list-different \"**/*.{css,html,js,json,md,ts,yaml,yml}\"",
-    "start": "NODE_OPTIONS='--experimental-modules --experimental-specifier-resolution=node' node ./scripts/runtime.js",
+    "start": "NODE_OPTIONS='--experimental-modules --experimental-specifier-resolution=node' node ./scripts/runtime.mjs",
     "test:unit": "lwc-services test:unit",
     "test:unit:coverage": "lwc-services test:unit --coverage",
     "test:unit:debug": "lwc-services test:unit --debug",
