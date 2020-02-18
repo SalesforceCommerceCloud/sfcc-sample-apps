@@ -10,22 +10,23 @@ import { apiClient } from '../api/client';
 
 export const productDetailWireAdaptor = Symbol('product-detail');
 
-register(productDetailWireAdaptor, (eventTarget) => {
+register(productDetailWireAdaptor, eventTarget => {
     /**
      * Make the server request for product data
      * @param options
      * @return {*}
      */
-    const fetchProductById = (options) => {
+    const fetchProductById = options => {
         const pid = options.pid;
         const selectedColor = options.selectedColor;
 
         if (pid && pid.length) {
             try {
-                return apiClient.query({
-                    query: gql`
+                return apiClient
+                    .query({
+                        query: gql`
                     {
-                        product(id: "${ pid }", selectedColor: "${ selectedColor }") {
+                        product(id: "${pid}", selectedColor: "${selectedColor}") {
                             name
                             id
                             masterId
@@ -89,13 +90,15 @@ register(productDetailWireAdaptor, (eventTarget) => {
                             }
                         }
                     }
-                 `
-                }).then(result => {
-                    return result.data.product;
-                }).catch((error) => {
-                    console.error('Error fetching product by ID ', error);
-                    return {};
-                });
+                 `,
+                    })
+                    .then(result => {
+                        return result.data.product;
+                    })
+                    .catch(error => {
+                        console.error('Error fetching product by ID ', error);
+                        return {};
+                    });
             } catch (e) {
                 console.error('Exception fetching product by ID ', e);
                 return {};
@@ -110,8 +113,7 @@ register(productDetailWireAdaptor, (eventTarget) => {
      *
      * @param wireConfigData the changed lwc component wire properties.
      */
-    const handleWireEvent = (wireConfigData) => {
-
+    const handleWireEvent = wireConfigData => {
         const result = fetchProductById(wireConfigData);
         if (!result) {
             return;
@@ -121,20 +123,27 @@ register(productDetailWireAdaptor, (eventTarget) => {
         if (result && result.then) {
             // From the promise resolve dispatch the wire-service value change event.
             // This will update the component data.
-            result.then((data) => {
-                eventTarget.dispatchEvent(new ValueChangedEvent(data));
-            }, (error) => {
-                eventTarget.dispatchEvent(new ValueChangedEvent({ data: undefined, error }));
-            });
+            result.then(
+                data => {
+                    eventTarget.dispatchEvent(new ValueChangedEvent(data));
+                },
+                error => {
+                    eventTarget.dispatchEvent(
+                        new ValueChangedEvent({ data: undefined, error }),
+                    );
+                },
+            );
         } else {
             // From cached data dispatch the wire-service value change event.
             // This will update the component data
             eventTarget.dispatchEvent(new ValueChangedEvent(result));
         }
-    }
+    };
 
     // Invoked when wireConfigData is updated.
-    eventTarget.addEventListener('config', (configData) => handleWireEvent(configData));
+    eventTarget.addEventListener('config', configData =>
+        handleWireEvent(configData),
+    );
 });
 
 export default register;

@@ -3,16 +3,16 @@ import {
     ApolloLink,
     InMemoryCache,
     HttpLink,
-} from "apollo-boost";
+} from 'apollo-boost';
 
 const httpLink = new HttpLink({
-    uri: window.apiconfig.COMMERCE_API_PATH || "/api",
+    uri: window.apiconfig.COMMERCE_API_PATH || '/api',
 });
 
 const authLink = new ApolloLink((operation, forward) => {
     // Retrieve the authorization token from local storage.
-    const auth_token = localStorage.getItem("auth_token") || "";
-    const cart_id = localStorage.getItem("cart_id") || "";
+    const auth_token = localStorage.getItem('auth_token') || '';
+    const cart_id = localStorage.getItem('cart_id') || '';
 
     // Use the setContext method to set the HTTP headers.
     operation.setContext({

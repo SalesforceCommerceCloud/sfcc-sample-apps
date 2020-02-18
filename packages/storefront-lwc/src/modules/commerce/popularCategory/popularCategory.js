@@ -6,13 +6,13 @@
 */
 import { LightningElement, api } from 'lwc';
 
-export default class Total extends LightningElement {
-    @api description;
-    @api descriptionClass;
-    @api total;
-    @api totalClass;
-
-    constructor() {
-        super();
-    }
+/**
+ * Popular Category component. Renders popular category content.
+ */
+class PopularCategory extends LightningElement {
+    @api categoryName;
+    @api categoryLink;
+    @api categoryImageSrc;
 }
+
+export default PopularCategory;

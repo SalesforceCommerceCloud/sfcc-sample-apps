@@ -20,11 +20,10 @@ import '@sfcc-bff/productapi';
 //
 // Import Keys needed to access core services end extensions
 //
-import {CORE_GRAPHQL_KEY, EXPRESS_KEY} from '@sfcc-core/core-graphql';
-import {API_CONFIG_KEY} from "@sfcc-core/apiconfig";
+import { CORE_GRAPHQL_KEY, EXPRESS_KEY } from '@sfcc-core/core-graphql';
+import { API_CONFIG_KEY } from '@sfcc-core/apiconfig';
 
 class SampleApp {
-
     /**
      * Initialize the Application
      */
@@ -36,15 +35,15 @@ class SampleApp {
         Object.assign(config, this.apiConfig.config);
         this.apiConfig.config = config;
         this.logger = core.getService(LOGGER_KEY);
-        if(this.apiConfig.config.COMMERCE_LOG_LEVEL) {
+        if (this.apiConfig.config.COMMERCE_LOG_LEVEL) {
             this.logger.setLevel(this.apiConfig.config.COMMERCE_LOG_LEVEL);
         }
     }
 
     set expressApplication(expressApp) {
-        core.registerService(EXPRESS_KEY, function () {
+        core.registerService(EXPRESS_KEY, function() {
             return expressApp;
-        })
+        });
     }
 
     get expressApplication() {
@@ -54,8 +53,11 @@ class SampleApp {
     start() {
         let myapp = this;
         if (this.expressApplication) {
-            this.expressApplication.get( '/apiconfig.js', function ( req, res ) {
-                res.send('window.apiconfig='+JSON.stringify(myapp.apiConfig.config));
+            this.expressApplication.get('/apiconfig.js', function(req, res) {
+                res.send(
+                    'window.apiconfig=' +
+                        JSON.stringify(myapp.apiConfig.config),
+                );
             });
         }
 
@@ -69,29 +71,42 @@ class SampleApp {
 
     // Just some development output
     status() {
-        this.logger.debug('Is Express Registered?', !!core.getService(EXPRESS_KEY));
-        this.logger.debug('Is GraphQL Registered?', !!core.getService(CORE_GRAPHQL_KEY));
+        this.logger.debug(
+            'Is Express Registered?',
+            !!core.getService(EXPRESS_KEY),
+        );
+        this.logger.debug(
+            'Is GraphQL Registered?',
+            !!core.getService(CORE_GRAPHQL_KEY),
+        );
 
         Object.getOwnPropertySymbols(core.services).forEach(key => {
             this.logger.debug(`Registered Core Service: ${key.toString()}.`);
         });
 
         Object.getOwnPropertySymbols(core.extensions).forEach(key => {
-            this.logger.debug(`Registered Core Extensions: ${key.toString()}. ${core.getExtension(key).length} Extensions Registered.`);
+            this.logger.debug(
+                `Registered Core Extensions: ${key.toString()}. ${
+                    core.getExtension(key).length
+                } Extensions Registered.`,
+            );
         });
     }
 }
 
-export async function getSampleApp(){
+export async function getSampleApp() {
     let API_CONFIG_DATA = {};
-    try{
-        const API = await import ('./api');
+    try {
+        const API = await import('./api.mjs');
         API_CONFIG_DATA = API.default;
-    }catch(e) {
-        if(process.env.SFCC_DEV_MODE === 'true'){
-            console.error('WARNING: There is no api.js found! Copy the api.example.js in api.js and customize with your own variables');
+    } catch (e) {
+        if (process.env.SFCC_DEV_MODE === 'true') {
+            console.error(
+                'WARNING: There is no api.mjs found! Copy the api.example.mjs in api.mjs and customize with your own variables'
+                    .red,
+            );
             process.exit(1);
-        };
-    };
+        }
+    }
     return new SampleApp(API_CONFIG_DATA);
 }

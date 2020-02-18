@@ -4,9 +4,9 @@
     SPDX-License-Identifier: BSD-3-Clause
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
-import {register, ValueChangedEvent} from '@lwc/wire-service';
+import { register, ValueChangedEvent } from '@lwc/wire-service';
 import gql from 'graphql-tag';
-import {apiClient} from '../api/client';
+import { apiClient } from '../api/client';
 
 //
 // Declarative access: register a wire adapter factory for  @wire(getTodo).
@@ -16,7 +16,7 @@ export const productsByQuery = Symbol('product-query');
 //
 // We must register our uniquely named adaptor, productsByQuery, with the @wire services for LWC components.
 //
-register(productsByQuery, (eventTarget) => {
+register(productsByQuery, eventTarget => {
     let wireConfigData = null;
 
     /**
@@ -26,8 +26,9 @@ register(productsByQuery, (eventTarget) => {
      * @returns {Promise<ApolloQueryResult<any> | {error: any}>}
      */
     const executeSearch = (query, filters) => {
-        return apiClient.query({
-            query: gql`
+        return apiClient
+            .query({
+                query: gql`
                         {
                             productSearch(query: "${query}" ${filters}) {
                                 productHits {
@@ -76,13 +77,15 @@ register(productsByQuery, (eventTarget) => {
                             }
                         }
                     }
-                     `
-        }).then((result) => {
-            return result;
-        }).catch((error) => {
-            console.error('error', error);
-            return error;
-        });
+                     `,
+            })
+            .then(result => {
+                return result;
+            })
+            .catch(error => {
+                console.error('error', error);
+                return error;
+            });
     };
 
     /**
@@ -94,26 +97,27 @@ register(productsByQuery, (eventTarget) => {
      *                }
      * @returns {*[]|Promise<ApolloQueryResult<any> | {error: any}>|*}
      */
-    const getProductByQuery = (options) => {
+    const getProductByQuery = options => {
         if (!!options.query === false) {
             return [];
         }
 
         const query = options.query;
-        const sortRule = options.sortRule;
         const selectedRefinements = options.selectedRefinements;
-        const sort = options.sortRule && options.sortRule.id ? `{ id: "sort", value: "${options.sortRule.id}"}` : '';
-        const localCacheKey = `${query}:${sortRule && sortRule.id ? sortRule.id : ''}`;
+        const sort =
+            options.sortRule && options.sortRule.id
+                ? `{ id: "sort", value: "${options.sortRule.id}"}`
+                : '';
         let filters = '';
 
         //
         // Create filters from the selected refinements
         //
-        Object.keys(selectedRefinements).forEach((key) => {
+        Object.keys(selectedRefinements).forEach(key => {
             let values = '';
             if (selectedRefinements[key].length) {
-                selectedRefinements[key].forEach((value) => {
-                    values = values + `${value}|`
+                selectedRefinements[key].forEach(value => {
+                    values = values + `${value}|`;
                 });
                 values = values.slice(0, -1);
                 filters = `${filters}{ id: "${key}", value: "${values}"},`;
@@ -145,24 +149,31 @@ register(productsByQuery, (eventTarget) => {
 
         // From the promise resolve dispatch the wire-service value change event.
         // This will update the component data.
-        getProductByQuery(wireConfigData).then((data) => {
-            eventTarget.dispatchEvent(new ValueChangedEvent({
-                error: null,
-                ...data
-            }));
-        }, (error) => {
-            console.error('Reject Load Product, error', error);
-            eventTarget.dispatchEvent(new ValueChangedEvent({
-                data: null,
-                error
-            }));
-        });
+        getProductByQuery(wireConfigData).then(
+            data => {
+                eventTarget.dispatchEvent(
+                    new ValueChangedEvent({
+                        error: null,
+                        ...data,
+                    }),
+                );
+            },
+            error => {
+                console.error('Reject Load Product, error', error);
+                eventTarget.dispatchEvent(
+                    new ValueChangedEvent({
+                        data: null,
+                        error,
+                    }),
+                );
+            },
+        );
     };
 
     //
     // Invoked when any observed wire config data is updated.
     //
-    eventTarget.addEventListener('config', (newWireConfigData) => {
+    eventTarget.addEventListener('config', newWireConfigData => {
         // Update the wire config data changes
         wireConfigData = newWireConfigData;
         return loadProduct();

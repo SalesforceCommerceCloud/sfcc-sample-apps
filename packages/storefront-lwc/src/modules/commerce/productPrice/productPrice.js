@@ -4,7 +4,7 @@
     SPDX-License-Identifier: BSD-3-Clause
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
-import {LightningElement, api} from 'lwc'
+import { LightningElement, api } from 'lwc';
 
 export default class ProductPrice extends LightningElement {
     @api product;
@@ -13,7 +13,7 @@ export default class ProductPrice extends LightningElement {
     /**
      * Gets the sale price of a product to 2 decimal places
      */
-    get salePrice () {
+    get salePrice() {
         if (this.product && this.product.prices && this.product.prices.sale) {
             return this.product.prices.sale.toFixed(2);
         }
@@ -23,7 +23,7 @@ export default class ProductPrice extends LightningElement {
     /**
      * Gets the list price of a product to 2 decimal places
      */
-    get listPrice () {
+    get listPrice() {
         if (this.product && this.product.prices && this.product.prices.list) {
             return this.product.prices.list.toFixed(2);
         }
@@ -34,11 +34,8 @@ export default class ProductPrice extends LightningElement {
      * Sets the context value to one of the valid values
      */
     @api
-    set context (value) {
-        const validValues = [
-            'tile',
-            'pdp'
-        ];
+    set context(value) {
+        const validValues = ['tile', 'pdp'];
         let matchFound = false;
         for (const validValue of validValues) {
             if (value === validValue) {
@@ -48,7 +45,11 @@ export default class ProductPrice extends LightningElement {
         }
 
         if (!matchFound) {
-            throw new Error(`Invalid context value: ${value}. Available contexts: ${validValues.join(', ')}`);
+            throw new Error(
+                `Invalid context value: ${value}. Available contexts: ${validValues.join(
+                    ', ',
+                )}`,
+            );
         }
 
         this.contextValue = value;
@@ -59,7 +60,7 @@ export default class ProductPrice extends LightningElement {
      * The context value is used as class name in the template.
      * This allows context-specific css styling.
      */
-    get context () {
+    get context() {
         return this.contextValue;
     }
 }

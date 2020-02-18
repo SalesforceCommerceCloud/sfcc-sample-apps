@@ -1,4 +1,4 @@
-import {LightningElement, api} from 'lwc';
+import { LightningElement, api } from 'lwc';
 
 export default class ProductAvailability extends LightningElement {
     @api inventory;
@@ -8,7 +8,7 @@ export default class ProductAvailability extends LightningElement {
     /**
      * Checks the availability of a product and returns the appropriate availability message
      */
-    get availabilityMessage () {
+    get availabilityMessage() {
         // Message that will be returned and displayed
         let availabilityMessage = '';
 
@@ -28,7 +28,10 @@ export default class ProductAvailability extends LightningElement {
             availabilityMessage = 'This item is currently not available';
         } else {
             // Check to see if the product has perpetual inventory. OCAPI returns ats with value 9999 if product is infinite
-            const isPerpetual = this.inventory && this.inventory.ats && this.inventory.ats === 9999;
+            const isPerpetual =
+                this.inventory &&
+                this.inventory.ats &&
+                this.inventory.ats === 9999;
             if (isPerpetual) {
                 availabilityMessage = 'In Stock';
                 return availabilityMessage;
@@ -36,16 +39,24 @@ export default class ProductAvailability extends LightningElement {
 
             // Could have multiple messages due to availability levels and back order and pre order
             const availabilityMessages = [];
-            const inventoryStockLevel = this.inventory.stockLevel ? this.inventory.stockLevel : 0;
+            const inventoryStockLevel = this.inventory.stockLevel
+                ? this.inventory.stockLevel
+                : 0;
             const allocation = this.inventory.ats - inventoryStockLevel;
             const selectedQuantity = this.quantity ? this.quantity : 1;
             const levels = {
-                inStock: selectedQuantity <= inventoryStockLevel ? selectedQuantity : inventoryStockLevel,
+                inStock:
+                    selectedQuantity <= inventoryStockLevel
+                        ? selectedQuantity
+                        : inventoryStockLevel,
                 preorder: 0,
                 backorder: 0,
-                notAvailable: 0
+                notAvailable: 0,
             };
-            let selectedQuantityLeft = selectedQuantity <= inventoryStockLevel ? 0 : selectedQuantity - inventoryStockLevel;
+            let selectedQuantityLeft =
+                selectedQuantity <= inventoryStockLevel
+                    ? 0
+                    : selectedQuantity - inventoryStockLevel;
 
             // Determine backorder levels
             if (selectedQuantityLeft && this.inventory.backorderable) {
@@ -76,7 +87,9 @@ export default class ProductAvailability extends LightningElement {
                 if (levels.inStock === selectedQuantity) {
                     availabilityMessages.push('In Stock');
                 } else {
-                    availabilityMessages.push(levels.inStock + ' Item(s) In Stock.');
+                    availabilityMessages.push(
+                        levels.inStock + ' Item(s) In Stock.',
+                    );
                 }
             }
 
@@ -84,9 +97,14 @@ export default class ProductAvailability extends LightningElement {
                 if (levels.preorder === selectedQuantity) {
                     availabilityMessages.push('Pre-Order');
                 } else if (levels.notAvailable === 0) {
-                    availabilityMessages.push('The remaining items are available for pre-order.');
+                    availabilityMessages.push(
+                        'The remaining items are available for pre-order.',
+                    );
                 } else {
-                    availabilityMessages.push(levels.preorder + ' Item(s) are available for pre-order.');
+                    availabilityMessages.push(
+                        levels.preorder +
+                            ' Item(s) are available for pre-order.',
+                    );
                 }
             }
 
@@ -94,17 +112,25 @@ export default class ProductAvailability extends LightningElement {
                 if (levels.backorder === selectedQuantity) {
                     availabilityMessages.push('Back Order');
                 } else if (levels.notAvailable === 0) {
-                    availabilityMessages.push('The remaining items are available on back order.');
+                    availabilityMessages.push(
+                        'The remaining items are available on back order.',
+                    );
                 } else {
-                    availabilityMessages.push('Back Order' + levels.backorder + ' item(s).');
+                    availabilityMessages.push(
+                        'Back Order' + levels.backorder + ' item(s).',
+                    );
                 }
             }
 
             if (levels.notAvailable > 0) {
                 if (levels.notAvailable === selectedQuantity) {
-                    availabilityMessages.push('This item is currently not available');
+                    availabilityMessages.push(
+                        'This item is currently not available',
+                    );
                 } else {
-                    availabilityMessages.push('The remaining items are currently not available. Please adjust the quantity.');
+                    availabilityMessages.push(
+                        'The remaining items are currently not available. Please adjust the quantity.',
+                    );
                 }
             }
 
