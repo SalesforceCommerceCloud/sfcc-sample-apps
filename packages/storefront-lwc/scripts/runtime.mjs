@@ -27,6 +27,28 @@ const publicDir = `${templateDir}/dist/public/`;
 const port = process.env.PORT || 3002;
 const mode = process.env.NODE_ENV || 'development';
 
+function validateConfig(config) {
+    const REQUIRED_KEYS = [
+        'COMMERCE_API_PATH',
+        'COMMERCE_CLIENT_API_SITE_ID',
+        'COMMERCE_CLIENT_CLIENT_ID',
+        'COMMERCE_CLIENT_REALM_ID',
+        'COMMERCE_CLIENT_INSTANCE_ID',
+        'COMMERCE_CLIENT_ORGANIZATION_ID',
+        'COMMERCE_CLIENT_SHORT_CODE',
+    ];
+
+    REQUIRED_KEYS.forEach(KEY => {
+        if (!config[KEY]) {
+            console.log(
+                `Make sure ${KEY} is defined within api.js or as an environment variable`
+                    .red,
+            );
+            process.exit(1);
+        }
+    });
+}
+
 /**
  * Setup and Start Server
  */
@@ -34,6 +56,8 @@ const mode = process.env.NODE_ENV || 'development';
     const sampleApp = await getSampleApp();
     // Create Express Instance, register it with demo app and start demo app.
     sampleApp.expressApplication = express();
+
+    validateConfig(sampleApp.apiConfig.config);
 
     // Serve up static files
     sampleApp.expressApplication.use(
@@ -57,18 +81,17 @@ const mode = process.env.NODE_ENV || 'development';
 
     // start the server
     const server = sampleApp.expressApplication.listen(port, () => {
+        const portToTellUser =
+            process.env.SFCC_DEV_MODE === 'true' ? 3000 : server.address().port;
+
         console.log('======== Example SFRA runtime ======== ');
         console.log(
-            `🌩 Client Server up on ==============> http://localhost:${
-                server.address().port
-            } <=========== Client UI ========== 🌩`.yellow,
+            `🌩 Client Server up on ==============> http://localhost:${portToTellUser} <=========== Client UI ========== 🌩`
+                .yellow,
         );
         console.log(
-            `🚀 Apollo GraphQL Server up on ======> http://localhost:${
-                server.address().port
-            }${
-                sampleApp.apiConfig.config.COMMERCE_API_PATH
-            } <=== Apollo GraphQL ===== 🚀`.blue,
+            `🚀 Apollo GraphQL Server up on ======> http://localhost:${portToTellUser}${sampleApp.apiConfig.config.COMMERCE_API_PATH} <=== Apollo GraphQL ===== 🚀`
+                .blue,
         );
     });
 
