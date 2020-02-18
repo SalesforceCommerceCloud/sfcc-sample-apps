@@ -1,6 +1,6 @@
 {
   "name": "sfcc-sample-apps",
-  "version": "0.0.1",
+  "version": "1.0.0-alpha.1",
   "description": "Sample Talon Application with Lightning Web Components",
   "license": "MIT",
   "private": true,

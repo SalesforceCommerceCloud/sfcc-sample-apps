@@ -1,6 +1,6 @@
 {
   "name": "@sfcc-core/core-graphql",
-  "version": "0.0.1-sfcc-alpha-1",
+  "version": "1.0.0-alpha.1",
   "description": "sfcc default core graphql",
   "main": "./src/core-graphql.js",
   "type": "module",
@@ -17,8 +17,8 @@
   "author": "Jason Cooper",
   "license": "MIT",
   "dependencies": {
-    "@sfcc-core/apiconfig": "0.0.1-sfcc-alpha-1",
-    "@sfcc-core/core": "0.0.1-sfcc-alpha-1",
+    "@sfcc-core/apiconfig": "1.0.0-alpha.1",
+    "@sfcc-core/core": "1.0.0-alpha.1",
     "apollo-server": "^2.3.3",
     "graphql-tag": "^2.10.1",
     "graphql-tools": "^4.0.4"
