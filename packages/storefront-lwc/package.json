@@ -1,6 +1,6 @@
 {
   "name": "storefront-lwc",
-  "version": "0.0.1",
+  "version": "1.0.0-alpha.1",
   "description": "Sample Storefront Application with Lightning Web Components",
   "license": "MIT",
   "config": {
@@ -53,11 +53,11 @@
   "dependencies": {
     "@lwc/synthetic-shadow": "^1.1.1",
     "@salesforce-ux/design-system": "^2.9.4",
-    "@sfcc-bff/productapi": "0.0.1-sfcc-alpha-1",
-    "@sfcc-core/apiconfig": "0.0.1-sfcc-alpha-1",
-    "@sfcc-core/core": "0.0.1-sfcc-alpha-1",
-    "@sfcc-core/core-graphql": "0.0.1-sfcc-alpha-1",
-    "@sfcc-core/logger": "0.0.1-sfcc-alpha-1",
+    "@sfcc-bff/productapi": "1.0.0-alpha.1",
+    "@sfcc-core/apiconfig": "1.0.0-alpha.1",
+    "@sfcc-core/core": "1.0.0-alpha.1",
+    "@sfcc-core/core-graphql": "1.0.0-alpha.1",
+    "@sfcc-core/logger": "1.0.0-alpha.1",
     "apollo-boost": "^0.4.7",
     "apollo-datasource-rest": "^0.3.2",
     "apollo-server": "^2.3.2",
