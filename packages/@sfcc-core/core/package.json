@@ -1,15 +1,41 @@
 {
+  "license": "MIT",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "test:unit": "tsdx test --collect-coverage",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build",
+    "pub": "npm build; npm pack; npm publish -f",
+    "pack": "npm pack"
+  },
+  "peerDependencies": {},
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
   "name": "@sfcc-core/core",
   "version": "1.0.0-alpha.1",
   "description": "sfcc core registry",
-  "main": "./src/core.js",
-  "type": "module",
-  "scripts": {
-    "lint": "eslint src",
-    "lint:fix": "eslint src --fix",
-    "pub": "npm pack; npm publish -f",
-    "pack": "npm pack"
+  "module": "dist/core.esm.js",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "default": "./dist/core.esm.js"
+    }
   },
-  "author": "Jason Cooper",
-  "license": "MIT"
+  "type": "module",
+  "devDependencies": {
+    "@types/jest": "^25.1.2",
+    "husky": "^4.2.3",
+    "tsdx": "^0.12.3",
+    "tslib": "^1.10.0",
+    "typescript": "^3.7.5"
+  }
 }
