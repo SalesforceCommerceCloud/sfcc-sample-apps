@@ -1,4 +1,4 @@
-# Commerce Storefront Sample Application &middot; [![CircleCI][circleci-image]][circleci-url]
+# Ann Diep    Commerce Storefront Sample Application &middot; [![CircleCI][circleci-image]][circleci-url]
 
 Our storefront sample application shows how you can build amazing commerce experiences with the latest Commerce platform technologies. The application back end is built on the new Salesforce Commerce API (a RESTful headless API). The front end is built with Lightning Web Components (LWC). In between, it uses GraphQL and the Salesforce Commerce Node.js SDK. 
 
