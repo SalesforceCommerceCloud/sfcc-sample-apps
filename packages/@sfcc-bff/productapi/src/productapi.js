@@ -13,6 +13,7 @@ import {
     productDetailsResolver,
     productSearchTypeDef,
     productSearchResolver,
+    checkoutBasketResolver
 } from './api';
 
 export default class ProductAPI {
@@ -43,6 +44,7 @@ export default class ProductAPI {
         return resolverFactory(config, [
             productDetailsResolver,
             productSearchResolver,
+            checkoutBasketResolver
         ]);
     }
 

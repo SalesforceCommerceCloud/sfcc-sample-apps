@@ -8,6 +8,9 @@
 export { typeDef as productDetailsTypeDef } from './schema/productDetailsTypeDef';
 export { resolver as productDetailsResolver } from './schema/productDetailsResolvers';
 
+// export { typeDef as productDetailsTypeDef } from './schema/productDetailsTypeDef';
+export { resolver as checkoutBasketResolver } from './schema/checkoutBasketResolvers';
+
 // Product Search
 export { typeDef as productSearchTypeDef } from './schema/productSearchTypeDef';
 export { resolver as productSearchResolver } from './schema/productSearchResolvers';
