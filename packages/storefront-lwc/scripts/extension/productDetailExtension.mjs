@@ -6,13 +6,8 @@ import CommerceSdk from 'commerce-sdk';
 import Image from '../../../@sfcc-bff/productapi/src/api/models/Image';
 
 const { gql } = apolloServerCore;
-/**
- *  Demo: Product details component extention/customization
- * */ 
 
-//
-// Define the Product Recommendation extension to the Product object
-//
+// Demo : Define the Product Recommendation extension to the Product object
 const productRecommendationTypeDef = gql`
     type Recommendation {
         productId: String
@@ -24,10 +19,7 @@ const productRecommendationTypeDef = gql`
     }
 `;
 
-
-//
 // Resolve the product recommendations for a Product
-//
 const productRecommendationResolver = (config) => {
     return {
         Product: {
@@ -84,16 +76,11 @@ const getClientProduct = async (config, id) => {
         });
 };
 
-//
 // Extension registration
-//
-
 export default class ProductDetailExtensions {
-
     get typeDefs() {
         return [productRecommendationTypeDef];
     }
-
     getResolvers(config) {
         return resolverFactory(config,[productRecommendationResolver]);
     }
