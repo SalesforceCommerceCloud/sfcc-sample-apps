@@ -14,19 +14,12 @@ class UnknownServiceError extends Error {
 type Service = any;
 type Extension = () => any;
 
-interface ObjWithServices {
-    [key: string]: Service;
-}
-
-interface ObjWithExtensions {
-    [key: string]: Array<Extension>;
-}
-
 class Core {
-    _services: ObjWithServices;
-    _extensions: ObjWithExtensions;
-    _factoryExtensions: ObjWithExtensions;
-    _factoryServices: ObjWithServices;
+    _services: { [key: string]: Service };
+    _extensions: { [key: string]: Array<Extension> };
+    _factoryExtensions: { [key: string]: Array<Extension> };
+    _factoryServices: { [key: string]: Service };
+
     INSTANCE: string;
 
     get services() {
