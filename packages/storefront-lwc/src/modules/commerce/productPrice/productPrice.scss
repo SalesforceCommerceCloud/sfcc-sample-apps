@@ -13,9 +13,6 @@
   display: flex;
   color: $dark-gray;
   @include heavy;
-  @include mobile {justify-content: center; }
-  @include tablet {justify-content: left; }
-  @include desktop {justify-content: left; }
 }
 
 .sale-price {
