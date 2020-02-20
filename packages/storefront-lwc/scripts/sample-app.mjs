@@ -55,8 +55,7 @@ class SampleApp {
         if (this.expressApplication) {
             this.expressApplication.get('/apiconfig.js', function(req, res) {
                 res.send(
-                    'window.apiconfig=' +
-                        JSON.stringify(myapp.apiConfig.config),
+                    `window.apiconfig={"COMMERCE_API_PATH": "${myapp.apiConfig.config.COMMERCE_API_PATH}"}`,
                 );
             });
         }
