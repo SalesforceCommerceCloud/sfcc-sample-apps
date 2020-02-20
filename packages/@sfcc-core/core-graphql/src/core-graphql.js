@@ -36,15 +36,6 @@ export const resolverFactory = (config, resolversArray) => {
     return combinedResolvers;
 };
 
-export const dataSourcesFactory = (config, dataSourcesArray) => {
-    let dataSources = {};
-    dataSourcesArray.forEach(dataSource => {
-        const dataSourceInst = dataSource(config);
-        Object.assign(dataSources, dataSourceInst);
-    });
-    return dataSources;
-};
-
 /**
  * Core GraphQL and Apollo Server services - requires express to be registered.
  */
@@ -62,7 +53,6 @@ export default class CoreGraphQL {
             `,
         ];
         this._resolvers = {};
-        this._dataSources = {};
     }
 
     set typeDef(typeDef) {
@@ -79,14 +69,6 @@ export default class CoreGraphQL {
 
     get resolvers() {
         return this._resolvers;
-    }
-
-    set dataSources(dataSources) {
-        this._dataSources = dataSources;
-    }
-
-    get dataSources() {
-        return this._dataSources;
     }
 
     start() {
@@ -123,10 +105,6 @@ export default class CoreGraphQL {
                         this.resolvers[key] = apiResolvers[key];
                     }
                 });
-                Object.assign(
-                    this.dataSources,
-                    api.getDataSources && api.getDataSources(apiConfig),
-                );
             });
 
             const schema = makeExecutableSchema({
@@ -136,7 +114,6 @@ export default class CoreGraphQL {
 
             this.apolloServer = new ApolloServer({
                 schema,
-                dataSources: () => this.dataSources,
                 context: ({ req }) => {
                     return {
                         auth_token: req.headers.auth_token || '',
