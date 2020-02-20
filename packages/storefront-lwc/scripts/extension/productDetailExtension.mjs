@@ -1,6 +1,6 @@
 
 import {core, API_EXTENSIONS_KEY} from '@sfcc-core/core';
-import { resolverFactory,dataSourcesFactory } from "@sfcc-core/core-graphql";
+import { resolverFactory } from "@sfcc-core/core-graphql";
 import apolloServerCore from 'apollo-server-core';
 import CommerceSdk from 'commerce-sdk';
 import Image from '../../../@sfcc-bff/productapi/src/api/models/Image';
@@ -89,15 +89,6 @@ const getClientProduct = async (config, id) => {
 //
 
 export default class ProductDetailExtensions {
-
-    getDataSources(config) {
-        core.logger.log('===========================');
-        core.logger.log('===========================');
-        core.logger.log('ProductAPI.getDataSources()', config);
-        core.logger.log('===========================');
-        core.logger.log('===========================');
-        return dataSourcesFactory(config, []);
-    };
 
     get typeDefs() {
         return [productRecommendationTypeDef];
