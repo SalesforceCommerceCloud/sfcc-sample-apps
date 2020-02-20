@@ -20,6 +20,7 @@ export default class ProductDetail extends LightningElement {
     @track product = {
         images: [],
         productPromotions: [],
+        recommendations :[]
     };
     masterPid;
     activeImage;

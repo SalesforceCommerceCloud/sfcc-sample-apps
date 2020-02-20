@@ -20,9 +20,10 @@
             <div class='price'>
                 <commerce-product-price product={product} context="tile"></commerce-product-price>
             </div>
-
-            <commerce-product-tile-swatches color-swatches={product.colorSwatches}></commerce-product-tile-swatches>
-
+            
+            <template if:true={product.colorSwatches}>
+                <commerce-product-tile-swatches color-swatches={product.colorSwatches}></commerce-product-tile-swatches>
+            </template>
         </div>
     </div>
 </template>

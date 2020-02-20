@@ -93,6 +93,19 @@
                     </div>
                 </div>
 
+                <!-- Product Recommendations -->
+                <template if:true={product.recommendations}>
+                    <div class="recommendation">
+                        <template for:each={product.recommendations} for:item="recommendation">
+                            <div class='col-6 col-sm-4 grid-gutter' key={recommendation.productId} >
+                                <div class='product' >
+                                    <commerce-product-tile product={recommendation}></commerce-product-tile>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+
                 <!-- Add to cart button -->
                 <div class="row">
                     <div class="col-12">

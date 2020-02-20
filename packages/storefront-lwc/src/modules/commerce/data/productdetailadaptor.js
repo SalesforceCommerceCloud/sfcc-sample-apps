@@ -88,6 +88,15 @@ register(productDetailWireAdaptor, eventTarget => {
                                 promotionId
                                 promotionalPrice
                             }
+                            recommendations {
+                                productId
+                                productName
+                                image {
+                                    title
+                                    link
+                                    alt
+                                  }
+                            }
                         }
                     }
                  `,

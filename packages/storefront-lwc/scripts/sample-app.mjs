@@ -16,6 +16,8 @@ import '@sfcc-core/core-graphql';
 // SFRA Extensions/Services
 //
 import '@sfcc-bff/productapi';
+// demo extension : Add a product recommendation extension to the BFF
+import './extension/productDetailExtension';
 
 //
 // Import Keys needed to access core services end extensions

@@ -20,23 +20,23 @@ export default class Logger {
     }
 
     log(...args) {
-        apilog.log(args);
+        apilog.log(...args);
     }
 
     info(...args) {
-        apilog.info(args);
+        apilog.info(...args);
     }
 
     debug(...args) {
-        apilog.debug(args);
+        apilog.debug(...args);
     }
 
     warn(...args) {
-        apilog.warn(args);
+        apilog.warn(...args);
     }
 
     error(...args) {
-        apilog.error(args);
+        apilog.error(...args);
     }
 }
 

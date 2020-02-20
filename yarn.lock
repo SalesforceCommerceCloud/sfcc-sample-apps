@@ -2029,6 +2029,19 @@
     babel-plugin-transform-dynamic-import "^2.1.0"
     babel-preset-jest "^24.0.0"
 
+"@lwc/jest-transformer@muenzpraeger/lwc-jest-transformer-ts-fix":
+  version "1.1.0-alpha1"
+  resolved "https://codeload.github.com/muenzpraeger/lwc-jest-transformer-ts-fix/tar.gz/a222f1f0f971a2b844fe2124321a2fabb3cc0520"
+  dependencies:
+    "@babel/core" "7.1.0"
+    "@babel/plugin-syntax-class-properties" "7.2.0"
+    "@babel/plugin-syntax-decorators" "7.2.0"
+    "@babel/plugin-transform-modules-commonjs" "7.1.0"
+    "@babel/preset-typescript" "7.1.0"
+    "@babel/template" "~7.1.2"
+    "@lwc/errors" "1.0.0"
+    babel-preset-jest "^24.0.0"
+
 "@lwc/module-resolver@1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@lwc/module-resolver/-/module-resolver-1.2.0.tgz#e6858080cf7abda370e2004b0545fcad97823739"
