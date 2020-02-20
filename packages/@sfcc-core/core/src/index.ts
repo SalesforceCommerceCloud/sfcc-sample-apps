@@ -1,3 +1,4 @@
+import { Logger } from '@sfcc-core/logger';
 export const LOGGER_KEY = Symbol('Logger Service');
 export const API_EXTENSIONS_KEY = Symbol('API Extensions');
 
@@ -93,7 +94,7 @@ class Core {
      * @param servicekey
      * @return {*}
      */
-    getService(_key: symbol | string): Function {
+    getService(_key: symbol | string): any {
         const key = String(_key);
         if (this._services[key]) {
             return this._services[key];
@@ -105,7 +106,7 @@ class Core {
         throw new UnknownServiceError(`Service ${key} does not exist`);
     }
 
-    get logger(): any {
+    get logger(): Logger | Console {
         try {
             return this.getService(LOGGER_KEY);
         } catch (error) {

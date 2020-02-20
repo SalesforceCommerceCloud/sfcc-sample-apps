@@ -2,36 +2,41 @@ import { core, LOGGER_KEY } from '@sfcc-core/core';
 import apilog from 'loglevel';
 export { LOGGER_KEY };
 
-export default class Logger {
-    constructor() {
-        apilog.setDefaultLevel(apilog.levels.ERROR);
+export const LEVELS = apilog.levels;
+
+export class Logger {
+    apilog: apilog.RootLogger;
+
+    constructor(apilog) {
+        this.apilog = apilog;
+        this.apilog.setDefaultLevel(apilog.levels.ERROR);
     }
 
-    setLevel(level: apilog.LogLevelDesc) {
-        apilog.setLevel(level);
+    setLevel(level: apilog.LogLevelDesc): void {
+        this.apilog.setLevel(level);
     }
 
-    log(...args: Array<string>) {
-        apilog.info(...args);
+    log(...args: Array<string>): void {
+        this.apilog.info(...args);
     }
 
-    info(...args: Array<string>) {
-        apilog.info(...args);
+    info(...args: Array<string>): void {
+        this.apilog.info(...args);
     }
 
-    debug(...args: Array<string>) {
-        apilog.debug(...args);
+    debug(...args: Array<string>): void {
+        this.apilog.debug(...args);
     }
 
-    warn(...args: Array<string>) {
-        apilog.warn(...args);
+    warn(...args: Array<string>): void {
+        this.apilog.warn(...args);
     }
 
-    error(...args: Array<string>) {
-        apilog.error(...args);
+    error(...args: Array<string>): void {
+        this.apilog.error(...args);
     }
 }
 
 core.registerService(LOGGER_KEY, function() {
-    return new Logger();
+    return new Logger(apilog);
 });
