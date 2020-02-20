@@ -6,7 +6,7 @@
 */
 // SFRA Core Extension module
 import { core, API_EXTENSIONS_KEY } from '@sfcc-core/core';
-import { resolverFactory, dataSourcesFactory } from '@sfcc-core/core-graphql';
+import { resolverFactory } from '@sfcc-core/core-graphql';
 
 import {
     productDetailsTypeDef,
@@ -44,15 +44,6 @@ export default class ProductAPI {
             productDetailsResolver,
             productSearchResolver,
         ]);
-    }
-
-    getDataSources(config) {
-        core.logger.log('===========================');
-        core.logger.log('===========================');
-        core.logger.log('ProductAPI.getDataSources()', config);
-        core.logger.log('===========================');
-        core.logger.log('===========================');
-        return dataSourcesFactory(config, []);
     }
 }
 

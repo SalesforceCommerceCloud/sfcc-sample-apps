@@ -36,15 +36,6 @@ export const resolverFactory = (config, resolversArray) => {
     return combinedResolvers;
 };
 
-export const dataSourcesFactory = (config, dataSourcesArray) => {
-    let dataSources = {};
-    dataSourcesArray.forEach(dataSource => {
-        const dataSourceInst = dataSource(config);
-        Object.assign(dataSources, dataSourceInst);
-    });
-    return dataSources;
-};
-
 /**
  * Core GraphQL and Apollo Server services - requires express to be registered.
  */
@@ -123,10 +114,6 @@ export default class CoreGraphQL {
                         this.resolvers[key] = apiResolvers[key];
                     }
                 });
-                Object.assign(
-                    this.dataSources,
-                    api.getDataSources && api.getDataSources(apiConfig),
-                );
             });
 
             const schema = makeExecutableSchema({
