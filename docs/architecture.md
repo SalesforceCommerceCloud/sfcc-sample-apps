@@ -35,7 +35,7 @@ When customizing or extending the sample app, do not modify the packages within 
 
 ![Sample App Project Layout](project-layout.png)
 
-The core-graphql module within `@sfcc-core` is responsible for getting all the registered API modules, looping over them, aggregating the schemas, resolvers, and datasources, and then starting the Apollo Server with which the Apollo Client will communicate. To create a new BFF API module, we have to register it with core, create the Schema, Resolvers and Datasources needed, and expose them to the core-graphql module for aggregation through factory functions in the core-graphql module. 
+The core-graphql module within `@sfcc-core` is responsible for getting all the registered API modules, looping over them, aggregating the schemas and resolvers, and then starting the Apollo Server with which the Apollo Client will communicate. To create a new BFF API module, we have to register it with core, create the schema and resolvers needed, and expose them to the core-graphql module for aggregation through factory functions in the core-graphql module. 
 
 ## What's Not Included?
 This is a sample application, and is not intended to be a full reference architecture. There are multiple components missing, some of which will be added in the future. Specifically, the app does not currently include:
