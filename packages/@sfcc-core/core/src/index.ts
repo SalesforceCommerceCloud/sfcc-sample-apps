@@ -2,6 +2,10 @@ import { Logger } from '@sfcc-core/logger';
 export const LOGGER_KEY = Symbol('Logger Service');
 export const API_EXTENSIONS_KEY = Symbol('API Extensions');
 
+export type Extension = any;
+export type Service = any;
+export type ExtensionFactory = () => Extension;
+
 class UnknownServiceError extends Error {
     __proto__: Error;
 
@@ -12,13 +16,10 @@ class UnknownServiceError extends Error {
     }
 }
 
-type Service = any;
-type Extension = () => any;
-
 class Core {
-    _services: { [key: string]: Service };
-    _extensions: { [key: string]: Array<Extension> };
-    _factoryExtensions: { [key: string]: Array<Extension> };
+    _services: { [key: string]: any };
+    _extensions: { [key: string]: Array<ExtensionFactory> };
+    _factoryExtensions: { [key: string]: Array<ExtensionFactory> };
     _factoryServices: { [key: string]: Service };
 
     INSTANCE: string;
@@ -94,7 +95,7 @@ class Core {
      * @param servicekey
      * @return {*}
      */
-    getService(_key: symbol | string): any {
+    getService(_key: symbol | string): Service {
         const key = String(_key);
         if (this._services[key]) {
             return this._services[key];

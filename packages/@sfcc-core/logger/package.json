@@ -25,7 +25,7 @@
   },
   "name": "@sfcc-core/logger",
   "version": "1.0.0-alpha.1",
-  "description": "sfcc core registry",
+  "description": "sfcc default logger",
   "module": "dist/logger.esm.js",
   "exports": {
     ".": {
