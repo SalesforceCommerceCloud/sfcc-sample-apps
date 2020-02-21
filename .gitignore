@@ -11,7 +11,6 @@ coverage
 *.iml
 jest-report
 yarn-error.log
-tsconfig.json
 .idea
 
 **/package-lock.json
