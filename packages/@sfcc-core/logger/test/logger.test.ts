@@ -4,7 +4,8 @@ import apilog from 'loglevel';
 jest.mock('loglevel');
 
 describe('logger', () => {
-    let logger;
+    let logger = new Logger(apilog);
+
     beforeEach(() => {
         logger = new Logger(apilog);
     });

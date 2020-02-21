@@ -1,10 +1,14 @@
-import { Logger } from '@sfcc-core/logger';
+import {
+    ApiConfig,
+    Logger,
+    Extension,
+    Service,
+    ExtensionFactory,
+    LogLevel,
+} from './types';
+
 export const LOGGER_KEY = Symbol('Logger Service');
 export const API_EXTENSIONS_KEY = Symbol('API Extensions');
-
-export type Extension = any;
-export type Service = any;
-export type ExtensionFactory = () => Extension;
 
 class UnknownServiceError extends Error {
     __proto__: Error;
@@ -17,7 +21,7 @@ class UnknownServiceError extends Error {
 }
 
 class Core {
-    _services: { [key: string]: any };
+    _services: { [key: string]: Service };
     _extensions: { [key: string]: Array<ExtensionFactory> };
     _factoryExtensions: { [key: string]: Array<ExtensionFactory> };
     _factoryServices: { [key: string]: Service };
@@ -38,7 +42,7 @@ class Core {
      * @param name
      * @param service
      */
-    registerService(_key: string | symbol, service: any) {
+    registerService(_key: string | symbol, service: Service) {
         const key = String(_key);
         this.logger.log(`registerService(${key})`);
 
@@ -54,7 +58,7 @@ class Core {
      * @param key
      * @param extension
      */
-    registerExtension(_key: string | symbol, extension: any) {
+    registerExtension(_key: string | symbol, extension: Extension) {
         const key = String(_key);
         this.logger.log(`registerExtension(${key})`);
 
@@ -95,7 +99,7 @@ class Core {
      * @param servicekey
      * @return {*}
      */
-    getService(_key: symbol | string): Service {
+    getService<ServiceType>(_key: symbol | string): ServiceType {
         const key = String(_key);
         if (this._services[key]) {
             return this._services[key];
@@ -155,3 +159,4 @@ class Core {
 
 const coreSingleton = new Core();
 export const core = coreSingleton;
+export { ApiConfig, Logger, Extension, Service, ExtensionFactory, LogLevel };

@@ -2,8 +2,6 @@
     "extends": "./tsconfig.build.json",
 
     "compilerOptions": {
-        "esModuleInterop": true,
-        "target": "es5",
         "baseUrl": "./packages",
         "paths": {
             "@sfcc-core/core": ["@sfcc-core/core/src"],

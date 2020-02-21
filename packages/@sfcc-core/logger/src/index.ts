@@ -1,18 +1,21 @@
-import { core, LOGGER_KEY } from '@sfcc-core/core';
-import apilog from 'loglevel';
+import { core, LOGGER_KEY, Logger as CoreLogger } from '@sfcc-core/core';
+import loglevel from 'loglevel';
+
+core.registerService(LOGGER_KEY, function() {
+    return new Logger(loglevel);
+});
+
 export { LOGGER_KEY };
+export const LEVELS = loglevel.levels;
+export class Logger implements CoreLogger {
+    apilog: loglevel.RootLogger;
 
-export const LEVELS = apilog.levels;
-
-export class Logger {
-    apilog: apilog.RootLogger;
-
-    constructor(apilog) {
+    constructor(apilog: loglevel.RootLogger) {
         this.apilog = apilog;
         this.apilog.setDefaultLevel(apilog.levels.ERROR);
     }
 
-    setLevel(level: apilog.LogLevelDesc): void {
+    setLevel(level: loglevel.LogLevelDesc): void {
         this.apilog.setLevel(level);
     }
 
@@ -36,7 +39,3 @@ export class Logger {
         this.apilog.error(...args);
     }
 }
-
-core.registerService(LOGGER_KEY, function() {
-    return new Logger(apilog);
-});

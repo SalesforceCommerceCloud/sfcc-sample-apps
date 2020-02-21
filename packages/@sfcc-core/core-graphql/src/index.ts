@@ -8,8 +8,14 @@ import apolloServerExpress, {
     ApolloServer as ApolloServerType,
 } from 'apollo-server-express';
 import graphQLTools from 'graphql-tools';
+import express from 'express';
 
-import { core, API_EXTENSIONS_KEY, Extension } from '@sfcc-core/core';
+import {
+    core,
+    API_EXTENSIONS_KEY,
+    Extension,
+    ApiConfig,
+} from '@sfcc-core/core';
 import { API_CONFIG_KEY } from '@sfcc-core/apiconfig';
 
 const { gql, ApolloServer } = apolloServerExpress;
@@ -24,7 +30,7 @@ export const CORE_GRAPHQL_KEY = Symbol('Core GraphQL with Apollo');
 export const EXPRESS_KEY = Symbol('Node Express');
 
 export interface GraphQLExtension extends Extension {
-    getResolvers: (ResolverConfig) => Resolver;
+    getResolvers: ResolverFactory;
     typeDefs: Array<string>;
 }
 
@@ -32,7 +38,7 @@ export const resolverFactory = (
     config: ResolverConfig,
     resolversArray: [ResolverFactory],
 ) => {
-    let combinedResolvers = {};
+    let combinedResolvers: { [key: string]: any } = {};
     resolversArray.forEach(resolver => {
         const resolverInst = resolver(config); // instantiate factory
         const keys = Object.keys(resolverInst);
@@ -56,7 +62,7 @@ export const resolverFactory = (
 export class CoreGraphQL {
     _typeDef: Array<string>;
     _resolvers: { [key: string]: Resolver };
-    _apolloServer: ApolloServerType;
+    _apolloServer?: ApolloServerType;
 
     constructor() {
         logger.info('CoreGraphQL.constructor()');
@@ -95,9 +101,8 @@ export class CoreGraphQL {
 
     start() {
         logger.info('Start CoreGraphQL');
-        const expressApp = core.getService(EXPRESS_KEY);
-        const apiConfig = core.getService(API_CONFIG_KEY).config;
-        logger.info(apiConfig);
+        const expressApp = core.getService<express.Application>(EXPRESS_KEY);
+        const apiConfig = core.getService<ApiConfig>(API_CONFIG_KEY).config;
 
         if (expressApp) {
             const apiPath = apiConfig
