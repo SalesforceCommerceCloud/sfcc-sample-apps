@@ -95,6 +95,7 @@
 
                 <!-- Product Recommendations -->
                 <template if:true={product.recommendations}>
+                    <h3>Product Recommendations:</h3>
                     <div class="recommendation">
                         <template for:each={product.recommendations} for:item="recommendation">
                             <div class='col-6 col-sm-4 grid-gutter' key={recommendation.productId} >

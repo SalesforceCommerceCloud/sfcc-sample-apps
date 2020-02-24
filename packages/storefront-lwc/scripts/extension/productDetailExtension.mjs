@@ -87,6 +87,5 @@ export default class ProductDetailExtensions {
 }
 
 core.registerExtension(API_EXTENSIONS_KEY, function (config) {
-    const extensions = new ProductDetailExtensions();
-    return extensions;
+    return new ProductDetailExtensions();
 });
