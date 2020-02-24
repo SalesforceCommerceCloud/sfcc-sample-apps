@@ -1,6 +1,8 @@
 ## Customizing and Extending Components
 
-As mentioned in the [architecture document](architecture.md), when customizing or extending the sample app component, do not modify the packages within `@sfcc-bff` and `@sfcc-core`. These packages will be published and consumed via `npm`. Instead, create a new custom package within the monorepo that registers itself with `@sfcc-core\core` and provides access to data from a third-party service.
+the new package should be either part of the application or a partner can create his own module with the extension
+
+As mentioned in the [architecture document](architecture.md), when customizing or extending the sample app component, you should not modify the packages within `@sfcc-bff` and `@sfcc-core`. These packages will be published and consumed via `npm`. Instead, create a new custom package within the monorepo or create a new module that registers itself with `@sfcc-core\core` and provides access to data from a third-party service. Then we will need to extend the data model and extend the query for the client component.
 
 This example below illustrates how to create a product recommendations extension for product details component:
 
@@ -14,7 +16,7 @@ core.registerExtension(API_EXTENSIONS_KEY, function (config) {
 });
 ```
 
-2. Define the Product extension is recommendation, then define the Recommendation TypeDef 
+2. To Extend the data model, define the Product recommendation, and the Recommendation TypeDef 
 
 ```
 const productRecommendationTypeDef = gql`
@@ -53,7 +55,7 @@ const productRecommendationResolver = (config) => {
 import './extension/productDetailExtension';
 ```
 
-5. In the `productdetailadapator.js` file we need to tell the BFF the data we want to query for product recommendations.
+5. To Extend the query for client component, in the `productdetailadapator.js` file we need to tell the BFF the data we want to query for product recommendations.
 ```
 recommendations {
     productId
