@@ -1,6 +1,7 @@
 ## Customizing and Extending Components
 
-As mentioned in the [architecture document](architecture.md), when customizing or extending the sample app component, do not modify the packages within `@sfcc-bff` and `@sfcc-core`. These packages are published and consumed via `npm`. Instead, create a new custom package within the monorepo that registers itself with `@sfcc-core\core` and provides access to data from a third-party service.
+As mentioned in the [architecture document](architecture.md), when customizing or extending the sample app component, you should not modify the packages within `@sfcc-bff` and `@sfcc-core`. These packages will be published and consumed via `npm`. Instead, create a new custom package either within the monorepo or a new module that registers itself with `@sfcc-core\core` and provides access to data from a third-party service. Then we will need to extend the data model and extend the query for the client component.
+
 
 This example below shows how to create a product recommendations extension for the product details component:
 
@@ -8,15 +9,15 @@ Background: The Product Details Page shows the product name, product id, color s
 
 1. In the storefront-lwc, create a new extension called `productDetailExtension.mjs`
 
-2. In the `productDetailExtension.mjs` file, register the extension with core using the `API_EXTENSION_KEY`key. Extensions can have multiple entries per extension key, so we can simply register a new extension with the existing key: 
+2. In the `productDetailExtension.mjs` file, register the extension with core using the `API_EXTENSIONS_KEY`key. Extensions can have multiple entries per extension key, so we can simply register a new extension with the existing key: 
 
 ```
-core.registerExtension(API_EXTENSION_KEY, function (config) {
+core.registerExtension(API_EXTENSIONS_KEY, function (config) {
     return new ProductDetailExtensions();
 });
 ```
 
-3. Define the Recommendation type and use it to extend the Product type: 
+3. To Extend the data model, define the Recommendation type and use it to extend the Product type: 
 
 ```
 const productRecommendationTypeDef = gql`
@@ -55,7 +56,7 @@ const productRecommendationResolver = (config) => {
 import './extension/productDetailExtension';
 ```
 
-6. In the `productdetailadapator.js` file, specify the query for product recommendations.
+6. To Extend the query for client component, In the `productdetailadapator.js` file, specify the query for product recommendations.
 ```
 recommendations {
     productId
