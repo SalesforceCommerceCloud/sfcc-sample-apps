@@ -1,20 +1,22 @@
 ## Customizing and Extending Components
 
-As mentioned in the [architecture document](architecture.md), when customizing or extending the sample app component, do not modify the packages within `@sfcc-bff` and `@sfcc-core`. These packages will be published and consumed via `npm`. Instead, create a new custom package within the monorepo that registers itself with `@sfcc-core\core` and provides access to data from a third-party service.
+As mentioned in the [architecture document](architecture.md), when customizing or extending the sample app component, do not modify the packages within `@sfcc-bff` and `@sfcc-core`. These packages are published and consumed via `npm`. Instead, create a new custom package within the monorepo that registers itself with `@sfcc-core\core` and provides access to data from a third-party service.
 
-This example below illustrates how to create a product recommendations extension for product details component:
+This example below shows how to create a product recommendations extension for the product details component:
 
-Background : Product Details Page displays product name, product id, color swatches, images, price, etc. Our goal is to extend this component to display the product's recommendations on the Product Detail Page. 
+Background: The Product Details Page shows the product name, product id, color swatches, images, price, and so on. Our goal is to extend this component to also show the product's recommendations. 
 
-1. In the storefront-lwc, create a new extension called `productDetailExtension.mjs`. Register this extension with core using this key : `API_EXTENSION_KEY`. Since extensions can have multiple entries per extension key, we can simply register a new extension with the existing key: 
+1. In the storefront-lwc, create a new extension called `productDetailExtension.mjs`
+
+2. In the `productDetailExtension.mjs` file, register the extension with core using the `API_EXTENSION_KEY`key. Extensions can have multiple entries per extension key, so we can simply register a new extension with the existing key: 
 
 ```
-core.registerExtension(API_EXTENSIONS_KEY, function (config) {
+core.registerExtension(API_EXTENSION_KEY, function (config) {
     return new ProductDetailExtensions();
 });
 ```
 
-2. Define the Product extension is recommendation, then define the Recommendation TypeDef 
+3. Define the Recommendation type and use it to extend the Product type: 
 
 ```
 const productRecommendationTypeDef = gql`
@@ -29,7 +31,7 @@ const productRecommendationTypeDef = gql`
 `;
 ``` 
 
-3. Resolve the Recommendation for a Product
+4. Resolve the recommendations for a Product
 ```
 const productRecommendationResolver = (config) => {
     return {
@@ -48,12 +50,12 @@ const productRecommendationResolver = (config) => {
 }
 ```
 
-4. Add the product recommendation extension to the BFF by importing this extension created in step 1 to the sample-app.mjs file. 
+5. Add the product recommendation extension to the Backend For Frontend (BFF) by importing the extension created in step 1 to the `sample-app.mjs` file. 
 ```
 import './extension/productDetailExtension';
 ```
 
-5. In the `productdetailadapator.js` file we need to tell the BFF the data we want to query for product recommendations.
+6. In the `productdetailadapator.js` file, specify the query for product recommendations.
 ```
 recommendations {
     productId
@@ -66,7 +68,7 @@ recommendations {
 }
 ```
 
-6. In the `productdetail.html`, we can consume the recommendataions data returned from the BFF if any exists.
+7. In the `productdetail.html` file, consume the recommendations data (if any) returned from the BFF.
 ``` 
 <!-- Product Recommendations -->
 <template if:true={product.recommendations}>
