@@ -23,7 +23,6 @@
     "paths": {
       "*": ["src/*", "node_modules/*"]
     },
-    "jsx": "react",
     "esModuleInterop": true
   }
 }

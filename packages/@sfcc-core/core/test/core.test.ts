@@ -28,6 +28,8 @@ describe('core', () => {
         }
         core.registerExtension('myExtension', extension);
         core.initializeExtensions('myExtension');
-        expect(core._extensions['myExtension'][0]).toBe('extension output');
+        expect(core.getInitializedExtensions('myExtension')[0]).toBe(
+            'extension output',
+        );
     });
 });

@@ -6,7 +6,7 @@
     "dist"
   ],
   "scripts": {
-    "start": "tsdx watch",
+    "start:dev": "tsdx watch",
     "build": "tsdx build",
     "test:unit": "tsdx test --collect-coverage",
     "lint": "tsdx lint",
