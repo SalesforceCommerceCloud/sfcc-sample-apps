@@ -16,8 +16,7 @@ const router = new UniversalRouter(
         },
         {
             path: '/cart',
-            action: () =>
-                '<h1 style="color: black; margin-top: 5rem;">Cart</h1>',
+            action: () => `<commerce-cart></commerce-cart>`,
         },
         {
             path: '/product/:pid',

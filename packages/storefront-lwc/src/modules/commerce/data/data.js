@@ -6,4 +6,7 @@
 */
 export { productsByQuery } from './productsearchadaptor';
 export { productDetailWireAdaptor } from './productdetailadaptor';
+export { FormHelper } from './forms';
+export { ShoppingCart } from './cart';
 export { messagehelper } from './messagehelper';
+

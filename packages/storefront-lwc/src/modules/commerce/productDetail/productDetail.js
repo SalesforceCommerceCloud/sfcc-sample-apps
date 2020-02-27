@@ -5,7 +5,7 @@
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
 import { LightningElement, api, wire, track } from 'lwc';
-import { productDetailWireAdaptor } from 'commerce/data';
+import { productDetailWireAdaptor, ShoppingCart } from 'commerce/data'
 import { canAddToCart } from './product.helper.js';
 
 /**
@@ -102,10 +102,9 @@ export default class ProductDetail extends LightningElement {
     /**
      * Add product to cart when user clicks `Add to Cart` button
      */
-    addToCartHandler() {
-        console.info('AddToCart button has been clicked!');
+    addToCartHandler(event) {
+        ShoppingCart.addToCart(this.product, this.selectedQty);
     }
-
     /**
      * The click handler for the product detail image carousel to cycle to the next or previous image, left or right.
      * @param event the event object which includes the data from the button clicked, left or right.
