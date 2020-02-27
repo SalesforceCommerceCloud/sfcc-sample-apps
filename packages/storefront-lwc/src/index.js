@@ -6,6 +6,7 @@ import CommerceHome from 'commerce/home';
 import CommerceLayout from 'commerce/layout';
 import CommerceHeader from 'commerce/header';
 import CommerceProductDetail from 'commerce/productDetail';
+import CommerceCart from 'commerce/cart';
 
 import { registerWireService } from '@lwc/wire-service';
 import { register } from 'lwc';
@@ -31,4 +32,8 @@ customElements.define(
 customElements.define(
     'commerce-layout',
     buildCustomElementConstructor(CommerceLayout),
+);
+customElements.define(
+    'commerce-cart',
+    buildCustomElementConstructor(CommerceCart),
 );
