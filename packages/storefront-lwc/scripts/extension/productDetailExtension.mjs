@@ -1,11 +1,10 @@
-
-import {core, API_EXTENSIONS_KEY} from '@sfcc-core/core';
+import { core, API_EXTENSIONS_KEY } from '@sfcc-core/core';
 import { resolverFactory } from "@sfcc-core/core-graphql";
 import apolloServerCore from 'apollo-server-core';
 import CommerceSdk from 'commerce-sdk';
 import Image from '../../../@sfcc-bff/productapi/src/api/models/Image';
 
-const { gql } = apolloServerCore;
+const {gql} = apolloServerCore;
 
 // Demo : Define the Product Recommendation extension to the Product object
 const productRecommendationTypeDef = gql`
@@ -25,9 +24,13 @@ const productRecommendationResolver = (config) => {
         Product: {
             recommendations: async (product) => {
                 if (product.recommendations) {
-                    return Promise.all(product.recommendations.map( async recommendation => {
-                        const apiProduct = await getClientProduct(config, recommendation.recommendedItemId);
-                            return {productId: apiProduct.id, productName:apiProduct.name, image: new Image(apiProduct.imageGroups[2].images[0])};
+                    return Promise.all(product.recommendations.map(async recommendation => {
+                            const apiProduct = await getClientProduct(config, recommendation.recommendedItemId);
+                            return {
+                                productId: apiProduct.id,
+                                productName: apiProduct.name,
+                                image: new Image(apiProduct.imageGroups[2].images[0])
+                            };
                         })
                     )
                 }
@@ -55,7 +58,7 @@ const getClientProduct = async (config, id) => {
     });
 
     const product = new CommerceSdk.Product.ShopperProducts.Client({
-        headers: { authorization: token.getBearerHeader() },
+        headers: {authorization: token.getBearerHeader()},
         parameters: {
             organizationId: organizationId,
             shortCode: shortCode,
@@ -81,11 +84,13 @@ export default class ProductDetailExtensions {
     get typeDefs() {
         return [productRecommendationTypeDef];
     }
+
     getResolvers(config) {
-        return resolverFactory(config,[productRecommendationResolver]);
+        return resolverFactory(config, [productRecommendationResolver]);
     }
 }
 
+console.log('====== Register new ProductDetailExtensions for promotions')
 core.registerExtension(API_EXTENSIONS_KEY, function (config) {
     return new ProductDetailExtensions();
 });

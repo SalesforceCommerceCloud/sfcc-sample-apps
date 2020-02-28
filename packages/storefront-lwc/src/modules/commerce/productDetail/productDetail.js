@@ -20,10 +20,11 @@ export default class ProductDetail extends LightningElement {
     @track product = {
         images: [],
         productPromotions: [],
-        recommendations :[]
+        recommendations: []
     };
     masterPid;
     activeImage;
+
     // The wire adaptor to get product details for master and variations.
     @wire(productDetailWireAdaptor, {
         pid: '$pid',
@@ -31,9 +32,16 @@ export default class ProductDetail extends LightningElement {
     })
     updateProduct(product) {
         this.product = product;
+        if (
+            this.product.recommendations &&
+            this.product.recommendations.length > 3
+        ) {
+            this.product.recommendations = this.product.recommendations.slice(0, 3);
+        }
         this.masterPid = product.masterId;
         this.setActiveImageCss(0);
     }
+
     @track selectedQty;
 
     /**
@@ -112,7 +120,7 @@ export default class ProductDetail extends LightningElement {
      * @param event the event object which includes the data from the button clicked, left or right.
      */
     handleCarousel(event) {
-        const { slide } = event.currentTarget.dataset;
+        const {slide} = event.currentTarget.dataset;
         if (slide === 'prev') {
             this.setActiveImageCss(
                 this.activeImage === 0

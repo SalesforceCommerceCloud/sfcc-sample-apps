@@ -17,10 +17,10 @@
                 <a href="#">{product.productName}</a>
             </div>
 
-            <div class='price'>
+            <div class='price' if:true={hasPrice}>
                 <commerce-product-price product={product} context="tile"></commerce-product-price>
             </div>
-            
+
             <template if:true={product.colorSwatches}>
                 <commerce-product-tile-swatches color-swatches={product.colorSwatches}></commerce-product-tile-swatches>
             </template>

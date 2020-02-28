@@ -13,4 +13,8 @@ export default class ProductTile extends LightningElement {
     productDetail() {
         navigate(`/product/${this.product.productId}`);
     }
+
+    hasPrice() {
+        return this.product && !!this.product.price;
+    }
 }
