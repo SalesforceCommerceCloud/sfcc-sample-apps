@@ -116,12 +116,14 @@ export default class CoreGraphQL {
                 schema,
                 context: ({ req }) => {
                     return {
-                        auth_token: req.headers.auth_token || '',
-                        cart_id: req.headers.cart_id,
+                        auth_token: req.user.token || '',
+                        cart_id: req.user.cartId,
                     };
                 },
             });
 
+            //expressApp.use(apiPath, passport.authenticate(['local', 'anonymous'], { session: true }));
+            
             this.apolloServer.applyMiddleware({
                 app: expressApp,
                 path: apiPath,

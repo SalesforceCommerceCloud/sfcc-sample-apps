@@ -8,7 +8,10 @@
  * Import Dependencies
  */
 import color from 'colors';
+import passport from 'passport';
+import CommerceStrategy from './commerce-strategy';
 import express from 'express';
+import expressSession from 'express-session';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -26,6 +29,21 @@ const templateDir = path.resolve(__dirname, '..');
 const publicDir = `${templateDir}/dist/public/`;
 const port = process.env.PORT || 3002;
 const mode = process.env.NODE_ENV || 'development';
+
+const users = new Map();
+
+passport.use(new CommerceStrategy(function(user, pass, done) {
+    done(null, {id: 1});
+}));
+
+passport.serializeUser(function(user, done) {
+    users.set(user.id, user);
+    done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+    done(null, users.get(id));
+});
 
 function validateConfig(config) {
     const REQUIRED_KEYS = [
@@ -59,6 +77,12 @@ function validateConfig(config) {
 
     validateConfig(sampleApp.apiConfig.config);
 
+    sampleApp.expressApplication.use(passport.initialize());
+
+    sampleApp.expressApplication.use(expressSession({secret: 'anonymous', cookie: {}}));
+
+    sampleApp.expressApplication.use("/api", passport.authenticate(['commerce'], { session: true }));
+    
     // Serve up static files
     sampleApp.expressApplication.use(
         '/',
