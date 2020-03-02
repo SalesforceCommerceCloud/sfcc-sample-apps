@@ -1,26 +1,50 @@
 {
-  "name": "@sfcc-core/core-graphql",
-  "version": "1.0.0-alpha.1",
-  "description": "sfcc default core graphql",
-  "main": "./src/core-graphql.js",
-  "type": "module",
+  "license": "BSD-3-Clause",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "lint": "eslint src",
-    "lint:fix": "eslint src --fix",
-    "pak": "npm pack",
-    "pub": "npm pack; npm publish -f",
-    "link": "npm link",
-    "unlink": "npm link",
-    "dep-link": "./npm-dep-link.sh",
-    "dep-unlink": "./npm-dep-unlink.sh"
+    "start:dev": "tsdx watch",
+    "build": "tsdx build",
+    "test:unit": "tsdx test --collect-coverage",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build",
+    "pub": "npm build; npm pack; npm publish -f",
+    "pack": "npm pack"
   },
-  "author": "Jason Cooper",
-  "license": "MIT",
+  "peerDependencies": {
+
+  },
   "dependencies": {
     "@sfcc-core/apiconfig": "1.0.0-alpha.1",
     "@sfcc-core/core": "1.0.0-alpha.1",
     "apollo-server": "^2.3.3",
     "graphql-tag": "^2.10.1",
     "graphql-tools": "^4.0.4"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "name": "@sfcc-core/core-graphql",
+  "version": "1.0.0-alpha.1",
+  "description": "sfcc default core graphql",
+  "module": "dist/core-graphql.esm.js",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "default": "./dist/core-graphql.esm.js"
+    }
+  },
+  "type": "module",
+  "devDependencies": {
+    "@types/jest": "^25.1.2",
+    "husky": "^4.2.3",
+    "tsdx": "^0.12.3",
+    "tslib": "^1.10.0",
+    "typescript": "^3.7.5"
   }
 }

@@ -1,0 +1,13 @@
+{
+    "extends": "./tsconfig.build.json",
+
+    "compilerOptions": {
+        "baseUrl": "./packages",
+        "paths": {
+            "@sfcc-core/core": ["@sfcc-core/core/src"],
+            "@sfcc-core/logger": ["@sfcc-core/logger/src"],
+            "@sfcc-core/apiconfig": ["@sfcc-core/apiconfig/src"],
+            "@sfcc-core/core-graphql": ["@sfcc-core/core-graphql/src"]
+        }
+    }
+}

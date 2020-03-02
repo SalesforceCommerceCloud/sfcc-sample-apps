@@ -1,18 +1,26 @@
-/*
-    Copyright (c) 2020, salesforce.com, inc.
-    All rights reserved.
-    SPDX-License-Identifier: BSD-3-Clause
-    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
-*/
-/*
-   SFRA Core Code
-    */
+import { Logger, Extension, Service, ExtensionFactory } from './types';
 
 export const LOGGER_KEY = Symbol('Logger Service');
 export const API_EXTENSIONS_KEY = Symbol('API Extensions');
 
+export class UnknownServiceError extends Error {
+    __proto__: Error;
+
+    constructor(m: string) {
+        const trueProto = new.target.prototype;
+        super(m);
+        this.__proto__ = trueProto;
+    }
+}
+
 class Core {
-    //singletons (logger, etc)
+    private _services: { [key: string]: Service };
+    private _extensions: { [key: string]: Array<ExtensionFactory> };
+    private _factoryExtensions: { [key: string]: Array<ExtensionFactory> };
+    private _factoryServices: { [key: string]: Service };
+
+    INSTANCE: string;
+
     get services() {
         return this._services;
     }
@@ -27,8 +35,9 @@ class Core {
      * @param name
      * @param service
      */
-    registerService(key, service) {
-        this.logger.log(`registerService(${key.toString()})`);
+    registerService(_key: string | symbol, service: Service) {
+        const key = String(_key);
+        this.logger.log(`registerService(${key})`);
 
         if (this._factoryServices[key]) {
             throw new Error(`Service,'${key}', already registered`);
@@ -42,8 +51,9 @@ class Core {
      * @param key
      * @param extension
      */
-    registerExtension(key, extension) {
-        this.logger.log(`registerExtension(${key.toString()})`);
+    registerExtension(_key: string | symbol, extension: Extension) {
+        const key = String(_key);
+        this.logger.log(`registerExtension(${key})`);
 
         if (!this._factoryExtensions[key]) {
             this._factoryExtensions[key] = [];
@@ -56,7 +66,7 @@ class Core {
      *
      * @param key The specific extension(s) to instantiate. If undefined Otherwise instantiate all.
      */
-    initializeExtensions(_key) {
+    initializeExtensions(_key: symbol | string) {
         this.logger.log(`initializeExtensions(${_key.toString()})`);
 
         const keys = _key
@@ -64,17 +74,21 @@ class Core {
             : Object.getOwnPropertySymbols(this._factoryExtensions);
 
         keys.forEach(key => {
-            if (key && Boolean(this._extensions[key])) {
+            if (key && Boolean(this._extensions[String(key)])) {
                 const msg = `Error: ${key.toString()} extensions already initialized`;
                 this.logger.error(msg);
                 throw new Error(msg);
             }
-            this._extensions[key] = [];
-            this.getExtension(key).forEach(extension => {
+            this._extensions[String(key)] = [];
+            this.getExtension(key).forEach((extension: Function) => {
                 //instantiate extension
-                this._extensions[key].push(extension());
+                this._extensions[String(key)].push(extension());
             });
         });
+    }
+
+    getInitializedExtensions(extension: string) {
+        return this._extensions[extension];
     }
 
     /**
@@ -82,22 +96,28 @@ class Core {
      * @param servicekey
      * @return {*}
      */
-    getService(key) {
+    getService<ServiceType>(_key: symbol | string): ServiceType {
+        const key = String(_key);
         if (this._services[key]) {
             return this._services[key];
         } else if (this._factoryServices[key]) {
             //create the service instance
             this._services[key] = new this._factoryServices[key]();
-            return this._services[key];
-        } else if (key === LOGGER_KEY) {
-            //A logger isn't registered yet
-            return console;
+            return this._services[String(key)];
         }
-        throw new Error(`Service ${key.toString()} does not exist`);
+        throw new UnknownServiceError(`Service ${key} does not exist`);
     }
 
-    get logger() {
-        return this.getService(LOGGER_KEY);
+    get logger(): Logger | Console {
+        try {
+            return this.getService(LOGGER_KEY);
+        } catch (error) {
+            if (error instanceof UnknownServiceError) {
+                return console;
+            } else {
+                throw error;
+            }
+        }
     }
 
     /**
@@ -106,12 +126,11 @@ class Core {
      * @param extensionKey
      * @return {*}
      */
-    getExtension(key) {
-        return this._factoryExtensions[key];
+    getExtension(key: string | symbol) {
+        return this._factoryExtensions[String(key)];
     }
 
     constructor() {
-        //just to debug
         this.INSTANCE = 'Core Instance: ' + new Date().getTime();
 
         //Instance maps for services and extensions
@@ -125,7 +144,16 @@ class Core {
             'Create the Core instance used to register services and extensions.',
         );
     }
+
+    init() {
+        this.logger.log('Reinitialized core');
+        this._services = {};
+        this._extensions = {};
+        this._factoryServices = {};
+        this._factoryExtensions = {};
+    }
 }
 
 const coreSingleton = new Core();
+
 export const core = coreSingleton;

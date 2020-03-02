@@ -1,24 +1,32 @@
-/*
-    Copyright (c) 2020, salesforce.com, inc.
-    All rights reserved.
-    SPDX-License-Identifier: BSD-3-Clause
-    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
-*/
-import apolloServerExpress from 'apollo-server-express';
+import apolloServerExpress, {
+    ApolloServer as ApolloServerType,
+} from 'apollo-server-express';
 import graphQLTools from 'graphql-tools';
+import express from 'express';
 
-import { core, API_EXTENSIONS_KEY } from '@sfcc-core/core';
+import { core, API_EXTENSIONS_KEY, ApiConfig } from '@sfcc-core/core';
+
 import { API_CONFIG_KEY } from '@sfcc-core/apiconfig';
 
+import {
+    ResolverConfig,
+    Resolver,
+    ResolverFactory,
+    GraphQLExtension,
+} from './types';
+
+const { gql, ApolloServer } = apolloServerExpress;
 const { makeExecutableSchema } = graphQLTools;
-const { ApolloServer, gql } = apolloServerExpress;
 const logger = core.logger;
 
 export const CORE_GRAPHQL_KEY = Symbol('Core GraphQL with Apollo');
 export const EXPRESS_KEY = Symbol('Node Express');
 
-export const resolverFactory = (config, resolversArray) => {
-    let combinedResolvers = {};
+export const resolverFactory = (
+    config: ResolverConfig,
+    resolversArray: [ResolverFactory],
+) => {
+    let combinedResolvers: { [key: string]: any } = {};
     resolversArray.forEach(resolver => {
         const resolverInst = resolver(config); // instantiate factory
         const keys = Object.keys(resolverInst);
@@ -39,7 +47,11 @@ export const resolverFactory = (config, resolversArray) => {
 /**
  * Core GraphQL and Apollo Server services - requires express to be registered.
  */
-export default class CoreGraphQL {
+export class CoreGraphQL {
+    _typeDef: Array<string>;
+    _resolvers: { [key: string]: Resolver };
+    _apolloServer?: ApolloServerType;
+
     constructor() {
         logger.info('CoreGraphQL.constructor()');
         this._typeDef = [
@@ -71,11 +83,14 @@ export default class CoreGraphQL {
         return this._resolvers;
     }
 
+    getExtensionFactories() {
+        return core.getExtension(API_EXTENSIONS_KEY);
+    }
+
     start() {
         logger.info('Start CoreGraphQL');
-        const expressApp = core.getService(EXPRESS_KEY);
-        const apiConfig = core.getService(API_CONFIG_KEY).config;
-        logger.info(apiConfig);
+        const expressApp = core.getService<express.Application>(EXPRESS_KEY);
+        const apiConfig = core.getService<ApiConfig>(API_CONFIG_KEY).config;
 
         if (expressApp) {
             const apiPath = apiConfig
@@ -89,9 +104,9 @@ export default class CoreGraphQL {
 
             // Ensure API Extensions are initialized
             // Aggregate schemas and resolvers
-            const apis = core.getExtension(API_EXTENSIONS_KEY);
+            const apis = this.getExtensionFactories();
             apis.forEach(apiFactory => {
-                const api = apiFactory();
+                const api: GraphQLExtension = apiFactory();
                 this.typeDef = [...this.typeDef, ...api.typeDefs];
                 let apiResolvers = api.getResolvers(apiConfig);
                 const keys = Object.keys(apiResolvers);
@@ -147,5 +162,5 @@ export default class CoreGraphQL {
 }
 
 core.registerService(CORE_GRAPHQL_KEY, function() {
-    return new CoreGraphQL(core);
+    return new CoreGraphQL();
 });
