@@ -12,7 +12,7 @@ const { gql } = apolloServerCore;
 
 export const typeDef = gql`
     extend type Query {
-        product(id: String!, selectedColor: String!): Product
+        product(id: String!, selectedColor: String): Product
     }
 
     type Product {
