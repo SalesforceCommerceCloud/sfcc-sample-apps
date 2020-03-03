@@ -57,7 +57,7 @@ import './extension/productDetailExtension';
 ```
 
 6. To Extend the query for client component, In the `productdetailadapator.js` file, specify the query for product recommendations.
-```json
+```javascript
 recommendations {
     productId
     productName
