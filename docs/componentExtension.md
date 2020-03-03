@@ -1,6 +1,6 @@
 ## Customizing and Extending Components
 
-As mentioned in the [architecture document](architecture.md), when customizing or extending the sample app component, you should not modify the packages within `@sfcc-bff` and `@sfcc-core`. These packages will be published and consumed via `npm`. Instead, create a new custom package either within the monorepo or a new module that registers itself with `@sfcc-core\core` and provides access to data from a third-party service. Then we will need to extend the data model and extend the query for the client component.
+As mentioned in the [architecture document](architecture.md), when customizing or extending the sample app component, do not modify the packages within `@sfcc-bff` and `@sfcc-core`. These packages are published and consumed via `npm`. Instead, create a new custom package either within the monorepo or a new module that registers itself with `@sfcc-core\core` and provides access to data from a third-party service. Then you can extend the data model and extend the query for the client component.
 
 
 This example below shows how to create a product recommendations extension for the product details component:

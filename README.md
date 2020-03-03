@@ -1,6 +1,6 @@
 # Commerce Storefront Sample Application &middot; [![CircleCI][circleci-image]][circleci-url]
 
-Our storefront sample application shows how you can build amazing commerce experiences with the latest Commerce platform technologies. The application back end is built on the new Salesforce Commerce API (a RESTful headless API). The front end is built with Lightning Web Components (LWC). In between, it uses GraphQL and the Salesforce Commerce Node.js SDK. 
+Our storefront sample application shows how you can build amazing commerce experiences with the latest Commerce platform technologies. The application backend is built on the new Salesforce Commerce API (a RESTful headless API). The front end is built with Lightning Web Components (LWC). In between, it uses GraphQL and the Salesforce Commerce Node.js SDK. 
 
 Read more about the [architecture](docs/architecture.md).
 
@@ -23,7 +23,7 @@ To set up the sample application:
 2. Change into the `sfcc-sample-apps` folder:
 `cd sfcc-sample-apps`
 
-3. Copy the `api.example.mjs` file located at `/packages/storefront-lwc/scripts/`, save it as `api.mjs`, and make sure `api.mjs` is added to your `.gitignore` file.
+3. Copy the `api.example.mjs` file at `/packages/storefront-lwc/scripts/`, save it as `api.mjs`, and make sure `api.mjs` is added to your `.gitignore` file.
 
 4. In the `api.mjs` file, provide values for the following variables (you can obtain these values from your Account Executive (AE) or Customer Support Manager (CSM)):
 <table>
@@ -52,7 +52,7 @@ You can optionally test the sample application:
 
 ## Debug
 
-We recommend Visual Studio Code inbuilt debugger to troubleshoot the code. The `.vscode` launch configuration is included in the repo. To debug using VSCode, see [VS Code Debugging](https://code.visualstudio.com/docs/editor/debugging).
+We recommend Visual Studio Code builtin debugger to troubleshoot the code. The `.vscode` launch configuration is included in the repo. To debug using VSCode, see [VS Code Debugging](https://code.visualstudio.com/docs/editor/debugging).
 
 ## Configuration
 * You can change the logging levels by modifying the `COMMERCE_LOG_LEVEL` property in `api.mjs`. The supported log levels are:

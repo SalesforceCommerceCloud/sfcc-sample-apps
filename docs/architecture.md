@@ -31,7 +31,7 @@ Data source implementation for the Salesforce Commerce API. It includes the Grap
 Front-end application, built with [lwc-services](https://www.npmjs.com/package/lwc-services).
 
 ## Customizing and Extending
-When customizing or extending the sample app, do not modify the packages within `@sfcc-bff` and `@sfcc-core`. These packages will be published and consumed via NPM. Instead, create a new custom package within the monorepo that registers itself with `@sfcc-core` and provides access to data from a third-party service.
+When customizing or extending the sample app, do not modify the packages within `@sfcc-bff` and `@sfcc-core`. These packages are published and consumed via NPM. Instead, create a new custom package within the monorepo that registers itself with `@sfcc-core` and provides access to data from a third-party service.
 
 ![Sample App Project Layout](project-layout.png)
 
