@@ -1,6 +1,8 @@
 # Commerce Storefront Sample Application &middot; [![CircleCI][circleci-image]][circleci-url]
 
-Our storefront sample application shows how you can build amazing commerce experiences with the latest Commerce platform technologies. The application backend is built on the new Salesforce Commerce API (a RESTful headless API). The front end is built with Lightning Web Components (LWC). In between, it uses GraphQL and the Salesforce Commerce Node.js SDK. 
+Our storefront sample application shows how you can build amazing commerce experiences with the latest Commerce platform technologies. For more information about these technologies, see the [Commerce Cloud Developer Center](https://developer.commercecloud.com/s/). 
+
+The sample application backend is built on the new Salesforce Commerce API (a RESTful headless API). The front end is built with Lightning Web Components (LWC). In between, it uses GraphQL and the Salesforce Commerce Node.js SDK. 
 
 Read more about the [architecture](docs/architecture.md).
 
@@ -32,7 +34,7 @@ To set up the sample application:
 <tr><td><code>COMMERCE_CLIENT_CLIENT_ID</code></td><td>A unique ID used exclusively for API access. See <a href="https://documentation.b2c.commercecloud.salesforce.com/DOC1/topic/com.demandware.dochelp/AccountManager/AccountManagerAddAPIClientID.html">Add a Client API</a> for more information.</td></tr>
 <tr><td><code>COMMERCE_CLIENT_REALM_ID</code></td><td>A unique four-character ID (for example, bblx).</td></tr>
 <tr><td><code>COMMERCE_CLIENT_INSTANCE_ID</code></td><td>Instance ID within a realm (for example, 015).</td></tr>
-<tr><td><code>COMMERCE_CLIENT_SHORT_CODE</code></td><td>Region-specific merchant identifier (for example, staging-001).</td></tr>
+<tr><td><code>COMMERCE_CLIENT_SHORT_CODE</code></td><td>Region-specific merchant identifier (for example, 9IUjX4AW).</td></tr>
 </table>
 
 5. Install dependencies:
