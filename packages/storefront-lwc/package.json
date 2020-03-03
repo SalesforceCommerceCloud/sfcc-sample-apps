@@ -59,7 +59,7 @@
     "@sfcc-core/core-graphql": "1.0.0-alpha.1",
     "@sfcc-core/logger": "1.0.0-alpha.1",
     "apollo-boost": "^0.4.7",
-    "apollo-datasource-rest": "^0.3.2",
+    "apollo-datasource-rest": "^0.7.0",
     "apollo-server": "^2.3.2",
     "apollo-server-express": "^2.3.2",
     "babel-eslint": "^10.0.3",
