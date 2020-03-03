@@ -8,6 +8,8 @@ Read more about the [architecture](docs/architecture.md).
 
 The sample application shows you a recommended approach for building a storefront, but it is not a complete and fully functional storefront reference application. The sample application now includes a home page, product list page, and product detail page. More great features are coming soon!
 
+You can [extend](docs/componentExtension.md) the sample app to add your own functionality and features.
+
 Note: sfcc-sample-apps is a monorepo with a sample application and Backend For Frontend (BFF) dependency modules. Typically, dependencies modules are published to a public npm server. However to develop an application, the modules are included together in a single repository.
 
 ## Prerequisites

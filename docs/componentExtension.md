@@ -11,7 +11,7 @@ Background: The Product Details Page shows the product name, product id, color s
 
 2. In the `productDetailExtension.mjs` file, register the extension with core using the `API_EXTENSIONS_KEY`key. Extensions can have multiple entries per extension key, so we can simply register a new extension with the existing key: 
 
-```
+```javascript
 core.registerExtension(API_EXTENSIONS_KEY, function (config) {
     return new ProductDetailExtensions();
 });
@@ -57,7 +57,7 @@ import './extension/productDetailExtension';
 ```
 
 6. To Extend the query for client component, In the `productdetailadapator.js` file, specify the query for product recommendations.
-```javascript
+```json
 recommendations {
     productId
     productName
