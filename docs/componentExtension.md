@@ -17,7 +17,7 @@ core.registerExtension(API_EXTENSIONS_KEY, function (config) {
 });
 ```
 
-3. To Extend the data model, define the Recommendation type and use it to extend the Product type: 
+3. To extend the data model, define the Recommendation type and use it to extend the Product type: 
 
 ```javascript
 const productRecommendationTypeDef = gql`
@@ -32,7 +32,8 @@ const productRecommendationTypeDef = gql`
 `;
 ``` 
 
-4. Resolve the recommendations for a Product
+4. Resolve the recommendations for a Product:
+
 ```javascript
 const productRecommendationResolver = (config) => {
     return {
@@ -51,12 +52,14 @@ const productRecommendationResolver = (config) => {
 }
 ```
 
-5. Add the product recommendation extension to the Backend For Frontend (BFF) by importing the extension created in step 1 to the `sample-app.mjs` file. 
+5. Add the product recommendation extension to the Backend For Frontend (BFF) by importing the extension created in step 1 to the `sample-app.mjs` file.
+
 ```javascript
 import './extension/productDetailExtension';
 ```
 
 6. To Extend the query for client component, In the `productdetailadapator.js` file, specify the query for product recommendations.
+
 ```javascript
 recommendations {
     productId
@@ -70,7 +73,8 @@ recommendations {
 ```
 
 7. In the `productdetail.html` file, consume the recommendations data (if any) returned from the BFF.
-```html 
+
+```xml 
 <!-- Product Recommendations -->
 <template if:true={product.recommendations}>
     <div class="recommendation">
