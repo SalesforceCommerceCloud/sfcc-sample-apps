@@ -70,7 +70,7 @@ recommendations {
 ```
 
 7. In the `productdetail.html` file, consume the recommendations data (if any) returned from the BFF.
-```xml 
+```html 
 <!-- Product Recommendations -->
 <template if:true={product.recommendations}>
     <div class="recommendation">
