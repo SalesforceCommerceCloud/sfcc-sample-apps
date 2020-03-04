@@ -4,10 +4,78 @@
     SPDX-License-Identifier: BSD-3-Clause
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
-import { LightningElement, api, wire, track } from 'lwc';
-import { productDetailWireAdaptor } from 'commerce/data';
+import { LightningElement, api, wire } from 'lwc';
 import { canAddToCart } from './product.helper.js';
+import { useQuery } from '@lwce/apollo-client';
+import gql from 'graphql-tag';
 
+const QUERY = gql`
+    query($productId: String!, $selectedColor: String) {
+        product(id: $productId, selectedColor: $selectedColor) {
+            name
+            id
+            masterId
+            longDescription
+            shortDescription
+            currency
+            price
+            prices {
+                sale
+                list
+            }
+            image
+            images(allImages: true, size: "large") {
+                title
+                alt
+                link
+            }
+            variants {
+                id
+                variationValues {
+                    key
+                    value
+                }
+            }
+            variationAttributes {
+                variationAttributeType {
+                    id
+                    name
+                }
+                variationAttributeValues {
+                    name
+                    value
+                    orderable
+                    swatchImage {
+                        link
+                        style
+                    }
+                }
+            }
+            inventory {
+                ats
+                backorderable
+                id
+                orderable
+                preorderable
+                stockLevel
+            }
+            type {
+                bundle
+                item
+                master
+                option
+                set
+                variant
+                variationGroup
+            }
+            productPromotions {
+                calloutMsg
+                promotionId
+                promotionalPrice
+            }
+        }
+    }
+`;
 /**
  * A product detail component is an interactive component which fetches and displays details about a product.
  * Such information may include the product name and description, any images, any pricing or promotions and more.
@@ -15,25 +83,44 @@ import { canAddToCart } from './product.helper.js';
  * the current storefront shopping cart.
  */
 export default class ProductDetail extends LightningElement {
-    @api pid = '';
-    @track selectedColor;
-    @track product = {
+    activeImage;
+    masterPid;
+    product = {
         images: [],
         productPromotions: [],
     };
-    masterPid;
-    activeImage;
-    // The wire adaptor to get product details for master and variations.
-    @wire(productDetailWireAdaptor, {
-        pid: '$pid',
-        selectedColor: '$selectedColor',
-    })
-    updateProduct(product) {
-        this.product = product;
-        this.masterPid = product.masterId;
-        this.setActiveImageCss(0);
+    selectedQty;
+    variables = {
+        productId: '',
+        selectedColor: '',
+    };
+
+    @api set pid(val) {
+        this.variables = { ...this.variables, productId: val };
     }
-    @track selectedQty;
+    get pid() {
+        return this.variables.productId;
+    }
+
+    set selectedColor(val) {
+        this.variables = { ...this.variables, selectedColor: val };
+    }
+    get selectedColor() {
+        return this.variables.selectedColor;
+    }
+
+    @wire(useQuery, {
+        query: QUERY,
+        lazy: false,
+        variables: '$variables',
+    })
+    updateProduct(response) {
+        if (response.initialized) {
+            this.product = { ...this.product, ...response.data.product };
+            this.masterPid = response.data.product.masterId;
+            this.setActiveImageCss(0);
+        }
+    }
 
     /**
      * Handle the update product event
