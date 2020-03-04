@@ -9,29 +9,18 @@
 import Product from '../models/Product';
 import CommerceSdk from 'commerce-sdk';
 import { core } from '@sfcc-core/core';
+import { getUserFromContext } from '@sfcc-core/core-graphql';
 
 const logger = core.logger;
 
-const getClientProduct = async (config, id) => {
-    const clientId = config.COMMERCE_CLIENT_CLIENT_ID;
+const getClientProduct = async (config, id, context) => {
     const organizationId = config.COMMERCE_CLIENT_ORGANIZATION_ID;
     const shortCode = config.COMMERCE_CLIENT_SHORT_CODE;
     const siteId = config.COMMERCE_CLIENT_API_SITE_ID;
-
-    const token = await CommerceSdk.helpers.getAuthToken({
-        parameters: {
-            clientId: clientId,
-            organizationId: organizationId,
-            shortCode: shortCode,
-            siteId: siteId,
-        },
-        body: {
-            type: 'guest',
-        },
-    });
+    const token = (await getUserFromContext(context)).token;
 
     const product = new CommerceSdk.Product.ShopperProducts.Client({
-        headers: { authorization: token.getBearerHeader() },
+        headers: { authorization: token },
         parameters: {
             organizationId: organizationId,
             shortCode: shortCode,
@@ -55,15 +44,14 @@ const getClientProduct = async (config, id) => {
 export const resolver = config => {
     return {
         Query: {
-            product: async (_, { id, selectedColor }) => {
-                let apiProduct;
+            product: async (_, { id, selectedColor }, context) => {
                 try {
-                    apiProduct = await getClientProduct(config, id);
+                    const apiProduct = await getClientProduct(config, id, context);
+                    return new Product(apiProduct, selectedColor);
                 } catch (e) {
-                    logger.error(`Error in productDetailResolver(). ${e}`);
+                    logger.error(`Error in productDetailsResolvers(). ${e}`);
                     throw e;
                 }
-                return new Product(apiProduct, selectedColor);
             },
         },
     };

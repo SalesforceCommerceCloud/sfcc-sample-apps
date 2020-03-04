@@ -29,7 +29,6 @@ class Cart {
                 mutation: gql`
                 mutation {
                     addProductToCart(productId: "${ pid }", quantity: ${ qty }) {
-                      authToken
                       cartId
                       customerId
                       addProductMessage
@@ -48,8 +47,6 @@ class Cart {
             }).then(result => {
                 this.cart = result.data.addProductToCart;
                 console.log('!!!!!!!!!this.cart is ', this.cart);
-                localStorage.setItem('auth_token', this.cart.authToken);
-                localStorage.setItem('cart_id', this.cart.cartId);
                 this.isCartLoaded = true;
                 this.updateCart('add-to-cart');
                 return this.cart;

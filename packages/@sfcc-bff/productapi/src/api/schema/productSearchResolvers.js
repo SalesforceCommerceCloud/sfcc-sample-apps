@@ -7,6 +7,7 @@
 import CommerceSdk from 'commerce-sdk';
 import SearchResult from '../models/SearchResult';
 import { core } from '@sfcc-core/core';
+import { getUserFromContext } from '@sfcc-core/core-graphql';
 
 const logger = core.logger;
 
@@ -32,26 +33,14 @@ const processFilterParams = filterParams => {
     return filterParamQuery;
 };
 
-const searchProduct = async (config, query, filterParams) => {
-    const clientId = config.COMMERCE_CLIENT_CLIENT_ID;
+const searchProduct = async (config, query, filterParams, context) => {
     const organizationId = config.COMMERCE_CLIENT_ORGANIZATION_ID;
     const shortCode = config.COMMERCE_CLIENT_SHORT_CODE;
     const siteId = config.COMMERCE_CLIENT_API_SITE_ID;
-
-    const token = await CommerceSdk.helpers.getAuthToken({
-        parameters: {
-            clientId: clientId,
-            organizationId: organizationId,
-            shortCode: shortCode,
-            siteId: siteId,
-        },
-        body: {
-            type: 'guest',
-        },
-    });
+    const token = (await getUserFromContext(context)).token;
 
     const search = new CommerceSdk.Search.ShopperSearch.Client({
-        headers: { authorization: token.getBearerHeader() },
+        headers: { authorization: token },
         parameters: {
             organizationId: organizationId,
             shortCode: shortCode,
@@ -87,13 +76,14 @@ const searchProduct = async (config, query, filterParams) => {
 export const resolver = config => {
     return {
         Query: {
-            productSearch: (_, { query, filterParams }) => {
-                const result = searchProduct(config, query, filterParams).then(
-                    searchResult => {
-                        return new SearchResult(searchResult, filterParams);
-                    },
-                );
-                return result;
+            productSearch: async (_, { query, filterParams }, context) => {
+                try {
+                    const result = await searchProduct(config, query, filterParams, context)
+                    return new SearchResult(result, filterParams);
+                } catch (e) {
+                    logger.error(`Error in productSearchResolvers(). ${e}`);
+                    throw e;
+                }
             },
         },
     };

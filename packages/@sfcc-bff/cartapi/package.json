@@ -15,7 +15,7 @@
   "dependencies": {
     "@sfcc-core/core": "1.0.0-alpha.1",
     "@sfcc-core/core-graphql": "1.0.0-alpha.1",
-    "commerce-sdk": "0.2.0-alpha.6",
+    "commerce-sdk": "1.3.0-alpha.7",
     "lodash": "^4.17.15",
     "request-promise": "^4.2.5"
   }

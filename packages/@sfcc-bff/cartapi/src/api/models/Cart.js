@@ -6,37 +6,36 @@
 */
 class Cart {
     constructor(apiCart) {
-        this.authToken = apiCart.auth_token;
-        this.customerId = apiCart.customer_info && apiCart.customer_info.customer_id ? apiCart.customer_info.customer_id : '';
-        this.cartId = apiCart.basket_id ? apiCart.basket_id : '';
+        this.customerId = apiCart.customerInfo && apiCart.customerInfo.customerId ? apiCart.customerInfo.customerId : '';
+        this.cartId = apiCart.basketId ? apiCart.basketId : '';
         this.addProductMessage = '';
         this.getCartMessage = '';
         this.totalProductsQuantity = 0;
-        this.products = apiCart.product_items ? apiCart.product_items.map((product) => {
+        this.products = apiCart.productItems ? apiCart.productItems.map((product) => {
             this.totalProductsQuantity += product.quantity; // getting the quantity for the whole basket
             return {
-                productId: product.product_id,
-                productName: product.product_name,
+                productId: product.productId,
+                productName: product.productName,
                 price: product.price,
                 quantity: product.quantity,
-                itemId: product.item_id
+                itemId: product.itemId
             };
         }) : [];
         
-        this.orderTotal = apiCart.order_total;
+        this.orderTotal = apiCart.orderTotal;
         this.orderLevelPriceAdjustment = {
-            itemText: apiCart.order_price_adjustments ? apiCart.order_price_adjustments[0].item_text : '',
-            price: apiCart.order_price_adjustments ? apiCart.order_price_adjustments[0].price : 0.00
+            itemText: apiCart.orderPriceAdjustments ? apiCart.orderPriceAdjustments[0].itemText : '',
+            price: apiCart.orderPriceAdjustments ? apiCart.orderPriceAdjustments[0].price : 0.00
         };
 
         this.shippingMethods = apiCart.shippingMethods;
 
         if(apiCart.shipments && apiCart.shipments.length) {
-            this.shipmentId = apiCart.shipments[0].shipment_id;
-            this.shipmentTotal = apiCart.shipments[0].shipment_total;
-            this.selectedShippingMethodId = apiCart.shipments[0].shipping_method ? apiCart.shipments[0].shipping_method.id : '';
-            this.shippingTotal = apiCart.shipments[0].shipping_total;
-            this.shippingTotalTax = apiCart.shipments[0].shipping_total_tax;
+            this.shipmentId = apiCart.shipments[0].shipmentId;
+            this.shipmentTotal = apiCart.shipments[0].shipmentTotal;
+            this.selectedShippingMethodId = apiCart.shipments[0].shippingMethod ? apiCart.shipments[0].shippingMethod.id : '';
+            this.shippingTotal = apiCart.shipments[0].shippingTotal;
+            this.shippingTotalTax = apiCart.shipments[0].shippingTotalTax;
         } else {
             this.shipmentId = '';
             this.shipmentTotal = 0.00;
@@ -45,7 +44,7 @@ class Cart {
             this.shippingTotalTax = 0.00;
         }
 
-        this.taxTotal = apiCart.tax_total;
+        this.taxTotal = apiCart.taxTotal;
         Object.assign(this, apiCart);
     }
 }

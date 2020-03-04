@@ -9,11 +9,12 @@
  */
 import color from 'colors';
 import passport from 'passport';
-import CommerceStrategy from './commerce-strategy';
+import graphqlPassport from 'graphql-passport';
 import express from 'express';
 import expressSession from 'express-session';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import CommerceSdk from 'commerce-sdk';
 
 // ****************************************************
 // Instantiate the new Storefront Reference Application
@@ -32,19 +33,6 @@ const mode = process.env.NODE_ENV || 'development';
 
 const users = new Map();
 
-passport.use(new CommerceStrategy(function(user, pass, done) {
-    done(null, {id: 1});
-}));
-
-passport.serializeUser(function(user, done) {
-    users.set(user.id, user);
-    done(null, user.id);
-});
-
-passport.deserializeUser(function(id, done) {
-    done(null, users.get(id));
-});
-
 function validateConfig(config) {
     const REQUIRED_KEYS = [
         'COMMERCE_API_PATH',
@@ -54,6 +42,7 @@ function validateConfig(config) {
         'COMMERCE_CLIENT_INSTANCE_ID',
         'COMMERCE_CLIENT_ORGANIZATION_ID',
         'COMMERCE_CLIENT_SHORT_CODE',
+        'COMMERCE_SESSION_SECRET',
     ];
 
     REQUIRED_KEYS.forEach(KEY => {
@@ -72,16 +61,56 @@ function validateConfig(config) {
  */
 (async () => {
     const sampleApp = await getSampleApp();
+    const config = sampleApp.apiConfig.config;
+    validateConfig(config);
     // Create Express Instance, register it with demo app and start demo app.
+
+    passport.use(new graphqlPassport.GraphQLLocalStrategy(function(user, pass, done) {
+        const clientId = config.COMMERCE_CLIENT_CLIENT_ID;
+        const organizationId = config.COMMERCE_CLIENT_ORGANIZATION_ID;
+        const shortCode = config.COMMERCE_CLIENT_SHORT_CODE;
+        const siteId = config.COMMERCE_CLIENT_API_SITE_ID;
+
+        CommerceSdk.helpers.getAuthToken({
+            parameters: {
+                clientId: clientId,
+                organizationId: organizationId,
+                shortCode: shortCode,
+                siteId: siteId,
+            },
+            body: {
+                type: 'guest',
+            },
+        }).then(token => {
+            done(null, {id: 1, token: token.getBearerHeader()});
+        });
+    }));
+
+    passport.serializeUser(function(user, done) {
+        users.set(user.id, user);
+        done(null, user.id);
+    });
+
+    passport.deserializeUser(function(id, done) {
+        done(null, users.get(id));
+    });
+
     sampleApp.expressApplication = express();
 
-    validateConfig(sampleApp.apiConfig.config);
+    const sess = {
+        secret: config.COMMERCE_SESSION_SECRET, // This is something new we add to the config
+        cookie: {}
+    }
+       
+    if (mode === 'production') {
+        sampleApp.expressApplication.set('trust proxy', 1); // trust first proxy
+        sess.cookie.secure = true; // serve secure cookies
+    }
+       
+    sampleApp.expressApplication.use(expressSession(sess))
 
     sampleApp.expressApplication.use(passport.initialize());
-
-    sampleApp.expressApplication.use(expressSession({secret: 'anonymous', cookie: {}}));
-
-    sampleApp.expressApplication.use("/api", passport.authenticate(['commerce'], { session: true }));
+    sampleApp.expressApplication.use(passport.session());
     
     // Serve up static files
     sampleApp.expressApplication.use(

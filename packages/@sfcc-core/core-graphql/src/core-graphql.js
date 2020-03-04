@@ -10,6 +10,8 @@ import graphQLTools from 'graphql-tools';
 import { core, API_EXTENSIONS_KEY } from '@sfcc-core/core';
 import { API_CONFIG_KEY } from '@sfcc-core/apiconfig';
 
+import graphqlPassport from 'graphql-passport';
+
 const { makeExecutableSchema } = graphQLTools;
 const { ApolloServer, gql } = apolloServerExpress;
 const logger = core.logger;
@@ -114,16 +116,17 @@ export default class CoreGraphQL {
 
             this.apolloServer = new ApolloServer({
                 schema,
-                context: ({ req }) => {
-                    return {
-                        auth_token: req.user.token || '',
-                        cart_id: req.user.cartId,
-                    };
-                },
+                context: ({ req, res }) => ({
+                    ...graphqlPassport.buildContext({ req, res }),
+                    setSessionProperty(key, value) {
+                        req.session[key] = value;
+                    },
+                    getSessionProperty(key) {
+                        return req.session[key];
+                    },
+                }),
             });
 
-            //expressApp.use(apiPath, passport.authenticate(['local', 'anonymous'], { session: true }));
-            
             this.apolloServer.applyMiddleware({
                 app: expressApp,
                 path: apiPath,
@@ -151,3 +154,14 @@ export default class CoreGraphQL {
 core.registerService(CORE_GRAPHQL_KEY, function() {
     return new CoreGraphQL(core);
 });
+
+export async function getUserFromContext(context) {
+    let user = context.getUser();
+    const token = user ? user.token : null;
+    if (!token) {
+        const res = await context.authenticate('graphql-local', {});
+        context.login(res.user);
+        user = res.user;
+    }
+    return user;
+}

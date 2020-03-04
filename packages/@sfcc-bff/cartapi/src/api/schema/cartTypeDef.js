@@ -10,9 +10,6 @@ const { gql } = apolloServerCore;
 export const typeDef = gql`
     extend type Query {
         getCart: Cart!
-        getCartByCustomerId(customerId: String!): Cart!
-        getProductAvailability(productId: String!, quantity: Int!): Order!
-        getShippingMethods(cartId: String!, shipmentId: String!): ShippingMethods!
     }
     extend type Mutation {
         createCart: Cart!
@@ -21,9 +18,8 @@ export const typeDef = gql`
         updateShippingMethod(cartId: String!, shipmentId: String!, shippingMethodId: String!): Cart!
     }
     type Cart {
-        authToken: String!
         cartId: String!
-        customerId : String
+        customerId: String
         addProductMessage: String
         getCartMessage:String
         totalProductsQuantity: Int
