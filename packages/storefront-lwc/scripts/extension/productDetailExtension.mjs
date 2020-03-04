@@ -21,22 +21,34 @@ const productRecommendationTypeDef = gql`
 
 // Resolve the product recommendations for a Product
 const productRecommendationResolver = (config) => {
+    let product_recommendations = [];
     return {
         Product: {
             recommendations: async (product) => {
                 if (product.recommendations) {
-                    return Promise.all(product.recommendations.map( async recommendation => {
-                        const apiProduct = await getClientProduct(config, recommendation.recommendedItemId);
-                            return {productId: apiProduct.id, productName:apiProduct.name, image: new Image(apiProduct.imageGroups[2].images[0])};
+                    let productIds  = [];
+                    let ids
+                    product.recommendations.forEach(recommendation => {
+                        productIds.push(recommendation.recommendedItemId);
+                        ids = productIds.toString();
+                    });
+                    const result = await getClientProducts(config, ids);
+                    result.data.forEach(apiProduct => {
+                        console.log('apiProduct is ', apiProduct);
+                        product_recommendations.push({
+                            productId: apiProduct.id, 
+                            productName:apiProduct.name, 
+                            image: new Image(apiProduct.imageGroups[2].images[0])
                         })
-                    )
+                    })
+                    return product_recommendations;
                 }
             }
         }
     }
 }
 
-const getClientProduct = async (config, id) => {
+const getClientProducts = async (config, ids) => {
     const clientId = config.COMMERCE_CLIENT_CLIENT_ID;
     const organizationId = config.COMMERCE_CLIENT_ORGANIZATION_ID;
     const shortCode = config.COMMERCE_CLIENT_SHORT_CODE;
@@ -64,9 +76,9 @@ const getClientProduct = async (config, id) => {
     });
 
     return product
-        .getProduct({
+        .getProducts({
             parameters: {
-                id: id,
+                ids: ids,
                 allImages: true,
             },
         })
