@@ -15,11 +15,11 @@ const COMMERCE_API_PATH = '/api';
 
 // Commerce SDK
 const COMMERCE_CLIENT_API_SITE_ID = 'your.site.id';
-const COMMERCE_CLIENT_CLIENT_ID = '';
-const COMMERCE_CLIENT_REALM_ID = '';
-const COMMERCE_CLIENT_INSTANCE_ID = '';
+const COMMERCE_CLIENT_CLIENT_ID = 'your.client.id';
+const COMMERCE_CLIENT_REALM_ID = 'your.realm.id';
+const COMMERCE_CLIENT_INSTANCE_ID = 'your.instance.id';
 const COMMERCE_CLIENT_ORGANIZATION_ID = `f_ecom_${COMMERCE_CLIENT_REALM_ID}_${COMMERCE_CLIENT_INSTANCE_ID}`;
-const COMMERCE_CLIENT_SHORT_CODE = 'your.instance';
+const COMMERCE_CLIENT_SHORT_CODE = 'your.shortcode';
 
 // Available Log Levels for the Application
 const LOG_LEVEL_MAP = {
