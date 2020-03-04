@@ -1,22 +1,49 @@
 {
+  "license": "BSD-3-Clause",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "start:dev": "tsdx watch",
+    "build": "tsdx build",
+    "test:unit": "tsdx test --collect-coverage",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build",
+    "pub": "npm build; npm pack; npm publish -f",
+    "pack": "npm pack"
+  },
+  "peerDependencies": {},
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
   "name": "@sfcc-bff/productapi",
   "version": "1.0.0-alpha.1",
-  "description": "",
-  "main": "./src/productapi.js",
-  "scripts": {
-    "lint": "eslint src",
-    "lint:fix": "eslint src --fix",
-    "pack": "npm pack",
-    "pub": "npm pack; npm publish -f"
+  "description": "sfcc bff for the commerce product api",
+  "module": "dist/productapi.esm.js",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "default": "./dist/core.esm.js"
+    }
   },
-  "author": "",
   "type": "module",
-  "license": "MIT",
   "dependencies": {
     "@sfcc-core/core": "1.0.0-alpha.1",
     "@sfcc-core/core-graphql": "1.0.0-alpha.1",
     "commerce-sdk": "0.2.0-alpha.6",
     "lodash": "^4.17.15",
     "request-promise": "^4.2.5"
+  },
+  "devDependencies": {
+    "@types/jest": "^25.1.2",
+    "@types/lodash": "^4.14.149",
+    "husky": "^4.2.3",
+    "tsdx": "^0.12.3",
+    "tslib": "^1.10.0",
+    "typescript": "^3.7.5"
   }
 }

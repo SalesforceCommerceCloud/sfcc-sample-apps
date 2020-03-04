@@ -1,33 +1,43 @@
-/*
-    Copyright (c) 2020, salesforce.com, inc.
-    All rights reserved.
-    SPDX-License-Identifier: BSD-3-Clause
-    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
-*/
+import { Product as ProductSDK, VariationAttribute, VariationAttributeValue } from 'commerce-sdk/dist/product/products/products.types';
 import Image from './Image';
-import get from 'lodash';
+import _ from 'lodash';
 
-const getImages = (imageGroups, matchingColor) => {
+type ImagesCallback = (options: { allImages: any[]; size: string }) => Image[];
+type VariantsCallback = () => ProductSDK['variants'];
+type VariationAttributesCallback = () => {
+    variationAttributeType: { id: string; name: string };
+    variationAttributeValues: {
+        name: string;
+        value: string;
+        orderable: boolean;
+        swatchImage?: Image;
+    }[];
+};
+
+function getImages(
+    imageGroups: any[] = [],
+    matchingColor?: string,
+): ImagesCallback {
     return ({ allImages, size }) => {
         let result = new Map();
 
-        const isImage = url => {
+        const isImage = (url: string) => {
             return url && url.match(/\.(jpeg|jpg|gif|png)$/) != null;
         };
 
         // Return all images if allImages and all sizes asked for
         if (allImages && size === 'all') {
             imageGroups.forEach(imageGroup => {
-                imageGroup.images.forEach(image => {
+                imageGroup.images.forEach((image: ProductSDK['image']) => {
                     // ensure unique image being returned
-                    if (isImage(image.link) && !result.has(image.link)) {
-                        result.set(image.link, new Image(image));
+                    if (isImage(image?.link) && !result.has(image?.link)) {
+                        result.set(image?.link, new Image(image));
                     }
                 });
             });
         } else {
             // Find images of the size requested (default large)
-            let sizeImages = [];
+            let sizeImages: Array<ProductSDK['image']> = [];
             imageGroups.forEach(imageGroup => {
                 if (imageGroup.viewType === size) {
                     // If there is no matching color defined, take all images.
@@ -58,25 +68,26 @@ const getImages = (imageGroups, matchingColor) => {
 
             // Return all of this size when all images are requested
             if (allImages) {
-                sizeImages.forEach(image => {
+                sizeImages.forEach((image: ProductSDK['image']) => {
                     // ensure unique image being returned
-                    if (isImage(image.link) && !result.has(image.link)) {
-                        result.set(image.link, new Image(image));
+                    if (isImage(image?.link) && !result.has(image?.link)) {
+                        result.set(image?.link, new Image(image));
                     }
                 });
             } else {
                 // Only first of the size requested when all images false
-                result.set(sizeImages[0].link, new Image(sizeImages[0]));
+                result.set(sizeImages?.[0]?.link, new Image(sizeImages[0]));
             }
         }
 
         return Array.from(result.values());
     };
-};
+}
 
-const getVariants = variants => {
+function getVariants(variants: ProductSDK['variants'] = []): VariantsCallback {
     return () => {
-        return variants.map(variant => {
+        // @todo - switch to an actual Variant model provided by the SDK
+        return variants.map((variant: any) => {
             return {
                 id: variant.productId,
                 variationValues: Object.keys(variant.variationValues).map(
@@ -90,9 +101,16 @@ const getVariants = variants => {
             };
         });
     };
-};
+}
 
-const getVariationAttributes = (variationAttributes, imageGroups) => {
+const getVariationAttributes = (
+    variationAttributes: VariationAttribute[],
+    imageGroups: {
+        images: any[]; // @todo switch these models to be from the SDK
+        viewType: string;
+        variationAttributes: { values: { value: string }[] }[];
+    }[],
+) => {
     return () => {
         return variationAttributes.map(variationAttribute => {
             return {
@@ -100,7 +118,7 @@ const getVariationAttributes = (variationAttributes, imageGroups) => {
                     id: variationAttribute.id,
                     name: variationAttribute.name,
                 },
-                variationAttributeValues: variationAttribute.values.map(
+                variationAttributeValues: (variationAttribute.values as VariationAttributeValue[])?.map(
                     variationAttributeValue => {
                         let swatchImage = imageGroups.find(imageGroup => {
                             if (imageGroup.variationAttributes) {
@@ -128,31 +146,43 @@ const getVariationAttributes = (variationAttributes, imageGroups) => {
     };
 };
 
-const getLowestPromotionalPrice = promotions => {
+const getLowestPromotionalPrice = (
+    promotions: { promotionalPrice: number }[],
+) => {
     if (promotions && promotions.length) {
-        let lowestPrice = promotions.reduce(function(prev, curr) {
-            if (prev && curr) {
-                if (prev.promotionalPrice && curr.promotionalPrice) {
-                    return prev.promotionalPrice < curr.promotionalPrice
-                        ? prev
-                        : curr;
-                } else if (!prev.promotionalPrice && curr.promotionalPrice) {
-                    return curr;
-                } else if (prev.promotionalPrice && !curr.promotionalPrice) {
+        let lowestPrice = promotions.reduce(
+            function(prev, curr) {
+                if (prev && curr) {
+                    if (prev.promotionalPrice && curr.promotionalPrice) {
+                        return prev.promotionalPrice < curr.promotionalPrice
+                            ? prev
+                            : curr;
+                    } else if (
+                        !prev.promotionalPrice &&
+                        curr.promotionalPrice
+                    ) {
+                        return curr;
+                    } else if (
+                        prev.promotionalPrice &&
+                        !curr.promotionalPrice
+                    ) {
+                        return prev;
+                    } else {
+                        return { promotionalPrice: -1 };
+                    }
+                } else if (prev && !curr) {
                     return prev;
+                } else if (!prev && curr) {
+                    return curr;
                 } else {
-                    return;
+                    return { promotionalPrice: -1 };
                 }
-            } else if (prev && !curr) {
-                return prev;
-            } else if (!prev && curr) {
-                return curr;
-            } else {
-                return;
-            }
-        });
+            },
+            { promotionalPrice: -1 },
+        );
 
-        return lowestPrice && lowestPrice.promotionalPrice
+        return lowestPrice.promotionalPrice !== -1 &&
+            lowestPrice.promotionalPrice
             ? lowestPrice.promotionalPrice.toFixed(2)
             : null;
     }
@@ -160,9 +190,10 @@ const getLowestPromotionalPrice = promotions => {
     return null;
 };
 
-const getPrices = apiProduct => {
+const getPrices = (apiProduct: ProductSDK) => {
     let prices = {
         sale: apiProduct.price,
+        list: null,
     };
     if (apiProduct.prices) {
         let lowestPromotionalPrice = getLowestPromotionalPrice(
@@ -180,16 +211,28 @@ const getPrices = apiProduct => {
 };
 
 class Product {
-    constructor(apiProduct, userSelectedColor) {
+    id: ProductSDK['id'];
+    name: ProductSDK['name'];
+    masterId: string | undefined;
+    price: ProductSDK['price'];
+    images: ImagesCallback;
+    longDescription: ProductSDK['longDescription'];
+    shortDescription: ProductSDK['shortDescription'];
+    image: string;
+    variants: VariantsCallback;
+    prices: { sale: any; list?: any };
+    variationAttributes: VariationAttributesCallback;
+
+    constructor(apiProduct: ProductSDK, userSelectedColor: string) {
         this.id = apiProduct.id;
         this.name = apiProduct.name;
-        this.masterId = apiProduct.master.masterId;
+        this.masterId = apiProduct?.master?.masterId;
         this.price = apiProduct.price;
 
         let selectedColor =
             userSelectedColor !== 'undefined' && userSelectedColor !== 'null'
                 ? userSelectedColor
-                : null;
+                : undefined;
         this.images = getImages(apiProduct.imageGroups, selectedColor);
 
         Object.assign(this, apiProduct);
@@ -197,7 +240,7 @@ class Product {
         this.shortDescription = apiProduct.shortDescription;
 
         // Set a default image
-        this.image = get(apiProduct, 'this.images[0].link');
+        this.image = _.get(apiProduct, 'this.images[0].link');
 
         this.variants = getVariants(apiProduct.variants);
         this.variationAttributes = getVariationAttributes(

@@ -1,5 +1,6 @@
 export {
     ApiConfig,
+    Config,
     Logger,
     Extension,
     Service,
@@ -9,6 +10,7 @@ export {
 
 export {
     core,
+    Core,
     LOGGER_KEY,
     API_EXTENSIONS_KEY,
     UnknownServiceError,

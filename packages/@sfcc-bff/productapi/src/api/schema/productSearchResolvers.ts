@@ -6,12 +6,22 @@
 */
 import CommerceSdk from 'commerce-sdk';
 import SearchResult from '../models/SearchResult';
-import { core } from '@sfcc-core/core';
+import { core, Config } from '@sfcc-core/core';
 
 const logger = core.logger;
 
-const processFilterParams = filterParams => {
-    let filterParamQuery = {
+type FilterParam = {
+    id: string;
+    value: string;
+};
+
+type FilterQueryParam = {
+    refine: { [key: string]: string };
+    sort: string;
+};
+
+const processFilterParams = (filterParams: FilterParam[]) => {
+    let filterParamQuery: FilterQueryParam = {
         refine: {},
         sort: '',
     };
@@ -32,7 +42,11 @@ const processFilterParams = filterParams => {
     return filterParamQuery;
 };
 
-const searchProduct = async (config, query, filterParams) => {
+const searchProduct = async (
+    config: Config,
+    query: {},
+    filterParams: FilterParam[],
+) => {
     const clientId = config.COMMERCE_CLIENT_CLIENT_ID;
     const organizationId = config.COMMERCE_CLIENT_ORGANIZATION_ID;
     const shortCode = config.COMMERCE_CLIENT_SHORT_CODE;
@@ -59,19 +73,22 @@ const searchProduct = async (config, query, filterParams) => {
         },
     });
 
-    const filters = filterParams ? processFilterParams(filterParams) : {};
+    const filters = filterParams ? processFilterParams(filterParams) : null;
     let parameterValue = {
         organizationId: organizationId,
         siteId: siteId,
         q: query,
+        sort: '',
     };
 
-    if (filters.refine && Object.entries(filters.refine).length !== 0) {
-        Object.assign(parameterValue, filters.refine);
-    }
+    if (filters) {
+        if (filters.refine && Object.entries(filters.refine).length !== 0) {
+            Object.assign(parameterValue, filters.refine);
+        }
 
-    if (filters.sort) {
-        parameterValue.sort = filters.sort;
+        if (filters.sort) {
+            parameterValue.sort = filters.sort;
+        }
     }
 
     return search
@@ -84,10 +101,14 @@ const searchProduct = async (config, query, filterParams) => {
         });
 };
 
-export const resolver = config => {
+export const resolver = (config: Config) => {
     return {
         Query: {
-            productSearch: (_, { query, filterParams }) => {
+            productSearch: (
+                _: any,
+                args: { query: {}; filterParams: FilterParam[] },
+            ) => {
+                const { query, filterParams } = args;
                 const result = searchProduct(config, query, filterParams).then(
                     searchResult => {
                         return new SearchResult(searchResult, filterParams);

@@ -1,18 +1,11 @@
-/*
-    Copyright (c) 2020, salesforce.com, inc.
-    All rights reserved.
-    SPDX-License-Identifier: BSD-3-Clause
-    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
-*/
-'use strict';
-
 import Product from '../models/Product';
+import { Product as ProductSDK } from 'commerce-sdk/dist/product/products/products.types';
 import CommerceSdk from 'commerce-sdk';
-import { core } from '@sfcc-core/core';
+import { core, Config } from '@sfcc-core/core';
 
 const logger = core.logger;
 
-const getClientProduct = async (config, id) => {
+const getClientProduct = async (config: Config, id: string) => {
     const clientId = config.COMMERCE_CLIENT_CLIENT_ID;
     const organizationId = config.COMMERCE_CLIENT_ORGANIZATION_ID;
     const shortCode = config.COMMERCE_CLIENT_SHORT_CODE;
@@ -30,7 +23,7 @@ const getClientProduct = async (config, id) => {
         },
     });
 
-    const product = new CommerceSdk.Product.ShopperProducts.Client({
+    const client = new CommerceSdk.Product.ShopperProducts.Client({
         headers: { authorization: token.getBearerHeader() },
         parameters: {
             organizationId: organizationId,
@@ -39,7 +32,7 @@ const getClientProduct = async (config, id) => {
         },
     });
 
-    return product
+    return client
         .getProduct({
             parameters: {
                 id: id,
@@ -52,13 +45,16 @@ const getClientProduct = async (config, id) => {
         });
 };
 
-export const resolver = config => {
+export const resolver = (config: Config) => {
     return {
         Query: {
-            product: async (_, { id, selectedColor }) => {
+            product: async (
+                _: any,
+                { id, selectedColor }: { id: string; selectedColor: string },
+            ) => {
                 let apiProduct;
                 try {
-                    apiProduct = await getClientProduct(config, id);
+                    apiProduct = await getClientProduct(config, id) as ProductSDK;
                 } catch (e) {
                     logger.error(`Error in productDetailResolver(). ${e}`);
                     throw e;

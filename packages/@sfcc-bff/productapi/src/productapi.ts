@@ -5,7 +5,7 @@
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
 // SFRA Core Extension module
-import { core, API_EXTENSIONS_KEY } from '@sfcc-core/core';
+import { core, Core, Config, API_EXTENSIONS_KEY } from '@sfcc-core/core';
 import { resolverFactory } from '@sfcc-core/core-graphql';
 
 import {
@@ -16,7 +16,7 @@ import {
 } from './api';
 
 export default class ProductAPI {
-    constructor(core) {
+    constructor(public core: Core) {
         this.core = core;
         this.core.logger.log('ProductAPI.constructor(core)');
     }
@@ -34,10 +34,13 @@ export default class ProductAPI {
         return [productDetailsTypeDef, productSearchTypeDef];
     }
 
-    getResolvers(config) {
+    getResolvers(config: Config) {
         core.logger.log('===========================');
         core.logger.log('===========================');
-        core.logger.log('ProductAPI.getResolvers()', config);
+        core.logger.log(
+            'ProductAPI.getResolvers()',
+            JSON.stringify(config, null, '  '),
+        );
         core.logger.log('===========================');
         core.logger.log('===========================');
         return resolverFactory(config, [
