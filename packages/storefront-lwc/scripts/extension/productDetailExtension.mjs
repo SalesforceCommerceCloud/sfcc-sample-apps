@@ -1,6 +1,5 @@
-
-import {core, API_EXTENSIONS_KEY} from '@sfcc-core/core';
-import { resolverFactory } from "@sfcc-core/core-graphql";
+import { core, API_EXTENSIONS_KEY } from '@sfcc-core/core';
+import { resolverFactory } from '@sfcc-core/core-graphql';
 import apolloServerCore from 'apollo-server-core';
 import CommerceSdk from 'commerce-sdk';
 import Image from '../../../@sfcc-bff/productapi/src/api/models/Image';
@@ -20,33 +19,35 @@ const productRecommendationTypeDef = gql`
 `;
 
 // Resolve the product recommendations for a Product
-const productRecommendationResolver = (config) => {
-    let product_recommendations = [];
+const productRecommendationResolver = config => {
     return {
         Product: {
-            recommendations: async (product) => {
+            recommendations: async product => {
+                let product_recommendations = [];
                 if (product.recommendations) {
-                    let productIds  = [];
-                    let ids
+                    let productIds = [];
+                    let ids;
                     product.recommendations.forEach(recommendation => {
                         productIds.push(recommendation.recommendedItemId);
                         ids = productIds.toString();
                     });
                     const result = await getClientProducts(config, ids);
                     result.data.forEach(apiProduct => {
-                        console.log('apiProduct is ', apiProduct);
                         product_recommendations.push({
-                            productId: apiProduct.id, 
-                            productName:apiProduct.name, 
-                            image: new Image(apiProduct.imageGroups[2].images[0])
-                        })
-                    })
-                    return product_recommendations;
+                            productId: apiProduct.id,
+                            productName: apiProduct.name,
+                            image: new Image(
+                                apiProduct.imageGroups[2].images[0],
+                            ),
+                        });
+                    });
                 }
-            }
-        }
-    }
-}
+                console.log('producdt_recommendations ', product_recommendations);
+                return product_recommendations;
+            },
+        },
+    };
+};
 
 const getClientProducts = async (config, ids) => {
     const clientId = config.COMMERCE_CLIENT_CLIENT_ID;
@@ -94,10 +95,10 @@ export default class ProductDetailExtensions {
         return [productRecommendationTypeDef];
     }
     getResolvers(config) {
-        return resolverFactory(config,[productRecommendationResolver]);
+        return resolverFactory(config, [productRecommendationResolver]);
     }
 }
 
-core.registerExtension(API_EXTENSIONS_KEY, function (config) {
+core.registerExtension(API_EXTENSIONS_KEY, function(config) {
     return new ProductDetailExtensions();
 });
