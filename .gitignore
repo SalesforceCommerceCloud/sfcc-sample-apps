@@ -15,3 +15,7 @@ yarn-error.log
 
 **/package-lock.json
 package-lock.json
+
+/packages/@sfcc-core/**/*.d.ts
+/packages/@sfcc-core/**/*.js
+/packages/@sfcc-core/**/*.js.map

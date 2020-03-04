@@ -12,6 +12,7 @@ export default class SearchSort extends LightningElement {
         this.sortRule = this.sortOptions[0];
     }
 
+    // todo need @api
     sortOptions = [
         {
             id: 'best-matches',

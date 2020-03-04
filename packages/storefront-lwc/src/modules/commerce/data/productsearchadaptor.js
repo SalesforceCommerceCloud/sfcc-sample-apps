@@ -52,6 +52,10 @@ register(productsByQuery, eventTarget => {
                                     style
                                 }
                             }
+                            sortingOptions {
+                                id
+                                label
+                            }    
                             refinements {
                                 values {
                                     label

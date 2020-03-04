@@ -17,6 +17,12 @@ export const typeDef = gql`
         productHits: [ProductHit]
         currentFilters: [CurrentFilter]
         refinements: [Refinement]
+        sortingOptions: [SortOption]
+    }
+
+    type SortOption {
+        id: String!
+        label: String!
     }
 
     type ProductHit {

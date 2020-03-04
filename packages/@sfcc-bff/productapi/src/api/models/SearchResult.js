@@ -9,6 +9,14 @@
 import SearchResultProduct from './SearchResultProduct';
 
 export default class SearchResult {
+    /*
+        limit
+        productHits []
+        currentFilters
+        refinements []
+        sortingOptions []
+     */
+
     constructor(searchResult, filterParams) {
         this.limit = searchResult.limit;
         this.productHits =
@@ -18,6 +26,10 @@ export default class SearchResult {
                   )
                 : [];
         this.currentFilters = filterParams ? filterParams : null;
+
+        // Add Sorting Options
+        this.sortingOptions = searchResult.sortingOptions;
+
         this.refinements = searchResult.refinements.map(refinement => {
             return {
                 attributeId: refinement.attributeId,
