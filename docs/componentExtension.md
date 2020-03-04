@@ -1,6 +1,8 @@
 ## Customizing and Extending Components
 
-As mentioned in the [architecture document](architecture.md), when customizing or extending the sample app component, do not modify the packages within `@sfcc-bff` and `@sfcc-core`. These packages are published and consumed via `npm`. Instead, create a new custom package either within the monorepo or a new module that registers itself with `@sfcc-core\core` and provides access to data from a third-party service. Then you can extend the data model and extend the query for the client component.
+[comment]: <> As mentioned in the [architecture document](architecture.md), when customizing or extending the sample app component, do not modify the packages within `@sfcc-bff` and `@sfcc-core`. These packages are published and consumed via `npm`. Instead, create a new custom package either within the monorepo or a new module that registers itself with `@sfcc-core\core` and provides access to data from a third-party service. Then you can extend the data model and extend the query for the client component.
+
+To extend a sample app component, create a custom package. Place the custom package in the monorepo or in a new module. If you place it in a new module, make the module register itself with `@sfcc-core\core.`New modules typically provides access to data from a third-party service. (When extending sample app components, do not modify the packages in `@sfcc-bff` and `@sfcc-core`.)
 
 
 This example below shows how to create a product recommendations extension for the product details component:
@@ -9,7 +11,7 @@ Background: The Product Details Page shows the product name, product id, color s
 
 1. In the storefront-lwc, create a new extension called `productDetailExtension.mjs`
 
-2. In the `productDetailExtension.mjs` file, register the extension with core using the `API_EXTENSIONS_KEY`key. Extensions can have multiple entries per extension key, so we can simply register a new extension with the existing key: 
+2. In the `productDetailExtension.mjs` file, register the extension with core using the `API_EXTENSIONS_KEY`key. Extensions can have multiple entries per extension key, so we can register a new extension with an existing key: 
 
 ```javascript
 core.registerExtension(API_EXTENSIONS_KEY, function (config) {
