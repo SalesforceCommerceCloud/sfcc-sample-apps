@@ -7,7 +7,7 @@ This example below shows how to create a product recommendations extension for t
 
 Background: The Product Details Page shows the product name, product id, color swatches, images, price, and so on. Our goal is to extend this component to also show the product's recommendations. 
 
-1. In the storefront-lwc, create a new extension called `productDetailExtension.mjs`
+1. In the sfcc-sample-apps/packages/storefront-lwc folder, create a new extension called `productDetailExtension.mjs`
 
 2. In the `productDetailExtension.mjs` file, register the extension with core using the `API_EXTENSIONS_KEY`key. Extensions can have multiple entries per extension key, so we can register a new extension with an existing key: 
 
