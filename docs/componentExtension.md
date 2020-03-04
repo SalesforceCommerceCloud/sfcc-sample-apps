@@ -3,11 +3,11 @@
 To extend a sample app component, create a custom package. Place the custom package in the monorepo or in a new module. If you place it in a new module, make the module register itself with `@sfcc-core\core.`New modules also typically provide access to data from a third-party service. (When extending sample app components, do not modify the packages in `@sfcc-bff` and `@sfcc-core`.)
 
 
-This example below shows how to create a product recommendations extension for the product details component:
+The example below places the custom package in the monorepo. It extends the product details component to include product recommendations. 
 
 Background: The Product Details Page shows the product name, product id, color swatches, images, price, and so on. Our goal is to extend this component to also show the product's recommendations. 
 
-1. In the sfcc-sample-apps/packages/storefront-lwc folder, create a new extension called `productDetailExtension.mjs`
+1. In the `sfcc-sample-apps/packages/storefront-lwc` folder, create a new extension called `productDetailExtension.mjs`
 
 2. In the `productDetailExtension.mjs` file, register the extension with core using the `API_EXTENSIONS_KEY`key. Extensions can have multiple entries per extension key, so we can register a new extension with an existing key: 
 
