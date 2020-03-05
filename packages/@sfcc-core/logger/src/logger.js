@@ -19,23 +19,23 @@ export default class Logger {
         apilog.setLevel(level);
     }
 
-    log(args) {
+    log(...args) {
         apilog.log(args);
     }
 
-    info(args) {
+    info(...args) {
         apilog.info(args);
     }
 
-    debug(args) {
+    debug(...args) {
         apilog.debug(args);
     }
 
-    warn(args) {
+    warn(...args) {
         apilog.warn(args);
     }
 
-    error(args) {
+    error(...args) {
         apilog.error(args);
     }
 }
