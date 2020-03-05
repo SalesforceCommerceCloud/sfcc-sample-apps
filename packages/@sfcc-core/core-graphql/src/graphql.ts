@@ -16,6 +16,8 @@ import {
 } from './types';
 
 const { gql, ApolloServer } = apolloServerExpress;
+import graphqlPassport from 'graphql-passport';
+
 const { makeExecutableSchema } = graphQLTools;
 const logger = core.logger;
 
@@ -129,12 +131,15 @@ export class CoreGraphQL {
 
             this.apolloServer = new ApolloServer({
                 schema,
-                context: ({ req }) => {
-                    return {
-                        auth_token: req.headers.auth_token || '',
-                        cart_id: req.headers.cart_id,
-                    };
-                },
+                context: ({ req, res }) => ({
+                    ...graphqlPassport.buildContext({ req, res }),
+                    setSessionProperty(key, value) {
+                        req.session[key] = value;
+                    },
+                    getSessionProperty(key) {
+                        return req.session[key];
+                    },
+                }),
             });
 
             this.apolloServer.applyMiddleware({
@@ -164,3 +169,14 @@ export class CoreGraphQL {
 core.registerService(CORE_GRAPHQL_KEY, function() {
     return new CoreGraphQL();
 });
+
+export async function getUserFromContext(context) {
+    let user = context.getUser();
+    const token = user ? user.token : null;
+    if (!token) {
+        const res = await context.authenticate('graphql-local', {});
+        context.login(res.user);
+        user = res.user;
+    }
+    return user;
+}

@@ -5,9 +5,10 @@
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
 import CommerceSdk from 'commerce-sdk';
-import utilities from '../helpers/utils.js';
+import { getCommerceClientConfig } from '@sfcc-core/apiconfig';
 import SearchResult from '../models/SearchResult';
 import { core } from '@sfcc-core/core';
+import { getUserFromContext } from '@sfcc-core/core-graphql';
 
 const logger = core.logger;
 
@@ -28,8 +29,8 @@ const processFilterParams = filterParams => {
     return filterParamQuery;
 };
 
-const searchProduct = async (config, query, filterParams) => {
-    const apiClientConfig = utilities.getClientConfig(config);
+const searchProduct = async (config, query, filterParams, context) => {
+    const apiClientConfig = getCommerceClientConfig(config);
 
     const filters = filterParams ? processFilterParams(filterParams) : {};
     let parameterValue = {
@@ -44,10 +45,7 @@ const searchProduct = async (config, query, filterParams) => {
         parameterValue.sort = filters.sort;
     }
 
-    const token = await CommerceSdk.helpers.getShopperToken(apiClientConfig, {
-        type: 'guest',
-    });
-    apiClientConfig.headers.authorization = token.getBearerHeader();
+    apiClientConfig.headers.authorization = (await getUserFromContext(context)).token;
     const search = new CommerceSdk.Search.ShopperSearch(apiClientConfig);
     return search
         .productSearch({
@@ -62,8 +60,8 @@ const searchProduct = async (config, query, filterParams) => {
 export const resolver = config => {
     return {
         Query: {
-            productSearch: (_, { query, filterParams }) => {
-                const result = searchProduct(config, query, filterParams).then(
+            productSearch: (_, { query, filterParams }, context) => {
+                const result = searchProduct(config, query, filterParams, context).then(
                     searchResult => {
                         return new SearchResult(searchResult, filterParams);
                     },

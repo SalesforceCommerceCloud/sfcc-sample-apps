@@ -7,19 +7,18 @@
 'use strict';
 
 import Product from '../models/Product';
-import utilities from '../helpers/utils.js';
+import { getCommerceClientConfig } from '@sfcc-core/apiconfig';
 import CommerceSdk from 'commerce-sdk';
 import { core } from '@sfcc-core/core';
+import { getUserFromContext } from '@sfcc-core/core-graphql';
 
 const logger = core.logger;
 
-const getClientProduct = async (config, id) => {
-    const apiClientConfig = utilities.getClientConfig(config);
+const getClientProduct = async (config, id, context) => {
+    const apiClientConfig = getCommerceClientConfig(config);
 
-    const token = await CommerceSdk.helpers.getShopperToken(apiClientConfig, {
-        type: 'guest',
-    });
-    apiClientConfig.headers.authorization = token.getBearerHeader();
+    apiClientConfig.headers.authorization = (await getUserFromContext(context)).token;
+
     const product = new CommerceSdk.Product.ShopperProducts(apiClientConfig);
 
     return product
@@ -38,15 +37,14 @@ const getClientProduct = async (config, id) => {
 export const resolver = config => {
     return {
         Query: {
-            product: async (_, { id, selectedColor }) => {
-                let apiProduct;
+            product: async (_, { id, selectedColor }, context) => {
                 try {
-                    apiProduct = await getClientProduct(config, id);
+                    const apiProduct = await getClientProduct(config, id, context);
+                    return new Product(apiProduct, selectedColor);
                 } catch (e) {
-                    logger.error(`Error in productDetailResolver(). ${e}`);
+                    logger.error(`Error in productDetailsResolvers(). ${e}`);
                     throw e;
                 }
-                return new Product(apiProduct, selectedColor);
             },
         },
     };

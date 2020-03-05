@@ -1,0 +1,20 @@
+<!--
+    Copyright (c) 2020, salesforce.com, inc.
+    All rights reserved.
+    SPDX-License-Identifier: BSD-3-Clause
+    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+-->
+<template>
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group">
+                <p>{shippingLabel}</p>
+                <select class='form-control' name='shipping-method-select' onchange={newShippingMethod}>
+                    <template for:each={viewShippingMethods} for:item="shippingMethod">
+                       <option class={shippingMethod.id} key={shippingMethod.id} value={shippingMethod.id} selected={shippingMethod.selected}>{shippingMethod.name}</option>
+                    </template>
+                </select>
+            </div>
+        </div>
+    </div>
+</template>
