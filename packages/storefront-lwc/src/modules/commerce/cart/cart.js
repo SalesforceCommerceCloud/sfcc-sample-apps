@@ -34,7 +34,7 @@ export default class Cart extends LightningElement {
         // Filter/Remove all Store Pickup Enabled Shipping Methods
         var filteredMethods = [];
         shippingMethods.forEach(shippingMethod => {
-            if (!shippingMethod.storePickupEnabled) {
+            if (!shippingMethod.c_storePickupEnabled) {
                 filteredMethods.push(shippingMethod);
             }
         });

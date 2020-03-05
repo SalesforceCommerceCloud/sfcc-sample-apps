@@ -29,7 +29,7 @@ class Cart {
                 .mutate({
                     mutation: gql`
                 mutation {
-                    addProductToCart(productId: "${ pid }", quantity: ${ qty }) {
+                    addProductToCart(productId: "${pid}", quantity: ${qty}) {
                       cartId
                       customerId
                       addProductMessage
@@ -44,17 +44,19 @@ class Cart {
                       }
                 }
             }
-             `
-            }).then(result => {
-                this.cart = result.data.addProductToCart;
-                console.log('!!!!!!!!!this.cart is ', this.cart);
-                this.isCartLoaded = true;
-                this.updateCart('add-to-cart');
-                return this.cart;
-            }).catch((error) => {
-                console.log('addToCart failed with message', error);
-                this.updateCart('failed-add-to-cart');
-            });
+             `,
+                })
+                .then(result => {
+                    this.cart = result.data.addProductToCart;
+                    console.log('!!!!!!!!!this.cart is ', this.cart);
+                    this.isCartLoaded = true;
+                    this.updateCart('add-to-cart');
+                    return this.cart;
+                })
+                .catch(error => {
+                    console.log('addToCart failed with message', error);
+                    this.updateCart('failed-add-to-cart');
+                });
         } catch (e) {
             console.log('addToCart Exception received', e);
             this.updateCart('failed-add-to-cart');
@@ -187,8 +189,8 @@ class Cart {
                                         name
                                         description
                                         price
-                                        estimatedArrivalTime
-                                        storePickupEnabled
+                                        c_estimatedArrivalTime
+                                        c_storePickupEnabled
                                     }
                                 }
                             }

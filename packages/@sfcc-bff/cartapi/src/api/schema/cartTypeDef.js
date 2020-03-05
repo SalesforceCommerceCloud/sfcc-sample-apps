@@ -13,7 +13,11 @@ export const typeDef = gql`
     }
     extend type Mutation {
         addProductToCart(productId: String!, quantity: Int!): Cart!
-        updateShippingMethod(cartId: String!, shipmentId: String!, shippingMethodId: String!): Cart!
+        updateShippingMethod(
+            cartId: String!
+            shipmentId: String!
+            shippingMethodId: String!
+        ): Cart!
     }
     type Cart {
         cartId: String!
@@ -40,9 +44,6 @@ export const typeDef = gql`
         quantity: Int!
         itemId: String!
     }
-    type Order {
-        orderable: Boolean!
-    }
     type ShippingMethods {
         applicableShippingMethods: [ShippingMethod]
         defaultShippingMethodId: String
@@ -52,8 +53,8 @@ export const typeDef = gql`
         name: String
         description: String
         price: Float
-        estimatedArrivalTime: String
-        storePickupEnabled: Boolean
+        c_estimatedArrivalTime: String
+        c_storePickupEnabled: Boolean
     }
     type OrderLevelPriceAdjustment {
         itemText: String

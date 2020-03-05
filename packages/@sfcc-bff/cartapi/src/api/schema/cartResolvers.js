@@ -6,7 +6,6 @@
 */
 import apollo from 'apollo-server';
 import Cart from '../models/Cart';
-import ShippingMethods from '../models/ShippingMethods';
 import { getCommerceClientConfig } from '@sfcc-core/apiconfig';
 import { getUserFromContext } from '@sfcc-core/core-graphql';
 import CommerceSdk from 'commerce-sdk';
@@ -15,7 +14,9 @@ const { ApolloError } = apollo;
 
 const getBasketClient = async (config, context) => {
     const clientConfig = getCommerceClientConfig(config);
-    clientConfig.headers.authorization = (await getUserFromContext(context)).token;
+    clientConfig.headers.authorization = (
+        await getUserFromContext(context)
+    ).token;
     return new CommerceSdk.Checkout.ShopperBaskets(clientConfig);
 };
 
@@ -66,7 +67,12 @@ const getBasket = async (config, context) => {
 
     // Get Shipping Methods
     const shipmentId = basket.shipments[0].shipmentId;
-    const shippingMethods = await getShippingMethods(basketId, shipmentId, config, context);
+    const shippingMethods = await getShippingMethods(
+        basketId,
+        shipmentId,
+        config,
+        context,
+    );
     if (shippingMethods.fault) {
         return shippingMethods;
     }
@@ -74,10 +80,15 @@ const getBasket = async (config, context) => {
     let selectedShippingMethodId = basket.shipments[0].shippingMethod
         ? basket.shipments[0].shippingMethod.id
         : shippingMethods.defaultShippingMethodId;
-    
-    basket = await updateShippingMethod(shipmentId, selectedShippingMethodId, config, context);
 
-    basket.shippingMethods = new ShippingMethods(shippingMethods);
+    basket = await updateShippingMethod(
+        shipmentId,
+        selectedShippingMethodId,
+        config,
+        context,
+    );
+
+    basket.shippingMethods = shippingMethods;
     return basket;
 };
 
@@ -92,7 +103,12 @@ const getShippingMethods = async (basketId, shipmentId, config, context) => {
     });
 };
 
-const updateShippingMethod = async (shipmentId, shippingMethodId, config, context) => {
+const updateShippingMethod = async (
+    shipmentId,
+    shippingMethodId,
+    config,
+    context,
+) => {
     const basketId = context.getSessionProperty('basketId');
     if (!basketId) {
         return {
@@ -112,7 +128,7 @@ const updateShippingMethod = async (shipmentId, shippingMethodId, config, contex
         },
         body: {
             id: shippingMethodId,
-        }
+        },
     });
 };
 
@@ -122,31 +138,52 @@ export const resolver = config => {
             getCart: async (_, {}, context) => {
                 const apiCart = await getBasket(config, context);
                 if (apiCart.fault) {
-                    console.log('ERROR Received when getting cart', apiCart.fault.message);
+                    console.log(
+                        'ERROR Received when getting cart',
+                        apiCart.fault.message,
+                    );
                     throw new ApolloError(apiCart.fault.message);
                 } else {
                     return new Cart(apiCart);
                 }
-            }
+            },
         },
         Mutation: {
             addProductToCart: async (_, { productId, quantity }, context) => {
-                let apiCart = await addProductToBasket(productId, quantity, config, context);
+                let apiCart = await addProductToBasket(
+                    productId,
+                    quantity,
+                    config,
+                    context,
+                );
                 if (apiCart.fault) {
-                    console.log('ERROR!!!!! in addProductToCart', token, apiCart.fault);
+                    console.log(
+                        'ERROR!!!!! in addProductToCart',
+                        token,
+                        apiCart.fault,
+                    );
                     throw new ApolloError(apiCart.fault.message);
                 }
                 return new Cart(apiCart);
             },
-            updateShippingMethod: async (_, { shipmentId, shippingMethodId }, context) => {
-                const apiCart = await updateShippingMethod(shipmentId, shippingMethodId, config, context);
+            updateShippingMethod: async (
+                _,
+                { shipmentId, shippingMethodId },
+                context,
+            ) => {
+                const apiCart = await updateShippingMethod(
+                    shipmentId,
+                    shippingMethodId,
+                    config,
+                    context,
+                );
                 if (apiCart.fault) {
                     console.log('ERROR!!!!! in updateShippingMethod', apiCart);
                     throw new ApolloError(apiCart.fault.message);
                 } else {
                     return new Cart(apiCart);
                 }
-            }
+            },
         },
     };
 };
