@@ -29,7 +29,7 @@ const productRecommendationResolver = config => {
                     let ids;
                     product.recommendations.forEach(recommendation => {
                         productIds.push(recommendation.recommendedItemId);
-                        ids = productIds.toString();
+                        ids = productIds.slice(0,6).toString();
                     });
                     const result = await getClientProducts(config, ids);
                     result.data.forEach(apiProduct => {
@@ -42,7 +42,6 @@ const productRecommendationResolver = config => {
                         });
                     });
                 }
-                console.log('producdt_recommendations ', product_recommendations);
                 return product_recommendations;
             },
         },
