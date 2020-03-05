@@ -13,10 +13,11 @@ import {
     Resolver,
     ResolverFactory,
     GraphQLExtension,
+    Request,
 } from './types';
 
 const { gql, ApolloServer } = apolloServerExpress;
-import graphqlPassport from 'graphql-passport';
+import graphqlPassport, { PassportContext } from 'graphql-passport';
 
 const { makeExecutableSchema } = graphQLTools;
 const logger = core.logger;
@@ -133,11 +134,11 @@ export class CoreGraphQL {
                 schema,
                 context: ({ req, res }) => ({
                     ...graphqlPassport.buildContext({ req, res }),
-                    setSessionProperty(key, value) {
-                        req.session[key] = value;
+                    setSessionProperty(key: string, value: string) {
+                        (req as Request).session[key] = value;
                     },
-                    getSessionProperty(key) {
-                        return req.session[key];
+                    getSessionProperty(key: string) {
+                        return (req as Request).session[key];
                     },
                 }),
             });
@@ -170,11 +171,16 @@ core.registerService(CORE_GRAPHQL_KEY, function() {
     return new CoreGraphQL();
 });
 
-export async function getUserFromContext(context) {
+type User = { token: string };
+type AuthenParams = User & { user?: string; pass?: string };
+
+export async function getUserFromContext(
+    context: PassportContext<User, AuthenParams>,
+) {
     let user = context.getUser();
-    const token = user ? user.token : null;
+    const token = user ? user.token : '';
     if (!token) {
-        const res = await context.authenticate('graphql-local', {});
+        const res = await context.authenticate('graphql-local', { token });
         context.login(res.user);
         user = res.user;
     }

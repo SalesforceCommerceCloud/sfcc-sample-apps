@@ -15,9 +15,6 @@ Object.keys(process.env).forEach(key => {
         APP_CONFIG_DATA[key] = String(process.env[key]);
     }
 });
-
-export { getCommerceClientConfig } from './configHelper.js';
-
 export class APIConfig implements ApiConfig {
     logger = core.logger;
     _config = APP_CONFIG_DATA;
