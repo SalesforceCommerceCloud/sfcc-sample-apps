@@ -9,10 +9,11 @@ import { LightningElement, wire, track, api } from 'lwc';
 
 import { useQuery } from '@lwce/apollo-client';
 import gql from 'graphql-tag';
+import { apiClient } from '../api/client';
 
 // const QUERY = gql``;
 const QUERY = gql`
-    query($query: String!, $filters: String) {
+    query($query: String!, $filters: [Filter]) {
         productSearch(query: $query, filterParams: $filters) {
             productHits {
                 productId
@@ -34,24 +35,24 @@ const QUERY = gql`
                     alt
                     style
                 }
-                refinements {
+            }
+            refinements {
+                values {
+                    label
+                    value
+                    hitCount
                     values {
                         label
                         value
                         hitCount
-                        values {
-                            label
-                            value
-                            hitCount
-                        }
                     }
-                    label
-                    attributeId
                 }
-                currentFilters {
-                    id
-                    value
-                }
+                label
+                attributeId
+            }
+            currentFilters {
+                id
+                value
             }
         }
     }
@@ -72,12 +73,13 @@ export default class ProductSearchResults extends LightningElement {
     variables = {
         query: '',
         sortRule: '',
-        filters: '',
+        filters: [],
     };
 
     @api set query(val) {
         this.variables = { ...this.variables, query: val };
     }
+
     get query() {
         return this.variables.query;
     }
