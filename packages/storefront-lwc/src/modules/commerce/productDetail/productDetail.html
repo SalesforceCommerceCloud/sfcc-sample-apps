@@ -116,7 +116,7 @@
                 </div>
 
                 <!-- Product Recommendations -->
-                <template if:true={product.recommendations}>
+                <template if:true={product.recommendations.length}>
                     <h3 class=recommendations-header>Product Recommendations:</h3>
                     <div class="row recommendation">
                         <template for:each={product.recommendations} for:item="recommendation">
