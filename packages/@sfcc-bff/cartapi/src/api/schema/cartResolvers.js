@@ -9,9 +9,9 @@ import Cart from '../models/Cart';
 import { getCommerceClientConfig } from '@sfcc-core/apiconfig';
 import { getUserFromContext } from '@sfcc-core/core-graphql';
 import CommerceSdk from 'commerce-sdk';
-
+import { core } from '@sfcc-core/core';
 const { ApolloError } = apollo;
-
+const logger = core.logger;
 const getBasketClient = async (config, context) => {
     const clientConfig = getCommerceClientConfig(config);
     clientConfig.headers.authorization = (
@@ -138,7 +138,7 @@ export const resolver = config => {
             getCart: async (_, {}, context) => {
                 const apiCart = await getBasket(config, context);
                 if (apiCart.fault) {
-                    console.log(
+                    logger.error(
                         'ERROR Received when getting cart',
                         apiCart.fault.message,
                     );
@@ -157,7 +157,7 @@ export const resolver = config => {
                     context,
                 );
                 if (apiCart.fault) {
-                    console.log(
+                    logger.error(
                         'ERROR!!!!! in addProductToCart',
                         token,
                         apiCart.fault,
@@ -178,7 +178,7 @@ export const resolver = config => {
                     context,
                 );
                 if (apiCart.fault) {
-                    console.log('ERROR!!!!! in updateShippingMethod', apiCart);
+                    logger.error('ERROR!!!!! in updateShippingMethod', apiCart);
                     throw new ApolloError(apiCart.fault.message);
                 } else {
                     return new Cart(apiCart);

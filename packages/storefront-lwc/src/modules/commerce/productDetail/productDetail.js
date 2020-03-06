@@ -4,8 +4,8 @@
     SPDX-License-Identifier: BSD-3-Clause
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
-import { LightningElement, api, wire, track } from 'lwc';
-import { productDetailWireAdaptor, ShoppingCart } from 'commerce/data';
+import { LightningElement, api, wire } from 'lwc';
+import { ShoppingCart } from 'commerce/data';
 import { canAddToCart } from './product.helper.js';
 import { useQuery } from '@lwce/apollo-client';
 import gql from 'graphql-tag';

@@ -4,7 +4,7 @@
     SPDX-License-Identifier: BSD-3-Clause
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { ShoppingCart } from 'commerce/data';
 import { messagehelper } from 'commerce/data';
 
@@ -16,9 +16,8 @@ class ToastMessage extends LightningElement {
 
     @api alertFailMessage;
 
-    @track isVisible = false;
-
-    @track addToCartSucceed = false;
+    isVisible = false;
+    addToCartSucceed = false;
 
     constructor() {
         super();

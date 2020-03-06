@@ -4,17 +4,17 @@
     SPDX-License-Identifier: BSD-3-Clause
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
-import { LightningElement, track } from 'lwc';
+import { LightningElement } from 'lwc';
 import { ShoppingCart } from 'commerce/data';
 
 export default class CartTotals extends LightningElement {
-    @track shippingCost = 0.0;
-    @track salesTax = 0.0;
-    @track orderDiscount = 0.0;
-    @track shippingDiscount = 0.0;
-    @track totalEstimate = 0.0;
-    @track hasOrderDiscount = false;
-    @track hasShippingDiscount = false;
+    shippingCost = 0.0;
+    salesTax = 0.0;
+    orderDiscount = 0.0;
+    shippingDiscount = 0.0;
+    totalEstimate = 0.0;
+    hasOrderDiscount = false;
+    hasShippingDiscount = false;
 
     constructor() {
         super();

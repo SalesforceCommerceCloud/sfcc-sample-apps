@@ -9,6 +9,7 @@
  */
 import { apiClient } from '../api/client';
 import gql from 'graphql-tag';
+
 class Cart {
     cart = {};
 
@@ -24,10 +25,9 @@ class Cart {
     // TODO : wire up the UI quantity selector to pass in quantity to add
     addToCart(product, qty) {
         let pid = product.id;
-        try {
-            return apiClient
-                .mutate({
-                    mutation: gql`
+        return apiClient
+            .mutate({
+                mutation: gql`
                 mutation {
                     addProductToCart(productId: "${pid}", quantity: ${qty}) {
                       cartId
@@ -45,30 +45,25 @@ class Cart {
                 }
             }
              `,
-                })
-                .then(result => {
-                    this.cart = result.data.addProductToCart;
-                    console.log('!!!!!!!!!this.cart is ', this.cart);
-                    this.isCartLoaded = true;
-                    this.updateCart('add-to-cart');
-                    return this.cart;
-                })
-                .catch(error => {
-                    console.log('addToCart failed with message', error);
-                    this.updateCart('failed-add-to-cart');
-                });
-        } catch (e) {
-            console.log('addToCart Exception received', e);
-            this.updateCart('failed-add-to-cart');
-        }
-        return this.cart;
+            })
+            .then(result => {
+                this.cart = result.data.addProductToCart;
+                console.log('!!!!!!!!!this.cart is ', this.cart);
+                this.isCartLoaded = true;
+                this.updateCart('add-to-cart');
+                return this.cart;
+            })
+            .catch(error => {
+                console.log('addToCart failed with message', error);
+                this.updateCart('failed-add-to-cart');
+                return this.cart;
+            });
     }
 
     updateShippingMethod(cartId, shipmentId, shippingMethodId) {
-        try {
-            return apiClient
-                .mutate({
-                    mutation: gql`
+        return apiClient
+            .mutate({
+                mutation: gql`
                     mutation {
                         updateShippingMethod(cartId: "${cartId}", shipmentId: "${shipmentId}", shippingMethodId: "${shippingMethodId}") {
                             cartId
@@ -97,21 +92,18 @@ class Cart {
                         }
                     }
                  `,
-                })
-                .then(result => {
-                    this.cart = result.data.updateShippingMethod;
-                    return this.cart;
-                })
-                .catch(error => {
-                    console.log(
-                        'Update Shipping Method failed with message',
-                        error,
-                    );
-                });
-        } catch (e) {
-            console.log('Update Shipping Method Exception received', e);
-        }
-        return this.cart;
+            })
+            .then(result => {
+                this.cart = result.data.updateShippingMethod;
+                return this.cart;
+            })
+            .catch(error => {
+                console.log(
+                    'Update Shipping Method failed with message',
+                    error,
+                );
+                return this.cart;
+            });
     }
 
     // TODO : wire this call with BFF
@@ -153,67 +145,59 @@ class Cart {
      */
     getCurrentCart() {
         console.log('Getting Current Cart');
-        try {
-            return apiClient
-                .query({
-                    query: gql`
-                        {
-                            getCart {
-                                cartId
-                                customerId
-                                getCartMessage
-                                totalProductsQuantity
-                                shipmentId
-                                shipmentTotal
-                                selectedShippingMethodId
-                                products {
-                                    productId
-                                    itemId
-                                    quantity
-                                    productName
+        return apiClient
+            .query({
+                query: gql`
+                    {
+                        getCart {
+                            cartId
+                            customerId
+                            getCartMessage
+                            totalProductsQuantity
+                            shipmentId
+                            shipmentTotal
+                            selectedShippingMethodId
+                            products {
+                                productId
+                                itemId
+                                quantity
+                                productName
+                                price
+                            }
+                            orderTotal
+                            orderLevelPriceAdjustment {
+                                itemText
+                                price
+                            }
+                            shippingTotal
+                            shippingTotalTax
+                            taxation
+                            taxTotal
+                            shippingMethods {
+                                defaultShippingMethodId
+                                applicableShippingMethods {
+                                    id
+                                    name
+                                    description
                                     price
-                                }
-                                orderTotal
-                                orderLevelPriceAdjustment {
-                                    itemText
-                                    price
-                                }
-                                shippingTotal
-                                shippingTotalTax
-                                taxation
-                                taxTotal
-                                shippingMethods {
-                                    defaultShippingMethodId
-                                    applicableShippingMethods {
-                                        id
-                                        name
-                                        description
-                                        price
-                                        c_estimatedArrivalTime
-                                        c_storePickupEnabled
-                                    }
+                                    c_estimatedArrivalTime
+                                    c_storePickupEnabled
                                 }
                             }
                         }
-                    `,
-                })
-                .then(result => {
-                    this.cart = result.data.getCart;
-                    this.isCartLoaded = true;
-                    this.updateCart('cart-loaded');
-                    return this.cart;
-                })
-                .catch(error => {
-                    console.log(
-                        'Warning: No Cart has been created yet!',
-                        error,
-                    );
-                    return this.cart;
-                });
-        } catch (e) {
-            console.log('Exception loading cart', e);
-        }
-        return this.cart;
+                    }
+                `,
+            })
+            .then(result => {
+                this.cart = result.data.getCart;
+                this.isCartLoaded = true;
+                this.updateCart('cart-loaded');
+                return this.cart;
+            })
+            .catch(error => {
+                console.log('Warning: No Cart has been created yet!', error);
+                return this.cart;
+            });
     }
 
     updateCartListener(callback) {

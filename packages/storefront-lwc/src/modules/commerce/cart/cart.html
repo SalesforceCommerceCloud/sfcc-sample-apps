@@ -15,7 +15,7 @@
             <h1 class="page-title">Your Cart</h1>
             <div class="row cart-header">
                 <div class="col-sm-4 hidden-xs-down">
-                    <a class="continue-shopping-link" href="/s/RefArch/home?lang=en_US" title="Continue Shopping">
+                    <a class="continue-shopping-link" href="/" title="Continue Shopping">
                         Continue Shopping
                     </a>
                 </div>
@@ -38,13 +38,13 @@
             <div class="row">
                 <div class="col-md-8">
                     <template for:each={products} for:item="product" for:index="index">
-                        <div key={product.productId} class="card product-info  uuid-1ef92777cbf6c7daaaafdd1905">
+                        <div key={product.productId} class="card product-info">
                             <div class="line-item-header">
                                 <div class="line-item-name">
                                     {product.productName}
                                 </div>
                                 <div class="remove-line-item d-lg-none">
-                                    <button type="button" class="remove-btn remove-product btn btn-light" data-toggle="modal" data-target=".cart.cart-page #removeProductModal" data-pid="701642852674M" data-name="Wide Leg Pant" data-action="/on/demandware.store/Sites-RefArch-Site/en_US/Cart-RemoveProductLineItem" data-uuid="8e56221845f1932db670ca0fb8" aria-label="Remove product Wide Leg Pant">
+                                    <button type="button" class="remove-btn remove-product btn btn-light">
                                         <span aria-hidden="true">×</span>
                                     </button>
                                 </div>
@@ -59,7 +59,7 @@
                                                 <img class="product-image" src={product.image} alt={product.name} title={product.name}>
                                             </div>
                                             <div class="item-attributes d-flex flex-column">
-                                                <div class="line-item-availability availability-1ef92777cbf6c7daaaafdd1905">
+                                                <div class="line-item-availability">
                                                     <p class="line-item-attributes">In Stock</p>
                                                 </div>
                                                 <div class="product-edit">
@@ -75,7 +75,7 @@
 
                                 <div class="col-lg-7 product-card-footer">
                                     <div class="row">
-                                        <div class="col-4 line-item-price-1ef92777cbf6c7daaaafdd1905">
+                                        <div class="col-4">
                                             <p class="line-item-price-info">Each</p>
                                             <div class="price">
                                             <span>
@@ -92,8 +92,7 @@
                                             <div class="quantity-form">
                                                 <label class="line-item-pricing-info quantity-label">Quantity</label>
                                                 <select class="form-control quantity custom-select"
-                                                        data-item-index={index}
-                                                        name="quantity-1ef92777cbf6c7daaaafdd1905"
+                                                        name="quantity"
                                                         aria-label="quantity: 1">
                                                     <option selected="">1</option>
                                                     <option>2</option>
@@ -113,11 +112,11 @@
                                             <p class="line-item-price-info">
                                                 Total
                                             </p>
-                                            <div class="item-total-1ef92777cbf6c7daaaafdd1905 price">
+                                            <div class="price">
                                                 <div class="strike-through non-adjusted-price">
                                                     null
                                                 </div>
-                                                <div class="pricing line-item-total-price-amount item-total-1ef92777cbf6c7daaaafdd1905">
+                                                <div class="pricing line-item-total-price-amount">
                                                     ${product.price}
                                                 </div>
                                             </div>
@@ -126,7 +125,7 @@
                                         <div class="col-lg-1 hidden-md-down remove-line-item-lg"></div>
                                     </div>
 
-                                    <div class="line-item-promo item-1ef92777cbf6c7daaaafdd1905"></div>
+                                    <div class="line-item-promo"></div>
                                 </div>
 
                                 <div class="hidden-md-down">
@@ -150,7 +149,7 @@
                     </div>
                     <div class="row">
                         <div class="col-12">
-                            <form action="/on/demandware.store/Sites-RefArch-Site/en_US/Cart-AddCoupon" class="promo-code-form" method="GET" name="promo-code-form">
+                            <form action="/" class="promo-code-form" method="GET" name="promo-code-form">
                                 <div class="form-group">
                                     <label for="couponCode">Enter Promo Code</label>
                                     <div class="row">
@@ -161,9 +160,6 @@
                                                 <span class="coupon-error-message" id="invalidCouponCode" role="alert"></span>
                                             </div>
                                         </div>
-
-                                        <input type="hidden" name="csrf_token" value="1dihSyzNyliLQwLPK-Y3PvBSHClGkdlc8fGzCg5jL4AYkK_VybkoCnQzebpfnWaIOIBdMKXtQ4WDr1cs6z-AC2Pc01cV2uJ3MWapnASSTsO0rFVEz9SnpgXcrgX7bvm03IXp4YSar9NPa_gQvY2R2TVddxhL2JR_wssykmjukd567UW6REY">
-
                                         <div class="col-5 promo-code-submit">
                                             <button type="submit" class="btn btn-primary btn-block promo-code-btn">
                                                 Submit
@@ -185,7 +181,7 @@
                     <div class="row">
                         <div class="col-12 checkout-continue">
                             <div>
-                                <a href="https://dev11-sitegenesis-dw.demandware.net/on/demandware.store/Sites-RefArch-Site/en_US/Checkout-Login" class="btn btn-primary btn-block checkout-btn " role="button" aria-pressed="true">
+                                <a href="/" class="btn btn-primary btn-block checkout-btn " role="button" aria-pressed="true">
                                     Checkout
                                 </a>
                             </div>
