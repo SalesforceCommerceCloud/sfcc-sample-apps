@@ -5,7 +5,21 @@
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
 import { LightningElement, wire, track, api } from 'lwc';
-import { productsByQuery } from 'commerce/data';
+import { useQuery } from '@lwce/apollo-client';
+import gql from 'graphql-tag';
+
+import { apiClient } from '../api/client';
+
+const QUERY = gql`
+    query($query: String!) {
+        productSearch(query: $query) {
+            productHits {
+                productId
+                productName
+            }
+        }
+    }
+`;
 
 //
 // Displays search results
@@ -14,52 +28,31 @@ export default class ProductSearchResults extends LightningElement {
     @track state = {};
     @track products = [];
     @track refinementgroups = [];
-    @api query = '';
     @track loading = false;
     @track refinementBar = 'refinement-bar col-md-3 d-none d-lg-block';
     @track showRefinementBar = true;
     sortRule;
     selectedRefinements = {};
 
-    // The wire adaptor to search for products when the query, sort rule or selected refinements change.
-    @wire(productsByQuery, {
-        query: '$query',
-        sortRule: '$sortRule',
-        selectedRefinements: '$selectedRefinements',
+    searchvariables = {
+        query: '',
+    };
+
+    @api set query(val) {
+        this.searchvariables = { ...this.searchvariables, query: val };
+    }
+
+    get query() {
+        return this.searchvariables.query;
+    }
+
+    @wire(useQuery, {
+        query: QUERY,
+        lazy: false,
+        variables: '$searchvariables',
     })
-    updateProducts(json) {
-        // The method to handle the json results returned from the above wire adaptor.
-        if (json.data && json.data.productSearch) {
-            this.products = json.data.productSearch.productHits || [];
-            this.refinementgroups =
-                [...json.data.productSearch.refinements] || [];
-
-            Object.keys(this.selectedRefinements).forEach(refinement => {
-                this.selectedRefinements[refinement].forEach(value => {
-                    const curRefinement = json.data.productSearch.refinements.filter(
-                        ref => {
-                            return ref.attributeId === refinement;
-                        },
-                    );
-
-                    if (
-                        curRefinement &&
-                        curRefinement.length === 1 &&
-                        curRefinement[0].values
-                    ) {
-                        curRefinement[0].values.forEach(newValue => {
-                            if (newValue.value === value) {
-                                newValue.isSelected = true;
-                            }
-                        });
-                    }
-                });
-            });
-        } else {
-            this.products = [];
-            this.refinementgroups = [];
-        }
-        this.loading = false;
+    updateProduct(response) {
+        console.log(response);
     }
 
     /**

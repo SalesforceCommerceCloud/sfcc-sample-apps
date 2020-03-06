@@ -9,6 +9,8 @@ import { canAddToCart } from './product.helper.js';
 import { useQuery } from '@lwce/apollo-client';
 import gql from 'graphql-tag';
 
+import { apiClient } from '../api/client';
+
 const QUERY = gql`
     query($productId: String!, $selectedColor: String) {
         product(id: $productId, selectedColor: $selectedColor) {
@@ -115,7 +117,7 @@ export default class ProductDetail extends LightningElement {
         variables: '$variables',
     })
     updateProduct(response) {
-        if (response.initialized) {
+        if (response.initialized && response.data) {
             this.product = { ...this.product, ...response.data.product };
             this.masterPid = response.data.product.masterId;
             this.setActiveImageCss(0);
