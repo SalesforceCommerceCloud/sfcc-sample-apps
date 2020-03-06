@@ -153,7 +153,7 @@ const getLowestPromotionalPrice = promotions => {
         });
 
         return lowestPrice && lowestPrice.promotionalPrice
-            ? lowestPrice.promotionalPrice.toFixed(2)
+            ? lowestPrice.promotionalPrice
             : null;
     }
 
@@ -161,18 +161,41 @@ const getLowestPromotionalPrice = promotions => {
 };
 
 const getPrices = apiProduct => {
+    let lowestPromotionalPrice = getLowestPromotionalPrice(
+        apiProduct.productPromotions,
+    );
     let prices = {
-        sale: apiProduct.price,
+        sale: lowestPromotionalPrice
+            ? lowestPromotionalPrice
+            : apiProduct.price,
     };
     if (apiProduct.prices) {
-        let lowestPromotionalPrice = getLowestPromotionalPrice(
-            apiProduct.productPromotions,
-        );
-        prices.sale = lowestPromotionalPrice
-            ? lowestPromotionalPrice
-            : apiProduct.prices['usd-m-sale-prices'];
-        prices.list = apiProduct.prices['usd-m-list-prices'];
-        if (prices.sale === prices.list) {
+        if (
+            apiProduct.prices['usd-m-sale-prices'] &&
+            apiProduct.prices['usd-m-list-prices']
+        ) {
+            prices.sale = lowestPromotionalPrice
+                ? lowestPromotionalPrice
+                : apiProduct.prices['usd-m-sale-prices'];
+            prices.list = apiProduct.prices['usd-m-list-prices'];
+            if (prices.sale === prices.list) {
+                prices.list = null;
+            }
+        } else if (
+            apiProduct.prices['usd-m-sale-prices'] &&
+            !apiProduct.prices['usd-m-list-prices']
+        ) {
+            prices.sale = lowestPromotionalPrice
+                ? lowestPromotionalPrice
+                : apiProduct.prices['usd-m-sale-prices'];
+            prices.list = null;
+        } else if (
+            !apiProduct.prices['usd-m-sale-prices'] &&
+            apiProduct.prices['usd-m-list-prices']
+        ) {
+            prices.sale = lowestPromotionalPrice
+                ? lowestPromotionalPrice
+                : apiProduct.prices['usd-m-list-prices'];
             prices.list = null;
         }
     }
