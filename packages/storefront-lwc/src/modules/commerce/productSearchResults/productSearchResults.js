@@ -5,7 +5,7 @@
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
 import { LightningElement, wire, track, api } from 'lwc';
-import { productsByQuery } from 'commerce/data';
+// import { productsByQuery } from 'commerce/data';
 
 import { useQuery } from '@lwce/apollo-client';
 import gql from 'graphql-tag';
