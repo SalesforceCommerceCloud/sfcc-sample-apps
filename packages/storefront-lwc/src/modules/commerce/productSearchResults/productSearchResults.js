@@ -7,36 +7,102 @@
 import { LightningElement, wire, track, api } from 'lwc';
 import { productsByQuery } from 'commerce/data';
 
-//
+import { useQuery } from '@lwce/apollo-client';
+import gql from 'graphql-tag';
+
+// const QUERY = gql``;
+const QUERY = gql`
+    query($query: String!, $filters: String) {
+        productSearch(query: $query, filterParams: $filters) {
+            productHits {
+                productId
+                productName
+                prices {
+                    sale
+                    list
+                }
+                image {
+                    title
+                    link
+                    alt
+                }
+                colorSwatches {
+                    name
+                    value
+                    title
+                    link
+                    alt
+                    style
+                }
+                refinements {
+                    values {
+                        label
+                        value
+                        hitCount
+                        values {
+                            label
+                            value
+                            hitCount
+                        }
+                    }
+                    label
+                    attributeId
+                }
+                currentFilters {
+                    id
+                    value
+                }
+            }
+        }
+    }
+`;
 // Displays search results
 //
 export default class ProductSearchResults extends LightningElement {
     @track state = {};
     @track products = [];
     @track refinementgroups = [];
-    @api query = '';
+    // @api query = '';
     @track loading = false;
     @track refinementBar = 'refinement-bar col-md-3 d-none d-lg-block';
     @track showRefinementBar = true;
     sortRule;
     selectedRefinements = {};
 
+    variables = {
+        query: '',
+        sortRule: '',
+        filters: '',
+    };
+
+    @api set query(val) {
+        this.variables = { ...this.variables, query: val };
+    }
+    get query() {
+        return this.variables.query;
+    }
+
     // The wire adaptor to search for products when the query, sort rule or selected refinements change.
-    @wire(productsByQuery, {
-        query: '$query',
-        sortRule: '$sortRule',
-        selectedRefinements: '$selectedRefinements',
+    // @wire(productsByQuery, {
+    //     query: '$query',
+    //     sortRule: '$sortRule',
+    //     selectedRefinements: '$selectedRefinements',
+    // })
+    @wire(useQuery, {
+        query: QUERY,
+        lazy: false,
+        variables: '$variables',
     })
-    updateProducts(json) {
-        // The method to handle the json results returned from the above wire adaptor.
-        if (json.data && json.data.productSearch) {
-            this.products = json.data.productSearch.productHits || [];
+    updateProducts(response) {
+        // The method to handle the response results returned from the above wire adaptor.
+        if (response.data && response.data.productSearch) {
+            this.products = response.data.productSearch.productHits || [];
             this.refinementgroups =
-                [...json.data.productSearch.refinements] || [];
+                [...response.data.productSearch.refinements] || [];
 
             Object.keys(this.selectedRefinements).forEach(refinement => {
                 this.selectedRefinements[refinement].forEach(value => {
-                    const curRefinement = json.data.productSearch.refinements.filter(
+                    const curRefinement = response.data.productSearch.refinements.filter(
                         ref => {
                             return ref.attributeId === refinement;
                         },
