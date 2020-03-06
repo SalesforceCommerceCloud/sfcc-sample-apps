@@ -3,6 +3,7 @@ import { resolverFactory } from '@sfcc-core/core-graphql';
 import apolloServerCore from 'apollo-server-core';
 import CommerceSdk from 'commerce-sdk';
 import Image from '../../../@sfcc-bff/productapi/src/api/models/Image';
+import utilities from '../../../@sfcc-bff/productapi/src/api/helpers/utils.js';
 
 const { gql } = apolloServerCore;
 
@@ -49,31 +50,13 @@ const productRecommendationResolver = config => {
 };
 
 const getClientProducts = async (config, ids) => {
-    const clientId = config.COMMERCE_CLIENT_CLIENT_ID;
-    const organizationId = config.COMMERCE_CLIENT_ORGANIZATION_ID;
-    const shortCode = config.COMMERCE_CLIENT_SHORT_CODE;
-    const siteId = config.COMMERCE_CLIENT_API_SITE_ID;
+    const apiClientConfig = utilities.getClientConfig(config);
 
-    const token = await CommerceSdk.helpers.getAuthToken({
-        parameters: {
-            clientId: clientId,
-            organizationId: organizationId,
-            shortCode: shortCode,
-            siteId: siteId,
-        },
-        body: {
-            type: 'guest',
-        },
+    const token = await CommerceSdk.helpers.getShopperToken(apiClientConfig, {
+        type: 'guest',
     });
-
-    const product = new CommerceSdk.Product.ShopperProducts.Client({
-        headers: { authorization: token.getBearerHeader() },
-        parameters: {
-            organizationId: organizationId,
-            shortCode: shortCode,
-            siteId: siteId,
-        },
-    });
+    apiClientConfig.headers.authorization = token.getBearerHeader();
+    const product = new CommerceSdk.Product.ShopperProducts(apiClientConfig);
 
     return product
         .getProducts({
