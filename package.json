@@ -15,6 +15,7 @@
     "lint:fix": "lerna run lint:fix --stream",
     "clean": "lerna run clean --stream",
     "test": "lerna run test:unit --stream",
+    "test:automation": "lerna run test:automation --stream",
     "test:watch": "lerna run test:unit:watch --stream",
     "start": "yarn start:lwc",
     "start:dev": "lerna run start:dev --scope storefront-lwc --stream",
@@ -29,7 +30,8 @@
       "packages/sfcc-base",
       "packages/@sfcc-core/*",
       "packages/@sfcc-bff/*",
-      "packages/storefront-lwc"
+      "packages/storefront-lwc",
+      "packages/storefront-automation"
     ],
     "nohoist": [
       "**/bootstrap",
@@ -42,10 +44,10 @@
     "node": ">=12.16 <13"
   },
   "dependencies": {
-    "lerna": "^3.17.0",
     "loglevel": "^1.6.6"
   },
   "devDependencies": {
+    "lerna": "^3.20.2",
     "babel-eslint": "^10.0.3",
     "eslint": "6.8.0",
     "eslint-config-prettier": "6.10.0",

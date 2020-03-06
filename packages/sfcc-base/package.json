@@ -2,7 +2,7 @@
   "name": "sfcc-base",
   "version": "1.0.0-alpha.1",
   "description": "A Base Config for any Sample App Monorepo packages.",
-  "license": "MIT",
+  "license": "BSD-3-Clause",
   "files": [
     "eslint.config.js"
   ],
