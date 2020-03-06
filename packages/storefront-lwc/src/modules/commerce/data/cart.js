@@ -48,13 +48,12 @@ class Cart {
             })
             .then(result => {
                 this.cart = result.data.addProductToCart;
-                console.log('!!!!!!!!!this.cart is ', this.cart);
                 this.isCartLoaded = true;
                 this.updateCart('add-to-cart');
                 return this.cart;
             })
             .catch(error => {
-                console.log('addToCart failed with message', error);
+                console.error('addToCart failed with message', error);
                 this.updateCart('failed-add-to-cart');
                 return this.cart;
             });
@@ -98,7 +97,7 @@ class Cart {
                 return this.cart;
             })
             .catch(error => {
-                console.log(
+                console.error(
                     'Update Shipping Method failed with message',
                     error,
                 );
@@ -144,7 +143,6 @@ class Cart {
      * @returns {Object} cart object
      */
     getCurrentCart() {
-        console.log('Getting Current Cart');
         return apiClient
             .query({
                 query: gql`
@@ -195,7 +193,7 @@ class Cart {
                 return this.cart;
             })
             .catch(error => {
-                console.log('Warning: No Cart has been created yet!', error);
+                console.warn('Warning: No Cart has been created yet!', error);
                 return this.cart;
             });
     }
