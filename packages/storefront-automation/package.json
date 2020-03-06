@@ -1,0 +1,15 @@
+{
+  "name": "storefront-automation",
+  "version": "1.0.0-alpha.1",
+  "description": "End to end tests for the sample storefront application",
+  "main": "index.js",
+  "scripts": {
+    "test:automation": "codeceptjs run --steps"
+  },
+  "author": "Bret Little",
+  "license": "BSD-3-Clause",
+  "devDependencies": {
+    "codeceptjs": "^2.5.0",
+    "puppeteer": "^2.1.1"
+  }
+}

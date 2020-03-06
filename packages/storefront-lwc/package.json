@@ -2,11 +2,7 @@
   "name": "storefront-lwc",
   "version": "1.0.0-alpha.1",
   "description": "Sample Storefront Application with Lightning Web Components",
-  "license": "MIT",
-  "config": {
-    "lwcVersion": "1.0.1",
-    "talonVersion": "0.16.0"
-  },
+  "license": "BSD-3-Clause",
   "nodemonConfig": {
     "watch": [
       "../@sfcc-core",
