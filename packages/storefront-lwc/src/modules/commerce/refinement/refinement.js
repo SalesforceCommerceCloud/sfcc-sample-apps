@@ -31,6 +31,7 @@ export default class Refinement extends LightningElement {
                         isColor: this.refinement.isColor,
                         label: this.refinement.label,
                         value: this.refinement.value,
+                        isSelected: !this.refinement.isSelected,
                     },
                 },
             }),

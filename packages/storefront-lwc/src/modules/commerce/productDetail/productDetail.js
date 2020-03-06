@@ -8,75 +8,9 @@ import { LightningElement, api, wire } from 'lwc';
 import { ShoppingBasket } from 'commerce/data';
 import { canAddToBasket } from './product.helper.js';
 import { useQuery } from '@lwce/apollo-client';
-import gql from 'graphql-tag';
+import '../api/client';
+import QUERY from './gqlQuery';
 
-const QUERY = gql`
-    query($productId: String!, $selectedColor: String) {
-        product(id: $productId, selectedColor: $selectedColor) {
-            name
-            id
-            masterId
-            longDescription
-            shortDescription
-            currency
-            price
-            prices {
-                sale
-                list
-            }
-            image
-            images(allImages: true, size: "large") {
-                title
-                alt
-                link
-            }
-            variants {
-                id
-                variationValues {
-                    key
-                    value
-                }
-            }
-            variationAttributes {
-                variationAttributeType {
-                    id
-                    name
-                }
-                variationAttributeValues {
-                    name
-                    value
-                    orderable
-                    swatchImage {
-                        link
-                        style
-                    }
-                }
-            }
-            inventory {
-                ats
-                backorderable
-                id
-                orderable
-                preorderable
-                stockLevel
-            }
-            type {
-                bundle
-                item
-                master
-                option
-                set
-                variant
-                variationGroup
-            }
-            productPromotions {
-                calloutMsg
-                promotionId
-                promotionalPrice
-            }
-        }
-    }
-`;
 /**
  * A product detail component is an interactive component which fetches and displays details about a product.
  * Such information may include the product name and description, any images, any pricing or promotions and more.
