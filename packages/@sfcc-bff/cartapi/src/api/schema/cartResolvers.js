@@ -12,6 +12,7 @@ import CommerceSdk from 'commerce-sdk';
 import { core } from '@sfcc-core/core';
 const { ApolloError } = apollo;
 const logger = core.logger;
+
 const getBasketClient = async (config, context) => {
     const clientConfig = getCommerceClientConfig(config);
     clientConfig.headers.authorization = (
@@ -89,7 +90,69 @@ const getBasket = async (config, context) => {
     );
 
     basket.shippingMethods = shippingMethods;
+
+    // update product
+    let productIds = basket.productItems
+        ? basket.productItems.map(product => product.productId).join()
+        : '';
+    let productDetails = await getProductsDetailsInfo(
+        config,
+        context,
+        productIds,
+    );
+    if (productIds) {
+        basket.productItems.map(product => {
+            productDetails.find(item => {
+                if (item.pid === product.productId) {
+                    product.image = item.imageURL ? item.imageURL : '';
+                }
+            });
+        });
+    }
     return basket;
+};
+
+const getProductsDetailsInfo = async (config, context, ids) => {
+    let product_items = [];
+    const apiClientConfig = getCommerceClientConfig(config);
+
+    apiClientConfig.headers.authorization = (
+        await getUserFromContext(context)
+    ).token;
+
+    const product = new CommerceSdk.Product.ShopperProducts(apiClientConfig);
+
+    const result = await product
+        .getProducts({
+            parameters: {
+                ids: ids,
+                allImages: true,
+            },
+        })
+        .catch(e => {
+            logger.error(`Error in getClientProduct() for product ${ids}`);
+            throw e;
+        });
+
+    result.data.forEach(product => {
+        let productDetailsInfo = {
+            pid: '',
+            imageURL: '',
+        };
+        productDetailsInfo.pid = product.id;
+        const imageGroups = product.imageGroups;
+        if (imageGroups) {
+            let imageArray = imageGroups.find(
+                image => image.viewType === 'small',
+            ).images;
+            productDetailsInfo.imageURL = imageArray.find(smallImage =>
+                smallImage.link.endsWith('PZ.jpg'),
+            ).link;
+        }
+        
+        product_items.push(productDetailsInfo);
+    });
+    return product_items;
 };
 
 const getShippingMethods = async (basketId, shipmentId, config, context) => {
@@ -139,7 +202,7 @@ export const resolver = config => {
                 const apiCart = await getBasket(config, context);
                 if (apiCart.fault) {
                     logger.error(
-                        'ERROR Received when getting cart',
+                        'ERROR Received when getting basket',
                         apiCart.fault.message,
                     );
                     throw new ApolloError(apiCart.fault.message);
