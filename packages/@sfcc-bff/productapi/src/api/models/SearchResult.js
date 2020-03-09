@@ -8,7 +8,7 @@
 
 import SearchResultProduct from './SearchResultProduct';
 
-export default class SearchResult {
+export class SearchResult {
     constructor(searchResult, filterParams) {
         this.limit = searchResult.limit;
         this.productHits =

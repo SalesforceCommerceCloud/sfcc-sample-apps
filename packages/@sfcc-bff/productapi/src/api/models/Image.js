@@ -6,7 +6,7 @@
 */
 'use strict';
 
-class Image {
+export class Image {
     constructor(image) {
         this.title = image.title;
         this.alt = image.alt;
@@ -14,4 +14,3 @@ class Image {
         this.style = `background: url(${this.link});`;
     }
 }
-export default Image;

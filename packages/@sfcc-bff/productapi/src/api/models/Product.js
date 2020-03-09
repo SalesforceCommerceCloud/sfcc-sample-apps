@@ -7,7 +7,7 @@
 import Image from './Image';
 import get from 'lodash';
 
-const getImages = (imageGroups, matchingColor) => {
+export const getImages = (imageGroups, matchingColor) => {
     return ({ allImages, size }) => {
         let result = new Map();
 
@@ -74,7 +74,7 @@ const getImages = (imageGroups, matchingColor) => {
     };
 };
 
-const getVariants = variants => {
+export const getVariants = variants => {
     return () => {
         return variants.map(variant => {
             return {
@@ -92,7 +92,7 @@ const getVariants = variants => {
     };
 };
 
-const getVariationAttributes = (variationAttributes, imageGroups) => {
+export const getVariationAttributes = (variationAttributes, imageGroups) => {
     return () => {
         return variationAttributes.map(variationAttribute => {
             return {
@@ -128,7 +128,7 @@ const getVariationAttributes = (variationAttributes, imageGroups) => {
     };
 };
 
-const getLowestPromotionalPrice = promotions => {
+export const getLowestPromotionalPrice = promotions => {
     if (promotions && promotions.length) {
         let lowestPrice = promotions.reduce(function(prev, curr) {
             if (prev && curr) {
@@ -160,7 +160,7 @@ const getLowestPromotionalPrice = promotions => {
     return null;
 };
 
-const getPrices = apiProduct => {
+export const getPrices = apiProduct => {
     let lowestPromotionalPrice = getLowestPromotionalPrice(
         apiProduct.productPromotions,
     );
@@ -202,7 +202,7 @@ const getPrices = apiProduct => {
     return prices;
 };
 
-class Product {
+export class Product {
     constructor(apiProduct, userSelectedColor) {
         this.id = apiProduct.id;
         this.name = apiProduct.name;
@@ -230,5 +230,3 @@ class Product {
         this.prices = getPrices(apiProduct);
     }
 }
-
-export default Product;

@@ -14,8 +14,10 @@
   "type": "module",
   "license": "MIT",
   "dependencies": {
+    "@babel/register": "^7.8.6",
     "@sfcc-core/core": "1.0.0-alpha.1",
     "@sfcc-core/core-graphql": "1.0.0-alpha.1",
+    "babel-jest": "^25.1.0",
     "commerce-sdk": "1.3.0-alpha.8",
     "jest": "^25.1.0",
     "lodash": "^4.17.15",
