@@ -99,7 +99,7 @@ export async function getSampleApp() {
         const API = await import('./api.mjs');
         API_CONFIG_DATA = API.default;
     } catch (e) {
-        if (process.env.SFCC_DEV_MODE === 'true') {
+        if (process.env.NODE_ENV === 'development') {
             console.error(
                 'WARNING: There is no api.mjs found! Copy the api.example.mjs in api.mjs and customize with your own variables'
                     .red,

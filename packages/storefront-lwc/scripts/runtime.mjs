@@ -124,7 +124,7 @@ function validateConfig(config) {
     // start the server
     const server = sampleApp.expressApplication.listen(port, () => {
         const portToTellUser =
-            process.env.SFCC_DEV_MODE === 'true' ? 3000 : server.address().port;
+            process.env.NODE_ENV === 'development' ? 3000 : server.address().port;
 
         console.log('======== Example SFRA runtime ======== ');
         console.log(
