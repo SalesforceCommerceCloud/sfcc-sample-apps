@@ -9,9 +9,14 @@ import * as core from '@sfcc-core/core';
  * Import Dependencies
  */
 import color from 'colors';
+import passport from 'passport';
+import graphqlPassport from 'graphql-passport';
 import express from 'express';
+import expressSession from 'express-session';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import CommerceSdk from 'commerce-sdk';
+import { getCommerceClientConfig } from '@sfcc-core/apiconfig';
 
 // ****************************************************
 // Instantiate the new Storefront Reference Application
@@ -28,6 +33,8 @@ const publicDir = `${templateDir}/dist/public/`;
 const port = process.env.PORT || 3002;
 const mode = process.env.NODE_ENV || 'development';
 
+const users = new Map();
+
 function validateConfig(config) {
     const REQUIRED_KEYS = [
         'COMMERCE_API_PATH',
@@ -37,6 +44,7 @@ function validateConfig(config) {
         'COMMERCE_CLIENT_INSTANCE_ID',
         'COMMERCE_CLIENT_ORGANIZATION_ID',
         'COMMERCE_CLIENT_SHORT_CODE',
+        'COMMERCE_SESSION_SECRET',
     ];
 
     REQUIRED_KEYS.forEach(KEY => {
@@ -55,11 +63,44 @@ function validateConfig(config) {
  */
 (async () => {
     const sampleApp = await getSampleApp();
+    const config = sampleApp.apiConfig.config;
+    validateConfig(config);
     // Create Express Instance, register it with demo app and start demo app.
+
+    passport.use(new graphqlPassport.GraphQLLocalStrategy(function(user, pass, done) {
+        const clientConfig = getCommerceClientConfig(config);
+        CommerceSdk.helpers.getShopperToken(clientConfig, { type: 'guest' }).then(token => {
+            const customerId = JSON.parse(token.decodedToken.sub).customer_info.customer_id;
+            done(null, {id: customerId, token: token.getBearerHeader()});
+        });
+    }));
+
+    passport.serializeUser(function(user, done) {
+        users.set(user.id, user);
+        done(null, user.id);
+    });
+
+    passport.deserializeUser(function(id, done) {
+        done(null, users.get(id));
+    });
+
     sampleApp.expressApplication = express();
 
-    validateConfig(sampleApp.apiConfig.config);
+    const sess = {
+        secret: config.COMMERCE_SESSION_SECRET, // This is something new we add to the config
+        cookie: {}
+    }
+       
+    if (mode === 'production') {
+        sampleApp.expressApplication.set('trust proxy', 1); // trust first proxy
+        sess.cookie.secure = true; // serve secure cookies
+    }
+       
+    sampleApp.expressApplication.use(expressSession(sess))
 
+    sampleApp.expressApplication.use(passport.initialize());
+    sampleApp.expressApplication.use(passport.session());
+    
     // Serve up static files
     sampleApp.expressApplication.use(
         '/',

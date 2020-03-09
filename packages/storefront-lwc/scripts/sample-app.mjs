@@ -16,7 +16,7 @@ import '@sfcc-core/core-graphql';
 // SFRA Extensions/Services
 //
 import '@sfcc-bff/productapi';
-
+import '@sfcc-bff/cartapi';
 //
 // Import Keys needed to access core services end extensions
 //

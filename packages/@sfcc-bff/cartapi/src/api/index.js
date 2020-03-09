@@ -4,6 +4,6 @@
     SPDX-License-Identifier: BSD-3-Clause
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
-export { productsByQuery } from './productsearchadaptor';
-export { ShoppingCart } from './cart';
-export { messagehelper } from './messagehelper';
+// Cart
+export { typeDef as cartTypeDef } from './schema/cartTypeDef';
+export { resolver as cartResolver } from './schema/cartResolvers';

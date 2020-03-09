@@ -32,6 +32,7 @@ const LOG_LEVEL_MAP = {
 };
 // Default Log Level is set to ERROR within the Application. It can be overwritten here
 const COMMERCE_LOG_LEVEL = LOG_LEVEL_MAP.DEBUG;
+const COMMERCE_SESSION_SECRET = 'SomeSecretValue';
 
 export default {
     COMMERCE_API_PATH,
@@ -42,4 +43,5 @@ export default {
     COMMERCE_CLIENT_ORGANIZATION_ID,
     COMMERCE_CLIENT_SHORT_CODE,
     COMMERCE_LOG_LEVEL,
+    COMMERCE_SESSION_SECRET,
 };
