@@ -45,7 +45,9 @@ const searchProduct = async (config, query, filterParams, context) => {
         parameterValue.sort = filters.sort;
     }
 
-    apiClientConfig.headers.authorization = (await getUserFromContext(context)).token;
+    apiClientConfig.headers.authorization = (
+        await getUserFromContext(context)
+    ).token;
     const search = new CommerceSdk.Search.ShopperSearch(apiClientConfig);
     return search
         .productSearch({
@@ -60,13 +62,20 @@ const searchProduct = async (config, query, filterParams, context) => {
 export const resolver = config => {
     return {
         Query: {
-            productSearch: (_, { query, filterParams }, context) => {
-                const result = searchProduct(config, query, filterParams, context).then(
-                    searchResult => {
-                        return new SearchResult(searchResult, filterParams);
-                    },
-                );
-                return result;
+            productSearch: async (_, { query, filterParams }, context) => {
+                let searchResult;
+                try {
+                    searchResult = await searchProduct(
+                        config,
+                        query,
+                        filterParams,
+                        context,
+                    );
+                } catch (e) {
+                    logger.error(`Error in productSearchResolver(). ${e}`);
+                    throw e;
+                }
+                return new SearchResult(searchResult, filterParams);
             },
         },
     };
