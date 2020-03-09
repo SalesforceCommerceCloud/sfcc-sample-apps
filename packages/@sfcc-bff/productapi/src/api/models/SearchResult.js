@@ -34,5 +34,6 @@ export default class SearchResult {
                     : null,
             };
         });
+        this.sortingOptions = searchResult.sortingOptions;
     }
 }

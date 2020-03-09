@@ -14,6 +14,7 @@ export default class ProductSearchResults extends LightningElement {
     @track state = {};
     @track products = [];
     @track refinementgroups = [];
+    sortingOptions = [];
     @api query = '';
     @track loading = false;
     @track refinementBar = 'refinement-bar col-md-3 d-none d-lg-block';
@@ -33,6 +34,7 @@ export default class ProductSearchResults extends LightningElement {
             this.products = json.data.productSearch.productHits || [];
             this.refinementgroups =
                 [...json.data.productSearch.refinements] || [];
+            this.sortingOptions = json.data.productSearch.sortingOptions;
 
             Object.keys(this.selectedRefinements).forEach(refinement => {
                 this.selectedRefinements[refinement].forEach(value => {
