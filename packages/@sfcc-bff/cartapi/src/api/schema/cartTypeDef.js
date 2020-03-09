@@ -43,6 +43,7 @@ export const typeDef = gql`
         price: Float!
         quantity: Int!
         itemId: String!
+        image: String
     }
     type ShippingMethods {
         applicableShippingMethods: [ShippingMethod]
