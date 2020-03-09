@@ -7,12 +7,8 @@
 import { LightningElement, api } from 'lwc';
 
 export default class SearchSort extends LightningElement {
-    @api sort;
-    sortRule;
-
-    connectedCallback() {
-        this.sortRule = this.sort;
-    }
+    @api sort = [];
+    sortRule = {};
 
     get viewOptions() {
         return this.sort.map(option => ({
@@ -34,27 +30,4 @@ export default class SearchSort extends LightningElement {
             }),
         );
     }
-
-    // get viewOptions() {
-    //     return this.sortOptions.map(sortOption => ({
-    //         ...sortOption,
-    //         selected: this.sortRule.id === sortOption.id,
-    //     }));
-    // }
-
-    // newSortRule(event) {
-    //     const newSortRuleId = event.target.value;
-    //     this.sortRule = this.sortOptions.find(
-    //         sortOption => sortOption.id === newSortRuleId,
-    //     );
-    //     this.dispatchEvent(
-    //         new CustomEvent('updatesort', {
-    //             bubbles: true,
-    //             composed: true,
-    //             detail: {
-    //                 sortRule: this.sortRule,
-    //             },
-    //         }),
-    //     );
-    // }
 }
