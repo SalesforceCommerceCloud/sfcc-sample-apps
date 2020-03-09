@@ -190,7 +190,7 @@ export default class ProductDetail extends LightningElement {
     /**
      * Add product to cart when user clicks `Add to Cart` button
      */
-    addToCartHandler(event) {
+    addToCartHandler() {
         ShoppingCart.addToCart(this.product, this.selectedQty);
     }
     /**
