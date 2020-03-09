@@ -69,12 +69,13 @@ export const resolver = config => {
                         config,
                         query,
                         filterParams,
+                        context,
                     );
                 } catch (e) {
                     logger.error(`Error in productSearchResolver(). ${e}`);
                     throw e;
                 }
-                return new SearchResult(searchResult, filterParams, context);
+                return new SearchResult(searchResult, filterParams);
             },
         },
     };
