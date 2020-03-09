@@ -6,7 +6,6 @@
 */
 import { LightningElement, api } from 'lwc';
 import { navigate } from 'commerce/router';
-import xss from 'xss';
 
 /**
  * Search Bar where visitors can search for stuff
