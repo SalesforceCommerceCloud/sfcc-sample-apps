@@ -18,18 +18,18 @@
       "src/**/*.spec.js",
       "src/**/*.test.js"
     ],
-    "exec": "SFCC_DEV_MODE='true' NODE_OPTIONS='--experimental-modules --experimental-specifier-resolution=node' node --nolazy --inspect=9229 ./scripts/runtime.mjs"
+    "exec": "cross-env NODE_ENV=development NODE_OPTIONS='--experimental-modules --experimental-specifier-resolution=node' node --nolazy --inspect=9229 ./scripts/runtime.mjs"
   },
   "browserslist": "> 0.25%",
   "scripts": {
     "build": "yarn build:scss && lwc-services build -m production --noclear && yarn build:public && yarn build:resources",
     "build:public": "cpx \"src/public/**/*\" dist/public --verbose && cpx \"dist/*.*\" dist/public",
-    "build:resources": "NODE_OPTIONS='--experimental-modules --experimental-specifier-resolution=node' node scripts/copy-resources.mjs",
+    "build:resources": "cross-env NODE_OPTIONS='--experimental-modules --experimental-specifier-resolution=node' node scripts/copy-resources.mjs",
     "build:development": "lwc-services build --noclear",
     "lint": "eslint ./src/**/*.js",
     "prettier": "prettier --write \"**/*.{css,html,js,json,md,ts,yaml,yml}\"",
     "prettier:verify": "prettier --list-different \"**/*.{css,html,js,json,md,ts,yaml,yml}\"",
-    "start": "NODE_OPTIONS='--experimental-modules --experimental-specifier-resolution=node' node ./scripts/runtime.mjs",
+    "start": "cross-env NODE_ENV=production NODE_OPTIONS='--experimental-modules --experimental-specifier-resolution=node' node ./scripts/runtime.mjs",
     "test:unit": "lwc-services test:unit",
     "test:unit:coverage": "lwc-services test:unit --coverage",
     "test:unit:debug": "lwc-services test:unit --debug",
@@ -51,8 +51,8 @@
     }
   },
   "dependencies": {
-    "@lwce/apollo-client": "^0.0.1",
     "@lwc/synthetic-shadow": "^1.1.1",
+    "@lwce/apollo-client": "^0.0.1",
     "@salesforce-ux/design-system": "^2.9.4",
     "@sfcc-bff/productapi": "1.0.0-alpha.1",
     "@sfcc-core/apiconfig": "1.0.0-alpha.1",
@@ -71,10 +71,10 @@
     "express-session": "^1.17.0",
     "font-awesome": "^4.7.0",
     "graphql": "0.13.1",
+    "graphql-passport": "^0.6.1",
     "graphql-tag": "^2.10.1",
     "history": "^4.10.1",
     "passport": "^0.4.1",
-    "graphql-passport": "^0.6.1",
     "universal-router": "^8.3.0",
     "xss": "^1.0.6"
   },
@@ -82,6 +82,7 @@
     "@babel/core": "^7.2.2",
     "@lwc/eslint-plugin-lwc": "^0.8.0",
     "@lwc/jest-preset": "^4.3.1",
+    "cross-env": "^7.0.2",
     "eslint": "^6.8.0",
     "eslint-plugin-import": "^2.19.1",
     "jest": "^25.1.0",
