@@ -1,0 +1,200 @@
+<!--
+    Copyright (c) 2020, salesforce.com, inc.
+    All rights reserved.
+    SPDX-License-Identifier: BSD-3-Clause
+    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+-->
+<template>
+    <div role="main" id="maincontent">
+
+
+        <div class="cart-error-messaging cart-error">
+        </div>
+
+        <div class="container">
+            <h1 class="page-title">Your Cart</h1>
+            <div class="row cart-header">
+                <div class="col-sm-4 hidden-xs-down">
+                    <a class="continue-shopping-link" href="/" title="Continue Shopping">
+                        Continue Shopping
+                    </a>
+                </div>
+                <div class="col-sm-3 text-center">
+                    <h2 class="number-of-items">
+                        {products.length} Items
+                    </h2>
+                </div>
+                <div class="col-sm-5 text-right hidden-xs-down">
+                    <div>
+                        <span>Need Help? Call</span>
+                        <span><a class="help-phone-number" href="tel:1-800-555-0199">1-800-555-0199</a></span>
+                    </div>
+                </div>
+            </div>
+            <hr class="no-margin-top">
+        </div>
+
+        <div class="container cart cart-page">
+            <div class="row">
+                <div class="col-md-8">
+                    <template for:each={products} for:item="product" for:index="index">
+                        <div key={product.productId} class="card product-info">
+                            <div class="line-item-header">
+                                <div class="line-item-name">
+                                    {product.productName}
+                                </div>
+                                <div class="remove-line-item d-lg-none">
+                                    <button type="button" class="remove-btn remove-product btn btn-light">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                            </div>
+
+
+                            <div class="row ">
+                                <div class="col-lg-5">
+                                    <div class="row">
+                                        <div class="col-lg-12 d-flex flex-row">
+                                            <div class="item-image">
+                                                <img class="product-image" src={product.image} alt={product.name} title={product.name}>
+                                            </div>
+                                            <div class="item-attributes d-flex flex-column">
+                                                <div class="line-item-availability">
+                                                    <p class="line-item-attributes">In Stock</p>
+                                                </div>
+                                                <div class="product-edit">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 d-lg-none">
+                                    <hr class="line-item-divider">
+                                </div>
+
+                                <div class="col-lg-7 product-card-footer">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <p class="line-item-price-info">Each</p>
+                                            <div class="price">
+                                            <span>
+                                                <span class="sales">
+                                                    <span class="value">
+                                                        ${product.price}
+                                                    </span>
+                                                </span>
+                                            </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-4 col-lg-3 line-item-quantity">
+                                            <div class="quantity-form">
+                                                <label class="line-item-pricing-info quantity-label">Quantity</label>
+                                                <select class="form-control quantity custom-select"
+                                                        name="quantity"
+                                                        aria-label="quantity: 1">
+                                                    <option selected="">1</option>
+                                                    <option>2</option>
+                                                    <option>3</option>
+                                                    <option>4</option>
+                                                    <option>5</option>
+                                                    <option>6</option>
+                                                    <option>7</option>
+                                                    <option>8</option>
+                                                    <option>9</option>
+                                                    <option>10</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-4 line-item-total-price">
+                                            <p class="line-item-price-info">
+                                                Total
+                                            </p>
+                                            <div class="price">
+                                                <div class="strike-through non-adjusted-price">
+                                                    null
+                                                </div>
+                                                <div class="pricing line-item-total-price-amount">
+                                                    ${product.price}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-1 hidden-md-down remove-line-item-lg"></div>
+                                    </div>
+
+                                    <div class="line-item-promo"></div>
+                                </div>
+
+                                <div class="hidden-md-down">
+                                    <button type="button" class="remove-btn-lg remove-product btn btn-light"
+                                            data-item-index={index}
+                                            onclick={removeHandler}
+                                            aria-label="Remove product Straight Leg Pants">
+                                        ×
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                <div class="col-md-4 totals" if:true={hasProducts}>
+                    <div class="row">
+                        <div class="col-12 d-sm-none">
+                            <p class="optional-promo">Enter promo code (optional)</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <form action="/" class="promo-code-form" method="GET" name="promo-code-form">
+                                <div class="form-group">
+                                    <label for="couponCode">Enter Promo Code</label>
+                                    <div class="row">
+                                        <div class="col-7">
+                                            <input type="text" class="form-control coupon-code-field" id="couponCode" name="couponCode" placeholder="Promo Code">
+                                            <div class="coupon-error">
+                                                <span class="coupon-missing-error" id="missingCouponCode" role="alert">No coupon code entered</span>
+                                                <span class="coupon-error-message" id="invalidCouponCode" role="alert"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-5 promo-code-submit">
+                                            <button type="submit" class="btn btn-primary btn-block promo-code-btn">
+                                                Submit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="coupons-and-promos">
+                    </div>
+
+                    <commerce-shippingmethods shipping-label="Shipping" shipping-methods={shippingMethods} selected-shipping-method-id={selectedShippingMethodId}></commerce-shippingmethods>
+
+                    <commerce-carttotals></commerce-carttotals>
+
+                    <div class="row">
+                        <div class="col-12 checkout-continue">
+                            <div>
+                                <a href="/" class="btn btn-primary btn-block checkout-btn " role="button" aria-pressed="true">
+                                    Checkout
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                    <br>
+                </div>
+
+
+            </div>
+        </div>
+
+
+    </div>
+</template>

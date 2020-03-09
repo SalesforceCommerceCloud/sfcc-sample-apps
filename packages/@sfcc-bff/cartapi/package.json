@@ -1,16 +1,16 @@
 {
-  "name": "@sfcc-bff/productapi",
+  "name": "@sfcc-bff/cartapi",
   "version": "1.0.0-alpha.1",
   "description": "",
-  "main": "./src/productapi.js",
+  "main": "./src/cartapi.js",
   "scripts": {
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
     "pack": "npm pack",
     "pub": "npm pack; npm publish -f"
   },
-  "author": "",
   "type": "module",
+  "author": "",
   "license": "MIT",
   "dependencies": {
     "@sfcc-core/core": "1.0.0-alpha.1",

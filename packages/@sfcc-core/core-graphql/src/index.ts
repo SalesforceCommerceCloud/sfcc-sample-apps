@@ -3,4 +3,5 @@ export {
     EXPRESS_KEY,
     CoreGraphQL,
     resolverFactory,
+    getUserFromContext,
 } from './graphql';
