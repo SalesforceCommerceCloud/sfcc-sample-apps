@@ -19,7 +19,6 @@ export default class SearchBar extends LightningElement {
      */
     performSearch() {
         if (!!this.query) {
-            this.query = xss(this.query);
             navigate(`/search/${encodeURIComponent(this.query)}`);
         }
     }
