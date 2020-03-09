@@ -87,13 +87,19 @@ const searchProduct = async (config, query, filterParams) => {
 export const resolver = config => {
     return {
         Query: {
-            productSearch: (_, { query, filterParams }) => {
-                const result = searchProduct(config, query, filterParams).then(
-                    searchResult => {
-                        return new SearchResult(searchResult, filterParams);
-                    },
-                );
-                return result;
+            productSearch: async (_, { query, filterParams }) => {
+                let searchResult;
+                try {
+                    searchResult = await searchProduct(
+                        config,
+                        query,
+                        filterParams,
+                    );
+                } catch (e) {
+                    logger.error(`Error in productSearchResolver(). ${e}`);
+                    throw e;
+                }
+                return new SearchResult(searchResult, filterParams);
             },
         },
     };
