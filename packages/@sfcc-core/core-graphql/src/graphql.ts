@@ -4,12 +4,11 @@ import apolloServerExpress, {
 import graphQLTools from 'graphql-tools';
 import express from 'express';
 
-import { core, API_EXTENSIONS_KEY, ApiConfig } from '@sfcc-core/core';
+import { core, API_EXTENSIONS_KEY, ApiConfig, Config } from '@sfcc-core/core';
 
 import { API_CONFIG_KEY } from '@sfcc-core/apiconfig';
 
 import {
-    ResolverConfig,
     Resolver,
     ResolverFactory,
     GraphQLExtension,
@@ -26,8 +25,8 @@ export const CORE_GRAPHQL_KEY = Symbol('Core GraphQL with Apollo');
 export const EXPRESS_KEY = Symbol('Node Express');
 
 export const resolverFactory = (
-    config: ResolverConfig,
-    resolversArray: [ResolverFactory],
+    config: Config,
+    resolversArray: ResolverFactory[],
 ) => {
     let combinedResolvers: { [key: string]: any } = {};
     resolversArray.forEach(resolver => {
