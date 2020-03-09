@@ -17,7 +17,9 @@ const logger = core.logger;
 const getClientProduct = async (config, id, context) => {
     const apiClientConfig = getCommerceClientConfig(config);
 
-    apiClientConfig.headers.authorization = (await getUserFromContext(context)).token;
+    apiClientConfig.headers.authorization = (
+        await getUserFromContext(context)
+    ).token;
 
     const product = new CommerceSdk.Product.ShopperProducts(apiClientConfig);
 
@@ -39,7 +41,11 @@ export const resolver = config => {
         Query: {
             product: async (_, { id, selectedColor }, context) => {
                 try {
-                    const apiProduct = await getClientProduct(config, id, context);
+                    const apiProduct = await getClientProduct(
+                        config,
+                        id,
+                        context,
+                    );
                     return new Product(apiProduct, selectedColor);
                 } catch (e) {
                     logger.error(`Error in productDetailsResolvers(). ${e}`);

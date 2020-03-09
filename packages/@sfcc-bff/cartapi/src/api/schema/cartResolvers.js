@@ -135,6 +135,7 @@ const updateShippingMethod = async (
 export const resolver = config => {
     return {
         Query: {
+            // eslint-disable-next-line no-empty-pattern
             getCart: async (_, {}, context) => {
                 const apiCart = await getBasket(config, context);
                 if (apiCart.fault) {
@@ -159,7 +160,6 @@ export const resolver = config => {
                 if (apiCart.fault) {
                     logger.error(
                         'ERROR!!!!! in addProductToCart',
-                        token,
                         apiCart.fault,
                     );
                     throw new ApolloError(apiCart.fault.message);

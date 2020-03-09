@@ -15,10 +15,9 @@ import {
     GraphQLExtension,
     Request,
 } from './types';
-
-const { gql, ApolloServer } = apolloServerExpress;
 import graphqlPassport, { PassportContext } from 'graphql-passport';
 
+const { gql, ApolloServer } = apolloServerExpress;
 const { makeExecutableSchema } = graphQLTools;
 const logger = core.logger;
 

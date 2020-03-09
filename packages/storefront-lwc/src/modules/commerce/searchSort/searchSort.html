@@ -7,12 +7,12 @@
 <template>
     <!-- TODO: LWC-BUG: below option selected={sortOption.selected} DOES NOT WORK. see renderedCallback() -->
     <select class='form-control' name='sort-order' onchange={newSortRule}>
-        <template for:each={viewSortOptions} for:item="sortOption" >
-            <option key={sortOption.id}
-                    class={sortOption.id}
-                    selected={sortOption.selected}
-                    value={sortOption.id}>
-                {sortOption.label}
+        <template for:each={viewOptions} for:item="sort" >
+            <option key={sort.id}
+                    class={sort.id}
+                    selected={sort.selected}
+                    value={sort.id}>
+                {sort.label}
             </option>
         </template>
     </select>

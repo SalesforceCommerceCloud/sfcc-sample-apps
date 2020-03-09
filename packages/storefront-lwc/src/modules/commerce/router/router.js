@@ -12,7 +12,7 @@ const router = new UniversalRouter(
         {
             path: '/search/:query',
             action: location => {
-                var query = xss(`${location.params.query}`);
+                var query = xss(location.params.query);
                 return `<commerce-product-search-results query="${query}"></commerce-product-search-results>`;
             },
         },
