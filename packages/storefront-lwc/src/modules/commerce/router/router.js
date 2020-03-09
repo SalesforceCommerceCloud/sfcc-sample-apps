@@ -17,8 +17,8 @@ const router = new UniversalRouter(
             },
         },
         {
-            path: '/cart',
-            action: () => `<commerce-cart></commerce-cart>`,
+            path: '/basket',
+            action: () => `<commerce-basket></commerce-basket>`,
         },
         {
             path: '/product/:pid',

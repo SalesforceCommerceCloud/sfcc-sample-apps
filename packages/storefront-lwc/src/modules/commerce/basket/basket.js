@@ -5,9 +5,9 @@
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
 import { LightningElement, track } from 'lwc';
-import { ShoppingCart } from 'commerce/data';
+import { ShoppingBasket } from 'commerce/data';
 
-export default class Cart extends LightningElement {
+export default class Basket extends LightningElement {
     @track products = [];
 
     get hasProducts() {
@@ -20,7 +20,7 @@ export default class Cart extends LightningElement {
 
     get shippingMethods() {
         let shippingMethods =
-            ShoppingCart.cart.shippingMethods.applicableShippingMethods;
+            ShoppingBasket.basket.shippingMethods.applicableShippingMethods;
         return this.filterStorePickupShippingMethods(shippingMethods);
     }
 
@@ -36,7 +36,7 @@ export default class Cart extends LightningElement {
     }
 
     get selectedShippingMethodId() {
-        return ShoppingCart.cart.selectedShippingMethodId;
+        return ShoppingBasket.basket.selectedShippingMethodId;
     }
 
     renderedCallback() {
@@ -44,9 +44,9 @@ export default class Cart extends LightningElement {
     }
 
     connectedCallback() {
-        ShoppingCart.getCurrentCart()
-            .then(cart => {
-                this.products = cart.products ? cart.products : [];
+        ShoppingBasket.getCurrentBasket()
+            .then(basket => {
+                this.products = basket.products ? basket.products : [];
             })
             .catch(error => {
                 console.log('error received ', error);
@@ -55,9 +55,9 @@ export default class Cart extends LightningElement {
 
     removeHandler(event) {
         const elem = event.srcElement;
-        ShoppingCart.removeFromCart(
+        ShoppingBasket.removeFromBasket(
             parseInt(elem.getAttribute('data-item-index')),
         );
-        this.products = ShoppingCart.getCurrentCart();
+        this.products = ShoppingBasket.getCurrentBasket();
     }
 }

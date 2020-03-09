@@ -5,5 +5,5 @@
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
 export { productsByQuery } from './productsearchadaptor';
-export { ShoppingCart } from './cart';
+export { ShoppingBasket } from './basket';
 export { messagehelper } from './messagehelper';

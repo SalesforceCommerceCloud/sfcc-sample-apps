@@ -172,8 +172,13 @@ core.registerService(CORE_GRAPHQL_KEY, function() {
 type User = { token: string };
 type AuthenParams = User & { user?: string; pass?: string };
 
+export type AppContext = PassportContext<User, AuthenParams> & {
+    getSessionProperty: (prop: string) => string;
+    setSessionProperty: (prop: string, value?: string) => void;
+};
+
 export async function getUserFromContext(
-    context: PassportContext<User, AuthenParams>,
+    context: AppContext,
 ) {
     let user = context.getUser();
     const token = user ? user.token : '';

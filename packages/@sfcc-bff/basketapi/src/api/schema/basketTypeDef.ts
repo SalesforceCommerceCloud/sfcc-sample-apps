@@ -7,23 +7,23 @@
 import apolloServerCore from 'apollo-server-core';
 const { gql } = apolloServerCore;
 
-export const typeDef = gql`
+export const basketTypeDef = gql`
     extend type Query {
-        getCart: Cart!
+        getBasket: Basket!
     }
     extend type Mutation {
-        addProductToCart(productId: String!, quantity: Int!): Cart!
+        addProductToBasket(productId: String!, quantity: Int!): Basket!
         updateShippingMethod(
-            cartId: String!
+            basketId: String!
             shipmentId: String!
             shippingMethodId: String!
-        ): Cart!
+        ): Basket!
     }
-    type Cart {
-        cartId: String!
+    type Basket {
+        basketId: String!
         customerId: String
         addProductMessage: String
-        getCartMessage: String
+        getBasketMessage: String
         totalProductsQuantity: Int
         shipmentId: String
         shipmentTotal: Float

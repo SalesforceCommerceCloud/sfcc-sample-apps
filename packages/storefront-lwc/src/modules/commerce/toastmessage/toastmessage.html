@@ -5,14 +5,14 @@
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 -->
 <template>
-    <div if:true={isVisible} class="toast add-to-cart-toast-message" role="alert">
-        <template if:true={addToCartSucceed}>
-            <div class="alert alert-success add-to-cart-message text-center">
+    <div if:true={isVisible} class="toast add-to-basket-toast-message" role="alert">
+        <template if:true={addToBasketSucceed}>
+            <div class="alert alert-success add-to-basket-message text-center">
                 {alertSuccessMessage}
             </div>
         </template>
-        <template if:false={addToCartSucceed}>
-            <div class="alert alert-danger add-to-cart-failed text-center">
+        <template if:false={addToBasketSucceed}>
+            <div class="alert alert-danger add-to-basket-failed text-center">
                 {alertFailMessage}
             </div>
         </template>

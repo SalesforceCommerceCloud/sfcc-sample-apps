@@ -5,22 +5,29 @@
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
 import apollo from 'apollo-server';
-import Cart from '../models/Cart';
+import Basket from '../models/Basket';
 import { getCommerceClientConfig } from '@sfcc-core/apiconfig';
-import { getUserFromContext } from '@sfcc-core/core-graphql';
+import { getUserFromContext, AppContext } from '@sfcc-core/core-graphql';
 import CommerceSdk from 'commerce-sdk';
-import { core } from '@sfcc-core/core';
+import { core, Config } from '@sfcc-core/core';
+
 const { ApolloError } = apollo;
 const logger = core.logger;
-const getBasketClient = async (config, context) => {
+
+const getBasketClient = async (config: Config, context: AppContext) => {
     const clientConfig = getCommerceClientConfig(config);
-    clientConfig.headers.authorization = (
-        await getUserFromContext(context)
-    ).token;
+    clientConfig.headers.authorization =
+        (await getUserFromContext(context))?.token ?? '';
+
     return new CommerceSdk.Checkout.ShopperBaskets(clientConfig);
 };
 
-const addProductToBasket = async (productId, quantity, config, context) => {
+const addProductToBasket = async (
+    productId: string,
+    quantity: number,
+    config: Config,
+    context: AppContext,
+) => {
     const basketClient = await getBasketClient(config, context);
     let basketId = context.getSessionProperty('basketId');
     if (!basketId) {
@@ -28,7 +35,7 @@ const addProductToBasket = async (productId, quantity, config, context) => {
             body: {},
         });
         context.setSessionProperty('basketId', customerBasket.basketId);
-        basketId = customerBasket.basketId;
+        basketId = customerBasket.basketId as string;
     }
 
     return basketClient.addItemToBasket({
@@ -39,14 +46,14 @@ const addProductToBasket = async (productId, quantity, config, context) => {
     });
 };
 
-const getBasket = async (config, context) => {
+const getBasket = async (config: Config, context: AppContext) => {
     let basketId = context.getSessionProperty('basketId');
-    // If No Cart has been created yet, return error
+    // If No basket has been created yet, return error
     if (!basketId) {
         return {
             fault: {
-                type: 'NoCartCreated',
-                message: 'No Cart has been created yet.',
+                type: 'NoBasketCreated',
+                message: 'No basket has been created yet.',
             },
         };
     }
@@ -63,9 +70,12 @@ const getBasket = async (config, context) => {
         return basket;
     }
 
-    basket.getCartMessage = `Basket found with ID of ${basketId}`;
+    basket.getBasketMessage = `Basket found with ID of ${basketId}`;
 
     // Get Shipping Methods
+    if (!basket?.shipments?.length || !basket.shipments[0].shipmentId)
+        return { fault: { message: 'No available shipment methods!' } };
+
     const shipmentId = basket.shipments[0].shipmentId;
     const shippingMethods = await getShippingMethods(
         basketId,
@@ -73,9 +83,11 @@ const getBasket = async (config, context) => {
         config,
         context,
     );
+
     if (shippingMethods.fault) {
         return shippingMethods;
     }
+
     // Update Shipping Method to Default Method
     let selectedShippingMethodId = basket.shipments[0].shippingMethod
         ? basket.shipments[0].shippingMethod.id
@@ -83,7 +95,7 @@ const getBasket = async (config, context) => {
 
     basket = await updateShippingMethod(
         shipmentId,
-        selectedShippingMethodId,
+        selectedShippingMethodId as string,
         config,
         context,
     );
@@ -92,7 +104,12 @@ const getBasket = async (config, context) => {
     return basket;
 };
 
-const getShippingMethods = async (basketId, shipmentId, config, context) => {
+const getShippingMethods = async (
+    basketId: string,
+    shipmentId: string,
+    config: Config,
+    context: AppContext,
+) => {
     const basketClient = await getBasketClient(config, context);
 
     return basketClient.getShippingMethodsForShipment({
@@ -104,17 +121,17 @@ const getShippingMethods = async (basketId, shipmentId, config, context) => {
 };
 
 const updateShippingMethod = async (
-    shipmentId,
-    shippingMethodId,
-    config,
-    context,
+    shipmentId: string,
+    shippingMethodId: string,
+    config: Config,
+    context: AppContext,
 ) => {
     const basketId = context.getSessionProperty('basketId');
     if (!basketId) {
         return {
             fault: {
-                type: 'NoCartCreated',
-                message: 'No Cart has been created yet.',
+                type: 'NoBasketCreated',
+                message: 'No Basket has been created yet.',
             },
         };
     }
@@ -132,56 +149,65 @@ const updateShippingMethod = async (
     });
 };
 
-export const resolver = config => {
+export const basketResolver = (config: Config) => {
     return {
         Query: {
-            // eslint-disable-next-line no-empty-pattern
-            getCart: async (_, {}, context) => {
-                const apiCart = await getBasket(config, context);
-                if (apiCart.fault) {
+            getBasket: async (_: never, {}, context: AppContext) => {
+                const apiBasket = await getBasket(config, context);
+                if (apiBasket.fault) {
                     logger.error(
-                        'ERROR Received when getting cart',
-                        apiCart.fault.message,
+                        'ERROR Received when getting basket',
+                        apiBasket.fault.message,
                     );
-                    throw new ApolloError(apiCart.fault.message);
+                    throw new ApolloError(apiBasket.fault.message);
                 } else {
-                    return new Cart(apiCart);
+                    return new Basket(apiBasket);
                 }
             },
         },
         Mutation: {
-            addProductToCart: async (_, { productId, quantity }, context) => {
-                let apiCart = await addProductToBasket(
+            addProductToBasket: async (
+                _: never,
+                parameters: { productId: string; quantity: number },
+                context: AppContext,
+            ) => {
+                const { productId, quantity } = parameters;
+                let apiBasket = await addProductToBasket(
                     productId,
                     quantity,
                     config,
                     context,
                 );
-                if (apiCart.fault) {
+
+                if (apiBasket.fault) {
                     logger.error(
-                        'ERROR!!!!! in addProductToCart',
-                        apiCart.fault,
+                        'ERROR!!!!! in addProductToBasket',
+                        apiBasket.fault,
                     );
-                    throw new ApolloError(apiCart.fault.message);
+                    throw new ApolloError(apiBasket.fault.message);
                 }
-                return new Cart(apiCart);
+                return new Basket(apiBasket);
             },
             updateShippingMethod: async (
-                _,
-                { shipmentId, shippingMethodId },
-                context,
+                _: never,
+                parameters: { shipmentId: string; shippingMethodId: string },
+                context: AppContext,
             ) => {
-                const apiCart = await updateShippingMethod(
+                const { shipmentId, shippingMethodId } = parameters;
+                const apiBasket = await updateShippingMethod(
                     shipmentId,
                     shippingMethodId,
                     config,
                     context,
                 );
-                if (apiCart.fault) {
-                    logger.error('ERROR!!!!! in updateShippingMethod', apiCart);
-                    throw new ApolloError(apiCart.fault.message);
+                if (apiBasket.fault) {
+                    logger.error(
+                        'ERROR!!!!! in updateShippingMethod',
+                        JSON.stringify(apiBasket),
+                    );
+                    throw new ApolloError(apiBasket.fault.message);
                 } else {
-                    return new Cart(apiCart);
+                    return new Basket(apiBasket);
                 }
             },
         },

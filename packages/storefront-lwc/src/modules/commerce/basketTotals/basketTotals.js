@@ -5,9 +5,9 @@
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
 import { LightningElement } from 'lwc';
-import { ShoppingCart } from 'commerce/data';
+import { ShoppingBasket } from 'commerce/data';
 
-export default class CartTotals extends LightningElement {
+export default class BasketTotals extends LightningElement {
     shippingCost = 0.0;
     salesTax = 0.0;
     orderDiscount = 0.0;
@@ -18,31 +18,31 @@ export default class CartTotals extends LightningElement {
 
     constructor() {
         super();
-        this.setTotals(ShoppingCart.cart);
+        this.setTotals(ShoppingBasket.basket);
         // Listen to shippingmethods component change
         window.addEventListener('update-shipping-method', e => {
-            this.updateCartTotals(e);
+            this.updateBasketTotals(e);
         });
     }
 
-    updateCartTotals(event) {
-        const cartId = ShoppingCart.cart.cartId;
-        const shipmentId = ShoppingCart.cart.shipmentId;
+    updateBasketTotals(event) {
+        const basketId = ShoppingBasket.basket.basketId;
+        const shipmentId = ShoppingBasket.basket.shipmentId;
         const shippingMethodId = event.detail.shippingMethodId;
-        ShoppingCart.updateShippingMethod(
-            cartId,
+        ShoppingBasket.updateShippingMethod(
+            basketId,
             shipmentId,
             shippingMethodId,
-        ).then(cart => {
-            this.setTotals(cart);
+        ).then(basket => {
+            this.setTotals(basket);
         });
     }
 
-    setTotals(cart) {
-        this.shippingCost = cart.shippingTotal.toFixed(2);
-        this.salesTax = cart.taxTotal.toFixed(2);
-        this.totalEstimate = cart.orderTotal.toFixed(2);
-        let orderLevelPriceAdjustment = cart.orderLevelPriceAdjustment;
+    setTotals(basket) {
+        this.shippingCost = basket.shippingTotal.toFixed(2);
+        this.salesTax = basket.taxTotal.toFixed(2);
+        this.totalEstimate = basket.orderTotal.toFixed(2);
+        let orderLevelPriceAdjustment = basket.orderLevelPriceAdjustment;
         this.hasOrderDiscount =
             orderLevelPriceAdjustment && orderLevelPriceAdjustment.price;
         this.orderDiscount = this.hasOrderDiscount

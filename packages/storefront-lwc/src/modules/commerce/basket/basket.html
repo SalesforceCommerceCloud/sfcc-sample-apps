@@ -8,12 +8,12 @@
     <div role="main" id="maincontent">
 
 
-        <div class="cart-error-messaging cart-error">
+        <div class="basket-error-messaging basket-error">
         </div>
 
         <div class="container">
-            <h1 class="page-title">Your Cart</h1>
-            <div class="row cart-header">
+            <h1 class="page-title">Your basket</h1>
+            <div class="row basket-header">
                 <div class="col-sm-4 hidden-xs-down">
                     <a class="continue-shopping-link" href="/" title="Continue Shopping">
                         Continue Shopping
@@ -34,7 +34,7 @@
             <hr class="no-margin-top">
         </div>
 
-        <div class="container cart cart-page">
+        <div class="container basket basket-page">
             <div class="row">
                 <div class="col-md-8">
                     <template for:each={products} for:item="product" for:index="index">
@@ -176,7 +176,7 @@
 
                     <commerce-shippingmethods shipping-label="Shipping" shipping-methods={shippingMethods} selected-shipping-method-id={selectedShippingMethodId}></commerce-shippingmethods>
 
-                    <commerce-carttotals></commerce-carttotals>
+                    <commerce-basket-totals></commerce-basket-totals>
 
                     <div class="row">
                         <div class="col-12 checkout-continue">

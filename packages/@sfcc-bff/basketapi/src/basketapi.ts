@@ -5,36 +5,37 @@
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
 // SFRA Core Extension module
-import { core, API_EXTENSIONS_KEY } from '@sfcc-core/core';
+import { core, API_EXTENSIONS_KEY, Core, Config } from '@sfcc-core/core';
 import { resolverFactory } from '@sfcc-core/core-graphql';
 
-import { cartTypeDef, cartResolver } from './api';
+import { basketTypeDef } from './api/schema/basketTypeDef';
+import { basketResolver } from './api/schema/basketResolvers';
 
-export default class CartAPI {
-    constructor(core) {
+export class BasketAPI {
+    constructor(private core: Core) {
         this.core = core;
-        this.core.logger.log('cartAPI.constructor(core)');
+        this.core.logger.log('basketAPI.constructor(core)');
     }
 
     get typeDefs() {
         core.logger.log('===========================');
         core.logger.log('===========================');
-        core.logger.log('cartAPI.typeDefs()', cartTypeDef);
+        core.logger.log('basketAPI.typeDefs()', String(basketTypeDef));
         core.logger.log('===========================');
         core.logger.log('===========================');
-        return [cartTypeDef];
+        return [basketTypeDef];
     }
 
-    getResolvers(config) {
+    getResolvers(config: Config) {
         core.logger.log('===========================');
         core.logger.log('===========================');
-        core.logger.log('cartAPI.getResolvers()', config);
+        core.logger.log('basketAPI.getResolvers()', String(config));
         core.logger.log('===========================');
         core.logger.log('===========================');
-        return resolverFactory(config, [cartResolver]);
+        return resolverFactory(config, [basketResolver]);
     }
 }
 
 core.registerExtension(API_EXTENSIONS_KEY, function() {
-    return new CartAPI(core);
+    return new BasketAPI(core);
 });
