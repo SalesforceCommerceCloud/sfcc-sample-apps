@@ -10,7 +10,7 @@
  * A product detail component is an interactive component which fetches and displays details about a product.
  * Such information may include the product name and description, any images, any pricing or promotions and more.
  * The product detail component is interactive and will allow a user to select any variations and add the product to
- * the current storefront shopping cart.
+ * the current storefront shopping basket.
  
 ##### LWC Custom Element Tag Usage
 `<commerce-product-detail pid={myProductId}></commerce-product-detail>`  

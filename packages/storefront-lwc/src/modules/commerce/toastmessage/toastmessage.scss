@@ -5,9 +5,9 @@
     left: 50%;
 }
 
-.add-to-cart-toast-message {
-    .add-to-cart-message,
-    .add-to-cart-failed {
+.add-to-basket-toast-message {
+    .add-to-basket-message,
+    .add-to-basket-failed {
         @include toast-message();
     }
 }

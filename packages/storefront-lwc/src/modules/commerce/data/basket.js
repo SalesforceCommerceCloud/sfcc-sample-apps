@@ -5,35 +5,35 @@
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
 /**
- * A cart service to add to cart, load cart and blast off events
+ * A basket service to add to basket, load basket and blast off events
  */
 import { apiClient } from '../api/client';
 import gql from 'graphql-tag';
 
-class Cart {
-    cart = {};
+class Basket {
+    basket = {};
 
     listeners = [];
 
-    isCartLoaded = false;
+    isBasketLoaded = false;
 
     /**
-     * Calling Add to the cart BFF.
-     * @param product: the product to add to Cart
+     * Calling Add to the basket BFF.
+     * @param product: the product to add to basket
      */
 
     // TODO : wire up the UI quantity selector to pass in quantity to add
-    addToCart(product, qty) {
+    addToBasket(product, qty) {
         let pid = product.id;
         return apiClient
             .mutate({
                 mutation: gql`
                 mutation {
-                    addProductToCart(productId: "${pid}", quantity: ${qty}) {
-                      cartId
+                    addProductToBasket(productId: "${pid}", quantity: ${qty}) {
+                      basketId
                       customerId
                       addProductMessage
-                      getCartMessage
+                      getBasketMessage
                       totalProductsQuantity
                       products {
                         productId
@@ -47,27 +47,27 @@ class Cart {
              `,
             })
             .then(result => {
-                this.cart = result.data.addProductToCart;
-                this.isCartLoaded = true;
-                this.updateCart('add-to-cart');
-                return this.cart;
+                this.basket = result.data.addProductToBasket;
+                this.isBasketLoaded = true;
+                this.updateBasket('add-to-basket');
+                return this.basket;
             })
             .catch(error => {
-                console.error('addToCart failed with message', error);
-                this.updateCart('failed-add-to-cart');
-                return this.cart;
+                console.error('addToBasket failed with message', error);
+                this.updateBasket('failed-add-to-basket');
+                return this.basket;
             });
     }
 
-    updateShippingMethod(cartId, shipmentId, shippingMethodId) {
+    updateShippingMethod(basketId, shipmentId, shippingMethodId) {
         return apiClient
             .mutate({
                 mutation: gql`
                     mutation {
-                        updateShippingMethod(cartId: "${cartId}", shipmentId: "${shipmentId}", shippingMethodId: "${shippingMethodId}") {
-                            cartId
+                        updateShippingMethod(basketId: "${basketId}", shipmentId: "${shipmentId}", shippingMethodId: "${shippingMethodId}") {
+                            basketId
                             customerId
-                            getCartMessage
+                            getBasketMessage
                             totalProductsQuantity
                             shipmentId
                             shipmentTotal
@@ -93,26 +93,26 @@ class Cart {
                  `,
             })
             .then(result => {
-                this.cart = result.data.updateShippingMethod;
-                return this.cart;
+                this.basket = result.data.updateShippingMethod;
+                return this.basket;
             })
             .catch(error => {
                 console.error(
                     'Update Shipping Method failed with message',
                     error,
                 );
-                return this.cart;
+                return this.basket;
             });
     }
 
     // TODO : wire this call with BFF
-    removeFromCart(index) {
-        let cart = this.getCurrentCart();
+    removeFromBasket(index) {
+        let basket = this.getCurrentBasket();
         if (index > -1) {
-            cart.splice(index, 1);
+            basket.splice(index, 1);
         }
 
-        this.updateCart(cart);
+        this.updateBasket(basket);
     }
 
     /**
@@ -120,37 +120,37 @@ class Cart {
      * @param {eventType} eventType of the event
      *
      */
-    updateCart(eventType) {
+    updateBasket(eventType) {
         this.listeners.forEach(cb => {
             cb(eventType);
         });
     }
 
     /**
-     * get the quantity of Cart if Cart is loaded
-     * if first time landing the page, call getCurrentCart()
-     * @returns {quantity} for miniCart to display
+     * get the quantity of basket if basket is loaded
+     * if first time landing the page, call getCurrentBasket()
+     * @returns {quantity} for miniBasket to display
      */
-    getCartQuantity() {
-        if (!this.isCartLoaded) {
-            this.getCurrentCart();
+    getBasketQuantity() {
+        if (!this.isBasketLoaded) {
+            this.getCurrentBasket();
         }
-        return this.cart.totalProductsQuantity || 0;
+        return this.basket.totalProductsQuantity || 0;
     }
 
     /**
-     * Get the current cart from BFF.
-     * @returns {Object} cart object
+     * Get the current basket from BFF.
+     * @returns {Object} basket object
      */
-    getCurrentCart() {
+    getCurrentBasket() {
         return apiClient
             .query({
                 query: gql`
                     {
-                        getCart {
-                            cartId
+                        getBasket {
+                            basketId
                             customerId
-                            getCartMessage
+                            getBasketMessage
                             totalProductsQuantity
                             shipmentId
                             shipmentTotal
@@ -188,21 +188,21 @@ class Cart {
                 `,
             })
             .then(result => {
-                this.cart = result.data.getCart;
-                this.isCartLoaded = true;
-                this.updateCart('cart-loaded');
-                return this.cart;
+                this.basket = result.data.getBasket;
+                this.isBasketLoaded = true;
+                this.updateBasket('basket-loaded');
+                return this.basket;
             })
             .catch(error => {
-                console.warn('Warning: No Cart has been created yet!', error);
-                return this.cart;
+                console.warn('Warning: No basket has been created yet!', error);
+                return this.basket;
             });
     }
 
-    updateCartListener(callback) {
+    updateBasketListener(callback) {
         this.listeners.push(callback);
     }
 }
 
-window.cartSingleton = window.cartSingleton || new Cart();
-export const ShoppingCart = window.cartSingleton;
+window.basketSingleton = window.basketSingleton || new Basket();
+export const ShoppingBasket = window.basketSingleton;

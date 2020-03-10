@@ -12,11 +12,10 @@ import { Config } from '@sfcc-core/core';
  * @return {Object} null or an object containing the headers amd parameters to be consume by the API clients
  */
 export function getCommerceClientConfig(config: Config) {
-    if (!config) return null;
-
     return {
         headers: {
             connection: 'close',
+            authorization: '',
         },
         parameters: {
             clientId: config.COMMERCE_CLIENT_CLIENT_ID,

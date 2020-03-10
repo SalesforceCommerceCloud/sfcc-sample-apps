@@ -5,7 +5,7 @@
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
 import { LightningElement, api } from 'lwc';
-import { ShoppingCart } from 'commerce/data';
+import { ShoppingBasket } from 'commerce/data';
 
 export default class ShippingMethods extends LightningElement {
     @api shippingLabel;
@@ -15,7 +15,7 @@ export default class ShippingMethods extends LightningElement {
     constructor() {
         super();
         this.selectedShippingMethodId =
-            ShoppingCart.cart.selectedShippingMethodId;
+            ShoppingBasket.basket.selectedShippingMethodId;
     }
 
     newShippingMethod = e => {

@@ -67,13 +67,22 @@ function validateConfig(config) {
     validateConfig(config);
     // Create Express Instance, register it with demo app and start demo app.
 
-    passport.use(new graphqlPassport.GraphQLLocalStrategy(function(user, pass, done) {
-        const clientConfig = getCommerceClientConfig(config);
-        CommerceSdk.helpers.getShopperToken(clientConfig, { type: 'guest' }).then(token => {
-            const customerId = JSON.parse(token.decodedToken.sub).customer_info.customer_id;
-            done(null, {id: customerId, token: token.getBearerHeader()});
-        });
-    }));
+    passport.use(
+        new graphqlPassport.GraphQLLocalStrategy(function(user, pass, done) {
+            const clientConfig = getCommerceClientConfig(config);
+            CommerceSdk.helpers
+                .getShopperToken(clientConfig, { type: 'guest' })
+                .then(token => {
+                    const customerId = JSON.parse(token.decodedToken.sub)
+                        .customer_info.customer_id;
+                    done(null, {
+                        id: customerId,
+                        token: token.getBearerHeader(),
+                    });
+                })
+                .catch(error => done(error));
+        }),
+    );
 
     passport.serializeUser(function(user, done) {
         users.set(user.id, user);
@@ -88,19 +97,19 @@ function validateConfig(config) {
 
     const sess = {
         secret: config.COMMERCE_SESSION_SECRET, // This is something new we add to the config
-        cookie: {}
-    }
-       
+        cookie: {},
+    };
+
     if (mode === 'production') {
         sampleApp.expressApplication.set('trust proxy', 1); // trust first proxy
         sess.cookie.secure = true; // serve secure cookies
     }
-       
-    sampleApp.expressApplication.use(expressSession(sess))
+
+    sampleApp.expressApplication.use(expressSession(sess));
 
     sampleApp.expressApplication.use(passport.initialize());
     sampleApp.expressApplication.use(passport.session());
-    
+
     // Serve up static files
     sampleApp.expressApplication.use(
         '/',
@@ -124,7 +133,9 @@ function validateConfig(config) {
     // start the server
     const server = sampleApp.expressApplication.listen(port, () => {
         const portToTellUser =
-            process.env.NODE_ENV === 'development' ? 3000 : server.address().port;
+            process.env.NODE_ENV === 'development'
+                ? 3000
+                : server.address().port;
 
         console.log('======== Example SFRA runtime ======== ');
         console.log(

@@ -93,25 +93,25 @@
                     </div>
                 </div>
 
-                <!-- Add to cart button -->
+                <!-- Add to basket button -->
                 <div class="row">
                     <div class="col-12">
                         <div class="row">
                             <div class="col-sm-12">
-                                <template if:false={readyToAddToCart}>
-                                    <button class="btn btn-primary btn-block" disabled onclick={addToCartHandler}>
+                                <template if:false={readyToAddToBasket}>
+                                    <button class="btn btn-primary btn-block" disabled onclick={addToBasketHandler}>
                                         <i class="fa fa-shopping-bag"></i>
-                                        Add to Cart
+                                        Add to basket
                                     </button>
                                 </template>
-                                <template if:true={readyToAddToCart}>
-                                    <button class="btn btn-primary btn-block" onclick={addToCartHandler}>
+                                <template if:true={readyToAddToBasket}>
+                                    <button class="btn btn-primary btn-block" onclick={addToBasketHandler}>
                                         <i class="fa fa-shopping-bag"></i>
-                                        Add to Cart
+                                        Add to basket
                                     </button>
                                 </template>
-                                <commerce-toastmessage alert-success-message="Your Product successfully added to Cart"
-                                    alert-fail-message="Not able to add Product to Cart">
+                                <commerce-toastmessage alert-success-message="Your Product successfully added to basket"
+                                    alert-fail-message="Not able to add Product to basket">
                                 </commerce-toastmessage>
                             </div>
                         </div>

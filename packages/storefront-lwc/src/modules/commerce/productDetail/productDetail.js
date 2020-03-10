@@ -5,8 +5,8 @@
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
 import { LightningElement, api, wire } from 'lwc';
-import { ShoppingCart } from 'commerce/data';
-import { canAddToCart } from './product.helper.js';
+import { ShoppingBasket } from 'commerce/data';
+import { canAddToBasket } from './product.helper.js';
 import { useQuery } from '@lwce/apollo-client';
 import gql from 'graphql-tag';
 
@@ -81,7 +81,7 @@ const QUERY = gql`
  * A product detail component is an interactive component which fetches and displays details about a product.
  * Such information may include the product name and description, any images, any pricing or promotions and more.
  * The product detail component is interactive and will allow a user to select any variations and add the product to
- * the current storefront shopping cart.
+ * the current storefront shopping basket.
  */
 export default class ProductDetail extends LightningElement {
     activeImage;
@@ -181,17 +181,17 @@ export default class ProductDetail extends LightningElement {
     }
 
     /**
-     * Checks if the product is ready to be added to cart
+     * Checks if the product is ready to be added to basket
      */
-    get readyToAddToCart() {
-        return canAddToCart(this.product, this.selectedQty);
+    get readyToAddToBasket() {
+        return canAddToBasket(this.product, this.selectedQty);
     }
 
     /**
-     * Add product to cart when user clicks `Add to Cart` button
+     * Add product to basket when user clicks `Add to Basket` button
      */
-    addToCartHandler() {
-        ShoppingCart.addToCart(this.product, this.selectedQty);
+    addToBasketHandler() {
+        ShoppingBasket.addToBasket(this.product, this.selectedQty);
     }
     /**
      * The click handler for the product detail image carousel to cycle to the next or previous image, left or right.
