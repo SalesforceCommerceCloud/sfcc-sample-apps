@@ -18,18 +18,18 @@
       "src/**/*.spec.js",
       "src/**/*.test.js"
     ],
-    "exec": "cross-env NODE_ENV=development NODE_OPTIONS='--experimental-modules --experimental-specifier-resolution=node' node --nolazy --inspect=9229 ./scripts/runtime.mjs"
+    "exec": "cross-env NODE_ENV=development NODE_OPTIONS=\"--experimental-modules --experimental-specifier-resolution=node\" node --nolazy --inspect=9229 ./scripts/runtime.mjs"
   },
   "browserslist": "> 0.25%",
   "scripts": {
     "build": "yarn build:scss && lwc-services build -m production --noclear && yarn build:public && yarn build:resources",
     "build:public": "cpx \"src/public/**/*\" dist/public --verbose && cpx \"dist/*.*\" dist/public",
-    "build:resources": "cross-env NODE_OPTIONS='--experimental-modules --experimental-specifier-resolution=node' node scripts/copy-resources.mjs",
+    "build:resources": "cross-env NODE_OPTIONS=\"--experimental-modules --experimental-specifier-resolution=node\" node scripts/copy-resources.mjs",
     "build:development": "lwc-services build --noclear",
     "lint": "eslint ./src/**/*.js",
     "prettier": "prettier --write \"**/*.{css,html,js,json,md,ts,yaml,yml}\"",
     "prettier:verify": "prettier --list-different \"**/*.{css,html,js,json,md,ts,yaml,yml}\"",
-    "start": "cross-env NODE_ENV=production NODE_OPTIONS='--experimental-modules --experimental-specifier-resolution=node' node ./scripts/runtime.mjs",
+    "start": "cross-env NODE_ENV=production NODE_OPTIONS=\"--experimental-modules --experimental-specifier-resolution=node\" node ./scripts/runtime.mjs",
     "test:unit": "lwc-services test:unit",
     "test:unit:coverage": "lwc-services test:unit --coverage",
     "test:unit:debug": "lwc-services test:unit --debug",
