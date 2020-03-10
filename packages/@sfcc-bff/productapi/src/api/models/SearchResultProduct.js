@@ -6,9 +6,9 @@
 */
 'use strict';
 
-import Image from './Image';
+import {Image} from './Image';
 
-var getColorSwatches = variationAttributes => {
+export const getColorSwatches = variationAttributes => {
     var colorSwatches = [];
 
     if (variationAttributes && variationAttributes.length > 0) {
@@ -38,7 +38,7 @@ var getColorSwatches = variationAttributes => {
     return colorSwatches;
 };
 
-class SearchResultProduct {
+export class SearchResultProduct {
     constructor(product) {
         this.productId = product.productId;
         this.name = product.productName;
@@ -51,4 +51,3 @@ class SearchResultProduct {
     }
 }
 
-export default SearchResultProduct;

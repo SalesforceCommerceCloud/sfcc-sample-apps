@@ -12,7 +12,7 @@ import { getUserFromContext } from '@sfcc-core/core-graphql';
 
 const logger = core.logger;
 
-const processFilterParams = filterParams => {
+export const processFilterParams = filterParams => {
     let filterParamQuery = {
         refine: [],
         sort: '',
@@ -29,7 +29,7 @@ const processFilterParams = filterParams => {
     return filterParamQuery;
 };
 
-const searchProduct = async (config, query, filterParams, context) => {
+export const searchProduct = async (config, query, filterParams, context) => {
     const apiClientConfig = getCommerceClientConfig(config);
 
     const filters = filterParams ? processFilterParams(filterParams) : {};
@@ -45,7 +45,9 @@ const searchProduct = async (config, query, filterParams, context) => {
         parameterValue.sort = filters.sort;
     }
 
-    apiClientConfig.headers.authorization = (await getUserFromContext(context)).token;
+    apiClientConfig.headers.authorization = (
+        await getUserFromContext(context)
+    ).token;
     const search = new CommerceSdk.Search.ShopperSearch(apiClientConfig);
     return search
         .productSearch({
@@ -61,10 +63,14 @@ export const resolver = config => {
     return {
         Query: {
             productSearch: (_, { query, filterParams }, context) => {
-                const result = searchProduct(config, query, filterParams, context).then(
-                    searchResult => {
-                        return new SearchResult(searchResult, filterParams);
-                    },
+                const result = searchProduct(
+                    config,
+                    query,
+                    filterParams,
+                    context,
+                ).then(
+                    searchResult =>
+                        new SearchResult(searchResult, filterParams)
                 );
                 return result;
             },

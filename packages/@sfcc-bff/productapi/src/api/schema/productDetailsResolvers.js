@@ -14,7 +14,7 @@ import { getUserFromContext } from '@sfcc-core/core-graphql';
 
 const logger = core.logger;
 
-const getClientProduct = async (config, id, context) => {
+export const getClientProduct = async (config, id, context) => {
     const apiClientConfig = getCommerceClientConfig(config);
 
     apiClientConfig.headers.authorization = (await getUserFromContext(context)).token;
