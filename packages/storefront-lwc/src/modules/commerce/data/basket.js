@@ -161,6 +161,7 @@ class Basket {
                                 quantity
                                 productName
                                 price
+                                image
                             }
                             orderTotal
                             orderLevelPriceAdjustment {

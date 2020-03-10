@@ -22,6 +22,13 @@ const getBasketClient = async (config: Config, context: AppContext) => {
     return new CommerceSdk.Checkout.ShopperBaskets(clientConfig);
 };
 
+const getProductClient = async (config: Config, context: AppContext) => {
+    const clientConfig = getCommerceClientConfig(config);
+    clientConfig.headers.authorization =
+        (await getUserFromContext(context))?.token ?? '';
+    return new CommerceSdk.Product.ShopperProducts(clientConfig);
+};
+
 const addProductToBasket = async (
     productId: string,
     quantity: number,
@@ -101,7 +108,63 @@ const getBasket = async (config: Config, context: AppContext) => {
     );
 
     basket.shippingMethods = shippingMethods;
+
+    // get all the product ids in current basket
+    let productIds = basket.productItems
+        ? basket.productItems.map(product => product.productId).join()
+        : '';
+    // get product details for all the product items in basket
+    if (basket.productItems) {
+        let productDetails = await getProductsDetailsInfo(
+            config,
+            context,
+            productIds,
+        );
+        // update the image to the product items in basket
+        basket.productItems.map(product => {
+            productDetails.find(item => {
+                if (item.pid === product.productId) {
+                    product.image = item.imageURL ? item.imageURL : '';
+                }
+            });
+        });
+    }
     return basket;
+};
+
+const getProductsDetailsInfo = async (config: Config, context: AppContext, ids: string) => {
+    let productItems: Array<{pid: string, imageURL: string}> = [];
+    const productClient = await getProductClient(config, context);
+
+    const result = await productClient
+        .getProducts({
+            parameters: {
+                ids: ids,
+                allImages: true,
+            },
+        })
+        .catch(e => {
+            logger.error(`Error in getClientProduct() for product ${ids}`);
+            throw e;
+        });
+
+    result.data.forEach(product => {
+        let productDetailsInfo = {
+            pid: '',
+            imageURL: '',
+        };
+        productDetailsInfo.pid = product.id;
+        const imageGroups = product.imageGroups;
+        if (imageGroups) {
+            let imageArray = imageGroups?.find(
+                image => image.viewType === 'small',
+            )?.images;
+            productDetailsInfo.imageURL = imageArray?.[0].link ?? '';
+        }
+
+        productItems.push(productDetailsInfo);
+    });
+    return productItems;
 };
 
 const getShippingMethods = async (

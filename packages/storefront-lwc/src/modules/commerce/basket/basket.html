@@ -21,7 +21,7 @@
                 </div>
                 <div class="col-sm-3 text-center">
                     <h2 class="number-of-items">
-                        {products.length} Items
+                        {basket.totalProductsQuantity} Items
                     </h2>
                 </div>
                 <div class="col-sm-5 text-right hidden-xs-down">
@@ -43,13 +43,7 @@
                                 <div class="line-item-name">
                                     {product.productName}
                                 </div>
-                                <div class="remove-line-item d-lg-none">
-                                    <button type="button" class="remove-btn remove-product btn btn-light">
-                                        <span aria-hidden="true">×</span>
-                                    </button>
-                                </div>
                             </div>
-
 
                             <div class="row ">
                                 <div class="col-lg-5">
@@ -90,21 +84,16 @@
 
                                         <div class="col-4 col-lg-3 line-item-quantity">
                                             <div class="quantity-form">
-                                                <label class="line-item-pricing-info quantity-label">Quantity</label>
-                                                <select class="form-control quantity custom-select"
-                                                        name="quantity"
-                                                        aria-label="quantity: 1">
-                                                    <option selected="">1</option>
-                                                    <option>2</option>
-                                                    <option>3</option>
-                                                    <option>4</option>
-                                                    <option>5</option>
-                                                    <option>6</option>
-                                                    <option>7</option>
-                                                    <option>8</option>
-                                                    <option>9</option>
-                                                    <option>10</option>
-                                                </select>
+                                                <p class="line-item-quantity-info">Quantity</p>
+                                                <div class="quantity">
+                                                    <span>
+                                                        <span class="item-quantity">
+                                                            <span class="item-quantity-total">
+                                                                {product.quantity}
+                                                            </span>
+                                                        </span>
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -113,9 +102,6 @@
                                                 Total
                                             </p>
                                             <div class="price">
-                                                <div class="strike-through non-adjusted-price">
-                                                    null
-                                                </div>
                                                 <div class="pricing line-item-total-price-amount">
                                                     ${product.price}
                                                 </div>
@@ -126,15 +112,6 @@
                                     </div>
 
                                     <div class="line-item-promo"></div>
-                                </div>
-
-                                <div class="hidden-md-down">
-                                    <button type="button" class="remove-btn-lg remove-product btn btn-light"
-                                            data-item-index={index}
-                                            onclick={removeHandler}
-                                            aria-label="Remove product Straight Leg Pants">
-                                        ×
-                                    </button>
                                 </div>
                             </div>
                         </div>

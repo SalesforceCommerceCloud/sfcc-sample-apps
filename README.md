@@ -33,6 +33,7 @@ To set up the sample application:
 <tr><td><code>COMMERCE_CLIENT_REALM_ID</code></td><td>A unique four-character ID (for example, bblx).</td></tr>
 <tr><td><code>COMMERCE_CLIENT_INSTANCE_ID</code></td><td>Instance ID within a realm (for example, 015).</td></tr>
 <tr><td><code>COMMERCE_CLIENT_SHORT_CODE</code></td><td>Region-specific merchant identifier (for example, staging-001).</td></tr>
+<tr><td><code>COMMERCE_SESSION_SECRET</code></td><td>Some unique identifier for session management (for example, thisisasecretkey).</td></tr>
 </table>
 
 5. Install dependencies:

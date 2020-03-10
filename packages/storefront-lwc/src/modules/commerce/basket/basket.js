@@ -9,6 +9,7 @@ import { ShoppingBasket } from 'commerce/data';
 
 export default class Basket extends LightningElement {
     @track products = [];
+    basket = {};
 
     get hasProducts() {
         return this.products.length > 0;
@@ -46,6 +47,7 @@ export default class Basket extends LightningElement {
     connectedCallback() {
         ShoppingBasket.getCurrentBasket()
             .then(basket => {
+                this.basket = basket;
                 this.products = basket.products ? basket.products : [];
             })
             .catch(error => {

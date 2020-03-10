@@ -41,6 +41,7 @@ class Basket {
                       price: product.price,
                       quantity: product.quantity,
                       itemId: product.itemId,
+                      image: product.image,
                   };
               })
             : [];
