@@ -14,16 +14,17 @@ import { getUserFromContext } from '@sfcc-core/core-graphql';
 
 const logger = core.logger;
 
-const getClientProduct = async (config, id, context) => {
-    const apiClientConfig = getCommerceClientConfig(config);
-
-    apiClientConfig.headers.authorization = (
+const getProductClient = async (config, context) => {
+    const clientConfig = getCommerceClientConfig(config);
+    clientConfig.headers.authorization = (
         await getUserFromContext(context)
     ).token;
+    return new CommerceSdk.Product.ShopperProducts(clientConfig);
+};
 
-    const product = new CommerceSdk.Product.ShopperProducts(apiClientConfig);
-
-    return product
+const getProductDetail = async (config, id, context) => {
+    const productClient = await getProductClient(config, context);
+    return productClient
         .getProduct({
             parameters: {
                 id: id,
@@ -41,7 +42,7 @@ export const resolver = config => {
         Query: {
             product: async (_, { id, selectedColor }, context) => {
                 try {
-                    const apiProduct = await getClientProduct(
+                    const apiProduct = await getProductDetail(
                         config,
                         id,
                         context,

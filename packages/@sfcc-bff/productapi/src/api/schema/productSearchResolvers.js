@@ -12,6 +12,14 @@ import { getUserFromContext } from '@sfcc-core/core-graphql';
 
 const logger = core.logger;
 
+const getSearchClient = async (config, context) => {
+    const clientConfig = getCommerceClientConfig(config);
+    clientConfig.headers.authorization = (
+        await getUserFromContext(context)
+    ).token;
+    return new CommerceSdk.Search.ShopperSearch(clientConfig);
+};
+
 const processFilterParams = filterParams => {
     let filterParamQuery = {
         refine: [],
@@ -30,8 +38,6 @@ const processFilterParams = filterParams => {
 };
 
 const searchProduct = async (config, query, filterParams, context) => {
-    const apiClientConfig = getCommerceClientConfig(config);
-
     const filters = filterParams ? processFilterParams(filterParams) : {};
     let parameterValue = {
         q: query,
@@ -45,11 +51,8 @@ const searchProduct = async (config, query, filterParams, context) => {
         parameterValue.sort = filters.sort;
     }
 
-    apiClientConfig.headers.authorization = (
-        await getUserFromContext(context)
-    ).token;
-    const search = new CommerceSdk.Search.ShopperSearch(apiClientConfig);
-    return search
+    const searchClient = await getSearchClient(config, context);
+    return searchClient
         .productSearch({
             parameters: parameterValue,
         })
@@ -62,20 +65,16 @@ const searchProduct = async (config, query, filterParams, context) => {
 export const resolver = config => {
     return {
         Query: {
-            productSearch: async (_, { query, filterParams }, context) => {
-                let searchResult;
-                try {
-                    searchResult = await searchProduct(
-                        config,
-                        query,
-                        filterParams,
-                        context,
-                    );
-                } catch (e) {
-                    logger.error(`Error in productSearchResolver(). ${e}`);
-                    throw e;
-                }
-                return new SearchResult(searchResult, filterParams);
+            productSearch: (_, { query, filterParams }, context) => {
+                const result = searchProduct(
+                    config,
+                    query,
+                    filterParams,
+                    context,
+                ).then(searchResult => {
+                    return new SearchResult(searchResult, filterParams);
+                });
+                return result;
             },
         },
     };
