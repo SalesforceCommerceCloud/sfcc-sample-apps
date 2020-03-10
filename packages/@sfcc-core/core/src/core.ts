@@ -13,7 +13,7 @@ export class UnknownServiceError extends Error {
     }
 }
 
-class Core {
+export class Core {
     private _services: { [key: string]: Service };
     private _extensions: { [key: string]: Array<ExtensionFactory> };
     private _factoryExtensions: { [key: string]: Array<ExtensionFactory> };

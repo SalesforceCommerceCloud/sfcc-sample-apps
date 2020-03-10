@@ -4,7 +4,7 @@
     SPDX-License-Identifier: BSD-3-Clause
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
-import { core, ApiConfig } from '@sfcc-core/core';
+import { core, ApiConfig, Config } from '@sfcc-core/core';
 
 export const API_CONFIG_KEY = Symbol('API Configuration Service');
 
@@ -17,7 +17,7 @@ Object.keys(process.env).forEach(key => {
 });
 export class APIConfig implements ApiConfig {
     logger = core.logger;
-    _config = APP_CONFIG_DATA;
+    _config = APP_CONFIG_DATA as Config;
 
     set config(data) {
         this._config = data;
