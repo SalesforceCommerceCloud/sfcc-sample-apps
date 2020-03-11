@@ -63,8 +63,7 @@ export default class ProductSearchResults extends LightningElement {
             this.refinementgroups = [];
         }
         this.loading = false;
-
-        this.products.length > 0 ? (this.flag = true) : (this.flag = false);
+        this.flag = !!this.products.length;
     }
 
     /**
