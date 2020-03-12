@@ -55,18 +55,17 @@
                     </template>
 
                     <template if:false={flag}>
-                        <hr>
-                        <div class='row mt-4'>
-                            <div class='col offset-4'>
-                                <div class='container'>
-                                    <p class="mt-2">We're sorry but no results were found for
-                                        "<strong>{query}.</strong>"</p>
-                                    <p class="mt-2"><strong>Search Tips:</strong></p>
-                                    <ul class="mt-2">
-                                        <li>Double-check spelling.</li>
-                                        <li class="mt-1">Change your search query.</li>
-                                        <li class="mt-1">Be less specific.</li>
-                                    </ul>
+                        <div class='row mt-2'>
+                            <div class='col-12'>
+                                <div class="container no-search-results">
+                                    <p>We're sorry, but no results were found for:
+                                        <strong> {query}</strong></p>
+                                        <p class="mt-2">Search Tips:</p>
+                                        <ul class="mt-2">
+                                            <li>Double-check spelling.</li>
+                                            <li class="mt-1">Change your search query.</li>
+                                            <li class="mt-1">Be less specific.</li>
+                                        </ul>
                                 </div>
                             </div>
                         </div>
