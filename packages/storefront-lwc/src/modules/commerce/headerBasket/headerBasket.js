@@ -15,7 +15,9 @@ export default class HeaderBasket extends LightningElement {
 
     constructor() {
         super();
-        ShoppingBasket.updateBasketListener(this.updateBasketHandler.bind(this));
+        ShoppingBasket.updateBasketListener(
+            this.updateBasketHandler.bind(this),
+        );
     }
 
     updateBasketHandler() {

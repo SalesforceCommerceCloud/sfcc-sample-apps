@@ -121,19 +121,25 @@ const getBasket = async (config: Config, context: AppContext) => {
             productIds,
         );
         // update the image to the product items in basket
-        basket.productItems.map(product => {
-            productDetails.find(item => {
-                if (item.pid === product.productId) {
-                    product.image = item.imageURL ? item.imageURL : '';
-                }
-            });
+        basket.productItems.forEach(product => {
+            const item = productDetails.find(
+                item => item.pid === product.productId,
+            );
+
+            if (item) {
+                product.image = item.imageURL ?? '';
+            }
         });
     }
     return basket;
 };
 
-const getProductsDetailsInfo = async (config: Config, context: AppContext, ids: string) => {
-    let productItems: Array<{pid: string, imageURL: string}> = [];
+const getProductsDetailsInfo = async (
+    config: Config,
+    context: AppContext,
+    ids: string,
+) => {
+    let productItems: Array<{ pid: string; imageURL: string }> = [];
     const productClient = await getProductClient(config, context);
 
     const result = await productClient
@@ -215,7 +221,11 @@ const updateShippingMethod = async (
 export const basketResolver = (config: Config) => {
     return {
         Query: {
-            getBasket: async (_: never, {}, context: AppContext) => {
+            getBasket: async (
+                _: never,
+                _params: never,
+                context: AppContext,
+            ) => {
                 const apiBasket = await getBasket(config, context);
                 if (apiBasket.fault) {
                     logger.error(

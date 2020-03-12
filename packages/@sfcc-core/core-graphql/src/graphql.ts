@@ -8,12 +8,7 @@ import { core, API_EXTENSIONS_KEY, ApiConfig, Config } from '@sfcc-core/core';
 
 import { API_CONFIG_KEY } from '@sfcc-core/apiconfig';
 
-import {
-    Resolver,
-    ResolverFactory,
-    GraphQLExtension,
-    Request,
-} from './types';
+import { Resolver, ResolverFactory, GraphQLExtension, Request } from './types';
 import graphqlPassport, { PassportContext } from 'graphql-passport';
 
 const { gql, ApolloServer } = apolloServerExpress;
@@ -177,9 +172,7 @@ export type AppContext = PassportContext<User, AuthenParams> & {
     setSessionProperty: (prop: string, value?: string) => void;
 };
 
-export async function getUserFromContext(
-    context: AppContext,
-) {
+export async function getUserFromContext(context: AppContext) {
     let user = context.getUser();
     const token = user ? user.token : '';
     if (!token) {
