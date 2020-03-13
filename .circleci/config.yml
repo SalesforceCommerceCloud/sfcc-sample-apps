@@ -1,3 +1,17 @@
+orbs:
+  heroku: circleci/heroku@1.0.1 # Invoke the Heroku orb
+  node: circleci/node@1.1
+
+workflows:
+  heroku_deploy:
+    jobs:
+      - build
+      - heroku/deploy-via-git: # Use the pre-configured job, deploy-via-git
+          requires:
+            - build
+          filters:
+            branches:
+              only: integration
 jobs:
     build:
       working_directory: ~/build_only
@@ -9,8 +23,7 @@ jobs:
         - run: yarn install
         - run: yarn build
         - run: yarn test
+        - run: yarn clean:stats
         - store_test_results:
             path: ~/
-orbs:
-  node: circleci/node@1.1
 version: 2.1
