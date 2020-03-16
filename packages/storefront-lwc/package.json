@@ -2,11 +2,7 @@
   "name": "storefront-lwc",
   "version": "1.0.0-alpha.1",
   "description": "Sample Storefront Application with Lightning Web Components",
-  "license": "MIT",
-  "config": {
-    "lwcVersion": "1.0.1",
-    "talonVersion": "0.16.0"
-  },
+  "license": "BSD-3-Clause",
   "nodemonConfig": {
     "watch": [
       "../@sfcc-core",
@@ -22,7 +18,8 @@
   },
   "browserslist": "> 0.25%",
   "scripts": {
-    "build": "yarn build:scss && lwc-services build -m production --noclear && yarn build:public && yarn build:resources",
+    "clean:stats": "rm -rf dist/public/stats.json && rm -rf dist/public/report.html",
+    "build": "yarn build:scss && lwc-services build --webpack=webpack.config.js -m production --noclear && yarn build:public && yarn build:resources",
     "build:public": "cpx \"src/public/**/*\" dist/public --verbose && cpx \"dist/*.*\" dist/public",
     "build:resources": "cross-env NODE_OPTIONS=\"--experimental-modules --experimental-specifier-resolution=node\" node scripts/copy-resources.mjs",
     "build:development": "lwc-services build --noclear",
@@ -68,6 +65,7 @@
     "colors": "^1.3.2",
     "concurrently": "^5.0.0",
     "cpx": "^1.5.0",
+    "cross-env": "^7.0.2",
     "express-session": "^1.17.0",
     "font-awesome": "^4.7.0",
     "graphql": "0.13.1",
@@ -76,7 +74,6 @@
     "history": "^4.10.1",
     "passport": "^0.4.1",
     "universal-router": "^8.3.0",
-    "cross-env": "^7.0.2",
     "xss": "^1.0.6"
   },
   "devDependencies": {
@@ -89,6 +86,7 @@
     "lwc-services": "^1.3.12",
     "node-sass": "^4.12.0",
     "nodemon": "^2.0.2",
-    "npm-run-all": "^4.1.5"
+    "npm-run-all": "^4.1.5",
+    "webpack-bundle-analyzer": "^3.6.1"
   }
 }
