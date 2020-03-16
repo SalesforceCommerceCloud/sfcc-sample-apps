@@ -56,17 +56,19 @@
 
                     <template if:true={loading}>
                         <div class='row mt-4'>
-                            <div class='col-12'></div>
+                            <div class='col-12'>
+                                <p class='text-center'>Searching for <strong>{query}</strong>...</p>
+                            </div>
                         </div>
                     </template>
 
                     <template if:false={loading}>
                         <template if:false={hasResults}>
-                            <div class='row mt-2'>
+                            <div class='row mt-4'>
                                 <div class='col-12'>
                                     <div class="container no-search-results">
-                                        <p>We're sorry, but no results were found for:
-                                            <strong> {query}</strong></p>
+                                        <p>No results for
+                                            <strong> {query}</strong>.</p>
                                         <p class="mt-2">Search Tips:</p>
                                         <ul class="mt-2">
                                             <li>Double-check spelling.</li>
