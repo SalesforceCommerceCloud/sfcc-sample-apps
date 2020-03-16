@@ -11,7 +11,7 @@
                 <div class='tab-pane container active' id='product-search-results' aria-expanded='true'>
 
                     <template if:false={loading}>
-                        <template if:true={flag}>
+                        <template if:true={hasResults}>
                             <div class='row' if:true={hasProducts}>
                                 <div class={refinementBar}>
                                     <div class="filter-header">
@@ -54,21 +54,31 @@
                         </template>
                     </template>
 
-                    <template if:false={flag}>
-                        <div class='row mt-2'>
+                    <template if:true={loading}>
+                        <div class='row mt-4'>
                             <div class='col-12'>
-                                <div class="container no-search-results">
-                                    <p>We're sorry, but no results were found for:
-                                        <strong> {query}</strong></p>
+                                <h4 class='text-center'>Please wait, loading..........</h4>
+                            </div>
+                        </div>
+                    </template>
+
+                    <template if:false={loading}>
+                        <template if:false={hasResults}>
+                            <div class='row mt-2'>
+                                <div class='col-12'>
+                                    <div class="container no-search-results">
+                                        <p>We're sorry, but no results were found for:
+                                            <strong> {query}</strong></p>
                                         <p class="mt-2">Search Tips:</p>
                                         <ul class="mt-2">
                                             <li>Double-check spelling.</li>
                                             <li class="mt-1">Change your search query.</li>
                                             <li class="mt-1">Be less specific.</li>
                                         </ul>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </template>
                     </template>
 
                 </div>

@@ -16,12 +16,11 @@ export default class ProductSearchResults extends LightningElement {
     @track refinementgroups = [];
     sortingOptions = [];
     @api query = '';
-    @track loading = false;
+    @track loading = true;
     @track refinementBar = 'refinement-bar col-md-3 d-none d-lg-block';
     @track showRefinementBar = true;
     sortRule;
     selectedRefinements = {};
-    flag = true;
 
     // The wire adaptor to search for products when the query, sort rule or selected refinements change.
     @wire(productsByQuery, {
@@ -63,7 +62,10 @@ export default class ProductSearchResults extends LightningElement {
             this.refinementgroups = [];
         }
         this.loading = false;
-        this.flag = !!this.products.length;
+    }
+
+    get hasResults() {
+        return !!this.products.length && !this.loading;
     }
 
     /**
@@ -87,7 +89,7 @@ export default class ProductSearchResults extends LightningElement {
      * @returns {boolean|boolean}true when products length greater than zero.
      */
     hasProducts() {
-        return this.flag && !!this.products && !!this.products.length;
+        return !!this.products && !!this.products.length;
     }
 
     /**
