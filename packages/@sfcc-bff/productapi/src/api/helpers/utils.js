@@ -4,7 +4,6 @@
     SPDX-License-Identifier: BSD-3-Clause
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
-
 /**
  * Create a configuration to use when creating API clients
  * @param {Object} config - an object containing commerce client information.
