@@ -16,7 +16,7 @@ export default class ProductSearchResults extends LightningElement {
     @track refinementgroups = [];
     sortingOptions = [];
     @api query = '';
-    @track loading = false;
+    @track loading = true;
     @track refinementBar = 'refinement-bar col-md-3 d-none d-lg-block';
     @track showRefinementBar = true;
     sortRule;
@@ -62,6 +62,10 @@ export default class ProductSearchResults extends LightningElement {
             this.refinementgroups = [];
         }
         this.loading = false;
+    }
+
+    get hasResults() {
+        return !!this.products.length && !this.loading;
     }
 
     /**

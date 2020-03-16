@@ -140,3 +140,13 @@
         }
     }
 }
+
+.no-search-results {
+    @include media-breakpoint-up(sm) { 
+        p, ul {
+            margin-left: 25%;            
+        }
+    }
+}
+
+
