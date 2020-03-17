@@ -1,7 +1,7 @@
 Feature('home');
 
 Scenario('Load a product starting from the home page', I => {
-    I.amOnPage('https://sfcc-team-sample-app.herokuapp.com/');
+    I.amOnPage('/');
     I.see('Summer Look');
     I.see('Popular Catalogs');
     I.click('Dresses');

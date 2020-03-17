@@ -1,15 +1,54 @@
 {
-  "name": "storefront-automation",
-  "version": "1.0.0-alpha.1",
-  "description": "End to end tests for the sample storefront application",
-  "main": "index.js",
+  "name": "codeceptjs-cucumber",
+  "version": "3.0.0",
+  "description": "CodeceptJs Cucumber E2E Framework",
   "scripts": {
-    "test:automation": "codeceptjs run --steps"
+    "acceptance": "./node_modules/.bin/codeceptjs run --verbose",
+    "acceptance:parallel": "./node_modules/.bin/codeceptjs run-multiple parallel",
+    "acceptance:parallel:multibrowsers": "./node_modules/.bin/codeceptjs run-multiple multibrowsers",
+    "acceptance:report": "./node_modules/.bin/allure serve ./acceptance/report",
+    "start": "node cli.js",
+    "cli": "node cli.js",
+    "bdd:snippets": "./node_modules/.bin/codeceptjs bdd:snippets",
+    "test:automation": "yarn acceptance --profile chrome:headless"
   },
-  "author": "Bret Little",
-  "license": "BSD-3-Clause",
+  "bin": {
+    "codeceptjs-bdd": "./cli.js"
+  },
+  "main": "cli.js",
+  "keywords": [
+    "Cucumber",
+    "CodeceptJS",
+    "Gherkin"
+  ],
+  "author": {
+    "name": "Kushang Gajjar",
+    "email": "g.kushang@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gkushang/codeceptjs-bdd.git"
+  },
   "devDependencies": {
+    "@wdio/selenium-standalone-service": "^5.16.10",
+    "allure-commandline": "^2.13.0",
+    "chalk": "^2.4.2",
     "codeceptjs": "^2.5.0",
-    "puppeteer": "^2.1.1"
-  }
+    "codeceptjs-saucelabs": "^3.0.0",
+    "codeceptjs-shared": "^3.0.0",
+    "debug": "^4.1.1",
+    "deepmerge": "^4.2.2",
+    "faker": "^4.1.0",
+    "figlet": "^1.2.3",
+    "inquirer": "^7.0.0",
+    "node-emoji": "^1.10.0",
+    "protractor": "^5.4.3",
+    "rimraf": "^3.0.2",
+    "selenium-standalone": "^6.16.0",
+    "shelljs": "^0.8.3",
+    "should": "^13.2.3",
+    "soft-assert": "^0.2.0",
+    "webdriverio": "^5.21.0"
+  },
+  "license": "MIT"
 }
