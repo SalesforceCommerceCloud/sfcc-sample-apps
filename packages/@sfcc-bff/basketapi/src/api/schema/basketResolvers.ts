@@ -108,69 +108,36 @@ const getBasket = async (config: Config, context: AppContext) => {
     );
 
     basket.shippingMethods = shippingMethods;
-
     // get all the product ids in current basket
-    let productIds = basket.productItems
-        ? basket.productItems.map(product => product.productId).join()
-        : '';
     // get product details for all the product items in basket
     if (basket.productItems) {
-        let productDetails = await getProductsDetailsInfo(
-            config,
-            context,
-            productIds,
-        );
-        // update the image to the product items in basket
-        basket.productItems.forEach(product => {
-            const item = productDetails.find(
-                item => item.pid === product.productId,
-            );
-
-            if (item) {
-                product.image = item.imageURL ?? '';
-            }
-        });
-    }
+        const productClient = await getProductClient(config, context);
+        basket.productItems.map(async productItem => {
+            let result = await productClient
+                .getProduct({
+                    parameters: {
+                        id: productItem.productId || '',
+                    },
+                })
+                .catch(e => {
+                    logger.error(`Error in getProducts` + e);
+                    throw e;
+                });
+            result.variationAttributes?.map(attr => {
+                let temp = result.variationValues ? result.variationValues : {};
+                let attributeId = temp[attr.id];
+                if (attributeId) {
+                    const selectedValue = attr.values?.find(item => {
+                        return item.value === attributeId;
+                    });
+                    attr.selectedValue = selectedValue;
+                }
+            });
+            productItem.test = 'testing';
+            productItem.variationAttributes = result.variationAttributes;
+        }); 
+    };
     return basket;
-};
-
-const getProductsDetailsInfo = async (
-    config: Config,
-    context: AppContext,
-    ids: string,
-) => {
-    let productItems: Array<{ pid: string; imageURL: string }> = [];
-    const productClient = await getProductClient(config, context);
-
-    const result = await productClient
-        .getProducts({
-            parameters: {
-                ids: ids,
-                allImages: true,
-            },
-        })
-        .catch(e => {
-            logger.error(`Error in getClientProduct() for product ${ids}`);
-            throw e;
-        });
-
-    result.data.forEach(product => {
-        let productDetailsInfo = {
-            pid: '',
-            imageURL: '',
-        };
-        productDetailsInfo.pid = product.id;
-        const imageGroups = product.imageGroups;
-        if (imageGroups) {
-            let imageArray = imageGroups?.find(
-                image => image.viewType === 'small',
-            )?.images;
-            productDetailsInfo.imageURL = imageArray?.[0].link ?? '';
-        }
-
-        productItems.push(productDetailsInfo);
-    });
-    return productItems;
 };
 
 const getShippingMethods = async (

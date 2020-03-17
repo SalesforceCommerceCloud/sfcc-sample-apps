@@ -161,7 +161,16 @@ class Basket {
                                 quantity
                                 productName
                                 price
-                                image
+                                imageURL
+                                variationAttributes {
+                                    id
+                                    name
+                                    selectedValue {
+                                        name
+                                        orderable
+                                        value
+                                    }
+                                }
                             }
                             orderTotal
                             orderLevelPriceAdjustment {
