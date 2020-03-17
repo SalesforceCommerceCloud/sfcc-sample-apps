@@ -9,48 +9,76 @@
         <div class='row'>
             <div class='tab-content col-12'>
                 <div class='tab-pane container active' id='product-search-results' aria-expanded='true'>
+
                     <template if:false={loading}>
-                        <div class='row' if:true={hasProducts}>
-                            <div class={refinementBar}>
-                                <div class="filter-header">
-                                    <div class="header-bar d-md-none clearfix">
-                                        <div class="pull-left d-md-none result-count">
-                                            {products.length} Results
+                        <template if:true={hasResults}>
+                            <div class='row' if:true={hasProducts}>
+                                <div class={refinementBar}>
+                                    <div class="filter-header">
+                                        <div class="header-bar d-md-none clearfix">
+                                            <div class="pull-left d-md-none result-count">
+                                                {products.length} Results
+                                            </div>
+                                            <button class="pull-right close" onclick={toggleRefinementBarHandler}>
+                                                <span>Close </span>
+                                                <i class="fa fa-close"></i>
+                                            </button>
                                         </div>
-                                        <button class="pull-right close" onclick={toggleRefinementBarHandler}>
-                                            <span>Close </span>
-                                            <i class="fa fa-close"></i>
-                                        </button>
                                     </div>
-                                </div>
-                                <div class='secondary-bar'>
-                                    <div class='reset btn btn-block btn-outline-primary' onclick={resetRefinements}>
-                                        Reset
+                                    <div class='secondary-bar'>
+                                        <div class='reset btn btn-block btn-outline-primary' onclick={resetRefinements}>
+                                            Reset
+                                        </div>
                                     </div>
+
+                                    <aside>
+                                        <div class='refinements'>
+                                            <template for:each={refinementgroups} for:item="refinementgroup">
+                                                <commerce-refinement-group ontogglerefinement={toggleRefinementHandler}
+                                                    key={refinementgroup.label} refinementgroup={refinementgroup}>
+                                                </commerce-refinement-group>
+                                            </template>
+                                        </div>
+                                    </aside>
                                 </div>
 
-                                <aside>
-                                    <div class='refinements'>
-                                        <template for:each={refinementgroups} for:item="refinementgroup">
-                                            <commerce-refinement-group ontogglerefinement={toggleRefinementHandler}
-                                                                       key={refinementgroup.label}
-                                                                       refinementgroup={refinementgroup}>
-                                            </commerce-refinement-group>
-                                        </template>
+
+                                <div class='col col-lg-9 product-list-grid'>
+                                    <div class='container'>
+                                        <commerce-product-list ontogglerefinementbar={toggleRefinementBarHandler}
+                                            onupdatesort={updateSortHandler} products={products} sort={sortingOptions}>
+                                        </commerce-product-list>
                                     </div>
-                                </aside>
+                                </div>
                             </div>
+                        </template>
+                    </template>
 
-                            <div class='col col-lg-9 product-list-grid'>
-                                <div class='container'>
-                                    <commerce-product-list ontogglerefinementbar={toggleRefinementBarHandler}
-                                                          onupdatesort={updateSortHandler}
-                                                          products={products}
-                                                          sort={sortingOptions}>
-                                    </commerce-product-list>
-                                </div>
+                    <template if:true={loading}>
+                        <div class='row mt-4'>
+                            <div class='col-12'>
+                                <p class='text-center'>Searching for <strong>{query}</strong>...</p>
                             </div>
                         </div>
+                    </template>
+
+                    <template if:false={loading}>
+                        <template if:false={hasResults}>
+                            <div class='row mt-4'>
+                                <div class='col-12'>
+                                    <div class="container no-search-results">
+                                        <p>No results for
+                                            <strong> {query}</strong>.</p>
+                                        <p class="mt-2">Search Tips:</p>
+                                        <ul class="mt-2">
+                                            <li>Double-check spelling.</li>
+                                            <li class="mt-1">Change your search query.</li>
+                                            <li class="mt-1">Be less specific.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
                     </template>
 
                 </div>
@@ -58,4 +86,3 @@
         </div>
     </div>
 </template>
-
