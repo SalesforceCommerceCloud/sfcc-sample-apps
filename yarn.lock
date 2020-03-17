@@ -1194,12 +1194,12 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@commerce-apps/core@^1.3.0-alpha.8":
-  version "1.3.0-alpha.8"
-  resolved "https://registry.yarnpkg.com/@commerce-apps/core/-/core-1.3.0-alpha.8.tgz#a95f7ce0c721f5756c0d82612a33455a2d34fda9"
-  integrity sha512-/WFxvStPKLBVUGVsgw9f3S4ilegZooioJX6ttM+CL4A6Ff7GDFs+qVr78vDPpRXOOYIjprcTWu0cw/jYPk4rOg==
+"@commerce-apps/core@^1.3.0-alpha.9":
+  version "1.3.0-alpha.9"
+  resolved "https://registry.yarnpkg.com/@commerce-apps/core/-/core-1.3.0-alpha.9.tgz#bb829250526108c1fe462f9c31cb59d3b22a7987"
+  integrity sha512-AsUSLySPsh8zP50wM608Vs+CHuyPKl4jjFFnlQiSLGnovhijvfxEZ6To5oPD/4xfT7OMBzZhmw7tLGM1dtX96g==
   dependencies:
-    "@commerce-apps/exchange-connector" "^1.3.0-alpha.8"
+    "@commerce-apps/exchange-connector" "^1.3.0-alpha.9"
     dotenv "~8.2.0"
     jsonwebtoken "^8.5.1"
     lodash "~4.17.15"
@@ -1209,10 +1209,10 @@
     simple-oauth2 "~3.1.0"
     tmp "~0.1.0"
 
-"@commerce-apps/exchange-connector@^1.3.0-alpha.8":
-  version "1.3.0-alpha.8"
-  resolved "https://registry.yarnpkg.com/@commerce-apps/exchange-connector/-/exchange-connector-1.3.0-alpha.8.tgz#39d14d23b744e85e7c631a5948e841f3a0973211"
-  integrity sha512-wVhsMevQ9jPTStEd9j9b31VVk9Zkjgtvge3F7sPFZPzhEB+BapNw8zMeEWw0fUWy0DXuPv2jAM+2GBcYX2iBUg==
+"@commerce-apps/exchange-connector@^1.3.0-alpha.9":
+  version "1.3.0-alpha.9"
+  resolved "https://registry.yarnpkg.com/@commerce-apps/exchange-connector/-/exchange-connector-1.3.0-alpha.9.tgz#bce7c6fb00f78c16c3cc8ac9b686689f95b0b1c0"
+  integrity sha512-WaI26kZ8sJU6mK38R3tlrF2xuKRmSi7ANzUMchFHkqi+XjB0nvhcTdslA1uSdTqguzfN+kF737OJAtmqLDSetQ==
   dependencies:
     "@types/graphql" "^14.5.0"
     apollo-boost "^0.4.4"
@@ -5828,12 +5828,12 @@ commander@~2.19.0:
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.19.0.tgz#f6198aa84e5b83c46054b94ddedbfed5ee9ff12a"
   integrity sha512-6tvAOO+D6OENvRAh524Dh9jcfKTYDQAqvqezbCW82xj5X0pSrcpxtvRKHLG0yBY6SD7PSDrJaj+0AiOcKVd1Xg==
 
-commerce-sdk@1.3.0-alpha.8:
-  version "1.3.0-alpha.8"
-  resolved "https://registry.yarnpkg.com/commerce-sdk/-/commerce-sdk-1.3.0-alpha.8.tgz#d42c59bce551658e539ed3c9ebd13ef7a990df09"
-  integrity sha512-LFGln6ugO9fYz7G/HeVdM2K4OZvlFS6ZAkdVKtRhTRz+RT7zqGcl1mr2Uy9T2CfwUdGnu04pfK/dNcnVX62jKg==
+commerce-sdk@1.3.0-alpha.9:
+  version "1.3.0-alpha.9"
+  resolved "https://registry.yarnpkg.com/commerce-sdk/-/commerce-sdk-1.3.0-alpha.9.tgz#3995bdf0dcddbffa5d2870670c875056fbe6be0b"
+  integrity sha512-ylup4lEW12TzqpupT7XQ/ezyDKjuZy2qjppvvs9UBWvCEr1zLKqazWY13B4VkVr1+CW3g/tslMihWg7YqnSf8g==
   dependencies:
-    "@commerce-apps/core" "^1.3.0-alpha.8"
+    "@commerce-apps/core" "^1.3.0-alpha.9"
     tslib "^1.10.0"
     utility-types "^3.10.0"
 
