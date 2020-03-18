@@ -7,23 +7,25 @@ const router = new UniversalRouter(
     [
         {
             path: '',
-            action: () => '<commerce-home></commerce-home>',
+            action: () => ({ element: 'commerce-home' }),
         },
         {
             path: '/search/:query',
-            action: location => {
-                var query = xss(location.params.query);
-                return `<commerce-product-search-results query="${query}"></commerce-product-search-results>`;
-            },
+            action: location => ({
+                element: 'commerce-product-search-results',
+                attributes: { query: xss(location.params.query) },
+            }),
         },
         {
             path: '/basket',
-            action: () => `<commerce-basket></commerce-basket>`,
+            action: () => ({ element: 'commerce-basket' }),
         },
         {
             path: '/product/:pid',
-            action: location =>
-                `<commerce-product-detail pid="${location.params.pid}"></commerce-product-detail>`,
+            action: location => ({
+                element: 'commerce-product-detail',
+                attributes: { pid: xss(location.params.pid) },
+            }),
         },
     ],
     {
@@ -38,10 +40,26 @@ const router = new UniversalRouter(
 );
 
 const render = location => {
-    router.resolve(location).then(content => {
-        document.getElementById('content').innerHTML = content; // eslint-disable-line
+    router.resolve(location).then(route => {
+        const content = document.getElementById('content'); // eslint-disable-line
+        clearInnerContent(content);
+
+        const element = document.createElement(route.element);
+        const attributes = route.attributes || {};
+
+        for (let key of Object.keys(attributes)) {
+            element.setAttribute(key, route.attributes[key]);
+        }
+
+        content.appendChild(element);
     });
 };
+
+function clearInnerContent(element) {
+    for (let child of element.children) {
+        element.removeChild(child);
+    }
+}
 
 render(history.location);
 
