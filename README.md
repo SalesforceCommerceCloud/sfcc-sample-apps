@@ -28,13 +28,14 @@ To set up the sample application:
 4. In the `api.mjs` file, provide values for the following variables (you can obtain these values from your Account Executive (AE) or Customer Support Manager (CSM)):
 <table>
 <tr><th>Variable</th><th>Description</th></tr>
-<tr><td><code>COMMERCE_CLIENT_API_SITE_ID</code></td><td>A unique site ID (for example, RefArch or SiteGenesis).</td></tr>
+<tr><td><code>COMMERCE_CLIENT_API_SITE_ID</code></td><td>A unique site ID.</td></tr>
 <tr><td><code>COMMERCE_CLIENT_CLIENT_ID</code></td><td>A unique ID used exclusively for API access. See <a href="https://documentation.b2c.commercecloud.salesforce.com/DOC1/topic/com.demandware.dochelp/AccountManager/AccountManagerAddAPIClientID.html">Add a Client API</a> for more information.</td></tr>
-<tr><td><code>COMMERCE_CLIENT_REALM_ID</code></td><td>A unique four-character ID (for example, bblx).</td></tr>
-<tr><td><code>COMMERCE_CLIENT_INSTANCE_ID</code></td><td>Instance ID within a realm (for example, 015).</td></tr>
-<tr><td><code>COMMERCE_CLIENT_SHORT_CODE</code></td><td>Region-specific merchant identifier (for example, staging-001).</td></tr>
-<tr><td><code>COMMERCE_SESSION_SECRET</code></td><td>Some unique identifier for session management (for example, thisisasecretkey).</td></tr>
+<tr><td><code>COMMERCE_CLIENT_REALM_ID</code></td><td>A unique four-character ID.</td></tr>
+<tr><td><code>COMMERCE_CLIENT_INSTANCE_ID</code></td><td>Instance ID within a realm.</td></tr>
+<tr><td><code>COMMERCE_CLIENT_SHORT_CODE</code></td><td>Region-specific merchant identifier.</td></tr>
+<tr><td><code>COMMERCE_SESSION_SECRET</code></td><td>Some unique identifier for session management.</td></tr>
 </table>
+Note : The COMMERCE_SESSION_SECRET key needs to be unique per application, each customer should have a different key, if not, then sessions could bleed between ecommerce sites. 
 
 5. Install dependencies:
 `yarn`
