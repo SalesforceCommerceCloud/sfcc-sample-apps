@@ -5,91 +5,45 @@
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
 import { LightningElement, wire, track, api } from 'lwc';
-// import { productsByQuery } from 'commerce/data';
-
+import QUERY from './gqlTemplate';
 import { useQuery } from '@lwce/apollo-client';
-import gql from 'graphql-tag';
 import { apiClient } from '../api/client';
 
-// const QUERY = gql``;
-const QUERY = gql`
-    query($query: String!, $filters: [Filter]) {
-        productSearch(query: $query, filterParams: $filters) {
-            productHits {
-                productId
-                productName
-                prices {
-                    sale
-                    list
-                }
-                image {
-                    title
-                    link
-                    alt
-                }
-                colorSwatches {
-                    name
-                    value
-                    title
-                    link
-                    alt
-                    style
-                }
-            }
-            refinements {
-                values {
-                    label
-                    value
-                    hitCount
-                    values {
-                        label
-                        value
-                        hitCount
-                    }
-                }
-                label
-                attributeId
-            }
-            currentFilters {
-                id
-                value
-            }
-        }
-    }
-`;
-// Displays search results
-//
 export default class ProductSearchResults extends LightningElement {
     @track state = {};
     @track products = [];
     @track refinementgroups = [];
-    // @api query = '';
     @track loading = false;
     @track refinementBar = 'refinement-bar col-md-3 d-none d-lg-block';
     @track showRefinementBar = true;
-    sortRule;
     selectedRefinements = {};
 
     variables = {
         query: '',
-        sortRule: '',
         filters: [],
     };
+    sortRuleValue = '';
 
     @api set query(val) {
         this.variables = { ...this.variables, query: val };
+        console.log(this.variables);
     }
 
     get query() {
+        console.log(this.variables);
         return this.variables.query;
     }
 
-    // The wire adaptor to search for products when the query, sort rule or selected refinements change.
-    // @wire(productsByQuery, {
-    //     query: '$query',
-    //     sortRule: '$sortRule',
-    //     selectedRefinements: '$selectedRefinements',
-    // })
+    @api set sortRule(val) {
+        this.sortRuleValue = val;
+        const filters = this.getFilters();
+        this.variables = { ...this.variables, filters: filters };
+    }
+
+    get sortRule() {
+        return this.sortRuleValue;
+    }
+
     @wire(useQuery, {
         query: QUERY,
         lazy: false,
@@ -180,6 +134,8 @@ export default class ProductSearchResults extends LightningElement {
         }
 
         this.selectedRefinements = { ...this.selectedRefinements };
+        const filters = this.getFilters();
+        this.variables = { ...this.variables, filters: filters };
     }
 
     /**
@@ -202,4 +158,39 @@ export default class ProductSearchResults extends LightningElement {
 
         this.showRefinementBar = !this.showRefinementBar;
     }
+    /**
+     * returns an array of filters
+     * @returns {array}
+     */
+    getFilters = () => {
+        const selectedRefinements = this.selectedRefinements;
+        const sortRuleValue = this.sortRuleValue;
+        const sort =
+            this.sortRuleValue && this.sortRuleValue.id
+                ? { id: 'sort', value: this.sortRuleValue.id }
+                : null;
+        let filtersArray = [];
+        //
+        // Create filters from the selected refinements
+        //
+        Object.keys(selectedRefinements).forEach(key => {
+            let values = '';
+            if (selectedRefinements[key].length) {
+                selectedRefinements[key].forEach(value => {
+                    values = values + `${value}|`;
+                });
+                values = values.slice(0, -1);
+                filtersArray.push({ id: key, value: values });
+            }
+        });
+
+        //
+        // Apply sorting with filters or just use filters
+        //
+        if (sort) {
+            filtersArray.push(sort);
+        }
+
+        return filtersArray;
+    };
 }
