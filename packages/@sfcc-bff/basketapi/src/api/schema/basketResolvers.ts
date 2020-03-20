@@ -218,6 +218,26 @@ const updateShippingMethod = async (
     });
 };
 
+const removeItemFromBasket = async (
+    itemId: string,
+    config: Config,
+    context: AppContext,
+) => {
+    const basketId = context.getSessionProperty('basketId');
+    const basketClient = await getBasketClient(config, context);
+    await basketClient
+        .removeItemFromBasket({
+            parameters: {
+                basketId: basketId,
+                itemId: itemId,
+            },
+        })
+        .catch(e => {
+            logger.error(e);
+        });
+    return getBasket(config, context);
+};
+
 export const basketResolver = (config: Config) => {
     return {
         Query: {
@@ -282,6 +302,19 @@ export const basketResolver = (config: Config) => {
                 } else {
                     return new Basket(apiBasket);
                 }
+            },
+            removeItemFromBasket: async (
+                _: never,
+                parameters: { itemId: string },
+                context: AppContext,
+            ) => {
+                const { itemId } = parameters;
+                const apiBasket = await removeItemFromBasket(
+                    itemId,
+                    config,
+                    context,
+                );
+                return new Basket(apiBasket);
             },
         },
     };

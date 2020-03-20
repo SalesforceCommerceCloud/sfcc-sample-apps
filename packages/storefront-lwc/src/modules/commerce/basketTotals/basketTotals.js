@@ -19,13 +19,22 @@ export default class BasketTotals extends LightningElement {
     constructor() {
         super();
         this.setTotals(ShoppingBasket.basket);
+        ShoppingBasket.updateBasketListener(
+            this.updateBasketHandler.bind(this),
+        );
         // Listen to shippingmethods component change
         window.addEventListener('update-shipping-method', e => {
-            this.updateBasketTotals(e);
+            this.updateShippingMethod(e);
         });
     }
 
-    updateBasketTotals(event) {
+    updateBasketHandler(eventType) {
+        if (eventType === 'update-basket-totals') {
+            this.setTotals(ShoppingBasket.basket);
+        }
+    }
+
+    updateShippingMethod(event) {
         const basketId = ShoppingBasket.basket.basketId;
         const shipmentId = ShoppingBasket.basket.shipmentId;
         const shippingMethodId = event.detail.shippingMethodId;

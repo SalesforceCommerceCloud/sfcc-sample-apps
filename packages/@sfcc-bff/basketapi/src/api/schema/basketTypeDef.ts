@@ -18,6 +18,7 @@ export const basketTypeDef = gql`
             shipmentId: String!
             shippingMethodId: String!
         ): Basket!
+        removeItemFromBasket(itemId: String!): Basket!
     }
     type Basket {
         basketId: String!

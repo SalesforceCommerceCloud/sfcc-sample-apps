@@ -17,6 +17,42 @@ class Basket {
 
     isBasketLoaded = false;
 
+    getBasketAttributes = `basketId
+            customerId
+            getBasketMessage
+            totalProductsQuantity
+            shipmentId
+            shipmentTotal
+            selectedShippingMethodId
+            products {
+                productId
+                itemId
+                quantity
+            productName
+            price
+            image
+        }
+        orderTotal
+        orderLevelPriceAdjustment {
+            itemText
+            price
+        }
+        shippingTotal
+        shippingTotalTax
+        taxation
+        taxTotal
+        shippingMethods {
+            defaultShippingMethodId
+            applicableShippingMethods {
+                id
+                name
+                description
+                price
+                c_estimatedArrivalTime
+                c_storePickupEnabled
+            }
+        }`;
+
     /**
      * Calling Add to the basket BFF.
      * @param product: the product to add to basket
@@ -105,14 +141,30 @@ class Basket {
             });
     }
 
-    // TODO : wire this call with BFF
-    removeFromBasket(index) {
-        let basket = this.getCurrentBasket();
-        if (index > -1) {
-            basket.splice(index, 1);
-        }
-
-        this.updateBasket(basket);
+    removeItemFromBasket(itemId) {
+        return apiClient
+            .mutate({
+                mutation: gql`
+                    mutation {
+                        removeItemFromBasket(itemId: "${itemId}") {
+                            ${this.getBasketAttributes}
+                        }
+                }
+             `,
+            })
+            .then(result => {
+                this.basket = result.data.removeItemFromBasket;
+                this.isBasketLoaded = true;
+                this.updateBasket('update-basket-totals');
+                return this.basket;
+            })
+            .catch(error => {
+                console.error(
+                    'removeItemFromBasket failed with message',
+                    error,
+                );
+                return this.basket;
+            });
     }
 
     /**
@@ -148,41 +200,7 @@ class Basket {
                 query: gql`
                     {
                         getBasket {
-                            basketId
-                            customerId
-                            getBasketMessage
-                            totalProductsQuantity
-                            shipmentId
-                            shipmentTotal
-                            selectedShippingMethodId
-                            products {
-                                productId
-                                itemId
-                                quantity
-                                productName
-                                price
-                                image
-                            }
-                            orderTotal
-                            orderLevelPriceAdjustment {
-                                itemText
-                                price
-                            }
-                            shippingTotal
-                            shippingTotalTax
-                            taxation
-                            taxTotal
-                            shippingMethods {
-                                defaultShippingMethodId
-                                applicableShippingMethods {
-                                    id
-                                    name
-                                    description
-                                    price
-                                    c_estimatedArrivalTime
-                                    c_storePickupEnabled
-                                }
-                            }
+                            ${this.getBasketAttributes}
                         }
                     }
                 `,
