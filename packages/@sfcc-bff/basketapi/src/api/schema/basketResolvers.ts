@@ -113,19 +113,14 @@ const getBasket = async (config: Config, context: AppContext) => {
     // get product details for all the product items in basket
     if (basket.productItems) {
         // update the image to the product items in basket
-        Promise.all(
+        await Promise.all(
             basket.productItems.map(async product => {
                 let productDetails = await getProductDetailsInfo(
                     config,
                     context,
                     product.productId || '',
                 );
-                const item = productDetails.find(
-                    item => item.pid === product.productId,
-                );
-                if (item) {
-                    product.image = item.imageURL ?? '';
-                }
+                product.image = productDetails?.imageURL || '';
             }),
         );
     }
@@ -138,7 +133,6 @@ const getProductDetailsInfo = async (
     context: AppContext,
     id: string,
 ) => {
-    let productItems: Array<{ pid: string; imageURL: string }> = [];
     const productClient = await getProductClient(config, context);
 
     const product = await productClient
@@ -164,8 +158,8 @@ const getProductDetailsInfo = async (
         )?.images;
         productDetailsInfo.imageURL = imageArray?.[0].link ?? '';
     }
-    productItems.push(productDetailsInfo);
-    return productItems;
+
+    return productDetailsInfo;
 };
 
 const getShippingMethods = async (
