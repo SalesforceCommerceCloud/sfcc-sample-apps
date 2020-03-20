@@ -17,6 +17,42 @@ class Basket {
 
     isBasketLoaded = false;
 
+    getBasketAttributes = `basketId
+            customerId
+            getBasketMessage
+            totalProductsQuantity
+            shipmentId
+            shipmentTotal
+            selectedShippingMethodId
+            products {
+                productId
+                itemId
+                quantity
+            productName
+            price
+            image
+        }
+        orderTotal
+        orderLevelPriceAdjustment {
+            itemText
+            price
+        }
+        shippingTotal
+        shippingTotalTax
+        taxation
+        taxTotal
+        shippingMethods {
+            defaultShippingMethodId
+            applicableShippingMethods {
+                id
+                name
+                description
+                price
+                c_estimatedArrivalTime
+                c_storePickupEnabled
+            }
+        }`;
+
     /**
      * Calling Add to the basket BFF.
      * @param product: the product to add to basket
@@ -111,41 +147,7 @@ class Basket {
                 mutation: gql`
                     mutation {
                         removeItemFromBasket(itemId: "${itemId}") {
-                            basketId
-                            customerId
-                            getBasketMessage
-                            totalProductsQuantity
-                            shipmentId
-                            shipmentTotal
-                            selectedShippingMethodId
-                            products {
-                                productId
-                                itemId
-                                quantity
-                                productName
-                                price
-                                image
-                            }
-                            orderTotal
-                            orderLevelPriceAdjustment {
-                                itemText
-                                price
-                            }
-                            shippingTotal
-                            shippingTotalTax
-                            taxation
-                            taxTotal
-                            shippingMethods {
-                                defaultShippingMethodId
-                                applicableShippingMethods {
-                                    id
-                                    name
-                                    description
-                                    price
-                                    c_estimatedArrivalTime
-                                    c_storePickupEnabled
-                                }
-                            }
+                            ${this.getBasketAttributes}
                         }
                 }
              `,
@@ -198,41 +200,7 @@ class Basket {
                 query: gql`
                     {
                         getBasket {
-                            basketId
-                            customerId
-                            getBasketMessage
-                            totalProductsQuantity
-                            shipmentId
-                            shipmentTotal
-                            selectedShippingMethodId
-                            products {
-                                productId
-                                itemId
-                                quantity
-                                productName
-                                price
-                                image
-                            }
-                            orderTotal
-                            orderLevelPriceAdjustment {
-                                itemText
-                                price
-                            }
-                            shippingTotal
-                            shippingTotalTax
-                            taxation
-                            taxTotal
-                            shippingMethods {
-                                defaultShippingMethodId
-                                applicableShippingMethods {
-                                    id
-                                    name
-                                    description
-                                    price
-                                    c_estimatedArrivalTime
-                                    c_storePickupEnabled
-                                }
-                            }
+                            ${this.getBasketAttributes}
                         }
                     }
                 `,
