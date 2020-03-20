@@ -109,67 +109,62 @@ const getBasket = async (config: Config, context: AppContext) => {
 
     basket.shippingMethods = shippingMethods;
 
-    // get all the product ids in current basket
-    let productIds = basket.productItems
-        ? basket.productItems.map(product => product.productId).join()
-        : '';
+    // get variation attributes for each product items in basket
     // get product details for all the product items in basket
     if (basket.productItems) {
-        let productDetails = await getProductsDetailsInfo(
-            config,
-            context,
-            productIds,
-        );
         // update the image to the product items in basket
-        basket.productItems.forEach(product => {
-            const item = productDetails.find(
-                item => item.pid === product.productId,
-            );
-
-            if (item) {
-                product.image = item.imageURL ?? '';
-            }
-        });
+        Promise.all(
+            basket.productItems.map(async product => {
+                let productDetails = await getProductDetailsInfo(
+                    config,
+                    context,
+                    product.productId || '',
+                );
+                const item = productDetails.find(
+                    item => item.pid === product.productId,
+                );
+                if (item) {
+                    product.image = item.imageURL ?? '';
+                }
+            }),
+        );
     }
     return basket;
 };
 
-const getProductsDetailsInfo = async (
+// return productDetails = {pid: product.id, imageURL: 'url',}
+const getProductDetailsInfo = async (
     config: Config,
     context: AppContext,
-    ids: string,
+    id: string,
 ) => {
     let productItems: Array<{ pid: string; imageURL: string }> = [];
     const productClient = await getProductClient(config, context);
 
-    const result = await productClient
-        .getProducts({
+    const product = await productClient
+        .getProduct({
             parameters: {
-                ids: ids,
-                allImages: true,
+                id: id,
             },
         })
         .catch(e => {
-            logger.error(`Error in getClientProduct() for product ${ids}`);
+            logger.error(`Error in getProduct()`);
             throw e;
         });
 
-    result.data.forEach(product => {
-        let productDetailsInfo = {
-            pid: '',
-            imageURL: '',
-        };
-        productDetailsInfo.pid = product.id;
-        const imageGroups = product.imageGroups;
-        if (imageGroups) {
-            let imageArray = imageGroups?.find(
-                image => image.viewType === 'small',
-            )?.images;
-            productDetailsInfo.imageURL = imageArray?.[0].link ?? '';
-        }
+    let productDetailsInfo = {
+        pid: product.id,
+        imageURL: '',
+    };
 
-        productItems.push(productDetailsInfo);
-    });
+    const imageGroups = product.imageGroups;
+    if (imageGroups) {
+        let imageArray = product.imageGroups?.find(
+            image => image.viewType === 'small',
+        )?.images;
+        productDetailsInfo.imageURL = imageArray?.[0].link ?? '';
+    }
+    productItems.push(productDetailsInfo);
     return productItems;
 };
 
