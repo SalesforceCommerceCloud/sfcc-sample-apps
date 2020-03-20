@@ -54,10 +54,10 @@
                                             </div>
                                             <div class="item-attributes d-flex flex-column">
                                                 <div class="line-item-availability">
-                                                    <p class="line-item-attributes">In Stock   ${product.variationAttributes}</p>
+                                                    <p class="line-item-attributes">In Stock</p>
                                                     
                                                     <template for:each={product.variationAttributes} for:item="variationAttribute" for:index="index">
-                                                        <p key={variationAttribute.id} class="line-item-attributes">${variationAttribute.name}: ${variationAttribute.selectedValue.name}</p>
+                                                        <p key={variationAttribute.id} class="line-item-attributes">{variationAttribute.name}: {variationAttribute.selectedValue.name}</p>
                                                     </template>
                                                     <!--<p class="line-item-attributes">${product.variationAttributes[0].name} :${product.variationAttributes[0].selectedValue.name}</p>-->
                                                 </div>

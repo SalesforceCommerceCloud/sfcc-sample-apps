@@ -108,35 +108,44 @@ const getBasket = async (config: Config, context: AppContext) => {
     );
 
     basket.shippingMethods = shippingMethods;
-    // get all the product ids in current basket
+
     // get product details for all the product items in basket
+    const productClient = await getProductClient(config, context);
+
     if (basket.productItems) {
-        const productClient = await getProductClient(config, context);
-        basket.productItems.map(async productItem => {
-            let result = await productClient
-                .getProduct({
-                    parameters: {
-                        id: productItem.productId || '',
-                    },
-                })
-                .catch(e => {
-                    logger.error(`Error in getProducts` + e);
-                    throw e;
-                });
-            result.variationAttributes?.map(attr => {
-                let temp = result.variationValues ? result.variationValues : {};
-                let attributeId = temp[attr.id];
-                if (attributeId) {
-                    const selectedValue = attr.values?.find(item => {
-                        return item.value === attributeId;
+        await Promise.all(
+            basket.productItems.map(async productItem => {
+                let product = await productClient
+                    .getProduct({
+                        parameters: {
+                            id: productItem.productId || '',
+                        },
+                    })
+                    .catch(e => {
+                        logger.error(`Error in getProducts` + e);
+                        throw e;
                     });
-                    attr.selectedValue = selectedValue;
-                }
-            });
-            productItem.test = 'testing';
-            productItem.variationAttributes = result.variationAttributes;
-        }); 
-    };
+                product.variationAttributes?.map(attr => {
+                    let vartationValue = product.variationValues
+                        ? product.variationValues
+                        : {};
+                    let attributeId = vartationValue[attr.id];
+                    if (attributeId) {
+                        const selectedValue = attr.values?.find(item => {
+                            return item.value === attributeId;
+                        });
+                        attr.selectedValue = selectedValue;
+                    }
+                });
+                productItem.variationAttributes = product.variationAttributes;
+
+                let imageArray = product.imageGroups?.find(
+                    image => image.viewType === 'small',
+                )?.images;
+                productItem.imageURL = imageArray?.[0].link ?? '';
+            }),
+        );
+    }
     return basket;
 };
 
