@@ -44,11 +44,13 @@ export const basketTypeDef = gql`
         quantity: Int!
         itemId: String!
         imageURL: String
+        inventory: Inventory!
+        type: ProductType
         variationAttributes: [ProductVariationAttribute]
     }
 
     type ProductVariationAttribute {
-        id : String!
+        id: String!
         name: String!
         selectedValue: SelectedVariationValue
     }
@@ -58,7 +60,7 @@ export const basketTypeDef = gql`
         orderable: Boolean
         value: String!
     }
-    
+
     type ShippingMethods {
         applicableShippingMethods: [ShippingMethod]
         defaultShippingMethodId: String

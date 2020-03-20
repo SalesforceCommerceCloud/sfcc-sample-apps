@@ -159,6 +159,23 @@ class Basket {
                                 productId
                                 itemId
                                 quantity
+                                type {
+                                    bundle
+                                    item
+                                    master
+                                    option
+                                    set
+                                    variant
+                                    variationGroup
+                                }
+                                inventory {
+                                    ats
+                                    backorderable
+                                    id
+                                    orderable
+                                    preorderable
+                                    stockLevel
+                                }
                                 productName
                                 price
                                 imageURL

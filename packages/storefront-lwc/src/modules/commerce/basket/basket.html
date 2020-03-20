@@ -54,8 +54,9 @@
                                             </div>
                                             <div class="item-attributes d-flex flex-column">
                                                 <div class="line-item-availability">
-                                                    <p class="line-item-attributes">In Stock</p>
-                                                    
+                                                    <!-- Product Availability -->
+                                                    <commerce-product-availability inventory={product.inventory} type={product.type} quantity={product.quantity}></commerce-product-availability>
+                                                    <!-- Product variations-->
                                                     <template for:each={product.variationAttributes} for:item="variationAttribute" for:index="index">
                                                         <p key={variationAttribute.id} class="line-item-attributes">{variationAttribute.name}: {variationAttribute.selectedValue.name}</p>
                                                     </template>

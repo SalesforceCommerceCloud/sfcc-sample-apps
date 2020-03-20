@@ -46,6 +46,8 @@ class Basket {
                       itemId: product.itemId,
                       imageURL: product.imageURL,
                       variationAttributes: product.variationAttributes,
+                      inventory: product.inventory,
+                      type: product.type,
                   };
               })
             : [];

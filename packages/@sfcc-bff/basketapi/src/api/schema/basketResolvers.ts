@@ -131,13 +131,15 @@ const getBasket = async (config: Config, context: AppContext) => {
                         : {};
                     let attributeId = vartationValue[attr.id];
                     if (attributeId) {
-                        const selectedValue = attr.values?.find(item => {
+                        let selectedValue = attr.values?.find(item => {
                             return item.value === attributeId;
                         });
                         attr.selectedValue = selectedValue;
                     }
                 });
                 productItem.variationAttributes = product.variationAttributes;
+                productItem.inventory = product.inventory;
+                productItem.type = product.type;
 
                 let imageArray = product.imageGroups?.find(
                     image => image.viewType === 'small',
