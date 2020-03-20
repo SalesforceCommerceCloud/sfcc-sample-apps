@@ -26,11 +26,13 @@ register(productsByQuery, eventTarget => {
      * @returns {Promise<ApolloQueryResult<any> | {error: any}>}
      */
     const executeSearch = (query, filters) => {
+        let encodedQuery = encodeURIComponent(query);
+
         return apiClient
             .query({
                 query: gql`
                         {
-                            productSearch(query: "${query}" ${filters}) {
+                            productSearch(query: "${encodedQuery}" ${filters}) {
                                 productHits {
                                 productId
                                 productName
