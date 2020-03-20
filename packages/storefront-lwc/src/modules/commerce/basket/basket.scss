@@ -1,0 +1,17 @@
+$negative-spacer: -0.625rem;
+
+.line-item-attributes {
+    padding-left: .3em;
+}
+
+.product-info {
+    .remove-btn {
+        font-size: 1.625em;
+        padding: 0;
+        position: absolute;
+        right: 0.25rem;
+        border: none;
+        margin-top: $negative-spacer;
+        margin-bottom: $negative-spacer;
+    }
+}
