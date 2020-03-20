@@ -11,7 +11,48 @@
         <div class="basket-error-messaging basket-error">
         </div>
 
-        <div class="container">
+        <template if:true={loading}>
+            <div class='row mt-4'>
+                <div class='col-12'>
+                    <p class='text-center'>Loading Cart...</p>
+                </div>
+            </div>
+        </template>
+
+        <template if:false={loading}>
+            <template if:false={hasProducts}>
+                <div class="container">
+                    <div class="row  pt-5">
+                        <div class="col">
+                            <p class="text-center pt-2"> 0 Items </p>
+                        </div>
+                    </div>
+                    <div class="row pt-5">
+                        <div class="col text-center">
+                            <h3> Your Shopping Cart is Empty </h3>
+                        </div>
+                    </div>
+                    <div class="row pt-3">
+                        <div class="col"></div>
+                        <div class="col-12 col-sm-6 text-center">
+                            <p>
+                                <a href="/" class="btn btn-primary btn-block"> Continue </a>
+                            </p>
+                        </div>
+                        <div class="col"></div>
+                    </div>
+                    <div class="row pt-2">
+                        <div class="col">
+                            <p class="text-center">
+                                <a class="help-phone-number" href="tel:1-800-555-0199">Need Help? Call 1-800-555-0199</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </template>
+
+        <div class="container" if:true={hasProducts}>
             <h1 class="page-title">Your basket</h1>
             <div class="row basket-header">
                 <div class="col-sm-4 hidden-xs-down">
