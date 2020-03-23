@@ -1,6 +1,5 @@
 import UniversalRouter from 'universal-router';
 import { createBrowserHistory } from 'history';
-import xss from 'xss';
 
 const history = createBrowserHistory();
 const router = new UniversalRouter(
@@ -13,7 +12,7 @@ const router = new UniversalRouter(
             path: '/search/:query',
             action: location => ({
                 element: 'commerce-product-search-results',
-                attributes: { query: xss(location.params.query) },
+                attributes: { query: location.params.query },
             }),
         },
         {
@@ -24,7 +23,7 @@ const router = new UniversalRouter(
             path: '/product/:pid',
             action: location => ({
                 element: 'commerce-product-detail',
-                attributes: { pid: xss(location.params.pid) },
+                attributes: { pid: location.params.pid },
             }),
         },
     ],
