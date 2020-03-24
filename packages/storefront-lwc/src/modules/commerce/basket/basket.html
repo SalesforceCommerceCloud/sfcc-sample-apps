@@ -80,8 +80,11 @@
                                             <div class="price">
                                             <span>
                                                 <span class="sales">
-                                                    <span class="value">
-                                                        ${product.price}
+                                                    <span class="strike-through list">
+                                                        ${product.prices.list}
+                                                    </span>
+                                                    <span class="promotion-price">
+                                                        ${product.productPromotions.promotionalPrice}
                                                     </span>
                                                 </span>
                                             </span>
@@ -109,7 +112,10 @@
                                             </p>
                                             <div class="price">
                                                 <div class="pricing line-item-total-price-amount">
-                                                    ${product.price}
+                                                    ${product.itemTotalAfterDiscount}
+                                                </div>
+                                                <div class="pricing line-item-total-price-amount">
+                                                    ${product.itemTotalNonAdjusted}
                                                 </div>
                                             </div>
                                         </div>

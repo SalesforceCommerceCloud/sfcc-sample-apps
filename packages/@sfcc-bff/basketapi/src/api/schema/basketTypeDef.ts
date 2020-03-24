@@ -47,6 +47,16 @@ export const basketTypeDef = gql`
         inventory: Inventory!
         type: ProductType
         variationAttributes: [ProductVariationAttribute]
+        prices: Prices
+        itemTotalAfterDiscount: String
+        itemTotalNonAdjusted: String
+        productPromotions: ProductPromotions
+    }
+
+    type ProductPromotions {
+        calloutMsg: String
+        promotionalPrice: Float
+        promotionId: String
     }
 
     type ProductVariationAttribute {

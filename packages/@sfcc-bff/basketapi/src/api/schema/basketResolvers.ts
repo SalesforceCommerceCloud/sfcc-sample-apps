@@ -122,14 +122,15 @@ const getBasket = async (config: Config, context: AppContext) => {
                         },
                     })
                     .catch(e => {
-                        logger.error(`Error in getProducts` + e);
+                        logger.error(`Error in getProduct` + e);
                         throw e;
                     });
+                // get variationAttributes
                 product.variationAttributes?.map(attr => {
-                    let vartationValue = product.variationValues
+                    let variationValues = product.variationValues
                         ? product.variationValues
                         : {};
-                    let attributeId = vartationValue[attr.id];
+                    let attributeId = variationValues[attr.id];
                     if (attributeId) {
                         let selectedValue = attr.values?.find(item => {
                             return item.value === attributeId;
@@ -138,9 +139,20 @@ const getBasket = async (config: Config, context: AppContext) => {
                     }
                 });
                 productItem.variationAttributes = product.variationAttributes;
+                // get promotional price for each productItem
+                productItem.productPromotions =
+                    product.productPromotions?.find(promo =>
+                        promo.hasOwnProperty('promotionalPrice'),
+                    ) || {};
+                // get unit prices for each productItem
+                productItem.displayPrices = product.prices;
+                productItem.prices = {
+                    list: productItem.displayPrices['usd-m-list-prices'],
+                    sale: productItem.displayPrices['usd-m-sale-prices'],
+                };
                 productItem.inventory = product.inventory;
                 productItem.type = product.type;
-
+                // get images for each productItem
                 let imageArray = product.imageGroups?.find(
                     image => image.viewType === 'small',
                 )?.images;

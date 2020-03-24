@@ -22,7 +22,6 @@ class Basket {
      * @param product: the product to add to basket
      */
 
-    // TODO : wire up the UI quantity selector to pass in quantity to add
     addToBasket(product, qty) {
         let pid = product.id;
         return apiClient
@@ -178,6 +177,8 @@ class Basket {
                                 }
                                 productName
                                 price
+                                itemTotalAfterDiscount
+                                itemTotalNonAdjusted
                                 imageURL
                                 variationAttributes {
                                     id
@@ -187,6 +188,15 @@ class Basket {
                                         orderable
                                         value
                                     }
+                                }
+                                prices {
+                                    list
+                                    sale
+                                }
+                                productPromotions {
+                                    calloutMsg
+                                    promotionalPrice
+                                    promotionId
                                 }
                             }
                             orderTotal
@@ -215,6 +225,8 @@ class Basket {
             })
             .then(result => {
                 this.basket = result.data.getBasket;
+                // console.log('this.basket is ', result.data.getBasket.products[0].variationAttributes["0"].selectedValue.value);
+
                 this.isBasketLoaded = true;
                 this.updateBasket('basket-loaded');
                 return this.basket;

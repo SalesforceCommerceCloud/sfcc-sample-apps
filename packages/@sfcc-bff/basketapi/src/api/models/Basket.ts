@@ -48,6 +48,10 @@ class Basket {
                       variationAttributes: product.variationAttributes,
                       inventory: product.inventory,
                       type: product.type,
+                      prices: product.prices,
+                      itemTotalAfterDiscount: product.priceAfterItemDiscount,
+                      itemTotalNonAdjusted: product.price,
+                      productPromotions: product.productPromotions,
                   };
               })
             : [];
