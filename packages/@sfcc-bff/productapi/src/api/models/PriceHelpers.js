@@ -39,7 +39,7 @@ const getLowestPromotionalPrice = promotions => {
     return null;
 };
 
-const getPrices = apiProduct => {
+export const getPrices = apiProduct => {
     let lowestPromotionalPrice = getLowestPromotionalPrice(
         apiProduct.productPromotions,
     );
@@ -80,11 +80,3 @@ const getPrices = apiProduct => {
     }
     return prices;
 };
-
-class PriceHelpers {
-    constructor(apiProduct) {
-        this.prices = getPrices(apiProduct);
-    }
-}
-
-export default PriceHelpers;

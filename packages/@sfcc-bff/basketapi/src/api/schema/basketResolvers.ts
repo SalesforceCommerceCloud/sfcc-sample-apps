@@ -10,6 +10,7 @@ import { getCommerceClientConfig } from '@sfcc-core/apiconfig';
 import { getUserFromContext, AppContext } from '@sfcc-core/core-graphql';
 import CommerceSdk from 'commerce-sdk';
 import { core, Config } from '@sfcc-core/core';
+import { getPrices } from '@sfcc-bff/productapi';
 
 const { ApolloError } = apollo;
 const logger = core.logger;
@@ -139,19 +140,10 @@ const getBasket = async (config: Config, context: AppContext) => {
                     }
                 });
                 productItem.variationAttributes = product.variationAttributes;
-                // get promotional price for each productItem
-                productItem.productPromotions =
-                    product.productPromotions?.find(promo =>
-                        promo.hasOwnProperty('promotionalPrice'),
-                    ) || {};
-                // get unit prices for each productItem
-                productItem.displayPrices = product.prices;
-                productItem.prices = {
-                    list: productItem.displayPrices['usd-m-list-prices'],
-                    sale: productItem.displayPrices['usd-m-sale-prices'],
-                };
                 productItem.inventory = product.inventory;
                 productItem.type = product.type;
+                // second approach : use pdp price component
+                productItem.prices = getPrices(product);
                 // get images for each productItem
                 let imageArray = product.imageGroups?.find(
                     image => image.viewType === 'small',

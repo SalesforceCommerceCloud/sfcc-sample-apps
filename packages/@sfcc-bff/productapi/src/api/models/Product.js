@@ -8,7 +8,7 @@
 
 import Image from './Image';
 import get from 'lodash';
-import PriceHelpers from './PriceHelpers';
+import { getPrices } from './PriceHelpers';
 
 const getImages = (imageGroups, matchingColor) => {
     return ({ allImages, size }) => {
@@ -156,7 +156,7 @@ class Product {
             apiProduct.variationAttributes,
             apiProduct.imageGroups,
         );
-        this.prices = new PriceHelpers(apiProduct);
+        this.prices = getPrices(apiProduct);
     }
 }
 

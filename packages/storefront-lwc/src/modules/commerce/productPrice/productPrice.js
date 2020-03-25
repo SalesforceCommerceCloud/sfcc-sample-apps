@@ -35,7 +35,7 @@ export default class ProductPrice extends LightningElement {
      */
     @api
     set context(value) {
-        const validValues = ['tile', 'pdp'];
+        const validValues = ['tile', 'pdp', 'basket'];
         let matchFound = false;
         for (const validValue of validValues) {
             if (value === validValue) {

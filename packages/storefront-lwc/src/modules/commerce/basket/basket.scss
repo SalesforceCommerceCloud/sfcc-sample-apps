@@ -1,0 +1,11 @@
+@import "../../../scss/ux_variables";
+
+.line-item-attributes {
+  padding-left: .3em; 
+}
+
+.strike-through {
+  text-decoration: line-through;
+  color: $light-gray;
+  font-weight: $font-weight-normal;
+}

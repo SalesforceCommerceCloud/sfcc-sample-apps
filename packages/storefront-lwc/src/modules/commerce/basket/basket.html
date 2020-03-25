@@ -78,21 +78,11 @@
                                         <div class="col-4">
                                             <p class="line-item-price-info">Each</p>
                                             <div class="price">
-                                            <span>
-                                                <span class="sales">
-                                                    <span class="strike-through list">
-                                                        ${product.prices.list}
-                                                    </span>
-                                                    <span class="promotion-price">
-                                                        ${product.productPromotions.promotionalPrice}
-                                                    </span>
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <commerce-product-price product={product} context="tile"></commerce-product-price>
-                                                        </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <commerce-product-price product={product} context="basket"></commerce-product-price>
                                                     </div>
-                                                </span>
-                                            </span>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -116,10 +106,10 @@
                                                 Total
                                             </p>
                                             <div class="price">
-                                                <div class="pricing line-item-total-price-amount">
+                                                <div class="pricing line-item-total-discout-amount">
                                                     ${product.itemTotalAfterDiscount}
                                                 </div>
-                                                <div class="pricing line-item-total-price-amount">
+                                                <div class="pricing line-item-total-noadjusted-amount strike-through">
                                                     ${product.itemTotalNonAdjusted}
                                                 </div>
                                             </div>
