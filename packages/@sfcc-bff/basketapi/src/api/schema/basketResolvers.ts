@@ -91,21 +91,15 @@ const getBasket = async (config: Config, context: AppContext) => {
         context,
     );
 
-    if (shippingMethods.fault) {
-        return shippingMethods;
+    // Update Shipping Method to Default Method if Basket Does Not Have One Already
+    if (!basket.shipments[0].shippingMethod) {
+        basket = await updateShippingMethod(
+            shipmentId,
+            shippingMethods.defaultShippingMethodId as string,
+            config,
+            context,
+        );
     }
-
-    // Update Shipping Method to Default Method
-    let selectedShippingMethodId = basket.shipments[0].shippingMethod
-        ? basket.shipments[0].shippingMethod.id
-        : shippingMethods.defaultShippingMethodId;
-
-    basket = await updateShippingMethod(
-        shipmentId,
-        selectedShippingMethodId as string,
-        config,
-        context,
-    );
 
     basket.shippingMethods = shippingMethods;
 
