@@ -5,11 +5,20 @@
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 -->
 <template>
-    <input class="form-check-input"
+
+    <input if:true={refinement.isSelected} class="form-check-input"
+           type="checkbox"
+           value={refinement.title}
+           id={refinement.key}
+           checked
+           onclick={toggleRefinementHandler}>
+
+    <input if:false={refinement.isSelected} class="form-check-input"
            type="checkbox"
            value={refinement.title}
            id={refinement.key}
            onclick={toggleRefinementHandler}>
+
     <label class="form-check-label refinement-label" for={refinement.key}>
         <div if:false={refinement.isColor} title={refinement.title}>
             <div>{refinement.label} ({refinement.hitCount})</div>

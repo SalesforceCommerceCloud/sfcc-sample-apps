@@ -8,7 +8,7 @@ import { LightningElement, api } from 'lwc';
 
 export default class SearchSort extends LightningElement {
     @api sort = [];
-    sortRule = {};
+    @api sortRule = {};
 
     get viewOptions() {
         return this.sort.map(option => ({
