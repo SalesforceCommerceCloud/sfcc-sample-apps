@@ -70,6 +70,7 @@ p {
 
 // e.g. Product detail origin price for sale product
 .strikethrough,
+.strike-through,
 .product-sale-strikethrough {
   @include strikethrough
 }

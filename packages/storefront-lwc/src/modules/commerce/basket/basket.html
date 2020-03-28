@@ -20,9 +20,9 @@
                     </a>
                 </div>
                 <div class="col-sm-3 text-center">
-                    <h2 class="number-of-items">
+                    <p class="number-of-items">
                         {basket.totalProductsQuantity} Items
-                    </h2>
+                    </p>
                 </div>
                 <div class="col-sm-5 text-right hidden-xs-down">
                     <div>
@@ -40,40 +40,35 @@
                     <template for:each={products} for:item="product" for:index="index">
                         <div key={product.productId} class="card product-info">
                             <div class="line-item-header">
-                                <div class="line-item-name">
+                                <h5 class="line-item-name">
                                     {product.productName}
-                                </div>
+                                </h5>
                             </div>
 
                             <div class="row ">
-                                <div class="col-lg-5">
+                                <div class="col-sm-5">
                                     <div class="row">
                                         <div class="col-lg-12 d-flex flex-row">
-                                            <div class="item-image">
-                                                <img class="product-image" src={product.imageURL} alt={product.name} title={product.name}>
-                                            </div>
+                                            <commerce-product-image image-url={product.imageURL} product-name={product.productName}></commerce-product-image>
                                             <div class="item-attributes d-flex flex-column">
+                                                <div class="line-item-variation-attributes">
+                                                    <!-- Product variations-->
+                                                    <commerce-variation-attributes variation-attributes={product.variationAttributes}></commerce-variation-attributes>
+                                                </div>
                                                 <div class="line-item-availability">
                                                     <!-- Product Availability -->
-                                                    <commerce-product-availability inventory={product.inventory} type={product.type} quantity={product.quantity}></commerce-product-availability>
-                                                    <!-- Product variations-->
-                                                    <template for:each={product.variationAttributes} for:item="variationAttribute" for:index="index">
-                                                        <p key={variationAttribute.id} class="line-item-attributes">{variationAttribute.name}: {variationAttribute.selectedValue.name}</p>
-                                                    </template>
-                                                    <!--<p class="line-item-attributes">${product.variationAttributes[0].name} :${product.variationAttributes[0].selectedValue.name}</p>-->
-                                                </div>
-                                                <div class="product-edit">
+                                                    <commerce-product-availability inventory={product.inventory} type={product.type} quantity={product.quantity} context="basket"></commerce-product-availability>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-12 d-lg-none">
+                                <div class="col-12 d-sm-none">
                                     <hr class="line-item-divider">
                                 </div>
 
-                                <div class="col-lg-7 product-card-footer">
+                                <div class="col-sm-7 product-card-footer">
                                     <div class="row">
                                         <div class="col-4">
                                             <p class="line-item-price-info">Each</p>
@@ -106,12 +101,7 @@
                                                 Total
                                             </p>
                                             <div class="price">
-                                                <div class="pricing line-item-total-discout-amount">
-                                                    ${product.itemTotalAfterDiscount}
-                                                </div>
-                                                <div class="pricing line-item-total-noadjusted-amount strike-through">
-                                                    ${product.itemTotalNonAdjusted}
-                                                </div>
+                                                <commerce-line-item-total product={product}></commerce-line-item-total>
                                             </div>
                                         </div>
 

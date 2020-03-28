@@ -142,7 +142,6 @@ const getBasket = async (config: Config, context: AppContext) => {
                 productItem.variationAttributes = product.variationAttributes;
                 productItem.inventory = product.inventory;
                 productItem.type = product.type;
-                // second approach : use pdp price component
                 productItem.prices = getPrices(product);
                 // get images for each productItem
                 let imageArray = product.imageGroups?.find(
