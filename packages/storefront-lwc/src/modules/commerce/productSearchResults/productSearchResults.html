@@ -42,11 +42,11 @@
                                     </aside>
                                 </div>
 
-
                                 <div class='col col-lg-9 product-list-grid'>
                                     <div class='container'>
-                                        <commerce-product-list ontogglerefinementbar={toggleRefinementBarHandler}
-                                            onupdatesort={updateSortHandler} products={products} sort={sortingOptions} sort-rule-value={sortRuleValue}>
+                                        <commerce-product-list ontogglerefinementbar={toggleRefinementBarHandler} 
+                                            onupdatesort={updateSortHandler} products={products} sort={sortingOptions} sort-rule-value={sortRuleValue}
+                                            total={total} offset={offset} limit={limit} ongetnextpage={nextPageHandler}>
                                         </commerce-product-list>
                                     </div>
                                 </div>

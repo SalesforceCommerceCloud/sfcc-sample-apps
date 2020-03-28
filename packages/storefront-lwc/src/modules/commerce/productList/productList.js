@@ -10,6 +10,13 @@ export default class ProductList extends LightningElement {
     @api products;
     @api sort;
     @api sortRuleValue;
+    @api total;
+    @api offset;
+    @api limit;
+
+    get showMore() {
+        return this.offset < this.total && this.total > this.limit;
+    }
 
     toggleRefinementBar() {
         this.dispatchEvent(new CustomEvent('togglerefinementbar'));

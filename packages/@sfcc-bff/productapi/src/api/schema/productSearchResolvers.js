@@ -37,10 +37,19 @@ const processFilterParams = filterParams => {
     return filterParamQuery;
 };
 
-const searchProduct = async (config, query, filterParams, context) => {
+const searchProduct = async (
+    config,
+    query,
+    offset,
+    limit,
+    filterParams,
+    context,
+) => {
     const filters = filterParams ? processFilterParams(filterParams) : {};
     let parameterValue = {
         q: query,
+        offset: offset,
+        limit: limit,
     };
 
     if (filters.refine && filters.refine.length !== 0) {
@@ -65,10 +74,16 @@ const searchProduct = async (config, query, filterParams, context) => {
 export const resolver = config => {
     return {
         Query: {
-            productSearch: (_, { query, filterParams }, context) => {
+            productSearch: (
+                _,
+                { query, offset, limit, filterParams },
+                context,
+            ) => {
                 const result = searchProduct(
                     config,
                     query,
+                    offset,
+                    limit,
                     filterParams,
                     context,
                 ).then(searchResult => {

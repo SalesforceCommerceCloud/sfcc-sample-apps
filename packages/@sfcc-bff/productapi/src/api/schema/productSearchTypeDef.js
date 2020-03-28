@@ -9,15 +9,22 @@ const { gql } = apolloServerCore;
 
 export const typeDef = gql`
     extend type Query {
-        productSearch(query: String!, filterParams: [Filter]): SearchResult
+        productSearch(
+            query: String!
+            offset: Int!
+            limit: Int!
+            filterParams: [Filter]
+        ): SearchResult
     }
 
     type SearchResult {
-        limit: Int!
         productHits: [ProductHit]
         currentFilters: [CurrentFilter]
         refinements: [Refinement]
         sortingOptions: [SortOption]
+        total: Int!
+        offset: Int!
+        limit: Int!
     }
 
     type SortOption {

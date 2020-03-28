@@ -1,8 +1,16 @@
 import gql from 'graphql-tag';
 
 const QUERY = gql`
-    query($query: String!, $filters: [Filter]) {
-        productSearch(query: $query, filterParams: $filters) {
+    query($query: String!, $offset: Int!, $limit: Int!, $filters: [Filter]) {
+        productSearch(
+            query: $query
+            offset: $offset
+            limit: $limit
+            filterParams: $filters
+        ) {
+            total
+            offset
+            limit
             productHits {
                 productId
                 productName

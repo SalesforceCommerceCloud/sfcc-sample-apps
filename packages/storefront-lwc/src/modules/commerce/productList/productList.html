@@ -8,7 +8,7 @@
     <div class='row d-sm-none'>
         <div class='col-12'>
             <p class="text-center result-count">
-                <span if:false={loading}>{products.length} Results</span>
+                <span if:false={loading}>{total} Results</span>
             </p>
         </div>
     </div>
@@ -21,7 +21,7 @@
         </div>
         <div class='col-6 col-sm-4 grid-gutter d-none d-sm-block'>
             <p class="text-center text-lg-left result-count">
-                <span if:false={loading}>{products.length} Results</span>
+                <span if:false={loading}>{total} Results</span>
             </p>
         </div>
         <div class='col-6 col-sm-4 grid-gutter d-none d-lg-block'></div>
@@ -29,11 +29,14 @@
             <commerce-search-sort sort={sort} sort-rule={sortRuleValue}></commerce-search-sort>
         </div>
         <template for:each={products} for:item="product">
-            <div class='col-6 col-sm-4 grid-gutter' key={product.productId} >
+            <div class='col-6 col-sm-4 grid-gutter' key={product.productId}>
                 <div class='product' >
                     <commerce-product-tile product={product}></commerce-product-tile>
                 </div>
             </div>
         </template>
+        <div if:true={showMore} class="col-12 grid-footer">
+            <commerce-pagination offset={offset} limit={limit}></commerce-pagination>
+        </div>
     </div>
 </template>

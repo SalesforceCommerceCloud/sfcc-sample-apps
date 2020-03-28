@@ -11,19 +11,24 @@ import '../api/client';
 
 export default class ProductSearchResults extends LightningElement {
     @track state = {};
-    @track products = [];
+    products = [];
     @track refinementgroups = [];
     sortingOptions = [];
     @track loading = true;
     @track refinementBar = 'refinement-bar col-md-3 d-none d-lg-block';
     @track showRefinementBar = true;
     selectedRefinements = {};
+    sortRuleValue = '';
+    total;
+    offset = 0;
+    limit = 12;
 
     variables = {
         query: '',
+        offset: this.offset,
+        limit: this.limit,
         filters: [],
     };
-    sortRuleValue = '';
 
     @api set query(val) {
         this._query = val;
@@ -52,7 +57,15 @@ export default class ProductSearchResults extends LightningElement {
     updateProducts(response) {
         // The method to handle the response results returned from the above wire adaptor.
         if (!response.loading && response.data && response.data.productSearch) {
-            this.products = response.data.productSearch.productHits || [];
+            this.total = response.data.productSearch.total;
+            if (this.variables.offset == 0) {
+                this.products = response.data.productSearch.productHits || [];
+            } else {
+                this.products = [
+                    ...this.products,
+                    ...(response.data.productSearch.productHits || []),
+                ];
+            }
             this.refinementgroups =
                 [...response.data.productSearch.refinements] || [];
             this.sortingOptions = response.data.productSearch.sortingOptions;
@@ -102,6 +115,15 @@ export default class ProductSearchResults extends LightningElement {
      */
     updateSortHandler(e) {
         this.sortRule = e.detail.sortRule;
+    }
+
+    /**
+     * Listen to Pagination component
+     * @param e event with new offset
+     */
+    nextPageHandler(e) {
+        this.offset = e.detail.offset;
+        this.variables = { ...this.variables, offset: e.detail.offset };
     }
 
     /**

@@ -10,7 +10,6 @@ import SearchResultProduct from './SearchResultProduct';
 
 export default class SearchResult {
     constructor(searchResult, filterParams) {
-        this.limit = searchResult.limit;
         this.productHits =
             searchResult['hits'] && searchResult['hits'].length
                 ? searchResult.hits.map(
@@ -35,5 +34,8 @@ export default class SearchResult {
             };
         });
         this.sortingOptions = searchResult.sortingOptions;
+        this.total = searchResult.total;
+        this.offset = searchResult.offset;
+        this.limit = searchResult.limit;
     }
 }
