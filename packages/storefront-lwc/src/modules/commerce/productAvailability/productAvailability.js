@@ -143,4 +143,38 @@ export default class ProductAvailability extends LightningElement {
 
         return availabilityMessage;
     }
+    /**
+     * Sets the context value to one of the valid values
+     * The context value is used as class name in the template.
+     * This allows context-specific css styling.
+     */
+    @api
+    set context(value) {
+        const validValues = ['pdp', 'basket'];
+        let matchFound = false;
+        validValues.find(validValue => {
+            if (value === validValue) {
+                return (matchFound = true);
+            }
+        });
+
+        if (!matchFound) {
+            throw new Error(
+                `Invalid context value: ${value}. Available contexts: ${validValues.join(
+                    ', ',
+                )}`,
+            );
+        }
+
+        this.contextValue = value;
+    }
+
+    /**
+     * Gets the context value.
+     * The context value is used as class name in the template.
+     * This allows context-specific css styling.
+     */
+    get context() {
+        return this.contextValue;
+    }
 }

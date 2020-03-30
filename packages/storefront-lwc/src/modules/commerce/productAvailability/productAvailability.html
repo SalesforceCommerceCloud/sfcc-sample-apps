@@ -1,16 +1,18 @@
 <template>
-    <div class="row availability small-paragraph">
-        <div class="col-4">
-            <label>
-                Availability:
-            </label>
-        </div>
-        <div class="col-8">
-            <ul class="list-unstyled">
-                <li>
-                    {availabilityMessage}
-                </li>
-            </ul>
+    <div class={context}>
+        <div class="row availability small-paragraph">
+            <div class="col-4 availability-label">
+                <label>
+                    Availability:
+                </label>
+            </div>
+            <div class="col-8 pr-0 availability-message">
+                <ul class="list-unstyled">
+                    <li>
+                        {availabilityMessage}
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </template>

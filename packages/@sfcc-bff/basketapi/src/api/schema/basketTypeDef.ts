@@ -44,7 +44,29 @@ export const basketTypeDef = gql`
         price: Float!
         quantity: Int!
         itemId: String!
-        image: String
+        imageURL: String
+        inventory: Inventory!
+        type: ProductType
+        variationAttributes: [ProductVariationAttribute]
+        prices: Prices
+        itemTotalAfterDiscount: Float
+        itemTotalNonAdjusted: Float
+        productPromotions: ProductPromotions
+    }
+    type ProductPromotions {
+        calloutMsg: String
+        promotionalPrice: Float
+        promotionId: String!
+    }
+    type ProductVariationAttribute {
+        id: String!
+        name: String!
+        selectedValue: SelectedVariationValue
+    }
+    type SelectedVariationValue {
+        name: String!
+        orderable: Boolean
+        value: String!
     }
     type ShippingMethods {
         applicableShippingMethods: [ShippingMethod]

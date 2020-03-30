@@ -5,12 +5,9 @@
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 -->
 <template>
-    <div role="main" id="maincontent">
-
-
+    <div role="main" class="container" id="maincontent">
         <div class="basket-error-messaging basket-error">
         </div>
-
         <template if:true={loading}>
             <div class='row mt-4'>
                 <div class='col-12'>
@@ -21,40 +18,38 @@
 
         <template if:false={loading}>
             <template if:false={hasProducts}>
-                <div class="container">
-                    <div class="row  pt-5">
-                        <div class="col">
-                            <p class="text-center pt-2"> 0 Items </p>
-                        </div>
+                <div class="row pt-5">
+                    <div class="col">
+                        <p class="text-center pt-2"> 0 Items </p>
                     </div>
-                    <div class="row pt-5">
-                        <div class="col text-center">
-                            <h3> Your Shopping Cart is Empty </h3>
-                        </div>
+                </div>
+                <div class="row pt-5">
+                    <div class="col text-empty-cart">
+                        <p> Your Shopping Cart is Empty </p>
                     </div>
-                    <div class="row pt-3">
-                        <div class="col"></div>
-                        <div class="col-12 col-sm-6 text-center">
-                            <p>
-                                <a href="/" class="btn btn-primary btn-block"> Continue </a>
-                            </p>
-                        </div>
-                        <div class="col"></div>
+                </div>
+                <div class="row pt-3">
+                    <div class="col"></div>
+                    <div class="col-12 col-sm-6 text-center">
+                        <p>
+                            <a href="/" class="btn btn-primary btn-block"> Continue </a>
+                        </p>
                     </div>
-                    <div class="row pt-2">
-                        <div class="col">
-                            <p class="text-center">
-                                Need Help? Call
-                                <a class="help-phone-number" href="tel:1-800-555-0199"> 1-800-555-0199 </a>
-                            </p>
-                        </div>
+                    <div class="col"></div>
+                </div>
+                <div class="row pt-2">
+                    <div class="col">
+                        <p class="text-center">
+                            Need Help? Call
+                            <a class="help-phone-number" href="tel:1-800-555-0199"> 1-800-555-0199 </a>
+                        </p>
                     </div>
                 </div>
             </template>
         </template>
 
-        <div class="container" if:true={hasProducts}>
-            <h1 class="page-title">Your basket</h1>
+        <div class="header-title" if:true={hasProducts}>
+            <h1 class="basket-title">Your basket</h1>
             <div class="row basket-header">
                 <div class="col-sm-4 hidden-xs-down">
                     <a class="continue-shopping-link" href="/" title="Continue Shopping">
@@ -62,9 +57,9 @@
                     </a>
                 </div>
                 <div class="col-sm-3 text-center">
-                    <h2 class="number-of-items">
+                    <p class="number-of-items">
                         {basket.totalProductsQuantity} Items
-                    </h2>
+                    </p>
                 </div>
                 <div class="col-sm-5 text-right hidden-xs-down">
                     <div>
@@ -76,88 +71,12 @@
             <hr class="no-margin-top">
         </div>
 
-        <div class="container basket basket-page">
+        <div class="basket basket-page">
             <div class="row">
                 <div class="col-md-8">
                     <template for:each={products} for:item="product" for:index="index">
-                        <div key={product.productId} class="card product-info">
-                            <div class="line-item-header">
-                                <div class="line-item-name">
-                                    {product.productName}
-                                </div>
-                            </div>
-
-                            <div class="row ">
-                                <div class="col-lg-5">
-                                    <div class="row">
-                                        <div class="col-lg-12 d-flex flex-row">
-                                            <div class="item-image">
-                                                <img class="product-image" src={product.image} alt={product.name} title={product.name}>
-                                            </div>
-                                            <div class="item-attributes d-flex flex-column">
-                                                <div class="line-item-availability">
-                                                    <p class="line-item-attributes">In Stock</p>
-                                                </div>
-                                                <div class="product-edit">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-12 d-lg-none">
-                                    <hr class="line-item-divider">
-                                </div>
-
-                                <div class="col-lg-7 product-card-footer">
-                                    <div class="row">
-                                        <div class="col-4">
-                                            <p class="line-item-price-info">Each</p>
-                                            <div class="price">
-                                            <span>
-                                                <span class="sales">
-                                                    <span class="value">
-                                                        ${product.price}
-                                                    </span>
-                                                </span>
-                                            </span>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-4 col-lg-3 line-item-quantity">
-                                            <div class="quantity-form">
-                                                <p class="line-item-quantity-info">Quantity</p>
-                                                <div class="quantity">
-                                                    <span>
-                                                        <span class="item-quantity">
-                                                            <span class="item-quantity-total">
-                                                                {product.quantity}
-                                                            </span>
-                                                        </span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-4 line-item-total-price">
-                                            <p class="line-item-price-info">
-                                                Total
-                                            </p>
-                                            <div class="price">
-                                                <div class="pricing line-item-total-price-amount">
-                                                    ${product.price}
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-1 hidden-md-down remove-line-item-lg"></div>
-                                    </div>
-
-                                    <div class="line-item-promo"></div>
-                                </div>
-                            </div>
-                            <button type="button" class="remove-btn btn" onclick={removeHandler} data-itemid={product.itemId}>×</button>
-                        </div>
+                        <commerce-product-line-item product={product} key={product.productId}>
+                        </commerce-product-line-item>
                     </template>
                 </div>
 
@@ -174,10 +93,13 @@
                                     <label for="couponCode">Enter Promo Code</label>
                                     <div class="row">
                                         <div class="col-7">
-                                            <input type="text" class="form-control coupon-code-field" id="couponCode" name="couponCode" placeholder="Promo Code">
+                                            <input type="text" class="form-control coupon-code-field" id="couponCode"
+                                                name="couponCode" placeholder="Promo Code">
                                             <div class="coupon-error">
-                                                <span class="coupon-missing-error" id="missingCouponCode" role="alert">No coupon code entered</span>
-                                                <span class="coupon-error-message" id="invalidCouponCode" role="alert"></span>
+                                                <span class="coupon-missing-error" id="missingCouponCode"
+                                                    role="alert">No coupon code entered</span>
+                                                <span class="coupon-error-message" id="invalidCouponCode"
+                                                    role="alert"></span>
                                             </div>
                                         </div>
                                         <div class="col-5 promo-code-submit">
@@ -194,14 +116,16 @@
                     <div class="coupons-and-promos">
                     </div>
 
-                    <commerce-shippingmethods shipping-label="Shipping" shipping-methods={shippingMethods} selected-shipping-method-id={selectedShippingMethodId}></commerce-shippingmethods>
+                    <commerce-shippingmethods shipping-label="Shipping" shipping-methods={shippingMethods}
+                        selected-shipping-method-id={selectedShippingMethodId}></commerce-shippingmethods>
 
                     <commerce-basket-totals></commerce-basket-totals>
 
                     <div class="row">
                         <div class="col-12 checkout-continue">
                             <div>
-                                <a href="/" class="btn btn-primary btn-block checkout-btn " role="button" aria-pressed="true">
+                                <a href="/" class="btn btn-primary btn-block checkout-btn " role="button"
+                                    aria-pressed="true">
                                     Checkout
                                 </a>
                             </div>
@@ -210,11 +134,7 @@
                     </div>
                     <br>
                 </div>
-
-
             </div>
         </div>
-
-
     </div>
 </template>

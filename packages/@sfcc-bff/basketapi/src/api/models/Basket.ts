@@ -44,7 +44,14 @@ class Basket {
                       price: product.price,
                       quantity: product.quantity,
                       itemId: product.itemId,
-                      image: product.image,
+                      imageURL: product.imageURL,
+                      variationAttributes: product.variationAttributes,
+                      inventory: product.inventory,
+                      type: product.type,
+                      prices: product.prices,
+                      itemTotalAfterDiscount: product.priceAfterItemDiscount,
+                      itemTotalNonAdjusted: product.price,
+                      productPromotions: product.productPromotions,
                   };
               })
             : [];

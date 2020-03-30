@@ -15,9 +15,21 @@ const authLink = new ApolloLink((operation, forward) => {
     return forward(operation);
 });
 
+const defaultOptions = {
+    watchQuery: {
+        fetchPolicy: 'no-cache',
+        errorPolicy: 'ignore',
+    },
+    query: {
+        fetchPolicy: 'no-cache',
+        errorPolicy: 'all',
+    },
+};
+
 const apiClient = new ApolloClient({
     link: authLink.concat(httpLink), // Chain it with the HttpLink
     cache: new InMemoryCache(),
+    defaultOptions: defaultOptions, // disable apollo-client cache
 });
 
 setClient(apiClient);
