@@ -26,7 +26,9 @@ export default class HeaderBasket extends LightningElement {
         lazy: false,
     })
     updateProductsTotal(response) {
-        this.quantity = response.data ? response.data.getBasketProductCount : 0;
+        if (response.initialized) {
+            this.quantity = response.data.getBasketProductCount;
+        }
     }
 
     constructor() {
@@ -39,7 +41,4 @@ export default class HeaderBasket extends LightningElement {
     updateBasketHandler() {
         this.quantity = ShoppingBasket.basket.totalProductsQuantity || 0;
     }
-
-    // eslint-disable-next-line class-methods-use-this
-    renderedCallback() {}
 }
