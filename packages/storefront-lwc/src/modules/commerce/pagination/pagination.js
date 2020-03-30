@@ -10,7 +10,7 @@ export default class Pagination extends LightningElement {
     @api offset;
     @api limit;
 
-    getNextPage(event) {
+    getNextPage() {
         const newOffset = this.offset + this.limit;
         this.dispatchEvent(
             new CustomEvent('getnextpage', {
