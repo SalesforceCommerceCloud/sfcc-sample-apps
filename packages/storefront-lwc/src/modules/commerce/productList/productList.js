@@ -15,7 +15,7 @@ export default class ProductList extends LightningElement {
     @api limit;
 
     get showMore() {
-        return this.offset < this.total && this.total > this.limit;
+        return !(this.offset + this.limit == this.total);
     }
 
     toggleRefinementBar() {

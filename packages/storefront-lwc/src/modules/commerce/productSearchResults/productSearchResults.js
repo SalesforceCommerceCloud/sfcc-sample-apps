@@ -9,6 +9,9 @@ import QUERY from './gqlQuery';
 import { useQuery } from '@lwce/apollo-client';
 import '../api/client';
 
+const OFFSET = 0;
+const LIMIT = 12;
+
 export default class ProductSearchResults extends LightningElement {
     @track state = {};
     products = [];
@@ -20,19 +23,21 @@ export default class ProductSearchResults extends LightningElement {
     selectedRefinements = {};
     sortRuleValue = '';
     total;
-    offset = 0;
-    limit = 12;
 
     variables = {
         query: '',
-        offset: this.offset,
-        limit: this.limit,
+        offset: OFFSET,
+        limit: LIMIT,
         filters: [],
     };
 
     @api set query(val) {
         this._query = val;
-        this.variables = { ...this.variables, query: encodeURIComponent(val) };
+        this.variables = {
+            ...this.variables,
+            query: encodeURIComponent(val),
+            offset: OFFSET,
+        };
     }
 
     get query() {
@@ -58,6 +63,8 @@ export default class ProductSearchResults extends LightningElement {
         // The method to handle the response results returned from the above wire adaptor.
         if (!response.loading && response.data && response.data.productSearch) {
             this.total = response.data.productSearch.total;
+            this.offset = response.data.productSearch.offset;
+            this.limit = response.data.productSearch.limit;
             if (this.variables.offset == 0) {
                 this.products = response.data.productSearch.productHits || [];
             } else {
@@ -92,8 +99,6 @@ export default class ProductSearchResults extends LightningElement {
             this.loading = false;
         } else {
             this.loading = response.loading;
-            this.products = [];
-            this.refinementgroups = [];
         }
     }
 
@@ -123,7 +128,7 @@ export default class ProductSearchResults extends LightningElement {
      */
     nextPageHandler(e) {
         this.offset = e.detail.offset;
-        this.variables = { ...this.variables, offset: e.detail.offset };
+        this.variables = { ...this.variables, offset: this.offset };
     }
 
     /**
@@ -158,10 +163,15 @@ export default class ProductSearchResults extends LightningElement {
         } else {
             this.selectedRefinements[refinementId].splice(index, 1);
         }
-
+        this.products = [];
         this.selectedRefinements = { ...this.selectedRefinements };
         const filters = this.getFilters();
-        this.variables = { ...this.variables, filters: filters };
+        this.variables = {
+            ...this.variables,
+            filters: filters,
+            offset: OFFSET,
+            limit: LIMIT,
+        };
     }
 
     /**
