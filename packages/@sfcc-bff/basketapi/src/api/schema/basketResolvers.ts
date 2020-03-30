@@ -10,6 +10,7 @@ import { getCommerceClientConfig } from '@sfcc-core/apiconfig';
 import { getUserFromContext, AppContext } from '@sfcc-core/core-graphql';
 import CommerceSdk from 'commerce-sdk';
 import { core, Config } from '@sfcc-core/core';
+import { getPrices } from '@sfcc-bff/productapi';
 
 const { ApolloError } = apollo;
 const logger = core.logger;
@@ -103,68 +104,47 @@ const getBasket = async (config: Config, context: AppContext) => {
 
     basket.shippingMethods = shippingMethods;
 
-    // get all the product ids in current basket
-    let productIds = basket.productItems
-        ? basket.productItems.map(product => product.productId).join()
-        : '';
     // get product details for all the product items in basket
+    const productClient = await getProductClient(config, context);
     if (basket.productItems) {
-        let productDetails = await getProductsDetailsInfo(
-            config,
-            context,
-            productIds,
+        await Promise.all(
+            basket.productItems.map(async productItem => {
+                let product = await productClient
+                    .getProduct({
+                        parameters: {
+                            id: productItem.productId || '',
+                        },
+                    })
+                    .catch(e => {
+                        logger.error(`Error in getProduct` + e);
+                        throw e;
+                    });
+                // get variationAttributes
+                product.variationAttributes?.map(attr => {
+                    let variationValues = product.variationValues
+                        ? product.variationValues
+                        : {};
+                    let attributeId = variationValues[attr.id];
+                    if (attributeId) {
+                        let selectedValue = attr.values?.find(item => {
+                            return item.value === attributeId;
+                        });
+                        attr.selectedValue = selectedValue;
+                    }
+                });
+                productItem.variationAttributes = product.variationAttributes;
+                productItem.inventory = product.inventory;
+                productItem.type = product.type;
+                productItem.prices = getPrices(product);
+                // get images for each productItem
+                let imageArray = product.imageGroups?.find(
+                    image => image.viewType === 'small',
+                )?.images;
+                productItem.imageURL = imageArray?.[0].link ?? '';
+            }),
         );
-        // update the image to the product items in basket
-        basket.productItems.forEach(product => {
-            const item = productDetails.find(
-                item => item.pid === product.productId,
-            );
-
-            if (item) {
-                product.image = item.imageURL ?? '';
-            }
-        });
     }
     return basket;
-};
-
-const getProductsDetailsInfo = async (
-    config: Config,
-    context: AppContext,
-    ids: string,
-) => {
-    let productItems: Array<{ pid: string; imageURL: string }> = [];
-    const productClient = await getProductClient(config, context);
-
-    const result = await productClient
-        .getProducts({
-            parameters: {
-                ids: ids,
-                allImages: true,
-            },
-        })
-        .catch(e => {
-            logger.error(`Error in getClientProduct() for product ${ids}`);
-            throw e;
-        });
-
-    result.data.forEach(product => {
-        let productDetailsInfo = {
-            pid: '',
-            imageURL: '',
-        };
-        productDetailsInfo.pid = product.id;
-        const imageGroups = product.imageGroups;
-        if (imageGroups) {
-            let imageArray = imageGroups?.find(
-                image => image.viewType === 'small',
-            )?.images;
-            productDetailsInfo.imageURL = imageArray?.[0].link ?? '';
-        }
-
-        productItems.push(productDetailsInfo);
-    });
-    return productItems;
 };
 
 const getShippingMethods = async (

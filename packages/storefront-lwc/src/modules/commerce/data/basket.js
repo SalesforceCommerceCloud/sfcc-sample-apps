@@ -18,40 +18,68 @@ class Basket {
     isBasketLoaded = false;
 
     getBasketAttributes = `basketId
-            customerId
-            getBasketMessage
-            totalProductsQuantity
-            shipmentId
-            shipmentTotal
-            selectedShippingMethodId
-            products {
-                productId
-                itemId
-                quantity
+        customerId
+        getBasketMessage
+        totalProductsQuantity
+        shipmentId
+        shipmentTotal
+        selectedShippingMethodId
+        products {
+            productId
+            itemId
+            quantity
             productName
             price
-            image
-        }
-        orderTotal
-        orderLevelPriceAdjustment {
-            itemText
-            price
-        }
-        shippingTotal
-        shippingTotalTax
-        taxation
-        taxTotal
-        shippingMethods {
-            defaultShippingMethodId
-            applicableShippingMethods {
+            imageURL
+            inventory {
+                ats
+                backorderable
+                id
+                orderable
+                preorderable
+                stockLevel
+            }
+            itemTotalAfterDiscount
+            itemTotalNonAdjusted
+            variationAttributes {
                 id
                 name
-                description
-                price
-                c_estimatedArrivalTime
-                c_storePickupEnabled
+                selectedValue {
+                    name
+                    orderable
+                    value
+                }
             }
-        }`;
+            prices {
+                list
+                sale
+            }
+            productPromotions {
+                calloutMsg
+                promotionalPrice
+                promotionId
+            }
+    }
+    orderTotal
+    orderLevelPriceAdjustment {
+        itemText
+        price
+    }
+    shippingTotal
+    shippingTotalTax
+    taxation
+    taxTotal
+    shippingMethods {
+        defaultShippingMethodId
+        applicableShippingMethods {
+            id
+            name
+            description
+            price
+            c_estimatedArrivalTime
+            c_storePickupEnabled
+        }
+    }`;
 
     /**
      * Calling Add to the basket BFF.

@@ -62,9 +62,9 @@
                     </a>
                 </div>
                 <div class="col-sm-3 text-center">
-                    <h2 class="number-of-items">
+                    <p class="number-of-items">
                         {basket.totalProductsQuantity} Items
-                    </h2>
+                    </p>
                 </div>
                 <div class="col-sm-5 text-right hidden-xs-down">
                     <div>
@@ -82,45 +82,48 @@
                     <template for:each={products} for:item="product" for:index="index">
                         <div key={product.productId} class="card product-info">
                             <div class="line-item-header">
-                                <div class="line-item-name">
+                                <h5 class="line-item-name">
                                     {product.productName}
-                                </div>
+                                </h5>
                             </div>
 
                             <div class="row ">
-                                <div class="col-lg-5">
+                                <div class="col-sm-5">
                                     <div class="row">
                                         <div class="col-lg-12 d-flex flex-row">
-                                            <div class="item-image">
-                                                <img class="product-image" src={product.image} alt={product.name} title={product.name}>
+                                            <div class="line-item-image">
+                                                <!--Product image-->
+                                                <commerce-product-image image-url={product.imageURL} product-name={product.productName}></commerce-product-image>
                                             </div>
-                                            <div class="item-attributes d-flex flex-column">
-                                                <div class="line-item-availability">
-                                                    <p class="line-item-attributes">In Stock</p>
+                                            <div class="item-attributes-availability d-flex flex-column">
+                                                <div class="line-item-variation-attributes">
+                                                    <!-- Product variations-->
+                                                    <commerce-variation-attributes variation-attributes={product.variationAttributes}></commerce-variation-attributes>
                                                 </div>
-                                                <div class="product-edit">
+                                                <div class="line-item-availability">
+                                                    <!-- Product Availability -->
+                                                    <commerce-product-availability inventory={product.inventory} type={product.type} quantity={product.quantity} context="basket"></commerce-product-availability>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-12 d-lg-none">
+                                <div class="col-12 d-sm-none">
                                     <hr class="line-item-divider">
                                 </div>
 
-                                <div class="col-lg-7 product-card-footer">
+                                <div class="col-sm-7 product-card-footer">
                                     <div class="row">
                                         <div class="col-4">
                                             <p class="line-item-price-info">Each</p>
                                             <div class="price">
-                                            <span>
-                                                <span class="sales">
-                                                    <span class="value">
-                                                        ${product.price}
-                                                    </span>
-                                                </span>
-                                            </span>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <!--Product Line Item unit price-->
+                                                        <commerce-product-price product={product} context="basket"></commerce-product-price>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -144,9 +147,8 @@
                                                 Total
                                             </p>
                                             <div class="price">
-                                                <div class="pricing line-item-total-price-amount">
-                                                    ${product.price}
-                                                </div>
+                                                <!--Product line item total-->
+                                                <commerce-line-item-total product={product}></commerce-line-item-total>
                                             </div>
                                         </div>
 
