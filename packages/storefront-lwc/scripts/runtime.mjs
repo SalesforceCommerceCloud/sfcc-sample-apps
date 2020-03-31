@@ -29,7 +29,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
  * Constants
  */
 const templateDir = path.resolve(__dirname, '..');
-const publicDir = `${templateDir}/dist/public/`;
+const publicDir = `${templateDir}/dist/`;
 const port = process.env.PORT || 3002;
 const mode = process.env.NODE_ENV || 'development';
 
