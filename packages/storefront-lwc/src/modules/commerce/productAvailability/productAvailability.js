@@ -150,12 +150,11 @@ export default class ProductAvailability extends LightningElement {
     set context(value) {
         const validValues = ['pdp', 'basket'];
         let matchFound = false;
-        for (const validValue of validValues) {
+        validValues.find(validValue => {
             if (value === validValue) {
-                matchFound = true;
-                break;
+                return matchFound = true;
             }
-        }
+        })
 
         if (!matchFound) {
             throw new Error(
