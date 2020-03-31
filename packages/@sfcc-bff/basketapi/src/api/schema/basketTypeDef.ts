@@ -10,6 +10,7 @@ const { gql } = apolloServerCore;
 export const basketTypeDef = gql`
     extend type Query {
         getBasket: Basket!
+        getBasketProductCount: Int!
     }
     extend type Mutation {
         addProductToBasket(productId: String!, quantity: Int!): Basket!

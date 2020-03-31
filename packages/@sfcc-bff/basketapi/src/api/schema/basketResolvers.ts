@@ -53,6 +53,29 @@ const addProductToBasket = async (
     });
 };
 
+const getBasketProductCount = async (config: Config, context: AppContext) => {
+    let basketId = context.getSessionProperty('basketId');
+    let basketProductCount = 0;
+    // If No basket has been created yet, return 0
+    if (!basketId) {
+        return basketProductCount;
+    }
+    const basketClient = await getBasketClient(config, context);
+
+    let apiBasket = await basketClient.getBasket({
+        parameters: {
+            basketId: basketId,
+        },
+    });
+
+    apiBasket.productItems
+        ? apiBasket.productItems.forEach(product => {
+              basketProductCount += product.quantity || 0;
+          })
+        : 0;
+    return basketProductCount;
+};
+
 const getBasket = async (config: Config, context: AppContext) => {
     let basketId = context.getSessionProperty('basketId');
     // If No basket has been created yet, return error
@@ -250,6 +273,13 @@ export const basketResolver = (config: Config) => {
                 } else {
                     return new Basket(apiBasket);
                 }
+            },
+            getBasketProductCount: async (
+                _: never,
+                _params: never,
+                context: AppContext,
+            ) => {
+                return await getBasketProductCount(config, context);
             },
         },
         Mutation: {
