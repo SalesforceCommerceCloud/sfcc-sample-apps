@@ -59,27 +59,27 @@ class Basket {
                 promotionalPrice
                 promotionId
             }
-    }
-    orderTotal
-    orderLevelPriceAdjustment {
-        itemText
-        price
-    }
-    shippingTotal
-    shippingTotalTax
-    taxation
-    taxTotal
-    shippingMethods {
-        defaultShippingMethodId
-        applicableShippingMethods {
-            id
-            name
-            description
-            price
-            c_estimatedArrivalTime
-            c_storePickupEnabled
         }
-    }`;
+        orderTotal
+        orderLevelPriceAdjustment {
+            itemText
+            price
+        }
+        shippingTotal
+        shippingTotalTax
+        taxation
+        taxTotal
+        shippingMethods {
+            defaultShippingMethodId
+            applicableShippingMethods {
+                id
+                name
+                description
+                price
+                c_estimatedArrivalTime
+                c_storePickupEnabled
+            }
+        }`;
 
     /**
      * Calling Add to the basket BFF.

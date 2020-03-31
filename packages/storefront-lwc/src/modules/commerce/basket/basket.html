@@ -82,11 +82,10 @@
                     <template for:each={products} for:item="product" for:index="index">
                         <div key={product.productId} class="card product-info">
                             <div class="line-item-header">
-                                <h5 class="line-item-name">
+                                <div class="line-item-name">
                                     {product.productName}
-                                </h5>
+                                </div>
                             </div>
-
                             <div class="row ">
                                 <div class="col-sm-5">
                                     <div class="row">
