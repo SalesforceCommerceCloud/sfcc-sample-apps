@@ -16,7 +16,8 @@
   },
   "peerDependencies": {},
   "dependencies": {
-    "@sfcc-core/core": "1.0.0-alpha.1"
+    "@sfcc-core/core": "1.0.0-alpha.1",
+    "@sfcc-bff/productapi": "1.0.0-alpha.1"
   },
   "husky": {
     "hooks": {
