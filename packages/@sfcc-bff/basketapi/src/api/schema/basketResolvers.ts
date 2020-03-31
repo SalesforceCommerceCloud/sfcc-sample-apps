@@ -68,11 +68,11 @@ const getBasketProductCount = async (config: Config, context: AppContext) => {
         },
     });
 
-    apiBasket.productItems
-        ? apiBasket.productItems.forEach(product => {
-              basketProductCount += product.quantity || 0;
-          })
-        : 0;
+    if (apiBasket.productItems) {
+        apiBasket.productItems.forEach(product => {
+            basketProductCount += product.quantity || 0;
+        });
+    }
     return basketProductCount;
 };
 

@@ -10,18 +10,18 @@ import * as core from '@sfcc-core/core';
  */
 import color from 'colors';
 import passport from 'passport';
-import graphqlPassport from 'graphql-passport';
+import * as graphqlPassport from 'graphql-passport';
 import express from 'express';
 import expressSession from 'express-session';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import CommerceSdk from 'commerce-sdk';
+import * as CommerceSdk from 'commerce-sdk';
 import { getCommerceClientConfig } from '@sfcc-core/apiconfig';
 
 // ****************************************************
 // Instantiate the new Storefront Reference Application
 // ****************************************************
-import { getSampleApp } from './sample-app.mjs';
+import { getSampleApp } from '../app/sample-app.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 

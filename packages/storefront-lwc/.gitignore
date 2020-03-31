@@ -1,5 +1,5 @@
 src/modules/**/*.css
 src/public/assets/js/libs.js
 
-scripts/api.js
-scripts/api.mjs
+app/api.js
+app/api.mjs
