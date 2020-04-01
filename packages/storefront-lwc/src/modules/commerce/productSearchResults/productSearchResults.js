@@ -28,6 +28,13 @@ export default class ProductSearchResults extends LightningElement {
 
     @wire(routeParams) params(params) {
         this.query = params.query;
+        this.dispatchEvent(
+            new CustomEvent('querychange', {
+                detail: this.query,
+                bubbles: true,
+                composed: true,
+            }),
+        );
     }
 
     set query(val) {
@@ -91,6 +98,16 @@ export default class ProductSearchResults extends LightningElement {
 
     get hasResults() {
         return !!this.products.length && !this.loading;
+    }
+
+    disconnectedCallback() {
+        this.dispatchEvent(
+            new CustomEvent('querychange', {
+                detail: '',
+                bubbles: true,
+                composed: true,
+            }),
+        );
     }
 
     /**
