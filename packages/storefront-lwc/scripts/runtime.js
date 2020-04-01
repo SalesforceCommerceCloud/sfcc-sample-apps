@@ -30,7 +30,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
  */
 const templateDir = path.resolve(__dirname, '..');
 const publicDir = `${templateDir}/dist/`;
-const port = process.env.PORT || 3002;
+const port = process.env.PORT || 3000;
 const mode = process.env.NODE_ENV || 'development';
 
 const users = new Map();
@@ -50,7 +50,7 @@ function validateConfig(config) {
     REQUIRED_KEYS.forEach(KEY => {
         if (!config[KEY]) {
             console.log(
-                `Make sure ${KEY} is defined within api.mjs or as an environment variable`
+                `Make sure ${KEY} is defined within api.js or as an environment variable`
                     .red,
             );
             process.exit(1);

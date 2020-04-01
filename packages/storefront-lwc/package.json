@@ -20,8 +20,8 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production node -r esm ./scripts/runtime.js",
     "start:dev": "run-p watch:client watch:server watch:scss",
-    "clean:stats": "rm -rf dist/public/stats.json && rm -rf dist/public/report.html",
-    "build": "yarn build:scss && yarn run build-lwc",
+    "clean:stats": "rm -rf dist/stats.json && rm -rf dist/report.html",
+    "build": "yarn build:lwc:scss && yarn run build-lwc && yarn build:public:scss",
     "lint": "eslint ./src/**/*.js",
     "prettier": "prettier --write \"**/*.{css,html,js,json,md,ts,yaml,yml}\"",
     "prettier:verify": "prettier --list-different \"**/*.{css,html,js,json,md,ts,yaml,yml}\"",
@@ -31,12 +31,11 @@
     "test:unit:watch": "jest --watch",
     "watch:client": "rollup --config ./scripts/rollup.config.js --watch",
     "watch:server": "nodemon",
-    "build:scss": "yarn build:public:scss && yarn build:lwc:scss",
     "build:lwc:scss": "node-sass src/modules/commerce -o src/modules/commerce --include-path node_modules",
-    "build:public:scss": "node-sass src/scss -o dist/public/assets/css --include-path node_modules",
+    "build:public:scss": "node-sass src/scss -o dist/css --include-path node_modules",
     "watch:scss": "yarn watch:lwc:scss",
     "watch:lwc:scss": "yarn build:lwc:scss && node-sass src/modules/commerce -wo src/modules/commerce --include-path node_modules",
-    "watch:public:scss": "yarn build:public:scss && node-sass src/scss -wo dist/public/assets/css --include-path node_modules",
+    "watch:public:scss": "yarn build:public:scss && node-sass src/scss -wo dist/css --include-path node_modules",
     "build-lwc": "cross-env NODE_ENV=production rollup -c scripts/rollup.config.js"
   },
   "jest": {

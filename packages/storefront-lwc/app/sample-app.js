@@ -101,7 +101,7 @@ export async function getSampleApp() {
     } catch (e) {
         if (process.env.NODE_ENV === 'development') {
             console.error(
-                'WARNING: There is no api.js found! Copy the api.example.mjs in api.mjs and customize with your own variables'
+                'WARNING: There is no api.js found! Copy the api.example.js in api.js and customize with your own variables'
                     .red,
             );
             process.exit(1);

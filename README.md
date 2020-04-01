@@ -23,9 +23,9 @@ To set up the sample application:
 2. Change into the `sfcc-sample-apps` folder:
 `cd sfcc-sample-apps`
 
-3. Copy the `api.example.mjs` file located at `/packages/storefront-lwc/scripts/`, save it as `api.mjs`, and make sure `api.mjs` is added to your `.gitignore` file.
+3. Copy the `api.example.js` file located at `/packages/storefront-lwc/app/`, save it as `api.js`, and make sure `api.js` is added to your `.gitignore` file.
 
-4. In the `api.mjs` file, provide values for the following variables (you can obtain these values from your Account Executive (AE) or Customer Support Manager (CSM)):
+4. In the `api.js` file, provide values for the following variables (you can obtain these values from your Account Executive (AE) or Customer Support Manager (CSM)):
 <table>
 <tr><th>Variable</th><th>Description</th></tr>
 <tr><td><code>COMMERCE_CLIENT_API_SITE_ID</code></td><td>A unique site ID.</td></tr>
@@ -47,7 +47,7 @@ Note : The COMMERCE_SESSION_SECRET key needs to be unique per application, each 
 `yarn start:dev` (development mode) or
 `yarn start` (production mode)
 
-8. To access the sample application in development mode, open the browser to http://localhost:3000 (for production mode, open to http://localhost:3002).
+8. Access the application on http://localhost:3000
 
 You can optionally test the sample application:
 `yarn test`
@@ -57,7 +57,7 @@ You can optionally test the sample application:
 We recommend Visual Studio Code inbuilt debugger to troubleshoot the code. The `.vscode` launch configuration is included in the repo. To debug using VSCode, see [VS Code Debugging](https://code.visualstudio.com/docs/editor/debugging).
 
 ## Configuration
-* You can change the logging levels by modifying the `COMMERCE_LOG_LEVEL` property in `api.mjs`. The supported log levels are:
+* You can change the logging levels by modifying the `COMMERCE_LOG_LEVEL` property in `api.js`. The supported log levels are:
     * `TRACE`
     * `DEBUG`
     * `INFO`
