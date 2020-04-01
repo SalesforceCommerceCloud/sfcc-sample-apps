@@ -4,8 +4,10 @@ const fs = require('fs-extra');
 module.exports = () => ({
     name: 'cleanup',
     renderStart(options) {
-        fs.rmdirSync(options.dir, {
-            recursive: true,
-        });
+        if (process.env.NODE_ENV === 'production') {
+            fs.rmdirSync(options.dir, {
+                recursive: true,
+            });
+        }
     },
 });

@@ -31,11 +31,11 @@
     "test:unit:watch": "jest --watch",
     "watch:client": "rollup --config ./scripts/rollup.config.js --watch",
     "watch:server": "nodemon",
+    "watch:scss": "run-p -c --aggregate-output watch:lwc:scss watch:public:scss",
     "build:lwc:scss": "node-sass src/modules/commerce -o src/modules/commerce --include-path node_modules",
+    "watch:lwc:scss": "npm run build:lwc:scss && node-sass src/modules/commerce -wo src/modules/commerce --include-path node_modules",
     "build:public:scss": "node-sass src/scss -o dist/css --include-path node_modules",
-    "watch:scss": "yarn watch:lwc:scss",
-    "watch:lwc:scss": "yarn build:lwc:scss && node-sass src/modules/commerce -wo src/modules/commerce --include-path node_modules",
-    "watch:public:scss": "yarn build:public:scss && node-sass src/scss -wo dist/css --include-path node_modules",
+    "watch:public:scss": "yarn run build:public:scss && node-sass src/scss -wo dist/css --include-path node_modules",
     "build-lwc": "cross-env NODE_ENV=production rollup -c scripts/rollup.config.js"
   },
   "jest": {
