@@ -8,7 +8,7 @@
 
 import Image from './Image';
 import get from 'lodash';
-import { getPrices } from './PriceHelpers';
+import { getPrices } from '../schema/priceHelpers';
 
 const getImages = (imageGroups, matchingColor) => {
     return ({ allImages, size }) => {

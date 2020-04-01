@@ -145,6 +145,8 @@ export default class ProductAvailability extends LightningElement {
     }
     /**
      * Sets the context value to one of the valid values
+     * The context value is used as class name in the template.
+     * This allows context-specific css styling.
      */
     @api
     set context(value) {

@@ -15,7 +15,7 @@ import {
     productSearchResolver,
 } from './api';
 
-export { getPrices } from './api/models/PriceHelpers';
+export { getPrices } from './api/schema/priceHelpers';
 export class ProductAPI {
     constructor(core) {
         this.core = core;

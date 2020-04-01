@@ -56,7 +56,7 @@ export const basketTypeDef = gql`
     type ProductPromotions {
         calloutMsg: String
         promotionalPrice: Float
-        promotionId: String
+        promotionId: String!
     }
     type ProductVariationAttribute {
         id: String!

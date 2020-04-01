@@ -31,7 +31,9 @@ export default class ProductPrice extends LightningElement {
     }
 
     /**
-     * Sets the context value to one of the valid values
+     * Sets the context value to one of the valid 
+     * The context value is used as class name in the template.
+     * This allows context-specific css styling.
      */
     @api
     set context(value) {
