@@ -2543,10 +2543,10 @@
   dependencies:
     apollo-client "^2.6.4"
 
-"@lwce/router@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@lwce/router/-/router-0.1.1.tgz#9f6238da878f56abf2b8f9ec9531d4b61db997ef"
-  integrity sha512-Qz0U16WbPfDmtVEvD0n9NkBzCKwlVZuZgcN99+blDCv1JFXj/e5LAMi0C9qVVfsHhHbps9oSWfos+HLEnZHgPQ==
+"@lwce/router@^0.2.5":
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/@lwce/router/-/router-0.2.5.tgz#c672fda2e64f333f36783819ad0d26bbc70d8ce1"
+  integrity sha512-yOzaDdybciKYLECBolv4xOGUzY3TXhKCPxKjhIRridkG2l+Rdjncf+ZORM40aXcxtGr3hBKm0wXkH9PajPfCQg==
   dependencies:
     history "^4.10.1"
     path-to-regexp "^6.1.0"

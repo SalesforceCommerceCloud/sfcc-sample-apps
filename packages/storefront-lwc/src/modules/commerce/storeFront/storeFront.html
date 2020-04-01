@@ -1,0 +1,20 @@
+<template>
+    <lwce-router>
+        <commerce-layout>
+            <commerce-header slot="header"></commerce-header>
+
+            <lwce-route path="/" exact>
+                <commerce-home></commerce-home>
+            </lwce-route>
+            <lwce-route path="/search/:query">
+                <commerce-product-search-results></commerce-product-search-results>
+            </lwce-route>
+            <lwce-route path="/basket">
+                <commerce-basket></commerce-basket>
+            </lwce-route>
+            <lwce-route path="/product/:pid">
+                <commerce-product-detail></commerce-product-detail>
+            </lwce-route>
+        </commerce-layout>
+    </lwce-router>
+</template>

@@ -6,15 +6,15 @@
 -->
 <template>
     <div key={product.productId} class='product-tile'>
-        <div class='image-container' onclick={productDetail}>
-            <a>
+        <div class='image-container'>
+            <lwce-link href={productLink}>
                 <img class='tile-image' src={product.image.link} alt={product.image.alt}/>
-            </a>
+            </lwce-link>
         </div>
 
         <div class='tile-body'>
-            <div class='pdp-link' onclick={productDetail}>
-                <a href="#">{product.productName}</a>
+            <div class='pdp-link'>
+                <lwce-link href={productLink}>{product.productName}</lwce-link>
             </div>
 
             <div class='price'>
