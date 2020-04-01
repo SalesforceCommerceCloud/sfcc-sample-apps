@@ -5,8 +5,7 @@
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 -->
 <template>
-    <div role="main" id="maincontent">
-
+    <div role="main" class= "container" id="maincontent">
 
         <div class="basket-error-messaging basket-error">
         </div>
@@ -21,7 +20,7 @@
 
         <template if:false={loading}>
             <template if:false={hasProducts}>
-                <div class="container">
+                <div class="empty-cart">
                     <div class="row  pt-5">
                         <div class="col">
                             <p class="text-center pt-2"> 0 Items </p>
@@ -53,8 +52,8 @@
             </template>
         </template>
 
-        <div class="container" if:true={hasProducts}>
-            <h1 class="page-title">Your basket</h1>
+        <div class="header-title" if:true={hasProducts}>
+            <h1 class="basket-title">Your basket</h1>
             <div class="row basket-header">
                 <div class="col-sm-4 hidden-xs-down">
                     <a class="continue-shopping-link" href="/" title="Continue Shopping">
@@ -76,89 +75,12 @@
             <hr class="no-margin-top">
         </div>
 
-        <div class="container basket basket-page">
+        <div class="basket basket-page">
             <div class="row">
                 <div class="col-md-8">
                     <template for:each={products} for:item="product" for:index="index">
-                        <div key={product.productId} class="card product-info">
-                            <div class="line-item-header">
-                                <div class="line-item-name">
-                                    {product.productName}
-                                </div>
-                            </div>
-                            <div class="row ">
-                                <div class="col-sm-5">
-                                    <div class="row">
-                                        <div class="col-lg-12 d-flex flex-row">
-                                            <div class="line-item-image">
-                                                <!--Product image-->
-                                                <commerce-product-image image-url={product.imageURL} product-name={product.productName}></commerce-product-image>
-                                            </div>
-                                            <div class="item-attributes-availability d-flex flex-column">
-                                                <div class="line-item-variation-attributes">
-                                                    <!-- Product variations-->
-                                                    <commerce-variation-attributes variation-attributes={product.variationAttributes}></commerce-variation-attributes>
-                                                </div>
-                                                <div class="line-item-availability">
-                                                    <!-- Product Availability -->
-                                                    <commerce-product-availability inventory={product.inventory} type={product.type} quantity={product.quantity} context="basket"></commerce-product-availability>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-12 d-sm-none">
-                                    <hr class="line-item-divider">
-                                </div>
-
-                                <div class="col-sm-7 product-card-footer">
-                                    <div class="row">
-                                        <div class="col-4">
-                                            <p class="line-item-price-info">Each</p>
-                                            <div class="price">
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <!--Product Line Item unit price-->
-                                                        <commerce-product-price product={product} context="basket"></commerce-product-price>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-4 col-lg-3 line-item-quantity">
-                                            <div class="quantity-form">
-                                                <p class="line-item-quantity-info">Quantity</p>
-                                                <div class="quantity">
-                                                    <span>
-                                                        <span class="item-quantity">
-                                                            <span class="item-quantity-total">
-                                                                {product.quantity}
-                                                            </span>
-                                                        </span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-4 line-item-total-price">
-                                            <p class="line-item-price-info">
-                                                Total
-                                            </p>
-                                            <div class="price">
-                                                <!--Product line item total-->
-                                                <commerce-line-item-total product={product}></commerce-line-item-total>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-lg-1 hidden-md-down remove-line-item-lg"></div>
-                                    </div>
-
-                                    <div class="line-item-promo"></div>
-                                </div>
-                            </div>
-                            <button type="button" class="remove-btn btn" onclick={removeHandler} data-itemid={product.itemId}>×</button>
-                        </div>
+                        <commerce-product-line-item product={product}
+                            key={product.productId}></commerce-product-line-item>
                     </template>
                 </div>
 
