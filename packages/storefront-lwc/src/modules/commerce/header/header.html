@@ -53,6 +53,23 @@
             </div>
         </div>
     </nav>
+    
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Mobile/Tablet/Desktop -->
+            <template if:true={heading}>
+                <div class="col-12 text-center sub-header">
+                    <div class="sub-header-content">
+                        <span class="search-text">{searching}</span>&nbsp;<span class="phrase">{phrase}</span>
+                    </div>
+                </div>
+            </template>
+            <template if:false={heading}>
+                <div class="col-12 text-center sub-header-spacer">
+                </div>
+            </template>
+        </div>
+    </div>
 </template>
 
 

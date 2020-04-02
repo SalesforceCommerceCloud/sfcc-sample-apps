@@ -6,4 +6,8 @@
 */
 import { LightningElement } from 'lwc';
 
-export default class CommerceHeader extends LightningElement {}
+export default class CommerceHeader extends LightningElement {
+    heading = true;
+    searching = 'Search Results for'; // Your Cart |  No Results
+    phrase = 'Tops'; // ''
+}

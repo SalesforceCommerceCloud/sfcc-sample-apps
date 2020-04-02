@@ -1,3 +1,8 @@
+@import "../../../scss/variables";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/mixins/breakpoints";
+
 .header {
   line-height: 3em;
 }
@@ -29,4 +34,58 @@
 
 .mini-basket {
   line-height: 3em;
+}
+
+.sub-header{
+  height: 75px;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.sub-header:before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  border-top: 1px solid $grey4;
+  background: $grey4;
+  width: 100%;
+  transform: translateY(-50%);
+}
+
+.sub-header-spacer {
+  height: 90px;
+}
+
+.sub-header-content {
+  background-color: white;
+  width: auto;
+  max-width: 31.25rem;
+  overflow: hidden;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding-left: 1.875rem;
+  padding-right: 1.875rem;
+  color: $grey4;
+  max-height: 90px;
+  font-size: 1.688em;
+  font-weight: bold;
+
+  @include media-breakpoint-up(md) { 
+    padding-left: 2.813rem;
+    padding-right: 2.813rem;
+  }
+  @include media-breakpoint-up(lg) { 
+    padding-left: 3.75rem;
+    padding-right: 3.75rem;
+  }
+  
+  span.search-text {
+    display: none;
+    @include media-breakpoint-up(md) { 
+      display: inline;
+    }
+  }
 }
