@@ -28,14 +28,14 @@ To set up the sample application:
 4. In the `api.js` file, provide values for the following variables (you can obtain these values from your Account Executive (AE) or Customer Support Manager (CSM)):
 <table>
 <tr><th>Variable</th><th>Description</th></tr>
-<tr><td><code>COMMERCE_CLIENT_API_SITE_ID</code></td><td>A unique site ID.</td></tr>
-<tr><td><code>COMMERCE_CLIENT_CLIENT_ID</code></td><td>A unique ID used exclusively for API access. See <a href="https://documentation.b2c.commercecloud.salesforce.com/DOC1/topic/com.demandware.dochelp/AccountManager/AccountManagerAddAPIClientID.html">Add a Client API</a> for more information.</td></tr>
-<tr><td><code>COMMERCE_CLIENT_REALM_ID</code></td><td>A unique four-character ID.</td></tr>
-<tr><td><code>COMMERCE_CLIENT_INSTANCE_ID</code></td><td>Instance ID within a realm.</td></tr>
-<tr><td><code>COMMERCE_CLIENT_SHORT_CODE</code></td><td>Region-specific merchant identifier.</td></tr>
-<tr><td><code>COMMERCE_SESSION_SECRET</code></td><td>Some unique identifier for session management.</td></tr>
+<tr><td><code>COMMERCE_CLIENT_API_SITE_ID</code></td><td>Unique site ID (for example, RefArch or SiteGenesis).</td></tr>
+<tr><td><code>COMMERCE_CLIENT_CLIENT_ID</code></td><td>Unique ID used exclusively for API access. See <a href="https://documentation.b2c.commercecloud.salesforce.com/DOC1/topic/com.demandware.dochelp/AccountManager/AccountManagerAddAPIClientID.html">Add a Client API</a> for more information.</td></tr>
+<tr><td><code>COMMERCE_CLIENT_REALM_ID</code></td><td>Unique four-character realm ID (for example, bblx).</td></tr>
+<tr><td><code>COMMERCE_CLIENT_INSTANCE_ID</code></td><td>Unique instance ID within a realm (for example, 015).</td></tr>
+<tr><td><code>COMMERCE_CLIENT_SHORT_CODE</code></td><td>Unique region-specific merchant ID (for example, staging-001).</td></tr>
+<tr><td><code>COMMERCE_SESSION_SECRET</code></td><td>Unique ID for session management (for example, thisisasecretkey).</td></tr>
 </table>
-Note : The COMMERCE_SESSION_SECRET key needs to be unique per application, each customer should have a different key, if not, then sessions could bleed between ecommerce sites. 
+Note: If the COMMERCE_SESSION_SECRET key is not unique per customer application, session information can be unintentionally shared between ecommerce sites. 
 
 5. Install dependencies:
 `yarn`
@@ -47,7 +47,7 @@ Note : The COMMERCE_SESSION_SECRET key needs to be unique per application, each 
 `yarn start:dev` (development mode) or
 `yarn start` (production mode)
 
-8. Access the application on http://localhost:3000
+8. To access the application, open the browser to http://localhost:3000
 
 You can optionally test the sample application:
 `yarn test`
@@ -77,7 +77,7 @@ We recommend Visual Studio Code inbuilt debugger to troubleshoot the code. The `
 * [Visual Studio Code](https://code.visualstudio.com/docs)
 
 ## Library of Components
-Below is the list of components
+The sample app currently includes the following components:
 * [Home Page](https://github.com/SalesforceCommerceCloud/sfcc-sample-apps/tree/master/packages/storefront-lwc/src/modules/commerce/home)
 * [Product Detail](https://github.com/SalesforceCommerceCloud/sfcc-sample-apps/tree/master/packages/storefront-lwc/src/modules/commerce/productDetail)
 * [Product Search Results](https://github.com/SalesforceCommerceCloud/sfcc-sample-apps/tree/master/packages/storefront-lwc/src/modules/commerce/productSearchResults)
