@@ -34,10 +34,11 @@ export default class ProductLineItem extends LightningElement {
             this.product.itemTotalNonAdjusted &&
             this.product.itemTotalAfterDiscount
         ) {
-            let test= this.product.itemTotalAfterDiscount !==
+            let test =
+                this.product.itemTotalAfterDiscount !==
                 this.product.itemTotalNonAdjusted
-                ? this.product.itemTotalNonAdjusted
-                : null;
+                    ? this.product.itemTotalNonAdjusted
+                    : null;
             return test;
         }
         return null;
