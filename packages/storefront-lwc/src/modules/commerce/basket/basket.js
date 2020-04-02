@@ -52,16 +52,4 @@ export default class Basket extends LightningElement {
                 console.log('error received ', error);
             });
     }
-
-    removeHandler(event) {
-        const itemId = event.srcElement.getAttribute('data-itemid');
-        ShoppingBasket.removeItemFromBasket(itemId)
-            .then(basket => {
-                this.basket = basket;
-                this.products = basket.products ? basket.products : [];
-            })
-            .catch(error => {
-                console.error('error received ', error);
-            });
-    }
 }

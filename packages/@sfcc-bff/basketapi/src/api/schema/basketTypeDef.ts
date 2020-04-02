@@ -49,8 +49,8 @@ export const basketTypeDef = gql`
         type: ProductType
         variationAttributes: [ProductVariationAttribute]
         prices: Prices
-        itemTotalAfterDiscount: String
-        itemTotalNonAdjusted: String
+        itemTotalAfterDiscount: Float
+        itemTotalNonAdjusted: Float
         productPromotions: ProductPromotions
     }
     type ProductPromotions {
