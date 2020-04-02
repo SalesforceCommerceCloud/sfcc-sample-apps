@@ -7,12 +7,10 @@
 
 <template>
     <div class = "lineitemtotal">
-        <template if:true={itemTotalAfterDiscount}>
-            <div class="pricing line-item-total-discout-amount">
-                ${itemTotalAfterDiscount}
-            </div>
-        </template>
-        <template if:true={itemTotalNonAdjusted}>
+        <div class="pricing line-item-total-discout-amount">
+            ${itemTotalAfterDiscount}
+        </div>
+        <template if:false={showItemTotalNonAdjusted}>
             <div class="pricing line-item-total-noadjusted-amount strike-through">
                 ${itemTotalNonAdjusted}
             </div>

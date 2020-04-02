@@ -7,32 +7,10 @@
 import { LightningElement, api } from 'lwc';
 
 export default class LineItemTotal extends LightningElement {
-    @api product;
+    @api itemTotalAfterDiscount;
+    @api itemTotalNonAdjusted;
 
-    /**
-     * Gets item Total After Discount to 2 decimal places
-     */
-    get itemTotalAfterDiscount() {
-        if (this.product && this.product.itemTotalAfterDiscount) {
-            return this.product.itemTotalAfterDiscount;
-        }
-        return null;
-    }
-
-    /**
-     * Gets the item Total Not Adjusted to 2 decimal places
-     */
-    get itemTotalNonAdjusted() {
-        if (
-            this.product &&
-            this.product.itemTotalNonAdjusted &&
-            this.product.itemTotalAfterDiscount
-        ) {
-            return this.product.itemTotalAfterDiscount !==
-                this.product.itemTotalNonAdjusted
-                ? this.product.itemTotalNonAdjusted
-                : null;
-        }
-        return null;
+    get showItemTotalNonAdjusted() {
+        return this.itemTotalAfterDiscount === this.itemTotalNonAdjusted;
     }
 }
