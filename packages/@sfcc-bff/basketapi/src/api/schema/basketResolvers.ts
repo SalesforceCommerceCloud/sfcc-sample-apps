@@ -54,6 +54,25 @@ const addProductToBasket = async (
     });
 };
 
+const getProductsDetails = async (
+    config: Config,
+    context: AppContext,
+    productIds: string,
+) => {
+    const productClient = await getProductClient(config, context);
+    let result = await productClient
+        .getProducts({
+            parameters: {
+                ids: productIds || '',
+            },
+        })
+        .catch(e => {
+            logger.error(`Error in getProduct` + e);
+            throw e;
+        });
+    return result.data;
+};
+
 const getBasket = async (config: Config, context: AppContext) => {
     let basketId = context.getSessionProperty('basketId');
     // If No basket has been created yet, return error
@@ -104,45 +123,41 @@ const getBasket = async (config: Config, context: AppContext) => {
 
     basket.shippingMethods = shippingMethods;
 
-    // get product details for all the product items in basket
-    const productClient = await getProductClient(config, context);
     if (basket.productItems) {
-        await Promise.all(
-            basket.productItems.map(async productItem => {
-                let product = await productClient
-                    .getProduct({
-                        parameters: {
-                            id: productItem.productId || '',
-                        },
-                    })
-                    .catch(e => {
-                        logger.error(`Error in getProduct` + e);
-                        throw e;
-                    });
-                // get variationAttributes
-                product.variationAttributes?.map(attr => {
-                    let variationValues = product.variationValues
-                        ? product.variationValues
-                        : {};
-                    let attributeId = variationValues[attr.id];
-                    if (attributeId) {
-                        let selectedValue = attr.values?.find(item => {
-                            return item.value === attributeId;
-                        });
-                        attr.selectedValue = selectedValue;
-                    }
-                });
-                productItem.variationAttributes = product.variationAttributes;
-                productItem.inventory = product.inventory;
-                productItem.type = product.type;
-                productItem.prices = getPrices(product);
-                // get images for each productItem
-                let imageArray = product.imageGroups?.find(
-                    image => image.viewType === 'small',
-                )?.images;
-                productItem.imageURL = imageArray?.[0].link ?? '';
-            }),
+        let productIds = basket.productItems
+            .map(product => product.productId)
+            .join();
+        let productDetails = await getProductsDetails(
+            config,
+            context,
+            productIds,
         );
+        basket.productItems.map(productItem => {
+            let product = productDetails.find(
+                productDetail => productDetail.id === productItem.productId,
+            );
+            productItem.inventory = product?.inventory;
+            productItem.type = product?.type;
+            productItem.prices = getPrices(product);
+            let imageArray = product?.imageGroups?.find(
+                image => image.viewType === 'small',
+            )?.images;
+            productItem.imageURL = imageArray?.[0].link ?? '';
+
+            product?.variationAttributes?.map(attr => {
+                let variationValues = product?.variationValues;
+                let attributeId = variationValues
+                    ? variationValues[attr.id]
+                    : '';
+                if (attributeId) {
+                    let selectedValue = attr.values?.find(
+                        item => item.value === attributeId,
+                    );
+                    attr.selectedValue = selectedValue;
+                }
+            });
+            productItem.variationAttributes = product?.variationAttributes;
+        });
     }
     return basket;
 };
