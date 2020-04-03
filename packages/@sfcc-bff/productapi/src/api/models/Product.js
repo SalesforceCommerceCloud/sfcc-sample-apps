@@ -5,7 +5,6 @@
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
 import Image from './Image';
-import get from 'lodash';
 
 const getImages = (imageGroups, matchingColor) => {
     return ({ allImages, size }) => {
@@ -213,6 +212,7 @@ class Product {
             userSelectedColor !== 'undefined' && userSelectedColor !== 'null'
                 ? userSelectedColor
                 : null;
+
         this.images = getImages(apiProduct.imageGroups, selectedColor);
 
         Object.assign(this, apiProduct);
@@ -220,7 +220,8 @@ class Product {
         this.shortDescription = apiProduct.shortDescription;
 
         // Set a default image
-        this.image = get(apiProduct, 'this.images[0].link');
+        const firstImage = this.images({ allImages: true })[0];
+        this.image = firstImage ? firstImage.link : '';
 
         this.variants = getVariants(apiProduct.variants);
         this.variationAttributes = getVariationAttributes(

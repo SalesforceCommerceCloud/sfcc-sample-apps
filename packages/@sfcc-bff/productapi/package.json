@@ -10,8 +10,7 @@
     "pub": "npm pack; npm publish -f"
   },
   "author": "",
-  "type": "module",
-  "license": "MIT",
+  "license": "BSD-3-Clause",
   "dependencies": {
     "@sfcc-core/core": "1.0.0-alpha.1",
     "@sfcc-core/core-graphql": "1.0.0-alpha.1",
