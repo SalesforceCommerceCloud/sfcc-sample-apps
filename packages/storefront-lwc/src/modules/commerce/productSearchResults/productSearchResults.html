@@ -53,13 +53,9 @@
                             </div>
                         </template>
                     </template>
-
+                    
                     <template if:true={loading}>
-                        <div class='row mt-4'>
-                            <div class='col-12'>
-                                <p class='text-center'>Searching for <strong>{query}</strong>...</p>
-                            </div>
-                        </div>
+                        <commerce-loader></commerce-loader>
                     </template>
 
                     <template if:false={loading}>
