@@ -7,7 +7,6 @@ const resolve = require('rollup-plugin-node-resolve');
 const terser = require('rollup-plugin-terser').terser;
 const commonjs = require('rollup-plugin-commonjs');
 const visualizer = require('rollup-plugin-visualizer');
-const { execSync } = require('child_process');
 
 const path = require('path');
 
@@ -16,23 +15,21 @@ const env = process.env.NODE_ENV || 'development';
 const isProduction = env !== 'development';
 
 const lwcPlugin = lwc({
-    include: ['**/*.js', '**/*.html', '**/*.css', '**/*.ts'],
+    exclude: [
+        '**/*.mjs',
+        '../../../node_modules/**/*.mjs',
+        '../../node_modules/**/*.mjs',
+        '../node_modules/**/*.mjs',
+    ],
     rootDir: './src/modules',
 });
-
-const COMMIT_HASH = (
-    process.env.SOURCE_VERSION ||
-    execSync('git rev-parse HEAD')
-        .toString()
-        .trim()
-).slice(0, 7);
 
 module.exports = {
     input,
     output: {
         dir: 'dist',
         format: 'iife',
-        entryFileNames: 'entry-[name]-[hash].js',
+        entryFileNames: isProduction ? 'app-[name]-[hash].js' : 'app.js',
         sourcemap: true,
     },
     plugins: [
