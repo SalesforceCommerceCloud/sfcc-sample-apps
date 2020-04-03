@@ -187,6 +187,7 @@ const getBasket = async (config: Config, context: AppContext) => {
                 }
             });
             productItem.variationAttributes = product?.variationAttributes;
+            return productItem;
         });
     }
     return basket;
