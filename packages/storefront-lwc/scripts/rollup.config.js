@@ -7,7 +7,6 @@ const resolve = require('rollup-plugin-node-resolve');
 const terser = require('rollup-plugin-terser').terser;
 const commonjs = require('rollup-plugin-commonjs');
 const visualizer = require('rollup-plugin-visualizer');
-const { execSync } = require('child_process');
 
 const path = require('path');
 
