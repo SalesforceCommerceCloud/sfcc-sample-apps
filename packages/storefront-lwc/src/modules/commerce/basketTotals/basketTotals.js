@@ -4,7 +4,7 @@
     SPDX-License-Identifier: BSD-3-Clause
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
-import { LightningElement } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { ShoppingBasket } from 'commerce/data';
 
 export default class BasketTotals extends LightningElement {
@@ -15,6 +15,15 @@ export default class BasketTotals extends LightningElement {
     totalEstimate = 0.0;
     hasOrderDiscount = false;
     hasShippingDiscount = false;
+
+    @api set basket(val) {
+        this._basket = val;
+        this.setTotals(this._basket);
+    }
+
+    get basket() {
+        return this._basket;
+    }
 
     constructor() {
         super();
@@ -56,6 +65,12 @@ export default class BasketTotals extends LightningElement {
             orderLevelPriceAdjustment && orderLevelPriceAdjustment.price;
         this.orderDiscount = this.hasOrderDiscount
             ? orderLevelPriceAdjustment.price.toFixed(2) * -1.0
+            : 0.0;
+        let shippingLevelPriceAdjustment = basket.shippingLevelPriceAdjustment;
+        this.hasShippingDiscount =
+            shippingLevelPriceAdjustment && shippingLevelPriceAdjustment.price;
+        this.shippingDiscount = this.hasShippingDiscount
+            ? shippingLevelPriceAdjustment.price.toFixed(2)
             : 0.0;
     }
 }

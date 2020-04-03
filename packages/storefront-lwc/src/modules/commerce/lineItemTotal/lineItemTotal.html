@@ -6,12 +6,12 @@
 -->
 
 <template>
-    <div class="pricing line-item-total-discout-amount">
-        ${itemDiscountTotal}
+    <div class="pricing line-item-total-discount-amount">
+        ${discountTotal}
     </div>
     <template if:true={showNonAjustedTotal}>
         <div class="pricing line-item-total-noadjusted-amount strike-through">
-            ${itemNonAdjustedTotal}
+            ${nonAdjustedTotal}
         </div>
     </template>
 </template>

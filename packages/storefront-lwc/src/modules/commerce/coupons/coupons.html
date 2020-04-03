@@ -1,0 +1,60 @@
+<!--
+    Copyright (c) 2020, salesforce.com, inc.
+    All rights reserved.
+    SPDX-License-Identifier: BSD-3-Clause
+    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+-->
+<template>
+    <div class="form-group">
+        <div class="row">
+            <div class="col">
+                <label for="couponCode">Enter Promo Code</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-9 pr-0">
+                <input
+                    class="form-control"
+                    type="text"
+                    name="couponCode"
+                    placeholder="Promo Code"
+                    oninput={handleInput}
+                    onkeyup={submitCouponOnEnter}
+                >
+                <template if:true={couponNotEntered}>
+                    <div class="error">No Coupon Code Entered</div>
+                </template>
+                <template if:true={couponError}>
+                    <div class="error">Coupon cannot be added to your cart</div>
+                </template>
+            </div>
+            <div class="col-3 pl-1">
+                <button
+                    type="submit"
+                    class="btn btn-block btn-outline-primary"
+                    onclick={submitCoupon}
+                >
+                    Submit
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <template for:each={allcoupons} for:item="singlecoupon">
+                    <div key={singlecoupon.couponItemId} class="coupon-card p-2 mt-2">
+                        {singlecoupon.couponCode} - {singlecoupon.couponStatus}
+                        <button
+                            type="button"
+                            class="close"
+                            aria-label="Close"
+                            onclick={deleteCoupon}
+                            data-itemid={singlecoupon.couponItemId}
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+</template>

@@ -17,7 +17,8 @@ class Basket {
 
     isBasketLoaded = false;
 
-    getBasketAttributes = `basketId
+    getBasketAttributes = `
+        basketId
         customerId
         getBasketMessage
         totalProductsQuantity
@@ -65,6 +66,10 @@ class Basket {
             itemText
             price
         }
+        shippingLevelPriceAdjustment {
+            itemText
+            price
+        }
         shippingTotal
         shippingTotalTax
         taxation
@@ -79,7 +84,13 @@ class Basket {
                 c_estimatedArrivalTime
                 c_storePickupEnabled
             }
-        }`;
+        }
+        couponItems {
+            code
+            couponItemId
+            statusCode
+        }
+    `;
 
     /**
      * Calling Add to the basket BFF.
@@ -129,29 +140,7 @@ class Basket {
                 mutation: gql`
                     mutation {
                         updateShippingMethod(basketId: "${basketId}", shipmentId: "${shipmentId}", shippingMethodId: "${shippingMethodId}") {
-                            basketId
-                            customerId
-                            getBasketMessage
-                            totalProductsQuantity
-                            shipmentId
-                            shipmentTotal
-                            selectedShippingMethodId
-                            products {
-                                productId
-                                itemId
-                                quantity
-                                productName
-                                price
-                            }
-                            orderTotal
-                            orderLevelPriceAdjustment {
-                                itemText
-                                price
-                            }
-                            shippingTotal
-                            shippingTotalTax
-                            taxation
-                            taxTotal
+                            ${this.getBasketAttributes}
                         }
                     }
                  `,

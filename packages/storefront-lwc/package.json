@@ -51,7 +51,7 @@
   },
   "dependencies": {
     "@lwc/synthetic-shadow": "1.4.0-alpha3",
-    "@lwce/apollo-client": "^0.0.1",
+    "@lwce/apollo-client": "^0.0.2",
     "@salesforce-ux/design-system": "^2.9.4",
     "@sfcc-bff/productapi": "1.0.0-alpha.1",
     "@sfcc-core/apiconfig": "1.0.0-alpha.1",
@@ -59,7 +59,6 @@
     "@sfcc-core/core-graphql": "1.0.0-alpha.1",
     "@sfcc-core/logger": "1.0.0-alpha.1",
     "apollo-boost": "^0.4.7",
-    "apollo-datasource-rest": "^0.3.2",
     "apollo-server": "^2.3.2",
     "apollo-server-express": "^2.3.2",
     "babel-eslint": "^10.0.3",
