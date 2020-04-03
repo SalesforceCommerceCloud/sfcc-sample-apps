@@ -4,12 +4,12 @@
     SPDX-License-Identifier: BSD-3-Clause
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
-import apolloServerCore from 'apollo-server-core';
-const { gql } = apolloServerCore;
+import { gql } from 'apollo-server-core';
 
 export const basketTypeDef = gql`
     extend type Query {
         getBasket: Basket!
+        getBasketProductCount: Int!
     }
     extend type Mutation {
         addProductToBasket(productId: String!, quantity: Int!): Basket!
@@ -44,7 +44,29 @@ export const basketTypeDef = gql`
         price: Float!
         quantity: Int!
         itemId: String!
-        image: String
+        imageURL: String
+        inventory: Inventory!
+        type: ProductType
+        variationAttributes: [ProductVariationAttribute]
+        prices: Prices
+        itemTotalAfterDiscount: Float
+        itemTotalNonAdjusted: Float
+        productPromotions: ProductPromotions
+    }
+    type ProductPromotions {
+        calloutMsg: String
+        promotionalPrice: Float
+        promotionId: String!
+    }
+    type ProductVariationAttribute {
+        id: String!
+        name: String!
+        selectedValue: SelectedVariationValue
+    }
+    type SelectedVariationValue {
+        name: String!
+        orderable: Boolean
+        value: String!
     }
     type ShippingMethods {
         applicableShippingMethods: [ShippingMethod]

@@ -8,7 +8,7 @@
 
 import Product from '../models/Product';
 import { getCommerceClientConfig } from '@sfcc-core/apiconfig';
-import CommerceSdk from 'commerce-sdk';
+import * as CommerceSdk from 'commerce-sdk';
 import { core } from '@sfcc-core/core';
 import { getUserFromContext } from '@sfcc-core/core-graphql';
 

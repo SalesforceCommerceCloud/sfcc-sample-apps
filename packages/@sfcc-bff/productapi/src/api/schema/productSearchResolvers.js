@@ -4,7 +4,7 @@
     SPDX-License-Identifier: BSD-3-Clause
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
-import CommerceSdk from 'commerce-sdk';
+import * as CommerceSdk from 'commerce-sdk';
 import { getCommerceClientConfig } from '@sfcc-core/apiconfig';
 import SearchResult from '../models/SearchResult';
 import { core } from '@sfcc-core/core';

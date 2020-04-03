@@ -44,7 +44,7 @@ export const resolverFactory = (
  * Core GraphQL and Apollo Server services - requires express to be registered.
  */
 export class CoreGraphQL {
-    _typeDef: Array<string>;
+    _typeDef: Array<any>;
     _resolvers: { [key: string]: Resolver };
     _apolloServer?: ApolloServerType;
 

@@ -1,0 +1,74 @@
+<template>
+    <div key={product.productId} class="card product-info p-3">
+        <div class="line-item-header pb-3">
+            <div class="line-item-name">
+                {product.productName}
+            </div>
+        </div>
+        <div class="row ">
+            <div class="col-sm-5">
+                <div class="row">
+                    <div class="col-lg-12 d-flex flex-row">
+                        <div class="line-item-image mr-3">
+                            <!--Product image-->
+                            <commerce-product-image image-url={product.imageURL} product-name={product.productName}>
+                            </commerce-product-image>
+                        </div>
+                        <div class="line-item-variation-attributes d-flex flex-column">
+                            <!-- Product variations-->
+                            <commerce-variation-attributes variation-attributes={product.variationAttributes}>
+                            </commerce-variation-attributes>
+                            <!-- Product Availability -->
+                            <commerce-product-availability inventory={product.inventory} type={product.type}
+                                quantity={product.quantity} context="basket"></commerce-product-availability>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 d-sm-none">
+                <hr class="line-item-divider">
+            </div>
+
+            <div class="col-sm-7 product-card">
+                <div class="row">
+                    <div class="col-4 pr-0">
+                        <p class="line-item-price-info">Each</p>
+                        <div class="price">
+                            <div class="row">
+                                <div class="col-12">
+                                    <!--Product Line Item unit price-->
+                                    <commerce-product-price product={product} context="basket"></commerce-product-price>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-4 pr-0">
+                        <div class="quantity-form">
+                            <p class="line-item-quantity-info">Quantity</p>
+                            <div class="quantity">
+                                <span>
+                                    <span class="item-quantity-total">
+                                        {product.quantity}
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-4 pr-0">
+                        <p class="line-item-price-info">
+                            Total
+                        </p>
+                        <!--Product line item total-->
+                        <commerce-line-item-total item-discount-total={product.itemTotalAfterDiscount}
+                            item-non-adjusted-total={product.itemTotalNonAdjusted}></commerce-line-item-total>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="remove-btn btn p-0" onclick={removeHandler} data-itemid={product.itemId}>×</button>
+    </div>
+
+</template>

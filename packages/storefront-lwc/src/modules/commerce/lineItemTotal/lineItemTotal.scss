@@ -1,0 +1,13 @@
+@import "../../../scss/ux_variables";
+
+.strike-through {
+  text-decoration: line-through;
+  color: $light-gray;
+  font-weight: $font-weight-normal;
+  font-size: 1rem;
+  text-align: left;
+}
+
+.line-item-total-discout-amount {
+  font-weight: bold;
+}
