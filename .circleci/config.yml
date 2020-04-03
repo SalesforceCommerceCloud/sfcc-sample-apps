@@ -12,6 +12,7 @@ jobs:
         - run: yarn install
         - run: yarn lint
         - run: yarn build
+        - run: yarn lint
         - run: yarn test
         - run: yarn clean:stats
         - store_test_results:

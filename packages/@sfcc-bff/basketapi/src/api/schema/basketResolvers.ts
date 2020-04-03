@@ -73,6 +73,7 @@ const getBasketProductCount = async (config: Config, context: AppContext) => {
             basketProductCount += product.quantity || 0;
         });
     }
+
     return basketProductCount;
 };
 
