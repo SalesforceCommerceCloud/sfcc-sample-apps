@@ -7,7 +7,6 @@
 'use strict';
 
 import Image from './Image';
-import get from 'lodash';
 import { getPrices } from '../schema/priceHelpers';
 
 const getImages = (imageGroups, matchingColor) => {
