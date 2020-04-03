@@ -18,6 +18,16 @@ export default class Basket extends LightningElement {
 
     constructor() {
         super();
+        ShoppingBasket.updateBasketListener(
+            this.updateBasketHandler.bind(this),
+        );
+    }
+
+    updateBasketHandler() {
+        this.basket = ShoppingBasket.basket;
+        this.products = ShoppingBasket.basket.products
+            ? ShoppingBasket.basket.products
+            : [];
     }
 
     get shippingMethods() {
@@ -50,18 +60,6 @@ export default class Basket extends LightningElement {
             })
             .catch(error => {
                 console.log('error received ', error);
-            });
-    }
-
-    removeHandler(event) {
-        const itemId = event.srcElement.getAttribute('data-itemid');
-        ShoppingBasket.removeItemFromBasket(itemId)
-            .then(basket => {
-                this.basket = basket;
-                this.products = basket.products ? basket.products : [];
-            })
-            .catch(error => {
-                console.error('error received ', error);
             });
     }
 }

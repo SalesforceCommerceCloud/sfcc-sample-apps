@@ -18,19 +18,47 @@ class Basket {
     isBasketLoaded = false;
 
     getBasketAttributes = `basketId
-            customerId
-            getBasketMessage
-            totalProductsQuantity
-            shipmentId
-            shipmentTotal
-            selectedShippingMethodId
-            products {
-                productId
-                itemId
-                quantity
+        customerId
+        getBasketMessage
+        totalProductsQuantity
+        shipmentId
+        shipmentTotal
+        selectedShippingMethodId
+        products {
+            productId
+            itemId
+            quantity
             productName
             price
-            image
+            imageURL
+            inventory {
+                ats
+                backorderable
+                id
+                orderable
+                preorderable
+                stockLevel
+            }
+            itemTotalAfterDiscount
+            itemTotalNonAdjusted
+            variationAttributes {
+                id
+                name
+                selectedValue {
+                    name
+                    orderable
+                    value
+                }
+            }
+            prices {
+                list
+                sale
+            }
+            productPromotions {
+                calloutMsg
+                promotionalPrice
+                promotionId
+            }
         }
         orderTotal
         orderLevelPriceAdjustment {
@@ -208,7 +236,6 @@ class Basket {
             .then(result => {
                 this.basket = result.data.getBasket;
                 this.isBasketLoaded = true;
-                this.updateBasket('basket-loaded');
                 return this.basket;
             })
             .catch(error => {

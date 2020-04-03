@@ -10,6 +10,7 @@ import { getCommerceClientConfig } from '@sfcc-core/apiconfig';
 import { getUserFromContext, AppContext } from '@sfcc-core/core-graphql';
 import CommerceSdk from 'commerce-sdk';
 import { core, Config } from '@sfcc-core/core';
+import { getPrices } from '@sfcc-bff/productapi';
 
 const { ApolloError } = apollo;
 const logger = core.logger;
@@ -77,6 +78,31 @@ const getBasketProductCount = async (config: Config, context: AppContext) => {
     return basketProductCount;
 };
 
+/**
+ * The maximum number of productIDs that can be requested are 24
+ * @param config
+ * @param context
+ * @param productIds
+ */
+const getProductsDetails = async (
+    config: Config,
+    context: AppContext,
+    productIds: string,
+) => {
+    const productClient = await getProductClient(config, context);
+    let result = await productClient
+        .getProducts({
+            parameters: {
+                ids: productIds || '',
+            },
+        })
+        .catch(e => {
+            logger.error(`Error in getProduct` + e);
+            throw e;
+        });
+    return result.data;
+};
+
 const getBasket = async (config: Config, context: AppContext) => {
     let basketId = context.getSessionProperty('basketId');
     // If No basket has been created yet, return error
@@ -127,68 +153,44 @@ const getBasket = async (config: Config, context: AppContext) => {
 
     basket.shippingMethods = shippingMethods;
 
-    // get all the product ids in current basket
-    let productIds = basket.productItems
-        ? basket.productItems.map(product => product.productId).join()
-        : '';
-    // get product details for all the product items in basket
     if (basket.productItems) {
-        let productDetails = await getProductsDetailsInfo(
+        let productIds = basket.productItems
+            .map(product => product.productId)
+            .join();
+        let productDetails = await getProductsDetails(
             config,
             context,
             productIds,
         );
-        // update the image to the product items in basket
-        basket.productItems.forEach(product => {
-            const item = productDetails.find(
-                item => item.pid === product.productId,
+        basket.productItems.map(productItem => {
+            let product = productDetails.find(
+                productDetail => productDetail.id === productItem.productId,
             );
+            productItem.inventory = product?.inventory;
+            productItem.type = product?.type;
+            productItem.prices = getPrices(product);
+            let imageArray = product?.imageGroups?.find(
+                image => image.viewType === 'small',
+            )?.images;
+            productItem.imageURL = imageArray?.[0].link ?? '';
 
-            if (item) {
-                product.image = item.imageURL ?? '';
-            }
+            product?.variationAttributes?.map(attr => {
+                let variationValues = product?.variationValues;
+                let attributeId = variationValues
+                    ? variationValues[attr.id]
+                    : '';
+                if (attributeId) {
+                    let selectedValue = attr.values?.find(
+                        item => item.value === attributeId,
+                    );
+                    attr.selectedValue = selectedValue;
+                }
+            });
+            productItem.variationAttributes = product?.variationAttributes;
+            return productItem;
         });
     }
     return basket;
-};
-
-const getProductsDetailsInfo = async (
-    config: Config,
-    context: AppContext,
-    ids: string,
-) => {
-    let productItems: Array<{ pid: string; imageURL: string }> = [];
-    const productClient = await getProductClient(config, context);
-
-    const result = await productClient
-        .getProducts({
-            parameters: {
-                ids: ids,
-                allImages: true,
-            },
-        })
-        .catch(e => {
-            logger.error(`Error in getClientProduct() for product ${ids}`);
-            throw e;
-        });
-
-    result.data.forEach(product => {
-        let productDetailsInfo = {
-            pid: '',
-            imageURL: '',
-        };
-        productDetailsInfo.pid = product.id;
-        const imageGroups = product.imageGroups;
-        if (imageGroups) {
-            let imageArray = imageGroups?.find(
-                image => image.viewType === 'small',
-            )?.images;
-            productDetailsInfo.imageURL = imageArray?.[0].link ?? '';
-        }
-
-        productItems.push(productDetailsInfo);
-    });
-    return productItems;
 };
 
 const getShippingMethods = async (
