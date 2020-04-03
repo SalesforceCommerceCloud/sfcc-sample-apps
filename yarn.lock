@@ -2543,14 +2543,6 @@
   dependencies:
     apollo-client "^2.6.4"
 
-"@lwce/router@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@lwce/router/-/router-0.1.1.tgz#9f6238da878f56abf2b8f9ec9531d4b61db997ef"
-  integrity sha512-Qz0U16WbPfDmtVEvD0n9NkBzCKwlVZuZgcN99+blDCv1JFXj/e5LAMi0C9qVVfsHhHbps9oSWfos+HLEnZHgPQ==
-  dependencies:
-    history "^4.10.1"
-    path-to-regexp "^6.1.0"
-
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
@@ -10899,11 +10891,6 @@ path-to-regexp@^3.1.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/path-to-regexp/-/path-to-regexp-3.2.0.tgz#fa7877ecbc495c601907562222453c43cc204a5f"
   integrity sha512-jczvQbCUS7XmS7o+y1aEO9OBVFeZBQ1MDSEqmO7xSoPgOPoowY/SxLpZ6Vh97/8qHZOteiCKb7gkG9gA2ZUxJA==
-
-path-to-regexp@^6.1.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/path-to-regexp/-/path-to-regexp-6.1.0.tgz#0b18f88b7a0ce0bfae6a25990c909ab86f512427"
-  integrity sha512-h9DqehX3zZZDCEm+xbfU0ZmwCGFCAAraPJWMXJ4+v32NjZJilVg3k1TcKsRgIb8IQ/izZSaydDc1OhJCZvs2Dw==
 
 path-type@^1.0.0:
   version "1.1.0"
