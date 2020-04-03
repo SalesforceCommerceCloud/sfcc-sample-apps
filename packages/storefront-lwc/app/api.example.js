@@ -7,8 +7,8 @@
 
 //
 // The following values are default if env variables are not set.
-// To utilize this file rename this file to api.mjs and replace the values below.
-// Please ensure that api.mjs is added to the .gitignore
+// To utilize this file rename this file to api.js and replace the values below.
+// Please ensure that api.js is added to the .gitignore
 //
 
 const COMMERCE_API_PATH = '/api';

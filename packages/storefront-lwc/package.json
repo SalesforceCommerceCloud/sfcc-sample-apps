@@ -14,41 +14,43 @@
       "src/**/*.spec.js",
       "src/**/*.test.js"
     ],
-    "exec": "cross-env NODE_ENV=development NODE_OPTIONS=\"--experimental-modules --experimental-specifier-resolution=node\" node --nolazy --inspect=9229 ./scripts/runtime.mjs"
+    "exec": "cross-env NODE_ENV=development node -r esm --nolazy --inspect=9229 ./scripts/runtime.js"
   },
   "browserslist": "> 0.25%",
   "scripts": {
-    "clean:stats": "rm -rf dist/public/stats.json && rm -rf dist/public/report.html",
-    "build": "yarn build:scss && lwc-services build --webpack=webpack.config.js -m production --noclear && yarn build:public && yarn build:resources",
-    "build:public": "cpx \"src/public/**/*\" dist/public --verbose && cpx \"dist/*.*\" dist/public",
-    "build:resources": "cross-env NODE_OPTIONS=\"--experimental-modules --experimental-specifier-resolution=node\" node scripts/copy-resources.mjs",
-    "build:development": "lwc-services build --noclear",
+    "start": "cross-env NODE_ENV=production node -r esm ./scripts/runtime.js",
+    "start:dev": "run-p watch:client watch:server watch:scss",
+    "clean:stats": "rm -rf dist/stats.json && rm -rf dist/report.html",
+    "build": "yarn build:lwc:scss && yarn run build-lwc && yarn build:public:scss",
     "lint": "eslint ./src/**/*.js",
     "prettier": "prettier --write \"**/*.{css,html,js,json,md,ts,yaml,yml}\"",
     "prettier:verify": "prettier --list-different \"**/*.{css,html,js,json,md,ts,yaml,yml}\"",
-    "start": "cross-env NODE_ENV=production NODE_OPTIONS=\"--experimental-modules --experimental-specifier-resolution=node\" node ./scripts/runtime.mjs",
-    "test:unit": "lwc-services test:unit",
-    "test:unit:coverage": "lwc-services test:unit --coverage",
-    "test:unit:debug": "lwc-services test:unit --debug",
-    "test:unit:watch": "lwc-services test:unit --watch",
-    "start:dev": "run-p watch:client watch:server watch:scss",
-    "watch:client": "lwc-services watch",
+    "test:unit": "jest",
+    "test:unit:coverage": "jest --coverage",
+    "test:unit:debug": "jest --debug",
+    "test:unit:watch": "jest --watch",
+    "watch:client": "rollup --config ./scripts/rollup.config.js --watch",
     "watch:server": "nodemon",
-    "build:scss": "yarn build:public:scss && yarn build:lwc:scss",
+    "watch:scss": "run-p -c --aggregate-output watch:lwc:scss watch:public:scss",
     "build:lwc:scss": "node-sass src/modules/commerce -o src/modules/commerce --include-path node_modules",
-    "build:public:scss": "node-sass src/scss -o dist/public/assets/css --include-path node_modules",
-    "watch:scss": "yarn watch:lwc:scss",
-    "watch:lwc:scss": "yarn build:lwc:scss && node-sass src/modules/commerce -wo src/modules/commerce --include-path node_modules",
-    "watch:public:scss": "yarn build:public:scss && node-sass src/scss -wo dist/public/assets/css --include-path node_modules"
+    "watch:lwc:scss": "npm run build:lwc:scss && node-sass src/modules/commerce -wo src/modules/commerce --include-path node_modules",
+    "build:public:scss": "node-sass src/scss -o dist/css --include-path node_modules",
+    "watch:public:scss": "yarn run build:public:scss && node-sass src/scss -wo dist/css --include-path node_modules",
+    "build-lwc": "cross-env NODE_ENV=production rollup -c scripts/rollup.config.js"
   },
   "jest": {
     "preset": "@lwc/jest-preset",
     "moduleNameMapper": {
       "^commerce/(.+)": "<rootDir>/src/modules/commerce/$1/$1"
-    }
+    },
+    "collectCoverageFrom": [
+      "src/**/*.{js,ts}",
+      "app/**/*.{js,ts}",
+      "!app/api.example.js"
+    ]
   },
   "dependencies": {
-    "@lwc/synthetic-shadow": "^1.1.1",
+    "@lwc/synthetic-shadow": "1.4.0-alpha3",
     "@lwce/apollo-client": "^0.0.1",
     "@salesforce-ux/design-system": "^2.9.4",
     "@sfcc-bff/productapi": "1.0.0-alpha.1",
@@ -66,26 +68,39 @@
     "concurrently": "^5.0.0",
     "cpx": "^1.5.0",
     "cross-env": "^7.0.2",
+    "esm": "^3.2.25",
     "express-session": "^1.17.0",
     "font-awesome": "^4.7.0",
-    "graphql": "0.13.1",
+    "graphql": "14.6.0",
     "graphql-passport": "^0.6.1",
-    "graphql-tag": "^2.10.1",
+    "graphql-tag": "^2.10.3",
     "history": "^4.10.1",
+    "lwc": "1.4.0-alpha3",
     "passport": "^0.4.1",
     "universal-router": "^8.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
+    "@lwc/compiler": "1.4.0-alpha3",
+    "@lwc/engine": "1.4.0-alpha3",
     "@lwc/eslint-plugin-lwc": "^0.8.0",
     "@lwc/jest-preset": "^4.3.1",
+    "@lwc/jest-serializer": "^4.5.1",
+    "@lwc/rollup-plugin": "1.4.0-alpha3",
+    "@lwc/wire-service": "1.4.0-alpha3",
     "eslint": "^6.8.0",
     "eslint-plugin-import": "^2.19.1",
-    "jest": "^25.1.0",
-    "lwc-services": "^1.3.12",
+    "fs-extra": "^9.0.0",
+    "jest": "^25.2.4",
     "node-sass": "^4.12.0",
     "nodemon": "^2.0.2",
     "npm-run-all": "^4.1.5",
+    "rollup": "^2.3.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-replace": "^2.2.0",
+    "rollup-plugin-terser": "^5.3.0",
+    "rollup-plugin-visualizer": "^4.0.1",
     "webpack-bundle-analyzer": "^3.6.1"
   }
 }

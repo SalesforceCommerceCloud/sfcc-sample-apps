@@ -6,38 +6,40 @@
 -->
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <title>Salesforce Headless Commerce with LWC and Talon</title>
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>Salesforce Headless Commerce with LWC and Talon</title>
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="/apiconfig.js"></script>
 
-    <script src="/apiconfig.js"></script>
+        <!-- iOS PWA Code -->
 
-    <!-- iOS PWA Code -->
+        <!-- iPhone X (portrait) SPLASHSCREEN -->
+        <link
+            href="/images/splash/LaunchImage-1125@3x~iphoneX-portrait_1125x2436.png"
+            media="(device-width: 375px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 3)"
+            rel="apple-touch-startup-image"
+        />
 
-    <!-- iPhone X (portrait) SPLASHSCREEN -->
-    <link
-      href="/assets/images/splash/LaunchImage-1125@3x~iphoneX-portrait_1125x2436.png"
-      media="(device-width: 375px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 3)"
-      rel="apple-touch-startup-image"
-    />
+        <!-- Apple iOS Icon -->
+        <link
+            rel="apple-touch-icon"
+            href="/images/icons/icon-192x192.png"
+        />
 
-    <!-- Apple iOS Icon -->
-    <link rel="apple-touch-icon" href="/assets/images/icons/icon-192x192.png" />
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="stylesheet" href="/css/global.css" />
+    </head>
 
-    <link rel="manifest" href="/manifest.json">
-    <link rel="shortcut icon" href="/assets/favicon.ico">
-    <link rel="stylesheet" href="/assets/css/global.css">
-
-</head>
-
-<body>
-    <commerce-layout>
-        <commerce-header slot="header"></commerce-header>
-        <div id="content"></div>
-    </commerce-layout>
-</body>
+    <body>
+        <commerce-layout>
+            <commerce-header slot="header"></commerce-header>
+            <div id="content"></div>
+        </commerce-layout>
+        <!-- MODULE_ENTRY -->
+    </body>
 </html>

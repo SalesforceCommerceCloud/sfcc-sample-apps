@@ -4,8 +4,7 @@
     SPDX-License-Identifier: BSD-3-Clause
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
-import apolloServerCore from 'apollo-server-core';
-const { gql } = apolloServerCore;
+import { gql } from 'apollo-server-core';
 
 export const typeDef = gql`
     extend type Query {

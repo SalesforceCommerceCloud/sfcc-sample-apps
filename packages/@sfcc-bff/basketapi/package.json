@@ -33,7 +33,6 @@
       "default": "./dist/basketapi.esm.js"
     }
   },
-  "type": "module",
   "devDependencies": {
     "@types/jest": "^25.1.2",
     "husky": "^4.2.3",

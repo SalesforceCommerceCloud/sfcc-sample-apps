@@ -10,8 +10,8 @@ jobs:
       steps:
         - checkout
         - run: yarn install
-        - run: yarn build
         - run: yarn lint
+        - run: yarn build
         - run: yarn test
         - run: yarn clean:stats
         - store_test_results:

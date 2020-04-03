@@ -7,9 +7,9 @@ This example below shows how to create a product recommendations extension for t
 
 Background: The Product Details Page shows the product name, product id, color swatches, images, price, and so on. Our goal is to extend this component to also show the product's recommendations. 
 
-1. In the storefront-lwc, create a new extension called `productDetailExtension.mjs`
+1. In the storefront-lwc `app` directory, create a new extension called `productDetailExtension.js`
 
-2. In the `productDetailExtension.mjs` file, register the extension with core using the `API_EXTENSIONS_KEY`key. Extensions can have multiple entries per extension key, so we can simply register a new extension with the existing key: 
+2. In the `productDetailExtension.js` file, register the extension with core using the `API_EXTENSIONS_KEY` key. Extensions can have multiple entries per extension key, so we can simply register a new extension with the existing key: 
 
 ```
 core.registerExtension(API_EXTENSIONS_KEY, function (config) {
@@ -51,7 +51,7 @@ const productRecommendationResolver = (config) => {
 }
 ```
 
-5. Add the product recommendation extension to the Backend For Frontend (BFF) by importing the extension created in step 1 to the `sample-app.mjs` file. 
+5. Add the product recommendation extension to the Backend For Frontend (BFF) by importing the extension created in step 1 to the `sample-app.js` file. 
 ```
 import './extension/productDetailExtension';
 ```
