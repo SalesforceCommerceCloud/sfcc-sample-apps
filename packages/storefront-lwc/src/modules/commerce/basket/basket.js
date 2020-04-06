@@ -51,6 +51,17 @@ export default class Basket extends LightningElement {
             .catch(error => {
                 console.log('error received ', error);
             });
+        this.dispatchEvent(
+            new CustomEvent('setappheader', {
+                bubbles: true,
+                composed: true,
+                content: {
+                    heading: 'Your Cart',
+                    phrase: '',
+                    showheader: true,
+                },
+            }),
+        );
     }
 
     removeHandler(event) {
