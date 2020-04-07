@@ -49,8 +49,18 @@
         </template>
 
         <div class="header-title" if:true={hasProducts}>
-            <h1 class="basket-title">Your basket</h1>
-            <div class="row basket-header">
+            <div class="row">
+                <div class="col-3 col-sm-4">
+                    <hr class="header-divider">
+                </div>
+                <div class="col-6 col-sm-4 basket-title">
+                    <span class="large-paragraph pt-3">Your Basket</span>
+                </div>
+                <div class="col-3 col-sm-4">
+                    <hr class="header-divider">
+                </div>
+            </div>
+            <div class="row basket-header py-3">
                 <div class="col-sm-4 hidden-xs-down">
                     <a class="continue-shopping-link" href="/" title="Continue Shopping">
                         Continue Shopping
@@ -68,7 +78,6 @@
                     </div>
                 </div>
             </div>
-            <hr class="no-margin-top">
         </div>
 
         <div class="basket basket-page">
