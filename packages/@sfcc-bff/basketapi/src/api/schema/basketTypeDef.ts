@@ -45,7 +45,7 @@ export const basketTypeDef = gql`
         quantity: Int!
         itemId: String!
         imageURL: String
-        inventory: Inventory!
+        inventory: Inventory
         type: ProductType
         variationAttributes: [ProductVariationAttribute]
         prices: Prices

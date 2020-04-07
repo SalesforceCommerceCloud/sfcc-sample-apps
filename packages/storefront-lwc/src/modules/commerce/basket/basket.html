@@ -25,7 +25,7 @@
                 </div>
                 <div class="row pt-5">
                     <div class="col text-empty-cart">
-                        <p> Your Shopping Cart is Empty </p>
+                        <p class="text-center font-weight-bold"> Your Shopping Cart is Empty </p>
                     </div>
                 </div>
                 <div class="row pt-3">
@@ -49,15 +49,25 @@
         </template>
 
         <div class="header-title" if:true={hasProducts}>
-            <h1 class="basket-title">Your basket</h1>
-            <div class="row basket-header">
+            <div class="row">
+                <div class="col-3 col-sm-4">
+                    <hr class="header-divider">
+                </div>
+                <div class="col-6 col-sm-4 basket-title text-center">
+                    <span class="large-paragraph pt-3 font-weight-bold">Your Basket</span>
+                </div>
+                <div class="col-3 col-sm-4">
+                    <hr class="header-divider">
+                </div>
+            </div>
+            <div class="row basket-header pt-3">
                 <div class="col-sm-4 hidden-xs-down">
                     <a class="continue-shopping-link" href="/" title="Continue Shopping">
                         Continue Shopping
                     </a>
                 </div>
-                <div class="col-sm-3 text-center">
-                    <p class="number-of-items">
+                <div class="col-sm-3">
+                    <p class="number-of-items text-center">
                         {basket.totalProductsQuantity} Items
                     </p>
                 </div>
@@ -68,7 +78,6 @@
                     </div>
                 </div>
             </div>
-            <hr class="no-margin-top">
         </div>
 
         <div class="basket basket-page">
