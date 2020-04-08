@@ -139,6 +139,14 @@ export class CoreGraphQL {
             this.apolloServer.applyMiddleware({
                 app: expressApp,
                 path: apiPath,
+                cors: apiConfig.COMMERCE_CORS
+                    ? {
+                          origin: apiConfig.COMMERCE_CORS,
+                          methods: 'POST',
+                          preflightContinue: false,
+                          optionsSuccessStatus: 204,
+                      }
+                    : false,
             });
             logger.info(
                 'CoreGraphQL apolloServer middleware applied to express!',

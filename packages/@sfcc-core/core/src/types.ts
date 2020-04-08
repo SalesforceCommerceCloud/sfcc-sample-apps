@@ -7,7 +7,8 @@ type ConfigValues =
     | 'COMMERCE_CLIENT_ORGANIZATION_ID'
     | 'COMMERCE_CLIENT_SHORT_CODE'
     | 'COMMERCE_SESSION_SECRET'
-    | 'COMMERCE_LOG_LEVEL';
+    | 'COMMERCE_LOG_LEVEL'
+    | 'COMMERCE_CORS';
 
 export type Config = { [key in ConfigValues]: string };
 
