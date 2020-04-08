@@ -53,6 +53,17 @@
             </div>
         </div>
     </nav>
+ 
+    <template if:true={hasHeaderText}>
+        <div class="container-fluid">
+            <div class="row">
+            <!-- Mobile/Tablet/Desktop -->
+                <div class="col-12 text-center sub-header">
+                    <div class="sub-header-content">
+                        <span class="search-text">{searchText}</span>&nbsp;<span class="header-text">{headerText}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
 </template>
-
-

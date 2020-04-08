@@ -77,6 +77,7 @@ export default class ProductSearchResults extends LightningElement {
                 });
             });
             this.loading = false;
+            this.createHeader(true);
         } else {
             this.loading = response.loading;
             this.products = [];
@@ -162,6 +163,7 @@ export default class ProductSearchResults extends LightningElement {
 
         this.showRefinementBar = !this.showRefinementBar;
     }
+
     /**
      * returns an array of filters
      * @returns {array}
@@ -196,4 +198,34 @@ export default class ProductSearchResults extends LightningElement {
 
         return filtersArray;
     };
+
+    createHeader(showHeader) {
+        let headerDetails = {
+            searchText: '',
+            headerText: 'No Results',
+            showHeader: showHeader,
+        };
+
+        if (this.hasProducts()) {
+            headerDetails.searchText = 'Search result for';
+            headerDetails.headerText = this.query;
+        }
+
+        window.dispatchEvent(
+            new CustomEvent('setheadertext', {
+                detail: headerDetails,
+            }),
+        );
+    }
+
+    connectedCallback() {
+        window.dispatchEvent(
+            new CustomEvent('setheadertext', {
+                detail: {
+                    searchText: '',
+                    headerText: '',
+                },
+            }),
+        );
+    }
 }

@@ -168,4 +168,15 @@ export default class ProductDetail extends LightningElement {
             });
         }
     }
+
+    connectedCallback() {
+        window.dispatchEvent(
+            new CustomEvent('setheadertext', {
+                detail: {
+                    searchText: '',
+                    headerText: '',
+                },
+            }),
+        );
+    }
 }

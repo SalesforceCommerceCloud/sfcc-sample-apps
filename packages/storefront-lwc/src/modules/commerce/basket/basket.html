@@ -11,21 +11,21 @@
         <template if:true={loading}>
             <div class='row mt-4'>
                 <div class='col-12'>
-                    <p class='text-center'>Loading Cart...</p>
+                    <p class='text-center'>Loading Basket...</p>
                 </div>
             </div>
         </template>
 
         <template if:false={loading}>
             <template if:false={hasProducts}>
-                <div class="row pt-5">
+                <div class="row pt-3">
                     <div class="col">
-                        <p class="text-center pt-2"> 0 Items </p>
+                        <p class="text-center"> 0 Items </p>
                     </div>
                 </div>
                 <div class="row pt-5">
                     <div class="col text-empty-cart">
-                        <p class="text-center font-weight-bold"> Your Shopping Cart is Empty </p>
+                        <p class="text-center font-weight-bold"> Your Shopping Basket is Empty </p>
                     </div>
                 </div>
                 <div class="row pt-3">
@@ -49,17 +49,6 @@
         </template>
 
         <div class="header-title" if:true={hasProducts}>
-            <div class="row">
-                <div class="col-3 col-sm-4">
-                    <hr class="header-divider">
-                </div>
-                <div class="col-6 col-sm-4 basket-title text-center">
-                    <span class="large-paragraph pt-3 font-weight-bold">Your Basket</span>
-                </div>
-                <div class="col-3 col-sm-4">
-                    <hr class="header-divider">
-                </div>
-            </div>
             <div class="row basket-header pt-3">
                 <div class="col-sm-4 hidden-xs-down">
                     <a class="continue-shopping-link" href="/" title="Continue Shopping">
