@@ -26,8 +26,10 @@ export default class HeaderBasket extends LightningElement {
         lazy: false,
     })
     updateProductsTotal(response) {
-        if (response.initialized) {
-            this.quantity = response.data.getBasketProductCount;
+        if (response.initialized && response.data) {
+            this.quantity = response.data.getBasketProductCount || 0;
+        } else {
+            this.quantity = 0;
         }
     }
 

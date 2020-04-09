@@ -7,15 +7,16 @@
 import * as CommerceSdk from 'commerce-sdk';
 import { getCommerceClientConfig } from '@sfcc-core/apiconfig';
 import SearchResult from '../models/SearchResult';
-import { core } from '@sfcc-core/core';
-import { getUserFromContext } from '@sfcc-core/core-graphql';
 
-const logger = core.logger;
+import {
+    getUserFromContext,
+    requestWithTokenRefresh,
+} from '@sfcc-core/core-graphql';
 
-const getSearchClient = async (config, context) => {
+const getSearchClient = async (config, context, refresh = false) => {
     const clientConfig = getCommerceClientConfig(config);
     clientConfig.headers.authorization = (
-        await getUserFromContext(context)
+        await getUserFromContext(context, refresh)
     ).token;
     return new CommerceSdk.Search.ShopperSearch(clientConfig);
 };
@@ -45,30 +46,32 @@ const searchProduct = async (
     filterParams,
     context,
 ) => {
-    const filters = filterParams ? processFilterParams(filterParams) : {};
-    let parameterValue = {
-        q: query,
-        offset: offset,
-        limit: limit,
-    };
+    return requestWithTokenRefresh(async refresh => {
+        const filters = filterParams ? processFilterParams(filterParams) : {};
+        let parameterValue = {
+            q: query,
+            offset: offset,
+            limit: limit,
+        };
 
-    if (filters.refine && filters.refine.length !== 0) {
-        parameterValue.refine = filters.refine;
-    }
+        if (filters.refine && filters.refine.length !== 0) {
+            parameterValue.refine = filters.refine;
+        }
 
-    if (filters.sort) {
-        parameterValue.sort = filters.sort;
-    }
+        if (filters.sort) {
+            parameterValue.sort = filters.sort;
+        }
 
-    const searchClient = await getSearchClient(config, context);
-    return searchClient
-        .productSearch({
+        // Clear any basketId when we get a new shopper token.
+        if (refresh) {
+            context.setSessionProperty('basketId', undefined);
+        }
+
+        const searchClient = await getSearchClient(config, context, refresh);
+        return searchClient.productSearch({
             parameters: parameterValue,
-        })
-        .catch(e => {
-            logger.error(`Error in productSearch()`);
-            throw e;
         });
+    });
 };
 
 export const resolver = config => {
@@ -86,6 +89,7 @@ export const resolver = config => {
                     limit,
                     filterParams,
                     context,
+                    false,
                 ).then(searchResult => {
                     return new SearchResult(searchResult, filterParams);
                 });

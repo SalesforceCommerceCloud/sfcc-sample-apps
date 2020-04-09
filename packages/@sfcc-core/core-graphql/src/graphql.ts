@@ -172,9 +172,9 @@ export type AppContext = PassportContext<User, AuthenParams> & {
     setSessionProperty: (prop: string, value?: string) => void;
 };
 
-export async function getUserFromContext(context: AppContext) {
+export async function getUserFromContext(context: AppContext, refresh = false) {
     let user = context.getUser();
-    const token = user ? user.token : '';
+    const token = user && !refresh ? user.token : '';
     if (!token) {
         const res = await context.authenticate('graphql-local', { token });
         context.login(res.user);
@@ -182,3 +182,38 @@ export async function getUserFromContext(context: AppContext) {
     }
     return user;
 }
+
+/**
+ * Return true if the current API authorizaion token has expired.
+ * TODO: check with SDK team for token expire specific error.
+ * @param response
+ */
+const isTokenExpire = response => {
+    logger.info('Authorization Token has expired', response);
+
+    // response.token === 0
+    return response && response.statusText === 'Unauthorized';
+};
+
+/**
+ * Request new token and retry the request call if the auth token is expired.
+ *
+ * @param requestCall   The request call used by a resolver.
+ *                      It must take and pass a refresh boolean to its dependent methods.
+ */
+export const requestWithTokenRefresh = async requestCall => {
+    try {
+        return await requestCall(false);
+    } catch (error) {
+        // Retry the request one time
+        if (isTokenExpire(error.response)) {
+            logger.info(
+                'Request new Authorization Token and rerun query/mutation.',
+            );
+            return await requestCall(true);
+        } else {
+            logger.error('Error in requestWithTokenRefresh()', error);
+            throw error;
+        }
+    }
+};
