@@ -109,6 +109,8 @@ function validateConfig(config) {
         sess.cookie.secure = true; // serve secure cookies
     }
 
+    sampleApp.expressApplication.disable('x-powered-by');
+
     // generate cookie
     sampleApp.expressApplication.use(expressSession(sess));
 
