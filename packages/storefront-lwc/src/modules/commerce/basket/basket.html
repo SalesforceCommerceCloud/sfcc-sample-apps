@@ -83,53 +83,16 @@
         <div class="basket basket-page">
             <div class="row">
                 <div class="col-md-8">
-                    <template for:each={products} for:item="product" for:index="index">
+                    <template for:each={products} for:item="product">
                         <commerce-product-line-item product={product} key={product.productId}>
                         </commerce-product-line-item>
                     </template>
                 </div>
 
                 <div class="col-md-4 totals" if:true={hasProducts}>
-                    <div class="row">
-                        <div class="col-12 d-sm-none">
-                            <p class="optional-promo">Enter promo code (optional)</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <form action="/" class="promo-code-form" method="GET" name="promo-code-form">
-                                <div class="form-group">
-                                    <label for="couponCode">Enter Promo Code</label>
-                                    <div class="row">
-                                        <div class="col-7">
-                                            <input type="text" class="form-control coupon-code-field" id="couponCode"
-                                                name="couponCode" placeholder="Promo Code">
-                                            <div class="coupon-error">
-                                                <span class="coupon-missing-error" id="missingCouponCode"
-                                                    role="alert">No coupon code entered</span>
-                                                <span class="coupon-error-message" id="invalidCouponCode"
-                                                    role="alert"></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-5 promo-code-submit">
-                                            <button type="submit" class="btn btn-primary btn-block promo-code-btn">
-                                                Submit
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-
-                    <div class="coupons-and-promos">
-                    </div>
-
-                    <commerce-shippingmethods shipping-label="Shipping" shipping-methods={shippingMethods}
-                        selected-shipping-method-id={selectedShippingMethodId}></commerce-shippingmethods>
-
-                    <commerce-basket-totals></commerce-basket-totals>
-
+                    <commerce-coupons allcoupons={basket.couponItems} onupdatebasket={updateBasket}></commerce-coupons>
+                    <commerce-shippingmethods shipping-label="Shipping" shipping-methods={shippingMethods} selected-shipping-method-id={selectedShippingMethodId}></commerce-shippingmethods>
+                    <commerce-basket-totals basket={basket}></commerce-basket-totals>
                     <div class="row">
                         <div class="col-12 checkout-continue">
                             <div>
@@ -138,7 +101,6 @@
                                     Checkout
                                 </a>
                             </div>
-
                         </div>
                     </div>
                     <br>
