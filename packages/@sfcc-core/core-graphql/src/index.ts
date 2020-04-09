@@ -4,5 +4,6 @@ export {
     CoreGraphQL,
     resolverFactory,
     getUserFromContext,
+    requestWithTokenRefresh,
     AppContext,
 } from './graphql';

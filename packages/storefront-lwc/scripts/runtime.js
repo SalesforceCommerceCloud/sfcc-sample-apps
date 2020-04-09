@@ -65,8 +65,11 @@ function validateConfig(config) {
     const sampleApp = await getSampleApp();
     const config = sampleApp.apiConfig.config;
     validateConfig(config);
-    // Create Express Instance, register it with demo app and start demo app.
 
+    //
+    // Use this middleware when graphql-passport context.authenticate() are called
+    // to retrieve a shopper token from the sdk. provide {id,token} to passport on success.
+    //
     passport.use(
         new graphqlPassport.GraphQLLocalStrategy(function(user, pass, done) {
             const clientConfig = getCommerceClientConfig(config);
@@ -93,6 +96,7 @@ function validateConfig(config) {
         done(null, users.get(id));
     });
 
+    // Create Express Instance, register it with demo app and start demo app.
     sampleApp.expressApplication = express();
 
     const sess = {
@@ -105,6 +109,7 @@ function validateConfig(config) {
         sess.cookie.secure = true; // serve secure cookies
     }
 
+    // generate cookie
     sampleApp.expressApplication.use(expressSession(sess));
 
     sampleApp.expressApplication.use(passport.initialize());
