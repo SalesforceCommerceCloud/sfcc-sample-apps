@@ -7,20 +7,15 @@
 import { LightningElement, api } from 'lwc';
 
 export default class LineItemTotal extends LightningElement {
-    @api set itemDiscountTotal(val) {
-        return (this._itemDiscountTotal = val);
+    @api itemDiscountTotal;
+    @api itemNonAdjustedTotal;
+
+    get discountTotal() {
+        return this.itemDiscountTotal.toFixed(2);
     }
 
-    get itemDiscountTotal() {
-        return this._itemDiscountTotal.toFixed(2);
-    }
-
-    @api set itemNonAdjustedTotal(val) {
-        return (this._itemNonAdjustedTotal = val);
-    }
-
-    get itemNonAdjustedTotal() {
-        return this._itemNonAdjustedTotal.toFixed(2);
+    get nonAdjustedTotal() {
+        return this.itemNonAdjustedTotal.toFixed(2);
     }
 
     get showNonAjustedTotal() {

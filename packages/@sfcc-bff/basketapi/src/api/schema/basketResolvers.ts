@@ -9,11 +9,19 @@ import Basket from '../models/Basket';
 import { getCommerceClientConfig } from '@sfcc-core/apiconfig';
 import { getUserFromContext, AppContext } from '@sfcc-core/core-graphql';
 import CommerceSdk from 'commerce-sdk';
+import { BasketT } from 'commerce-sdk/dist/checkout/shopperBaskets/shopperBaskets.types';
 import { core, Config } from '@sfcc-core/core';
 import { getPrices } from '@sfcc-bff/productapi';
 
 const { ApolloError } = apollo;
 const logger = core.logger;
+
+const noBasketError = {
+    fault: {
+        type: 'NoBasketCreated',
+        message: 'No Basket has been created yet.',
+    },
+};
 
 const getBasketClient = async (config: Config, context: AppContext) => {
     const clientConfig = getCommerceClientConfig(config);
@@ -103,56 +111,12 @@ const getProductsDetails = async (
     return result.data;
 };
 
-const getBasket = async (config: Config, context: AppContext) => {
-    let basketId = context.getSessionProperty('basketId');
-    // If No basket has been created yet, return error
-    if (!basketId) {
-        return {
-            fault: {
-                type: 'NoBasketCreated',
-                message: 'No basket has been created yet.',
-            },
-        };
-    }
-    // else get basket with that id
-    const basketClient = await getBasketClient(config, context);
-
-    let basket = await basketClient.getBasket({
-        parameters: {
-            basketId: basketId,
-        },
-    });
-
-    if (basket.fault) {
-        return basket;
-    }
-
-    basket.getBasketMessage = `Basket found with ID of ${basketId}`;
-
-    // Get Shipping Methods
-    if (!basket?.shipments?.length || !basket.shipments[0].shipmentId)
-        return { fault: { message: 'No available shipment methods!' } };
-
-    const shipmentId = basket.shipments[0].shipmentId;
-    const shippingMethods = await getShippingMethods(
-        basketId,
-        shipmentId,
-        config,
-        context,
-    );
-
-    // Update Shipping Method to Default Method if Basket Does Not Have One Already
-    if (!basket.shipments[0].shippingMethod) {
-        basket = await updateShippingMethod(
-            shipmentId,
-            shippingMethods.defaultShippingMethodId as string,
-            config,
-            context,
-        );
-    }
-
-    basket.shippingMethods = shippingMethods;
-
+const getFullProductItems = async (
+    apiBasket: BasketT,
+    config: Config,
+    context: AppContext,
+) => {
+    let basket = apiBasket;
     if (basket.productItems) {
         let productIds = basket.productItems
             .map(product => product.productId)
@@ -193,6 +157,54 @@ const getBasket = async (config: Config, context: AppContext) => {
     return basket;
 };
 
+const getBasket = async (config: Config, context: AppContext) => {
+    let basketId = context.getSessionProperty('basketId');
+    // If No basket has been created yet, return error
+    if (!basketId) {
+        return noBasketError;
+    }
+    // else get basket with that id
+    const basketClient = await getBasketClient(config, context);
+
+    let basket = await basketClient.getBasket({
+        parameters: {
+            basketId: basketId,
+        },
+    });
+
+    if (basket.fault) {
+        return basket;
+    }
+
+    basket.getBasketMessage = `Basket found with ID of ${basketId}`;
+
+    // Get Shipping Methods
+    if (!basket?.shipments?.length || !basket.shipments[0].shipmentId)
+        return { fault: { message: 'No available shipment methods!' } };
+
+    const shipmentId = basket.shipments[0].shipmentId;
+    const shippingMethods = await getShippingMethods(
+        basketId,
+        shipmentId,
+        config,
+        context,
+    );
+
+    // Update Shipping Method to Default Method if Basket Does Not Have One Already
+    if (!basket.shipments[0].shippingMethod) {
+        basket = await updateShippingMethod(
+            shipmentId,
+            shippingMethods.defaultShippingMethodId as string,
+            config,
+            context,
+        );
+    }
+
+    basket.shippingMethods = shippingMethods;
+    basket = await getFullProductItems(basket, config, context);
+    return basket;
+};
+
 const getShippingMethods = async (
     basketId: string,
     shipmentId: string,
@@ -217,12 +229,7 @@ const updateShippingMethod = async (
 ) => {
     const basketId = context.getSessionProperty('basketId');
     if (!basketId) {
-        return {
-            fault: {
-                type: 'NoBasketCreated',
-                message: 'No Basket has been created yet.',
-            },
-        };
+        return noBasketError;
     }
 
     const basketClient = await getBasketClient(config, context);
@@ -256,6 +263,62 @@ const removeItemFromBasket = async (
             logger.error(e);
         });
     return getBasket(config, context);
+};
+
+const addCouponToBasket = async (
+    couponCode: string,
+    config: Config,
+    context: AppContext,
+) => {
+    const basketId = context.getSessionProperty('basketId');
+    if (!basketId) {
+        return noBasketError;
+    }
+
+    const basketClient = await getBasketClient(config, context);
+    let basket = await basketClient
+        .addCouponToBasket({
+            parameters: {
+                basketId: basketId,
+            },
+            body: {
+                code: couponCode,
+            },
+        })
+        .catch(e => {
+            logger.error(
+                `Error in submitCouponToBasket() for coupon code: ${couponCode}`,
+            );
+            throw e;
+        });
+
+    basket = await getFullProductItems(basket, config, context);
+
+    return basket;
+};
+
+const removeCouponFromBasket = async (
+    couponItemId: string,
+    config: Config,
+    context: AppContext,
+) => {
+    const basketId = context.getSessionProperty('basketId');
+    if (!basketId) {
+        return noBasketError;
+    }
+
+    const basketClient = await getBasketClient(config, context);
+
+    let basket = await basketClient.removeCouponFromBasket({
+        parameters: {
+            basketId: basketId,
+            couponItemId: couponItemId,
+        },
+    });
+
+    basket = await getFullProductItems(basket, config, context);
+
+    return basket;
 };
 
 export const basketResolver = (config: Config) => {
@@ -342,6 +405,40 @@ export const basketResolver = (config: Config) => {
                     context,
                 );
                 return new Basket(apiBasket);
+            },
+            addCouponToBasket: async (
+                _: never,
+                parameters: { couponCode: string },
+                context: AppContext,
+            ) => {
+                try {
+                    const apiBasket = await addCouponToBasket(
+                        parameters.couponCode,
+                        config,
+                        context,
+                    );
+                    return new Basket(apiBasket);
+                } catch (e) {
+                    logger.error(`Error in basketResolvers(). ${e}`);
+                    throw e;
+                }
+            },
+            removeCouponFromBasket: async (
+                _: never,
+                parameters: { couponItemId: string },
+                context: AppContext,
+            ) => {
+                try {
+                    const apiBasket = await removeCouponFromBasket(
+                        parameters.couponItemId,
+                        config,
+                        context,
+                    );
+                    return new Basket(apiBasket);
+                } catch (e) {
+                    logger.error(`Error in basketResolvers(). ${e}`);
+                    throw e;
+                }
             },
         },
     };
