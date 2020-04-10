@@ -61,6 +61,10 @@ export default class Basket extends LightningElement {
             .catch(error => {
                 console.log('error received ', error);
             });
+
+        window.dispatchEvent(
+            new CustomEvent('setheadertext', { detail: 'Your Basket' }),
+        );
     }
 
     updateBasket(event) {

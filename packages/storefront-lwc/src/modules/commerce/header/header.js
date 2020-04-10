@@ -6,4 +6,16 @@
 */
 import { LightningElement } from 'lwc';
 
-export default class CommerceHeader extends LightningElement {}
+export default class CommerceHeader extends LightningElement {
+    headerText = '';
+
+    isHeaderText() {
+        return this.headerText.length > 0;
+    }
+
+    connectedCallback() {
+        window.addEventListener('setheadertext', event => {
+            this.headerText = event.detail;
+        });
+    }
+}

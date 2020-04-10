@@ -162,6 +162,7 @@ export default class ProductSearchResults extends LightningElement {
 
         this.showRefinementBar = !this.showRefinementBar;
     }
+
     /**
      * returns an array of filters
      * @returns {array}
@@ -196,4 +197,12 @@ export default class ProductSearchResults extends LightningElement {
 
         return filtersArray;
     };
+
+    connectedCallback() {
+        window.dispatchEvent(
+            new CustomEvent('setheadertext', {
+                detail: 'Product Search Header',
+            }),
+        );
+    }
 }
