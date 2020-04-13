@@ -5,7 +5,7 @@
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 -->
 <template>
-    <template for:each={limitedVariations} for:item="limitedVariation" for:index="index">
+    <template for:each={limitedVariations} for:item="limitedVariation">
         <p key={limitedVariation.id} class="line-item-attributes">{limitedVariation.name}: {limitedVariation.selectedValue.name}</p>
     </template>
-</template> 
+</template>

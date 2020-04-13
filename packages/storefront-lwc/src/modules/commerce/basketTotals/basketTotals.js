@@ -5,7 +5,6 @@
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
 import { LightningElement, api } from 'lwc';
-import { ShoppingBasket } from 'commerce/data';
 
 export default class BasketTotals extends LightningElement {
     shippingCost = 0.0;
@@ -25,37 +24,6 @@ export default class BasketTotals extends LightningElement {
         return this._basket;
     }
 
-    constructor() {
-        super();
-        this.setTotals(ShoppingBasket.basket);
-        ShoppingBasket.updateBasketListener(
-            this.updateBasketHandler.bind(this),
-        );
-        // Listen to shippingmethods component change
-        window.addEventListener('update-shipping-method', e => {
-            this.updateShippingMethod(e);
-        });
-    }
-
-    updateBasketHandler(eventType) {
-        if (eventType === 'update-basket-totals') {
-            this.setTotals(ShoppingBasket.basket);
-        }
-    }
-
-    updateShippingMethod(event) {
-        const basketId = ShoppingBasket.basket.basketId;
-        const shipmentId = ShoppingBasket.basket.shipmentId;
-        const shippingMethodId = event.detail.shippingMethodId;
-        ShoppingBasket.updateShippingMethod(
-            basketId,
-            shipmentId,
-            shippingMethodId,
-        ).then(basket => {
-            this.setTotals(basket);
-        });
-    }
-
     setTotals(basket) {
         this.shippingCost = basket.shippingTotal.toFixed(2);
         this.salesTax = basket.taxTotal.toFixed(2);
@@ -64,13 +32,13 @@ export default class BasketTotals extends LightningElement {
         this.hasOrderDiscount =
             orderLevelPriceAdjustment && orderLevelPriceAdjustment.price;
         this.orderDiscount = this.hasOrderDiscount
-            ? orderLevelPriceAdjustment.price.toFixed(2) * -1.0
+            ? (orderLevelPriceAdjustment.price * -1).toFixed(2)
             : 0.0;
         let shippingLevelPriceAdjustment = basket.shippingLevelPriceAdjustment;
         this.hasShippingDiscount =
             shippingLevelPriceAdjustment && shippingLevelPriceAdjustment.price;
         this.shippingDiscount = this.hasShippingDiscount
-            ? shippingLevelPriceAdjustment.price.toFixed(2) * -1.0
+            ? (shippingLevelPriceAdjustment.price * -1).toFixed(2)
             : 0.0;
     }
 }
