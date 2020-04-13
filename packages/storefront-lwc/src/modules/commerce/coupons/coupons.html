@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-9 pr-0">
+            <div class="col-8 pr-0">
                 <input
                     class="form-control"
                     type="text"
@@ -28,10 +28,10 @@
                     <div class="error">Coupon cannot be added to your cart</div>
                 </template>
             </div>
-            <div class="col-3 pl-1">
+            <div class="col-4 pl-1">
                 <button
                     type="submit"
-                    class="btn btn-block btn-outline-primary"
+                    class="btn btn-block btn-outline-primary submit-button"
                     onclick={submitCoupon}
                 >
                     Submit
@@ -42,7 +42,6 @@
             <div class="col">
                 <template for:each={allcoupons} for:item="singlecoupon">
                     <div key={singlecoupon.couponItemId} class="coupon-card p-2 mt-2">
-                        {singlecoupon.couponCode} - {singlecoupon.couponStatus}
                         <button
                             type="button"
                             class="close"
@@ -52,6 +51,7 @@
                         >
                             <span aria-hidden="true">&times;</span>
                         </button>
+                        <span>{singlecoupon.couponCode} - {singlecoupon.couponStatus}</span>
                     </div>
                 </template>
             </div>

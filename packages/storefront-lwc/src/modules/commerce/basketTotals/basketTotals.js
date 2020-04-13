@@ -70,7 +70,7 @@ export default class BasketTotals extends LightningElement {
         this.hasShippingDiscount =
             shippingLevelPriceAdjustment && shippingLevelPriceAdjustment.price;
         this.shippingDiscount = this.hasShippingDiscount
-            ? shippingLevelPriceAdjustment.price.toFixed(2)
+            ? shippingLevelPriceAdjustment.price.toFixed(2) * -1.0
             : 0.0;
     }
 }
