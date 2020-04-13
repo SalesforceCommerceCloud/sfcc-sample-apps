@@ -4,11 +4,11 @@
     SPDX-License-Identifier: BSD-3-Clause
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
-import { LightningElement, track } from 'lwc';
+import { LightningElement } from 'lwc';
 import { ShoppingBasket } from 'commerce/data';
 
 export default class Basket extends LightningElement {
-    @track products = [];
+    products = [];
     loading = true;
     basket = {};
 
@@ -18,11 +18,21 @@ export default class Basket extends LightningElement {
 
     constructor() {
         super();
+        ShoppingBasket.updateBasketListener(
+            this.updateBasketHandler.bind(this),
+        );
+    }
+
+    updateBasketHandler() {
+        this.basket = ShoppingBasket.basket;
+        this.products = ShoppingBasket.basket.products
+            ? ShoppingBasket.basket.products
+            : [];
     }
 
     get shippingMethods() {
-        let shippingMethods =
-            ShoppingBasket.basket.shippingMethods.applicableShippingMethods;
+        let shippingMethods = this.basket.shippingMethods
+            .applicableShippingMethods;
         return this.filterStorePickupShippingMethods(shippingMethods);
     }
 
@@ -38,7 +48,7 @@ export default class Basket extends LightningElement {
     }
 
     get selectedShippingMethodId() {
-        return ShoppingBasket.basket.selectedShippingMethodId;
+        return this.basket.selectedShippingMethodId;
     }
 
     connectedCallback() {
@@ -53,15 +63,9 @@ export default class Basket extends LightningElement {
             });
     }
 
-    removeHandler(event) {
-        const itemId = event.srcElement.getAttribute('data-itemid');
-        ShoppingBasket.removeItemFromBasket(itemId)
-            .then(basket => {
-                this.basket = basket;
-                this.products = basket.products ? basket.products : [];
-            })
-            .catch(error => {
-                console.error('error received ', error);
-            });
+    updateBasket(event) {
+        this.basket = { ...this.basket, ...event.detail.updatedBasket };
+        this.products = event.detail.updatedBasket.products;
+        ShoppingBasket.basket = this.basket;
     }
 }

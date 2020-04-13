@@ -7,6 +7,7 @@
 import {
     BasketT,
     ProductItemT,
+    CouponItemT,
 } from 'commerce-sdk/dist/checkout/shopperBaskets/shopperBaskets.types';
 
 class Basket {
@@ -18,6 +19,7 @@ class Basket {
     products: ProductItemT[];
     orderTotal: number;
     orderLevelPriceAdjustment: { itemText: string; price: number };
+    shippingLevelPriceAdjustment: { itemText: string; price: number };
     shippingMethods: [];
     shipmentId: string;
     shipmentTotal: number;
@@ -25,6 +27,7 @@ class Basket {
     shippingTotal: number;
     shippingTotalTax: number;
     taxTotal: number;
+    couponItems: CouponItemT[];
 
     constructor(apiBasket: BasketT) {
         this.customerId =
@@ -44,7 +47,14 @@ class Basket {
                       price: product.price,
                       quantity: product.quantity,
                       itemId: product.itemId,
-                      image: product.image,
+                      imageURL: product.imageURL,
+                      variationAttributes: product.variationAttributes,
+                      inventory: product.inventory,
+                      type: product.type,
+                      prices: product.prices,
+                      itemTotalAfterDiscount: product.priceAfterItemDiscount,
+                      itemTotalNonAdjusted: product.price,
+                      productPromotions: product.productPromotions,
                   };
               })
             : [];
@@ -53,6 +63,15 @@ class Basket {
         this.orderLevelPriceAdjustment = {
             itemText: apiBasket?.orderPriceAdjustments?.[0].itemText ?? '',
             price: apiBasket?.orderPriceAdjustments?.[0].price ?? 0.0,
+        };
+
+        this.shippingLevelPriceAdjustment = {
+            itemText:
+                apiBasket?.shippingItems?.[0].priceAdjustments?.[0].itemText ??
+                '',
+            price:
+                apiBasket?.shippingItems?.[0].priceAdjustments?.[0].price ??
+                0.0,
         };
 
         this.shippingMethods = apiBasket.shippingMethods;
@@ -76,6 +95,7 @@ class Basket {
         }
 
         this.taxTotal = apiBasket.taxTotal ?? 0;
+        this.couponItems = apiBasket.couponItems ? apiBasket.couponItems : [];
     }
 }
 

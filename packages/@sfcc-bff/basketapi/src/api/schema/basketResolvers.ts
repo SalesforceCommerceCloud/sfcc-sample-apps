@@ -7,17 +7,34 @@
 import apollo from 'apollo-server';
 import Basket from '../models/Basket';
 import { getCommerceClientConfig } from '@sfcc-core/apiconfig';
-import { getUserFromContext, AppContext } from '@sfcc-core/core-graphql';
+import {
+    getUserFromContext,
+    AppContext,
+    requestWithTokenRefresh,
+} from '@sfcc-core/core-graphql';
 import CommerceSdk from 'commerce-sdk';
+import { BasketT } from 'commerce-sdk/dist/checkout/shopperBaskets/shopperBaskets.types';
 import { core, Config } from '@sfcc-core/core';
+import { getPrices } from '@sfcc-bff/productapi';
 
 const { ApolloError } = apollo;
 const logger = core.logger;
 
-const getBasketClient = async (config: Config, context: AppContext) => {
+const noBasketError = {
+    fault: {
+        type: 'NoBasketCreated',
+        message: 'No Basket has been created yet.',
+    },
+};
+
+const getBasketClient = async (
+    config: Config,
+    context: AppContext,
+    refresh = false,
+) => {
     const clientConfig = getCommerceClientConfig(config);
     clientConfig.headers.authorization =
-        (await getUserFromContext(context))?.token ?? '';
+        (await getUserFromContext(context, refresh))?.token ?? '';
 
     return new CommerceSdk.Checkout.ShopperBaskets(clientConfig);
 };
@@ -29,27 +46,48 @@ const getProductClient = async (config: Config, context: AppContext) => {
     return new CommerceSdk.Product.ShopperProducts(clientConfig);
 };
 
+/**
+ * Get a basketId from the session or the server.
+ * @param basketClient commerce sdk for basket API calls.
+ * @param context data needed for graphql-passport session handling
+ * @param refresh request a new basket when true
+ */
+const getBasketId = async (basketClient, context, refresh = false) => {
+    let basketId = context.getSessionProperty('basketId');
+    if (!basketId || refresh) {
+        let customerBasket = await basketClient.createBasket({
+            body: {},
+        });
+        context.setSessionProperty(
+            'basketId',
+            customerBasket.basketId as string,
+        );
+        basketId = customerBasket.basketId as string;
+    }
+    return basketId;
+};
+
+/**
+ * Add a product of quantity count to a Shopping Basket.
+ * @param productId
+ * @param quantity
+ * @param config
+ * @param context
+ * @param refresh
+ */
 const addProductToBasket = async (
     productId: string,
     quantity: number,
     config: Config,
     context: AppContext,
 ) => {
-    const basketClient = await getBasketClient(config, context);
-    let basketId = context.getSessionProperty('basketId');
-    if (!basketId) {
-        let customerBasket = await basketClient.createBasket({
-            body: {},
+    return requestWithTokenRefresh(async refresh => {
+        const basketClient = await getBasketClient(config, context, refresh);
+        let basketId = await getBasketId(basketClient, context, refresh);
+        return await basketClient.addItemToBasket({
+            parameters: { basketId },
+            body: [{ productId, quantity }],
         });
-        context.setSessionProperty('basketId', customerBasket.basketId);
-        basketId = customerBasket.basketId as string;
-    }
-
-    return basketClient.addItemToBasket({
-        parameters: {
-            basketId: basketId,
-        },
-        body: [{ productId: productId, quantity: quantity }],
     });
 };
 
@@ -77,16 +115,82 @@ const getBasketProductCount = async (config: Config, context: AppContext) => {
     return basketProductCount;
 };
 
+/**
+ * The maximum number of productIDs that can be requested are 24
+ * @param config
+ * @param context
+ * @param productIds
+ */
+const getProductsDetails = async (
+    config: Config,
+    context: AppContext,
+    productIds: string,
+) => {
+    const productClient = await getProductClient(config, context);
+    let result = await productClient
+        .getProducts({
+            parameters: {
+                ids: productIds || '',
+            },
+        })
+        .catch(e => {
+            logger.error(`Error in getProduct` + e);
+            throw e;
+        });
+    return result.data;
+};
+
+const getFullProductItems = async (
+    apiBasket: BasketT,
+    config: Config,
+    context: AppContext,
+) => {
+    let basket = apiBasket;
+    if (basket.productItems) {
+        let productIds = basket.productItems
+            .map(product => product.productId)
+            .join();
+        let productDetails = await getProductsDetails(
+            config,
+            context,
+            productIds,
+        );
+        basket.productItems.map(productItem => {
+            let product = productDetails.find(
+                productDetail => productDetail.id === productItem.productId,
+            );
+            productItem.inventory = product?.inventory;
+            productItem.type = product?.type;
+            productItem.prices = getPrices(product);
+            let imageArray = product?.imageGroups?.find(
+                image => image.viewType === 'small',
+            )?.images;
+            productItem.imageURL = imageArray?.[0].link ?? '';
+
+            product?.variationAttributes?.map(attr => {
+                let variationValues = product?.variationValues;
+                let attributeId = variationValues
+                    ? variationValues[attr.id]
+                    : '';
+                if (attributeId) {
+                    let selectedValue = attr.values?.find(
+                        item => item.value === attributeId,
+                    );
+                    attr.selectedValue = selectedValue;
+                }
+            });
+            productItem.variationAttributes = product?.variationAttributes;
+            return productItem;
+        });
+    }
+    return basket;
+};
+
 const getBasket = async (config: Config, context: AppContext) => {
     let basketId = context.getSessionProperty('basketId');
     // If No basket has been created yet, return error
     if (!basketId) {
-        return {
-            fault: {
-                type: 'NoBasketCreated',
-                message: 'No basket has been created yet.',
-            },
-        };
+        return noBasketError;
     }
     // else get basket with that id
     const basketClient = await getBasketClient(config, context);
@@ -126,69 +230,8 @@ const getBasket = async (config: Config, context: AppContext) => {
     }
 
     basket.shippingMethods = shippingMethods;
-
-    // get all the product ids in current basket
-    let productIds = basket.productItems
-        ? basket.productItems.map(product => product.productId).join()
-        : '';
-    // get product details for all the product items in basket
-    if (basket.productItems) {
-        let productDetails = await getProductsDetailsInfo(
-            config,
-            context,
-            productIds,
-        );
-        // update the image to the product items in basket
-        basket.productItems.forEach(product => {
-            const item = productDetails.find(
-                item => item.pid === product.productId,
-            );
-
-            if (item) {
-                product.image = item.imageURL ?? '';
-            }
-        });
-    }
+    basket = await getFullProductItems(basket, config, context);
     return basket;
-};
-
-const getProductsDetailsInfo = async (
-    config: Config,
-    context: AppContext,
-    ids: string,
-) => {
-    let productItems: Array<{ pid: string; imageURL: string }> = [];
-    const productClient = await getProductClient(config, context);
-
-    const result = await productClient
-        .getProducts({
-            parameters: {
-                ids: ids,
-                allImages: true,
-            },
-        })
-        .catch(e => {
-            logger.error(`Error in getClientProduct() for product ${ids}`);
-            throw e;
-        });
-
-    result.data.forEach(product => {
-        let productDetailsInfo = {
-            pid: '',
-            imageURL: '',
-        };
-        productDetailsInfo.pid = product.id;
-        const imageGroups = product.imageGroups;
-        if (imageGroups) {
-            let imageArray = imageGroups?.find(
-                image => image.viewType === 'small',
-            )?.images;
-            productDetailsInfo.imageURL = imageArray?.[0].link ?? '';
-        }
-
-        productItems.push(productDetailsInfo);
-    });
-    return productItems;
 };
 
 const getShippingMethods = async (
@@ -215,12 +258,7 @@ const updateShippingMethod = async (
 ) => {
     const basketId = context.getSessionProperty('basketId');
     if (!basketId) {
-        return {
-            fault: {
-                type: 'NoBasketCreated',
-                message: 'No Basket has been created yet.',
-            },
-        };
+        return noBasketError;
     }
 
     const basketClient = await getBasketClient(config, context);
@@ -254,6 +292,62 @@ const removeItemFromBasket = async (
             logger.error(e);
         });
     return getBasket(config, context);
+};
+
+const addCouponToBasket = async (
+    couponCode: string,
+    config: Config,
+    context: AppContext,
+) => {
+    const basketId = context.getSessionProperty('basketId');
+    if (!basketId) {
+        return noBasketError;
+    }
+
+    const basketClient = await getBasketClient(config, context);
+    let basket = await basketClient
+        .addCouponToBasket({
+            parameters: {
+                basketId: basketId,
+            },
+            body: {
+                code: couponCode,
+            },
+        })
+        .catch(e => {
+            logger.error(
+                `Error in submitCouponToBasket() for coupon code: ${couponCode}`,
+            );
+            throw e;
+        });
+
+    basket = await getFullProductItems(basket, config, context);
+
+    return basket;
+};
+
+const removeCouponFromBasket = async (
+    couponItemId: string,
+    config: Config,
+    context: AppContext,
+) => {
+    const basketId = context.getSessionProperty('basketId');
+    if (!basketId) {
+        return noBasketError;
+    }
+
+    const basketClient = await getBasketClient(config, context);
+
+    let basket = await basketClient.removeCouponFromBasket({
+        parameters: {
+            basketId: basketId,
+            couponItemId: couponItemId,
+        },
+    });
+
+    basket = await getFullProductItems(basket, config, context);
+
+    return basket;
 };
 
 export const basketResolver = (config: Config) => {
@@ -340,6 +434,40 @@ export const basketResolver = (config: Config) => {
                     context,
                 );
                 return new Basket(apiBasket);
+            },
+            addCouponToBasket: async (
+                _: never,
+                parameters: { couponCode: string },
+                context: AppContext,
+            ) => {
+                try {
+                    const apiBasket = await addCouponToBasket(
+                        parameters.couponCode,
+                        config,
+                        context,
+                    );
+                    return new Basket(apiBasket);
+                } catch (e) {
+                    logger.error(`Error in basketResolvers(). ${e}`);
+                    throw e;
+                }
+            },
+            removeCouponFromBasket: async (
+                _: never,
+                parameters: { couponItemId: string },
+                context: AppContext,
+            ) => {
+                try {
+                    const apiBasket = await removeCouponFromBasket(
+                        parameters.couponItemId,
+                        config,
+                        context,
+                    );
+                    return new Basket(apiBasket);
+                } catch (e) {
+                    logger.error(`Error in basketResolvers(). ${e}`);
+                    throw e;
+                }
             },
         },
     };

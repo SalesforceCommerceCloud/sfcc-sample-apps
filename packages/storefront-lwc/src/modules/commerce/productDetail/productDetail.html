@@ -72,7 +72,7 @@
                 <commerce-variations onupdateproduct={updateProductDetails} variations={product.variations} variation-attributes={product.variationAttributes} inventory={product.inventory}></commerce-variations>
 
                 <!-- Product Availability -->
-                <commerce-product-availability inventory={product.inventory} type={product.type} quantity={selectedQty}></commerce-product-availability>
+                <commerce-product-availability inventory={product.inventory} type={product.type} quantity={selectedQty} context="pdp"></commerce-product-availability>
 
                 <!-- Promotions -->
                 <template if:true={product.productPromotions}>

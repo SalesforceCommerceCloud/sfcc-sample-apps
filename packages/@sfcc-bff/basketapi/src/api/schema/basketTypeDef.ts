@@ -19,6 +19,8 @@ export const basketTypeDef = gql`
             shippingMethodId: String!
         ): Basket!
         removeItemFromBasket(itemId: String!): Basket!
+        addCouponToBasket(couponCode: String!): Basket!
+        removeCouponFromBasket(couponItemId: String!): Basket!
     }
     type Basket {
         basketId: String!
@@ -31,12 +33,14 @@ export const basketTypeDef = gql`
         selectedShippingMethodId: String
         products: [ProductItem]
         orderTotal: Float
-        orderLevelPriceAdjustment: OrderLevelPriceAdjustment
+        orderLevelPriceAdjustment: PriceAdjustment
+        shippingLevelPriceAdjustment: PriceAdjustment
         shippingTotal: Float
         shippingTotalTax: Float
         taxation: String
         taxTotal: Float
         shippingMethods: ShippingMethods
+        couponItems: [CouponItem]
     }
     type ProductItem {
         productId: String!
@@ -44,7 +48,29 @@ export const basketTypeDef = gql`
         price: Float!
         quantity: Int!
         itemId: String!
-        image: String
+        imageURL: String
+        inventory: Inventory
+        type: ProductType
+        variationAttributes: [ProductVariationAttribute]
+        prices: Prices
+        itemTotalAfterDiscount: Float
+        itemTotalNonAdjusted: Float
+        productPromotions: ProductPromotions
+    }
+    type ProductPromotions {
+        calloutMsg: String
+        promotionalPrice: Float
+        promotionId: String!
+    }
+    type ProductVariationAttribute {
+        id: String!
+        name: String!
+        selectedValue: SelectedVariationValue
+    }
+    type SelectedVariationValue {
+        name: String!
+        orderable: Boolean
+        value: String!
     }
     type ShippingMethods {
         applicableShippingMethods: [ShippingMethod]
@@ -58,8 +84,15 @@ export const basketTypeDef = gql`
         c_estimatedArrivalTime: String
         c_storePickupEnabled: Boolean
     }
-    type OrderLevelPriceAdjustment {
+    type PriceAdjustment {
         itemText: String
         price: Float
+    }
+
+    type CouponItem {
+        valid: Boolean
+        code: String!
+        couponItemId: String!
+        statusCode: String
     }
 `;

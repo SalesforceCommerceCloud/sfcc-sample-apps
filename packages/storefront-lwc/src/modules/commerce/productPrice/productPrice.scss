@@ -25,3 +25,17 @@
   color: $light-gray;
   font-weight: $font-weight-normal;
 }
+.basket {
+  display: block;
+  .sale-price {
+    display: block;
+    color: #222;
+    font-weight: bold;
+  }
+  .price {
+    font-weight: bold;
+  }
+  .strike-through {
+    font-size: 1rem;
+  }
+}

@@ -17,23 +17,56 @@ class Basket {
 
     isBasketLoaded = false;
 
-    getBasketAttributes = `basketId
-            customerId
-            getBasketMessage
-            totalProductsQuantity
-            shipmentId
-            shipmentTotal
-            selectedShippingMethodId
-            products {
-                productId
-                itemId
-                quantity
+    getBasketAttributes = `
+        basketId
+        customerId
+        getBasketMessage
+        totalProductsQuantity
+        shipmentId
+        shipmentTotal
+        selectedShippingMethodId
+        products {
+            productId
+            itemId
+            quantity
             productName
             price
-            image
+            imageURL
+            inventory {
+                ats
+                backorderable
+                id
+                orderable
+                preorderable
+                stockLevel
+            }
+            itemTotalAfterDiscount
+            itemTotalNonAdjusted
+            variationAttributes {
+                id
+                name
+                selectedValue {
+                    name
+                    orderable
+                    value
+                }
+            }
+            prices {
+                list
+                sale
+            }
+            productPromotions {
+                calloutMsg
+                promotionalPrice
+                promotionId
+            }
         }
         orderTotal
         orderLevelPriceAdjustment {
+            itemText
+            price
+        }
+        shippingLevelPriceAdjustment {
             itemText
             price
         }
@@ -51,7 +84,13 @@ class Basket {
                 c_estimatedArrivalTime
                 c_storePickupEnabled
             }
-        }`;
+        }
+        couponItems {
+            code
+            couponItemId
+            statusCode
+        }
+    `;
 
     /**
      * Calling Add to the basket BFF.
@@ -101,29 +140,7 @@ class Basket {
                 mutation: gql`
                     mutation {
                         updateShippingMethod(basketId: "${basketId}", shipmentId: "${shipmentId}", shippingMethodId: "${shippingMethodId}") {
-                            basketId
-                            customerId
-                            getBasketMessage
-                            totalProductsQuantity
-                            shipmentId
-                            shipmentTotal
-                            selectedShippingMethodId
-                            products {
-                                productId
-                                itemId
-                                quantity
-                                productName
-                                price
-                            }
-                            orderTotal
-                            orderLevelPriceAdjustment {
-                                itemText
-                                price
-                            }
-                            shippingTotal
-                            shippingTotalTax
-                            taxation
-                            taxTotal
+                            ${this.getBasketAttributes}
                         }
                     }
                  `,
@@ -208,7 +225,6 @@ class Basket {
             .then(result => {
                 this.basket = result.data.getBasket;
                 this.isBasketLoaded = true;
-                this.updateBasket('basket-loaded');
                 return this.basket;
             })
             .catch(error => {
