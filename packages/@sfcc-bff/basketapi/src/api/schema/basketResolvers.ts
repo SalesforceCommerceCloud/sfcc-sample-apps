@@ -19,13 +19,7 @@ import { getPrices } from '@sfcc-bff/productapi';
 
 const { ApolloError } = apollo;
 const logger = core.logger;
-
-const noBasketError = {
-    fault: {
-        type: 'NoBasketCreated',
-        message: 'No Basket has been created yet.',
-    },
-};
+const NO_BASKET_CREATED = `No Basket has been created yet.`;
 
 const getBasketClient = async (
     config: Config,
@@ -190,8 +184,9 @@ const getBasket = async (config: Config, context: AppContext) => {
     let basketId = context.getSessionProperty('basketId');
     // If No basket has been created yet, return error
     if (!basketId) {
-        return noBasketError;
+        throw new ApolloError(NO_BASKET_CREATED);
     }
+
     // else get basket with that id
     const basketClient = await getBasketClient(config, context);
 
@@ -201,15 +196,11 @@ const getBasket = async (config: Config, context: AppContext) => {
         },
     });
 
-    if (basket.fault) {
-        return basket;
-    }
-
     basket.getBasketMessage = `Basket found with ID of ${basketId}`;
 
     // Get Shipping Methods
     if (!basket?.shipments?.length || !basket.shipments[0].shipmentId)
-        return { fault: { message: 'No available shipment methods!' } };
+        throw new ApolloError('No available shipment methods!');
 
     const shipmentId = basket.shipments[0].shipmentId;
     const shippingMethods = await getShippingMethods(
@@ -258,7 +249,7 @@ const updateShippingMethod = async (
 ) => {
     const basketId = context.getSessionProperty('basketId');
     if (!basketId) {
-        return noBasketError;
+        throw new ApolloError(NO_BASKET_CREATED);
     }
 
     const basketClient = await getBasketClient(config, context);
@@ -301,7 +292,7 @@ const addCouponToBasket = async (
 ) => {
     const basketId = context.getSessionProperty('basketId');
     if (!basketId) {
-        return noBasketError;
+        throw new ApolloError(NO_BASKET_CREATED);
     }
 
     const basketClient = await getBasketClient(config, context);
@@ -333,7 +324,7 @@ const removeCouponFromBasket = async (
 ) => {
     const basketId = context.getSessionProperty('basketId');
     if (!basketId) {
-        return noBasketError;
+        throw new ApolloError(NO_BASKET_CREATED);
     }
 
     const basketClient = await getBasketClient(config, context);
@@ -359,15 +350,8 @@ export const basketResolver = (config: Config) => {
                 context: AppContext,
             ) => {
                 const apiBasket = await getBasket(config, context);
-                if (apiBasket.fault) {
-                    logger.error(
-                        'ERROR Received when getting basket',
-                        apiBasket.fault.message,
-                    );
-                    throw new ApolloError(apiBasket.fault.message);
-                } else {
-                    return new Basket(apiBasket);
-                }
+
+                return new Basket(apiBasket);
             },
             getBasketProductCount: async (
                 _: never,
@@ -391,13 +375,6 @@ export const basketResolver = (config: Config) => {
                     context,
                 );
 
-                if (apiBasket.fault) {
-                    logger.error(
-                        'ERROR!!!!! in addProductToBasket',
-                        apiBasket.fault,
-                    );
-                    throw new ApolloError(apiBasket.fault.message);
-                }
                 return new Basket(apiBasket);
             },
             updateShippingMethod: async (
@@ -412,15 +389,8 @@ export const basketResolver = (config: Config) => {
                     config,
                     context,
                 );
-                if (apiBasket.fault) {
-                    logger.error(
-                        'ERROR!!!!! in updateShippingMethod',
-                        JSON.stringify(apiBasket),
-                    );
-                    throw new ApolloError(apiBasket.fault.message);
-                } else {
-                    return new Basket(apiBasket);
-                }
+
+                return new Basket(apiBasket);
             },
             removeItemFromBasket: async (
                 _: never,
@@ -440,34 +410,24 @@ export const basketResolver = (config: Config) => {
                 parameters: { couponCode: string },
                 context: AppContext,
             ) => {
-                try {
-                    const apiBasket = await addCouponToBasket(
-                        parameters.couponCode,
-                        config,
-                        context,
-                    );
-                    return new Basket(apiBasket);
-                } catch (e) {
-                    logger.error(`Error in basketResolvers(). ${e}`);
-                    throw e;
-                }
+                const apiBasket = await addCouponToBasket(
+                    parameters.couponCode,
+                    config,
+                    context,
+                );
+                return new Basket(apiBasket);
             },
             removeCouponFromBasket: async (
                 _: never,
                 parameters: { couponItemId: string },
                 context: AppContext,
             ) => {
-                try {
-                    const apiBasket = await removeCouponFromBasket(
-                        parameters.couponItemId,
-                        config,
-                        context,
-                    );
-                    return new Basket(apiBasket);
-                } catch (e) {
-                    logger.error(`Error in basketResolvers(). ${e}`);
-                    throw e;
-                }
+                const apiBasket = await removeCouponFromBasket(
+                    parameters.couponItemId,
+                    config,
+                    context,
+                );
+                return new Basket(apiBasket);
             },
         },
     };
