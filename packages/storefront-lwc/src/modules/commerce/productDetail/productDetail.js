@@ -51,9 +51,13 @@ export default class ProductDetail extends LightningElement {
     })
     updateProduct(response) {
         if (response.initialized) {
-            this.product = { ...this.product, ...response.data.product };
-            this.masterPid = response.data.product.masterId;
-            this.setActiveImageCss(0);
+            if (response.error) {
+                console.error('Error loading product', response.error);
+            } else {
+                this.product = { ...this.product, ...response.data.product };
+                this.masterPid = response.data.product.masterId;
+                this.setActiveImageCss(0);
+            }
         }
     }
 
