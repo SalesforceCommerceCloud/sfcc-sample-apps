@@ -18,7 +18,7 @@ const authLink = new ApolloLink((operation, forward) => {
 const defaultOptions = {
     watchQuery: {
         fetchPolicy: 'no-cache',
-        errorPolicy: 'ignore',
+        errorPolicy: 'all',
     },
     query: {
         fetchPolicy: 'no-cache',

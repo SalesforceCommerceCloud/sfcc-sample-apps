@@ -9,13 +9,10 @@
 import Product from '../models/Product';
 import { getCommerceClientConfig } from '@sfcc-core/apiconfig';
 import * as CommerceSdk from 'commerce-sdk';
-import { core } from '@sfcc-core/core';
 import {
     getUserFromContext,
     requestWithTokenRefresh,
 } from '@sfcc-core/core-graphql';
-
-const logger = core.logger;
 
 const getProductClient = async (config, context, refresh) => {
     const clientConfig = getCommerceClientConfig(config);
@@ -45,17 +42,8 @@ export const resolver = config => {
     return {
         Query: {
             product: async (_, { id, selectedColor }, context) => {
-                try {
-                    const apiProduct = await getProductDetail(
-                        config,
-                        id,
-                        context,
-                    );
-                    return new Product(apiProduct, selectedColor);
-                } catch (e) {
-                    logger.error(`Error in productDetailsResolvers(). ${e}`);
-                    throw e;
-                }
+                const apiProduct = await getProductDetail(config, id, context);
+                return new Product(apiProduct, selectedColor);
             },
         },
     };

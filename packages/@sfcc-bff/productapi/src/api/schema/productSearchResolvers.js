@@ -68,17 +68,16 @@ const searchProduct = async (config, query, filterParams, context) => {
 export const resolver = config => {
     return {
         Query: {
-            productSearch: (_, { query, filterParams }, context) => {
-                const result = searchProduct(
+            productSearch: async (_, { query, filterParams }, context) => {
+                const result = await searchProduct(
                     config,
                     query,
                     filterParams,
                     context,
                     false,
-                ).then(searchResult => {
-                    return new SearchResult(searchResult, filterParams);
-                });
-                return result;
+                );
+
+                return new SearchResult(result, filterParams);
             },
         },
     };
