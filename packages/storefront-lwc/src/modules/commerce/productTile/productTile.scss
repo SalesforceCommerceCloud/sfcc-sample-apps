@@ -1,28 +1,31 @@
-@import "../../../scss/ux_variables";
+@import '../../../scss/ux_variables';
 
-.product-tile {
-    .tile-body {
-        @include mobile { font-size: 0.875em; }
-        @include tablet { font-size: 1em; }
-        @include desktop { font-size: 1.125em; }
-
-        padding: 0;
-
-        .pdp-link {
-            padding-top: 0.3125em;
-        }
+.tile-body {
+    @include mobile {
+        font-size: 0.875em;
+    }
+    @include tablet {
+        font-size: 1em;
+    }
+    @include desktop {
+        font-size: 1.125em;
     }
 
-    .image-container {
-        position: relative;
-        overflow: auto;
+    padding: 0;
+}
+.pdp-link {
+    padding-top: 0.3125em;
+}
 
-        a {
-            display: block;
+.image-container {
+    position: relative;
+    overflow: auto;
+}
 
-            .tile-image {
-                width: 100%;
-            }
-        }
-    }
+a {
+    display: block;
+}
+
+.tile-image {
+    width: 100%;
 }

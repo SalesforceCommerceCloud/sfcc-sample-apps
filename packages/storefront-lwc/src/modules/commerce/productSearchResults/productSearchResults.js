@@ -4,9 +4,10 @@
     SPDX-License-Identifier: BSD-3-Clause
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
-import { LightningElement, wire, track, api } from 'lwc';
+import { LightningElement, wire, track } from 'lwc';
 import QUERY from './gqlQuery';
 import { useQuery } from '@lwce/apollo-client';
+import { routeParams } from '@lwce/router';
 import '../api/client';
 
 export default class ProductSearchResults extends LightningElement {
@@ -25,7 +26,18 @@ export default class ProductSearchResults extends LightningElement {
     };
     sortRuleValue = '';
 
-    @api set query(val) {
+    @wire(routeParams) params(params) {
+        this.query = params.query;
+        this.dispatchEvent(
+            new CustomEvent('querychange', {
+                detail: this.query,
+                bubbles: true,
+                composed: true,
+            }),
+        );
+    }
+
+    set query(val) {
         this._query = val;
         this.variables = { ...this.variables, query: encodeURIComponent(val) };
     }
@@ -86,6 +98,16 @@ export default class ProductSearchResults extends LightningElement {
 
     get hasResults() {
         return !!this.products.length && !this.loading;
+    }
+
+    disconnectedCallback() {
+        this.dispatchEvent(
+            new CustomEvent('querychange', {
+                detail: '',
+                bubbles: true,
+                composed: true,
+            }),
+        );
     }
 
     /**

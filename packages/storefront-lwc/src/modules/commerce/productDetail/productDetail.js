@@ -4,10 +4,11 @@
     SPDX-License-Identifier: BSD-3-Clause
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
-import { LightningElement, api, wire } from 'lwc';
+import { LightningElement, wire } from 'lwc';
 import { ShoppingBasket } from 'commerce/data';
 import { canAddToBasket } from './product.helper.js';
 import { useQuery } from '@lwce/apollo-client';
+import { routeParams } from '@lwce/router';
 import '../api/client';
 import QUERY from './gqlQuery';
 
@@ -30,7 +31,11 @@ export default class ProductDetail extends LightningElement {
         selectedColor: '',
     };
 
-    @api set pid(val) {
+    @wire(routeParams) params(params) {
+        this.pid = params.pid;
+    }
+
+    set pid(val) {
         this.variables = { ...this.variables, productId: val };
     }
     get pid() {
