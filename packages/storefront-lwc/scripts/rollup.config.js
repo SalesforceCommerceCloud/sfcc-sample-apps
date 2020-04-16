@@ -7,6 +7,7 @@ const resolve = require('rollup-plugin-node-resolve');
 const terser = require('rollup-plugin-terser').terser;
 const commonjs = require('rollup-plugin-commonjs');
 const visualizer = require('rollup-plugin-visualizer');
+const livereload = require('rollup-plugin-livereload');
 
 const path = require('path');
 
@@ -21,6 +22,7 @@ const lwcPlugin = lwc({
         '../../node_modules/**/*.mjs',
         '../node_modules/**/*.mjs',
     ],
+    sourcemap: true,
     rootDir: './src/modules',
 });
 
@@ -34,10 +36,7 @@ module.exports = {
     },
     plugins: [
         cleanup(),
-        resolve({
-            mainFields: ['module', 'main'],
-            browser: true,
-        }),
+        resolve(),
         html(),
         copyAssets(),
         lwcPlugin,
@@ -49,5 +48,8 @@ module.exports = {
                 gzipSize: true,
                 filename: 'dist/report.html',
             }),
+        !isProduction && livereload({
+            watch: 'dist'
+        }),
     ].filter(Boolean),
 };

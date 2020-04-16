@@ -101,6 +101,8 @@ function validateConfig(config) {
 
     const sess = {
         secret: config.COMMERCE_SESSION_SECRET, // This is something new we add to the config
+        resave: false,
+        saveUninitialized: false,
         cookie: {
             sameSite: 'strict',
         },
