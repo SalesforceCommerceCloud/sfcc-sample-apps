@@ -14,6 +14,13 @@ export default class StoreFront extends LightningElement {
         this.query = e.detail;
     }
 
+    connectedCallback() {
+        // Register an event listener to listen for errorevent dispatched by sub components
+        this.template.addEventListener('errorevent', event => {
+            this.errorCallback(event.detail.error);
+        });
+    }
+
     errorCallback(error) {
         this.error = error;
 

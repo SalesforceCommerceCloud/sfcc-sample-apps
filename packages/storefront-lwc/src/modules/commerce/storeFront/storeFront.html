@@ -17,10 +17,10 @@
                     <commerce-product-detail></commerce-product-detail>
                 </lwce-route>
                 <lwce-route default>
-                    <h1 style="color: black;">404 Not found</h1>
+                    <commerce-error-page pagenotfound="true"></commerce-error-page>
                 </lwce-route>
             </template>
-            <h1 if:true={hasError} style="color: black;">Fatal error please try again!</h1>
+            <commerce-error-page if:true={hasError} error={error}></commerce-error-page>
         </commerce-layout>
     </lwce-router>
 </template>

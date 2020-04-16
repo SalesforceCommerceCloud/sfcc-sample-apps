@@ -11,6 +11,7 @@ import { useQuery } from '@lwce/apollo-client';
 import { routeParams } from '@lwce/router';
 import '../api/client';
 import QUERY from './gqlQuery';
+import { dispatchErrorEvent } from 'commerce/helpers';
 
 /**
  * A product detail component is an interactive component which fetches and displays details about a product.
@@ -58,6 +59,8 @@ export default class ProductDetail extends LightningElement {
         if (response.initialized) {
             if (response.error) {
                 console.error('Error loading product', response.error);
+                // Dispatch error event
+                dispatchErrorEvent.call(this, response.error);
             } else {
                 this.product = { ...this.product, ...response.data.product };
                 this.masterPid = response.data.product.masterId;
