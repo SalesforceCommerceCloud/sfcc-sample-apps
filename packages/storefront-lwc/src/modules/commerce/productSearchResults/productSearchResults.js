@@ -26,6 +26,9 @@ export default class ProductSearchResults extends LightningElement {
     };
     sortRuleValue = '';
 
+    headerTextPrefix = '';
+    headerText = '';
+
     @wire(routeParams) params(params) {
         this.query = params.query;
         this.dispatchEvent(
@@ -63,6 +66,7 @@ export default class ProductSearchResults extends LightningElement {
     })
     updateProducts(response) {
         // The method to handle the response results returned from the above wire adaptor.
+        this.createHeader(false);
         if (!response.loading && response.data && response.data.productSearch) {
             this.products = response.data.productSearch.productHits || [];
             this.refinementgroups =
@@ -89,6 +93,7 @@ export default class ProductSearchResults extends LightningElement {
                 });
             });
             this.loading = false;
+            this.createHeader(true);
         } else {
             this.loading = response.loading;
             this.products = [];
@@ -184,6 +189,7 @@ export default class ProductSearchResults extends LightningElement {
 
         this.showRefinementBar = !this.showRefinementBar;
     }
+
     /**
      * returns an array of filters
      * @returns {array}
@@ -218,4 +224,20 @@ export default class ProductSearchResults extends LightningElement {
 
         return filtersArray;
     };
+
+    /**
+     * Set the apropriated text in the heading.
+     * @param showHeader A flag indicating whether or not to show the heading
+     */
+    createHeader(showHeader) {
+        if (showHeader && this.hasProducts()) {
+            this.headerTextPrefix = 'Search result for';
+            this.headerText = this.query;
+        } else if (showHeader && !this.hasProducts()) {
+            this.headerText = 'No Results';
+        } else {
+            this.headerTextPrefix = '';
+            this.headerText = '';
+        }
+    }
 }
