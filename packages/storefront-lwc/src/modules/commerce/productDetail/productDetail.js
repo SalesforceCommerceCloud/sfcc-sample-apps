@@ -19,7 +19,7 @@ import QUERY from './gqlQuery';
  * the current storefront shopping basket.
  */
 export default class ProductDetail extends LightningElement {
-    activeImage;
+    activeImage = 0;
     masterPid;
     product = {
         images: [],
@@ -59,9 +59,12 @@ export default class ProductDetail extends LightningElement {
             if (response.error) {
                 console.error('Error loading product', response.error);
             } else {
+                if (!response.loading) {
+                    this.activeImage = 0;
+                }
+
                 this.product = { ...this.product, ...response.data.product };
                 this.masterPid = response.data.product.masterId;
-                this.setActiveImageCss(0);
             }
         }
     }
@@ -143,34 +146,25 @@ export default class ProductDetail extends LightningElement {
     handleCarousel(event) {
         const { slide } = event.currentTarget.dataset;
         if (slide === 'prev') {
-            this.setActiveImageCss(
+            this.activeImage =
                 this.activeImage === 0
                     ? this.product.images.length - 1
-                    : this.activeImage - 1,
-            );
+                    : this.activeImage - 1;
         } else {
-            this.setActiveImageCss(
+            this.activeImage =
                 this.activeImage === this.product.images.length - 1
                     ? 0
-                    : this.activeImage + 1,
-            );
+                    : this.activeImage + 1;
         }
     }
 
-    /**
-     * Set the active image for the product detail carousel
-     * @param activeImage the url of the image to be displayed
-     */
-    setActiveImageCss(activeImage) {
-        this.product.cssClass = 'carousel-item';
-        this.activeImage = activeImage;
-        if (this.product && this.product.images) {
-            this.product.images.forEach((image, idx) => {
-                image.cssClass =
-                    idx === this.activeImage
-                        ? 'carousel-item active'
-                        : 'carousel-item';
-            });
-        }
+    get images() {
+        return this.product.images.map((image, index) => ({
+            ...image,
+            cssClass:
+                index === this.activeImage
+                    ? 'carousel-item active'
+                    : 'carousel-item',
+        }));
     }
 }

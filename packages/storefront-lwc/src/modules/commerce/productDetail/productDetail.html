@@ -23,7 +23,7 @@
             <div class="product-images col-12 col-sm-6">
                 <div class="carousel slide" data-interval="0">
                     <div class="carousel-inner" role="listbox">
-                        <template for:each={product.images} for:item="image">
+                        <template for:each={images} for:item="image">
                             <div class={image.cssClass} key={image.link}>
                                 <img src={image.link} class="d-block img-fluid" alt={image.atl}>
                             </div>
