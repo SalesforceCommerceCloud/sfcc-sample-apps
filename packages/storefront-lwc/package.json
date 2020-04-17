@@ -41,13 +41,15 @@
   "jest": {
     "preset": "@lwc/jest-preset",
     "moduleNameMapper": {
-      "^commerce/(.+)": "<rootDir>/src/modules/commerce/$1/$1"
+      "^commerce/(.+)": "<rootDir>/src/modules/commerce/$1/$1",
+      "@lwce/apollo-client": "<rootDir>/__mocks__/apollo-client.js"
     },
     "collectCoverageFrom": [
       "src/**/*.{js,ts}",
       "app/**/*.{js,ts}",
       "!app/api.example.js"
-    ]
+    ],
+    "transformIgnorePatterns": []
   },
   "dependencies": {
     "@lwc/synthetic-shadow": "1.4.0",
