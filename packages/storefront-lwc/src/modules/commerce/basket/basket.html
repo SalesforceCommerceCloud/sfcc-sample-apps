@@ -74,14 +74,20 @@
             <div class="row">
                 <div class="col-md-8">
                     <template for:each={products} for:item="product">
-                        <commerce-product-line-item product={product} key={product.productId}>
+                        <commerce-product-line-item product={product} key={product.productId} onremovelineitem={updateBasket}>
                         </commerce-product-line-item>
                     </template>
                 </div>
 
                 <div class="col-md-4 totals" if:true={hasProducts}>
                     <commerce-coupons allcoupons={basket.couponItems} onupdatebasket={updateBasket}></commerce-coupons>
-                    <commerce-shippingmethods shipping-label="Shipping" shipping-methods={shippingMethods} selected-shipping-method-id={selectedShippingMethodId}></commerce-shippingmethods>
+                    <commerce-shippingmethods
+                        onupdateshippingmethod={updateBasket}
+                        shipping-label="Shipping"
+                        basket={basket}
+                        shipping-methods={shippingMethods}
+                        selected-shipping-method-id={selectedShippingMethodId}
+                    ></commerce-shippingmethods>
                     <commerce-basket-totals basket={basket}></commerce-basket-totals>
                     <div class="row">
                         <div class="col-12 checkout-continue">

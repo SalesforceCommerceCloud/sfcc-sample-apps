@@ -110,9 +110,13 @@
                                         Add to basket
                                     </button>
                                 </template>
-                                <commerce-toastmessage alert-success-message="Your Product successfully added to basket"
-                                    alert-fail-message="Not able to add Product to basket">
-                                </commerce-toastmessage>
+                                <commerce-toastmessage
+                                    success={addToBasketSucceed}
+                                    show={showToast}
+                                    ontoastdisplayed={toastMessageDisplayed}
+                                    successmessage="Product added to cart successfully"
+                                    failmessage="Product could not be added to cart"
+                                ></commerce-toastmessage>
                             </div>
                         </div>
                     </div>

@@ -5,41 +5,26 @@
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
 import { LightningElement, api } from 'lwc';
-import { ShoppingBasket } from 'commerce/data';
-import { messagehelper } from 'commerce/data';
 
 /**
  * ToastMessage component. Renders toastMessage component
  */
-class ToastMessage extends LightningElement {
-    @api alertSuccessMessage;
-
-    @api alertFailMessage;
-
-    isVisible = false;
-    addToBasketSucceed = false;
-
-    constructor() {
-        super();
-        ShoppingBasket.updateBasketListener(
-            this.updateBasketHandler.bind(this),
-        );
-    }
-
-    updateBasketHandler(eventType) {
-        const timeToWait = 3000;
-        if (eventType === 'add-to-basket') {
-            this.isVisible = true;
-            this.addToBasketSucceed = true;
-            messagehelper.setMessageTimeout(this, timeToWait);
-        } else if (eventType === 'failed-add-to-basket') {
-            this.isVisible = true;
-            this.addToBasketSucceed = false;
-            messagehelper.setMessageTimeout(this, timeToWait);
+export default class ToastMessage extends LightningElement {
+    timeToWait = 3000;
+    _visible = false;
+    @api success;
+    @api set show(val) {
+        if (val) {
+            this._visible = true;
+            setTimeout(() => {
+                this._visible = false;
+                this.dispatchEvent(new CustomEvent('toastdisplayed'));
+            }, this.timeToWait);
         }
     }
-
-    renderedCallback() {}
+    get show() {
+        return this._visible;
+    }
+    @api successmessage;
+    @api failmessage;
 }
-
-export default ToastMessage;
