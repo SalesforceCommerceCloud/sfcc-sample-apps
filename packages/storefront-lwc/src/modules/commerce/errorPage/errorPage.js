@@ -49,7 +49,7 @@ export default class ErrorPage extends LightningElement {
     @api set error(error) {
         this._error = error;
         // Check if the error received is 404
-        if (error && error.length && error[0].message == '404 Not Found') {
+        if (error && error.message == '404 Not Found') {
             this.pagenotfound = true;
         } else {
             this.servererror = true;
