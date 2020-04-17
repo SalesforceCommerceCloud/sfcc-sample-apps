@@ -33,7 +33,7 @@
                     <div class="col"></div>
                     <div class="col-12 col-sm-6 text-center">
                         <p>
-                            <lwce-link href="/" class="btn btn-primary btn-block"> Continue </lwce-link>
+                            <lwce-link href="/"> Continue </lwce-link>
                         </p>
                     </div>
                     <div class="col"></div>
@@ -77,6 +77,10 @@
                         <commerce-product-line-item product={product} key={product.productId} onremovelineitem={updateBasket}>
                         </commerce-product-line-item>
                     </template>
+                    <commerce-toastmessage success={addToBasketSucceed} show={showToast} ontoastdisplayed={toastMessageDisplayed}
+                                    successmessage="Product added to cart successfully"
+                                    failmessage="Product could not be added to cart"
+                                ></commerce-toastmessage>
                 </div>
 
                 <div class="col-md-4 totals" if:true={hasProducts}>
