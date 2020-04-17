@@ -15,6 +15,8 @@ import { useMutation } from '@lwce/apollo-client';
 export default class ProductLineItem extends LightningElement {
     @api product;
 
+    showToast = false;
+
     @wire(useMutation, {
         mutation: REMOVE_ITEM_FROM_BASKET,
     })
@@ -53,9 +55,13 @@ export default class ProductLineItem extends LightningElement {
             itemId: itemId,
         };
         this.removeItemFromBasket.mutate({ variables: vars }).then(() => {
-            this.dispatchUpdateBasketEvent(
-                this.removeItemFromBasket.data.removeItemFromBasket,
-            );
+            if (this.removeItemFromBasket.error) {
+                this.showToast = true;
+            } else {
+                this.dispatchUpdateBasketEvent(
+                    this.removeItemFromBasket.data.removeItemFromBasket,
+                );
+            }
         });
     }
 
@@ -68,5 +74,9 @@ export default class ProductLineItem extends LightningElement {
             },
         });
         this.dispatchEvent(event);
+    }
+
+    toastMessageDisplayed() {
+        this.showToast = false;
     }
 }

@@ -13,6 +13,8 @@ export default class Coupons extends LightningElement {
         couponCode: '',
     };
 
+    showToast = false;
+
     displayCoupons = [];
 
     @api set allcoupons(val) {
@@ -75,9 +77,13 @@ export default class Coupons extends LightningElement {
             couponItemId: couponItemId,
         };
         this.removeCoupon.mutate({ variables: vars }).then(() => {
-            this.dispatchUpdateBasketEvent(
-                this.removeCoupon.data.removeCouponFromBasket,
-            );
+            if (this.removeCoupon.error) {
+                this.showToast = true;
+            } else {
+                this.dispatchUpdateBasketEvent(
+                    this.removeCoupon.data.removeCouponFromBasket,
+                );
+            }
         });
     }
 
@@ -100,5 +106,9 @@ export default class Coupons extends LightningElement {
             detail: { updatedBasket },
         });
         this.dispatchEvent(event);
+    }
+
+    toastMessageDisplayed() {
+        this.showToast = false;
     }
 }

@@ -20,7 +20,7 @@ export default class Basket extends LightningElement {
     })
     getBasket(response) {
         this.loading = response.loading;
-        if (response.initialized) {
+        if (response.initialized && !response.error) {
             this.basket = response.data.getBasket || {};
             this.shippingMethods = this.basket.shippingMethods.applicableShippingMethods;
             this.selectedShippingMethodId = this.basket.selectedShippingMethodId;
