@@ -58,8 +58,6 @@ export default class ProductDetail extends LightningElement {
     updateProduct(response) {
         if (response.initialized) {
             if (response.error) {
-                console.error('Error loading product', response.error);
-                // Dispatch error event
                 dispatchErrorEvent.call(this, response.error);
             } else {
                 if (!response.loading) {

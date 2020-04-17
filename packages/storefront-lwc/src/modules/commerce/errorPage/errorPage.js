@@ -11,18 +11,24 @@ export default class ErrorPage extends LightningElement {
     @api pagenotfound = false;
     @api servererror = false;
 
-    get error() {
+    get devMode() {
+        return 'process.env.NODE_ENV';
+    }
+
+    get hasError() {
         return this.pagenotfound || this.servererror;
+    }
+
+    get error() {
+        return JSON.stringify(this._error, undefined, 4);
     }
 
     @api set error(error) {
         this._error = error;
         // Check if the error received is 404
         if (error && error.length && error[0].message == '404 Not Found') {
-            // TODO: Update Header to show Page Not Found
             this.pagenotfound = true;
         } else {
-            // TODO: Update Header to show Something Went Wrong!
             this.servererror = true;
         }
     }
