@@ -4,28 +4,48 @@
     SPDX-License-Identifier: BSD-3-Clause
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
-import { LightningElement, api } from 'lwc';
-import { ShoppingBasket } from 'commerce/data';
+import { LightningElement, api, wire } from 'lwc';
+import { useMutation } from '@lwce/apollo-client';
+import { UPDATE_BASKET } from '../basket/gql.js';
 
 export default class ShippingMethods extends LightningElement {
+    @api basket;
     @api shippingLabel;
     @api shippingMethods;
     @api selectedShippingMethodId;
 
-    constructor() {
-        super();
-        this.selectedShippingMethodId =
-            ShoppingBasket.basket.selectedShippingMethodId;
+    @wire(useMutation, {
+        mutation: UPDATE_BASKET,
+    })
+    updateBasket;
+
+    updateShippingMethod(selectedShippingMethod) {
+        const basketId = this.basket.basketId;
+        const shipmentId = this.basket.shipmentId;
+        const shippingMethodId = selectedShippingMethod;
+
+        const variables = {
+            basketId,
+            shipmentId,
+            shippingMethodId,
+        };
+
+        this.updateBasket.mutate({ variables }).then(() => {
+            this.dispatchUpdateBasketEvent();
+        });
     }
 
     newShippingMethod = e => {
-        this.selectedShippingMethodId = e.target.value;
-        const event = new CustomEvent('update-shipping-method', {
+        this.updateShippingMethod(e.target.value);
+    };
+
+    dispatchUpdateBasketEvent = () => {
+        const event = new CustomEvent('updateshippingmethod', {
             detail: {
-                shippingMethodId: this.selectedShippingMethodId,
+                updatedBasket: this.updateBasket.data.updateShippingMethod,
             },
         });
-        window.dispatchEvent(event);
+        this.dispatchEvent(event);
     };
 
     get viewShippingMethods() {

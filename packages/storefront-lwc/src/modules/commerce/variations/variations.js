@@ -170,7 +170,7 @@ export default class Variations extends LightningElement {
      * Event handler for handling the quantity selector change
      */
     updateSelectQty(event) {
-        this.selectedQty = event.target.value;
+        this.selectedQty = parseInt(event.target.value);
         this.dispatchUpdateProductEvent();
     }
 }

@@ -14,11 +14,10 @@ import {
 } from '@sfcc-core/core-graphql';
 import CommerceSdk from 'commerce-sdk';
 import { BasketT } from 'commerce-sdk/dist/checkout/shopperBaskets/shopperBaskets.types';
-import { core, Config } from '@sfcc-core/core';
+import { Config } from '@sfcc-core/core';
 import { getPrices } from '@sfcc-bff/productapi';
 
 const { ApolloError } = apollo;
-const logger = core.logger;
 const NO_BASKET_CREATED = `No Basket has been created yet.`;
 
 const getBasketClient = async (
@@ -121,16 +120,11 @@ const getProductsDetails = async (
     productIds: string,
 ) => {
     const productClient = await getProductClient(config, context);
-    let result = await productClient
-        .getProducts({
-            parameters: {
-                ids: productIds || '',
-            },
-        })
-        .catch(e => {
-            logger.error(`Error in getProduct` + e);
-            throw e;
-        });
+    let result = await productClient.getProducts({
+        parameters: {
+            ids: productIds || '',
+        },
+    });
     return result.data;
 };
 
@@ -254,7 +248,7 @@ const updateShippingMethod = async (
 
     const basketClient = await getBasketClient(config, context);
 
-    return basketClient.updateShippingMethodForShipment({
+    let basket = await basketClient.updateShippingMethodForShipment({
         parameters: {
             basketId: basketId,
             shipmentId: shipmentId,
@@ -263,6 +257,10 @@ const updateShippingMethod = async (
             id: shippingMethodId,
         },
     });
+
+    basket = await getFullProductItems(basket, config, context);
+
+    return basket;
 };
 
 const removeItemFromBasket = async (
@@ -272,16 +270,12 @@ const removeItemFromBasket = async (
 ) => {
     const basketId = context.getSessionProperty('basketId');
     const basketClient = await getBasketClient(config, context);
-    await basketClient
-        .removeItemFromBasket({
-            parameters: {
-                basketId: basketId,
-                itemId: itemId,
-            },
-        })
-        .catch(e => {
-            logger.error(e);
-        });
+    await basketClient.removeItemFromBasket({
+        parameters: {
+            basketId: basketId,
+            itemId: itemId,
+        },
+    });
     return getBasket(config, context);
 };
 
@@ -296,21 +290,14 @@ const addCouponToBasket = async (
     }
 
     const basketClient = await getBasketClient(config, context);
-    let basket = await basketClient
-        .addCouponToBasket({
-            parameters: {
-                basketId: basketId,
-            },
-            body: {
-                code: couponCode,
-            },
-        })
-        .catch(e => {
-            logger.error(
-                `Error in submitCouponToBasket() for coupon code: ${couponCode}`,
-            );
-            throw e;
-        });
+    let basket = await basketClient.addCouponToBasket({
+        parameters: {
+            basketId: basketId,
+        },
+        body: {
+            code: couponCode,
+        },
+    });
 
     basket = await getFullProductItems(basket, config, context);
 

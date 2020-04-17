@@ -5,20 +5,20 @@
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 -->
 <template>
+    <commerce-context-heading if:true={pagenotfound} header-text="Page not found"></commerce-context-heading>
+    <commerce-context-heading if:true={servererror} header-text="Something went wrong"></commerce-context-heading>
     <div class="container" if:true={hasError}>
         <div if:true={devMode}>
-            <div class="row pt-5">
-                <div class="col"></div>
+            <div class="row pt-2">
                 <div class="col-12 col-sm-6">
                     <p if:true={pagenotfound} class="text-left">Page not found</p>
                     <p if:false={pagenotfound} class="text-left">An error has occurred while procrssing your request</p>
                 </div>
-                <div class="col"></div>
             </div>
-            <div class="row pt-5">
+            <div class="row pt-2">
                 <pre id="error">{error}</pre>
             </div>
-            <div class="row pt-5">
+            <div class="row pt-2">
                 <div class="col"></div>
                 <div class="col-12 col-sm-6 text-center">
                     <p>
@@ -28,9 +28,7 @@
                 <div class="col"></div>
             </div>
         </div>
-        <div if:false={devMode} class="row pt-5"><!--
-            <commerce-context-heading if:true={pagenotfound} headertext="Page not found"></commerce-context-heading>
-            <commerce-context-heading if:true={servererror} headertext="Something went wrong"></commerce-context-heading>-->
+        <div if:false={devMode} class="row pt-2">
             <div class="col"></div>
             <div class="col-12 col-sm-6" if:true={pagenotfound}>
                 <p class="text-left">We can't find the page you're looking for!</p>
@@ -41,7 +39,7 @@
             </div>
             <div class="col"></div>
         </div>
-        <div if:false={devMode} class="row pt-3">
+        <div if:false={devMode} class="row pt-2">
             <div class="col"></div>
             <div class="col-12 col-sm-6 text-center" if:true={pagenotfound}>
                 <p>

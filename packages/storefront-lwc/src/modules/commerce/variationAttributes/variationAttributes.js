@@ -6,7 +6,7 @@
 */
 import { LightningElement, api } from 'lwc';
 
-export default class variationAttributes extends LightningElement {
+export default class VariationAttributes extends LightningElement {
     @api variationAttributes;
 
     //Only display Color and Size variation attributes to be in sync wit PDP

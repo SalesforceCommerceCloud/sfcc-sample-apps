@@ -12,7 +12,8 @@ export default class ErrorPage extends LightningElement {
     @api servererror = false;
 
     get devMode() {
-        return 'process.env.NODE_ENV';
+        let mode = 'process.env.NODE_ENV';
+        return mode == 'development';
     }
 
     get hasError() {
