@@ -1,0 +1,66 @@
+@import "../../../scss/ux_variables";
+
+.sub-header{
+    height: 4.688em;
+  
+    @include mobile {
+      height: 3.125em;
+      margin-bottom: -1em;
+    }
+
+    @include desktop {
+      margin-top: 1em;
+      height: 5em;
+    }
+  }
+  
+  .sub-header:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    border-top: 1px solid $light-gray;
+    background: $light-gray;
+    width: 100%;
+    transform: translateY(-50%);
+  }
+  
+  .sub-header-content {
+    background-color: white;
+    width: auto;
+    max-width: 90%;
+    overflow: hidden;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: $dark-gray;
+    font-weight: bold;
+    white-space: nowrap;
+    border-left: 1em solid transparent;
+    border-right: 1em solid transparent;
+    text-overflow: ellipsis;
+  
+    @include mobile {
+      font-size: 1.313em;
+    }
+  
+    @include tablet {
+      font-size: 1.5em;
+    }
+  
+    @include desktop {
+      font-size: 1.688em;
+    }
+  
+    span.header-text-prefix {
+      display: none;
+  
+      @include tablet {
+        display: inline;
+      }
+      @include desktop {
+        display: inline;
+      }
+    }
+  }
