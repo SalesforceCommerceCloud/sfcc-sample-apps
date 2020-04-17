@@ -12,7 +12,7 @@ export default class ErrorPage extends LightningElement {
     @api servererror = false;
 
     get devMode() {
-        let mode = 'process.env.NODE_ENV';
+        let mode = JSON.parse('process.env.NODE_ENV');
         return mode == 'development';
     }
 
@@ -21,7 +21,15 @@ export default class ErrorPage extends LightningElement {
     }
 
     get error() {
-        return JSON.stringify(this._error, undefined, 4);
+        if (this._error) {
+            return JSON.stringify(this._error, undefined, 4)
+                .split('\n')
+                .map((line, index) => {
+                    return { line, index };
+                });
+        } else {
+            return null;
+        }
     }
 
     @api set error(error) {

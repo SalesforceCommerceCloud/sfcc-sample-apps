@@ -9,14 +9,25 @@
     <commerce-context-heading if:true={servererror} header-text="Something went wrong"></commerce-context-heading>
     <div class="container" if:true={hasError}>
         <div if:true={devMode}>
-            <div class="row pt-2">
-                <div class="col-12 col-sm-6">
-                    <p if:true={pagenotfound} class="text-left">Page not found</p>
-                    <p if:false={pagenotfound} class="text-left">An error has occurred while procrssing your request</p>
-                </div>
+            <div if:true={error} class="row pt-2">
+                <pre id="error">
+                    <code>
+                        <template for:each={error} for:item="errorLine">
+                            <span key={errorLine.index}>{errorLine.line}</span>
+                        </template>
+                    </code>
+                </pre>
             </div>
-            <div class="row pt-2">
-                <pre id="error">{error}</pre>
+            <div if:false={error} class="row pt-4">
+                <div class="col"></div>
+                <div class="col-12 col-sm-6" if:true={pagenotfound}>
+                    <p class="text-left">We can't find the page you're looking for!</p>
+                    <p class="text-left">You can either visit home page or contact our support team.</p>
+                </div>
+                <div class="col-12 col-sm-6" if:true={servererror}>
+                    <p class="text-left">Sorry, something went wrong. Please try again or contact us.</p>
+                </div>
+                <div class="col"></div>
             </div>
             <div class="row pt-2">
                 <div class="col"></div>
@@ -28,7 +39,7 @@
                 <div class="col"></div>
             </div>
         </div>
-        <div if:false={devMode} class="row pt-2">
+        <div if:false={devMode} class="row pt-4">
             <div class="col"></div>
             <div class="col-12 col-sm-6" if:true={pagenotfound}>
                 <p class="text-left">We can't find the page you're looking for!</p>
