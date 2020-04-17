@@ -77,10 +77,6 @@
                         <commerce-product-line-item product={product} key={product.productId} onremovelineitem={updateBasket}>
                         </commerce-product-line-item>
                     </template>
-                    <commerce-toastmessage success={addToBasketSucceed} show={showToast} ontoastdisplayed={toastMessageDisplayed}
-                                    successmessage="Product added to cart successfully"
-                                    failmessage="Product could not be added to cart"
-                                ></commerce-toastmessage>
                 </div>
 
                 <div class="col-md-4 totals" if:true={hasProducts}>
