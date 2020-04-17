@@ -34,7 +34,7 @@ To set up the sample application:
 <tr><td><code>COMMERCE_CLIENT_INSTANCE_ID</code></td><td>Unique instance ID within a realm (for example, 015).</td></tr>
 <tr><td><code>COMMERCE_CLIENT_SHORT_CODE</code></td><td>Unique region-specific merchant ID (for example, staging-001).</td></tr>
 <tr><td><code>COMMERCE_SESSION_SECRET</code></td><td>Unique ID for session management (for example, thisisasecretkey).</td></tr>
-<tr><td><code>COMMERCE_CORS</code></td><td>Optionally enable <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">CORS</a> for GraphQL on the defined domains (for example, enable all domains with "*").</td></tr>
+<tr><td><code>COMMERCE_CORS</code></td><td>Optionally enable <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">CORS</a> for GraphQL on the defined domains (for example, enable all domains with "\*").</td></tr>
 </table>
 Note: If the COMMERCE_SESSION_SECRET key is not unique per customer application, session information can be unintentionally shared between ecommerce sites. 
 
@@ -82,6 +82,7 @@ The sample app currently includes the following components:
 * [Home Page](https://github.com/SalesforceCommerceCloud/sfcc-sample-apps/tree/master/packages/storefront-lwc/src/modules/commerce/home)
 * [Product Detail](https://github.com/SalesforceCommerceCloud/sfcc-sample-apps/tree/master/packages/storefront-lwc/src/modules/commerce/productDetail)
 * [Product Search Results](https://github.com/SalesforceCommerceCloud/sfcc-sample-apps/tree/master/packages/storefront-lwc/src/modules/commerce/productSearchResults)
+* [Basket](https://github.com/SalesforceCommerceCloud/sfcc-sample-apps/tree/integration/packages/storefront-lwc/src/modules/commerce/basket)
 
 
 ## Contributing
