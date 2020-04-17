@@ -22,11 +22,25 @@ export default class ErrorPage extends LightningElement {
 
     get error() {
         if (this._error) {
-            return JSON.stringify(this._error, undefined, 4)
+            return JSON.stringify(
+                this._error.detail ? this._error.detail : this._error.message,
+                undefined,
+                2,
+            )
                 .split('\n')
                 .map((line, index) => {
                     return { line, index };
                 });
+        } else {
+            return null;
+        }
+    }
+
+    get stack() {
+        if (this._error && this._error.stack) {
+            return this._error.stack.split('\n').map((line, index) => {
+                return { line, index };
+            });
         } else {
             return null;
         }

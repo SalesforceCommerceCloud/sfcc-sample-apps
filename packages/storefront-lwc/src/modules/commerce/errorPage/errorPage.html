@@ -10,10 +10,19 @@
     <div class="container" if:true={hasError}>
         <div if:true={devMode}>
             <div if:true={error} class="row pt-2">
-                <pre id="error">
+                <pre>
                     <code>
                         <template for:each={error} for:item="errorLine">
                             <span key={errorLine.index}>{errorLine.line}</span>
+                        </template>
+                    </code>
+                </pre>
+            </div>
+            <div if:true={stack} class="row pt-2">
+                <pre>
+                    <code>
+                        <template for:each={stack} for:item="stackLine">
+                            <span key={stackLine.index}>{stackLine.line}</span>
                         </template>
                     </code>
                 </pre>
