@@ -14,9 +14,8 @@
     "pub": "npm build; npm pack; npm publish -f",
     "pack": "npm pack"
   },
-  "peerDependencies": {},
   "dependencies": {
-    "@sfcc-core/core": "1.0.0-alpha.1"
+    "@sfcc-core/core": "1.0.0-alpha.2"
   },
   "husky": {
     "hooks": {
@@ -24,7 +23,7 @@
     }
   },
   "name": "@sfcc-core/logger",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "description": "sfcc default logger",
   "module": "dist/logger.esm.js",
   "exports": {
