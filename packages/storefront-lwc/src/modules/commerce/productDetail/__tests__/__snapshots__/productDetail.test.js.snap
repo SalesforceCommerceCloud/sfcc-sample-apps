@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<commerce-product-detail> should render carousel 1`] = `
+<div
+  class="carousel-item active"
+>
+  <img
+    class="d-block img-fluid"
+    src="https://image-1.jpg"
+  />
+</div>
+`;
+
+exports[`<commerce-product-detail> should render carousel 2`] = `
+<div
+  class="carousel-item active"
+>
+  <img
+    class="d-block img-fluid"
+    src="https://image-2.jpg"
+  />
+</div>
+`;
+
+exports[`<commerce-product-detail> should render carousel 3`] = `
+<div
+  class="carousel-item active"
+>
+  <img
+    class="d-block img-fluid"
+    src="https://image-1.jpg"
+  />
+</div>
+`;
+
+exports[`<commerce-product-detail> should render the product name and item number 1`] = `
+<h3
+  class="float-left"
+>
+  Checked Silk Tie
+</h3>
+`;
+
+exports[`<commerce-product-detail> should render the product name and item number 2`] = `
+<p
+  class="small-paragraph"
+>
+  Item No. 
+  25752235M
+</p>
+`;
