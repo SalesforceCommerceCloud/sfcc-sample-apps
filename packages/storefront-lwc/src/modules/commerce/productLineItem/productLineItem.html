@@ -1,4 +1,6 @@
 <template>
+    <commerce-toastmessage show={showToast} ontoastdisplayed={toastMessageDisplayed} 
+        failmessage="Product could not be removed from basket"></commerce-toastmessage>
     <div key={product.productId} class="card product-info p-3">
         <div class="line-item-header pb-3">
             <div class="line-item-name">

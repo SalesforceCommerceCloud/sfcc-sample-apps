@@ -53,7 +53,7 @@
   },
   "dependencies": {
     "@lwc/synthetic-shadow": "1.4.0",
-    "@lwce/apollo-client": "^0.0.2",
+    "@lwce/apollo-client": "0.1.0",
     "@lwce/router": "^0.3.2",
     "@salesforce-ux/design-system": "^2.9.4",
     "@sfcc-bff/productapi": "1.0.0-alpha.1",

@@ -9,6 +9,7 @@ import { useQuery, useMutation } from '@lwce/apollo-client';
 import { routeParams } from '@lwce/router';
 import { canAddToBasket } from './product.helper.js';
 import QUERY from './gqlQuery';
+import { dispatchErrorEvent } from 'commerce/helpers';
 import { ADD_TO_BASKET } from '../basket/gql.js';
 
 /**
@@ -61,7 +62,7 @@ export default class ProductDetail extends LightningElement {
     updateProduct(response) {
         if (response.initialized) {
             if (response.error) {
-                console.error('Error loading product', response.error);
+                dispatchErrorEvent.call(this, response.error);
             } else {
                 if (!response.loading) {
                     this.activeImage = 0;

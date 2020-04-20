@@ -1,0 +1,28 @@
+pre {
+    background: #303030;
+    color: #f1f1f1;
+    padding: 1em 1em;
+    border-radius: 1em;
+    border-top: 0.1em solid #00aeef;
+    -moz-box-shadow: inset 0 0 1em #000;
+    box-shadow: inset 0 0 1em #000;
+    counter-reset: line;
+    width: 100%;
+}
+pre span {
+    display: block;
+    line-height: 0.9rem;
+}
+pre span:before {
+    counter-increment: line;
+    content: counter(line);
+    display: inline-block;
+    border-right: 0.1em solid #ddd;
+    padding: 0 0.5em;
+    margin-right: 0.5em;
+    color: #888;
+    min-width:2.5em;
+}
+pre code {
+    font-size: 0.7em;
+}
