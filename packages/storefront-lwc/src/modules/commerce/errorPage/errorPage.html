@@ -29,11 +29,12 @@
             </div>
             <div if:false={error} class="row pt-4 justify-content-center">
                 <div class="col-12 col-sm-6" if:true={pagenotfound}>
-                    <p class="text-left">We can't find the page you're looking for!</p>
-                    <p class="text-left">You can either visit home page or contact our support team.</p>
+                    <p class="text-left">We can’t find the page you’re looking for.</p>
+                    <p class="text-left">Visit the home page or contact Customer Support.</p>
                 </div>
                 <div class="col-12 col-sm-6" if:true={servererror}>
-                    <p class="text-left">Sorry, something went wrong. Please try again or contact us.</p>
+                    <p class="text-left">Something went wrong.</p>
+                    <p class="text-left">Visit the home page or contact Customer Support.</p>
                 </div>
             </div>
             <div class="row pt-2 justify-content-center">
@@ -46,11 +47,12 @@
         </div>
         <div if:false={devMode} class="row pt-4 justify-content-center">
             <div class="col-12 col-sm-6" if:true={pagenotfound}>
-                <p class="text-left">We can't find the page you're looking for!</p>
-                <p class="text-left">You can either visit home page or contact our support team.</p>
+                <p class="text-left">We can’t find the page you’re looking for.</p>
+                <p class="text-left">Visit the home page or contact Customer Support.</p>
             </div>
             <div class="col-12 col-sm-6" if:true={servererror}>
-                <p class="text-left">Sorry, something went wrong. You can either visit home page or contact our support team.</p>
+                <p class="text-left">Something went wrong.</p>
+                <p class="text-left">Visit the home page or contact Customer Support.</p>
             </div>
         </div>
         <div if:false={devMode} class="row pt-2 justify-content-center">
