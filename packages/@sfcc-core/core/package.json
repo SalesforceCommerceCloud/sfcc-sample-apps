@@ -14,14 +14,13 @@
     "pub": "npm build; npm pack; npm publish -f",
     "pack": "npm pack"
   },
-  "peerDependencies": {},
   "husky": {
     "hooks": {
       "pre-commit": "tsdx lint"
     }
   },
   "name": "@sfcc-core/core",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "description": "sfcc core registry",
   "module": "dist/core.esm.js",
   "exports": {
