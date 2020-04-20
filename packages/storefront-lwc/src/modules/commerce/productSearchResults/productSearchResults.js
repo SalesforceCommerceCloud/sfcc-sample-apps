@@ -4,44 +4,81 @@
     SPDX-License-Identifier: BSD-3-Clause
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
-import { LightningElement, wire, track, api } from 'lwc';
-import { productsByQuery } from 'commerce/data';
+import { LightningElement, wire, track } from 'lwc';
+import QUERY from './gqlQuery';
+import { useQuery } from '@lwce/apollo-client';
+import { routeParams } from '@lwce/router';
+import '../api/client';
 
-//
-// Displays search results
-//
 export default class ProductSearchResults extends LightningElement {
     @track state = {};
     @track products = [];
     @track refinementgroups = [];
-    @api query = '';
-    @track loading = false;
+    sortingOptions = [];
+    @track loading = true;
     @track refinementBar = 'refinement-bar col-md-3 d-none d-lg-block';
     @track showRefinementBar = true;
-    sortRule;
     selectedRefinements = {};
 
-    // The wire adaptor to search for products when the query, sort rule or selected refinements change.
-    @wire(productsByQuery, {
-        query: '$query',
-        sortRule: '$sortRule',
-        selectedRefinements: '$selectedRefinements',
-    })
-    updateProducts(json) {
-        // The method to handle the json results returned from the above wire adaptor.
-        if (json.data && json.data.productSearch) {
-            this.products = json.data.productSearch.productHits || [];
-            this.refinementgroups =
-                [...json.data.productSearch.refinements] || [];
+    variables = {
+        query: '',
+        filters: [],
+    };
+    sortRuleValue = '';
 
+    headerTextPrefix = '';
+    headerText = '';
+
+    @wire(routeParams) params(params) {
+        this.query = params.query;
+        this.dispatchEvent(
+            new CustomEvent('querychange', {
+                detail: this.query,
+                bubbles: true,
+                composed: true,
+            }),
+        );
+    }
+
+    set query(val) {
+        this._query = val;
+        this.variables = { ...this.variables, query: encodeURIComponent(val) };
+    }
+
+    get query() {
+        return this._query || '';
+    }
+
+    set sortRule(val) {
+        this.sortRuleValue = val;
+        const filters = this.getFilters();
+        this.variables = { ...this.variables, filters: filters };
+    }
+
+    get sortRule() {
+        return this.sortRuleValue;
+    }
+
+    @wire(useQuery, {
+        query: QUERY,
+        lazy: false,
+        variables: '$variables',
+    })
+    updateProducts(response) {
+        // The method to handle the response results returned from the above wire adaptor.
+        this.createHeader(false);
+        if (!response.loading && response.data && response.data.productSearch) {
+            this.products = response.data.productSearch.productHits || [];
+            this.refinementgroups =
+                [...response.data.productSearch.refinements] || [];
+            this.sortingOptions = response.data.productSearch.sortingOptions;
             Object.keys(this.selectedRefinements).forEach(refinement => {
                 this.selectedRefinements[refinement].forEach(value => {
-                    const curRefinement = json.data.productSearch.refinements.filter(
+                    const curRefinement = response.data.productSearch.refinements.filter(
                         ref => {
                             return ref.attributeId === refinement;
                         },
                     );
-
                     if (
                         curRefinement &&
                         curRefinement.length === 1 &&
@@ -55,11 +92,27 @@ export default class ProductSearchResults extends LightningElement {
                     }
                 });
             });
+            this.loading = false;
+            this.createHeader(true);
         } else {
+            this.loading = response.loading;
             this.products = [];
             this.refinementgroups = [];
         }
-        this.loading = false;
+    }
+
+    get hasResults() {
+        return !!this.products.length && !this.loading;
+    }
+
+    disconnectedCallback() {
+        this.dispatchEvent(
+            new CustomEvent('querychange', {
+                detail: '',
+                bubbles: true,
+                composed: true,
+            }),
+        );
     }
 
     /**
@@ -112,6 +165,8 @@ export default class ProductSearchResults extends LightningElement {
         }
 
         this.selectedRefinements = { ...this.selectedRefinements };
+        const filters = this.getFilters();
+        this.variables = { ...this.variables, filters: filters };
     }
 
     /**
@@ -133,5 +188,56 @@ export default class ProductSearchResults extends LightningElement {
         }
 
         this.showRefinementBar = !this.showRefinementBar;
+    }
+
+    /**
+     * returns an array of filters
+     * @returns {array}
+     */
+    getFilters = () => {
+        const selectedRefinements = this.selectedRefinements;
+        const sort =
+            this.sortRuleValue && this.sortRuleValue.id
+                ? { id: 'sort', value: this.sortRuleValue.id }
+                : null;
+        let filtersArray = [];
+        //
+        // Create filters from the selected refinements
+        //
+        Object.keys(selectedRefinements).forEach(key => {
+            let values = '';
+            if (selectedRefinements[key].length) {
+                selectedRefinements[key].forEach(value => {
+                    values = values + `${value}|`;
+                });
+                values = values.slice(0, -1);
+                filtersArray.push({ id: key, value: values });
+            }
+        });
+
+        //
+        // Apply sorting with filters or just use filters
+        //
+        if (sort) {
+            filtersArray.push(sort);
+        }
+
+        return filtersArray;
+    };
+
+    /**
+     * Set the apropriated text in the heading.
+     * @param showHeader A flag indicating whether or not to show the heading
+     */
+    createHeader(showHeader) {
+        if (showHeader && this.hasProducts()) {
+            this.headerTextPrefix = 'Search result for';
+            this.headerText = this.query;
+        } else if (showHeader && !this.hasProducts()) {
+            this.headerText = 'No Results';
+        } else {
+            this.headerTextPrefix = '';
+            this.headerText = '';
+        }
     }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@sfcc-bff/productapi",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "description": "",
   "main": "./src/productapi.js",
   "scripts": {
@@ -10,12 +10,11 @@
     "pub": "npm pack; npm publish -f"
   },
   "author": "",
-  "type": "module",
-  "license": "MIT",
+  "license": "BSD-3-Clause",
   "dependencies": {
-    "@sfcc-core/core": "1.0.0-alpha.1",
-    "@sfcc-core/core-graphql": "1.0.0-alpha.1",
-    "commerce-sdk": "0.2.0-alpha.6",
+    "@sfcc-core/core": "1.0.0-alpha.2",
+    "@sfcc-core/core-graphql": "1.0.0-alpha.2",
+    "commerce-sdk": "1.3.0-alpha.9",
     "lodash": "^4.17.15",
     "request-promise": "^4.2.5"
   }

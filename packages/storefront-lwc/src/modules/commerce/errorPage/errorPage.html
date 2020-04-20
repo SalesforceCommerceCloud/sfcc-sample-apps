@@ -1,0 +1,79 @@
+<!--
+    Copyright (c) 2020, salesforce.com, inc.
+    All rights reserved.
+    SPDX-License-Identifier: BSD-3-Clause
+    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+-->
+<template>
+    <commerce-context-heading if:true={pagenotfound} header-text="Page not found"></commerce-context-heading>
+    <commerce-context-heading if:true={servererror} header-text="Something went wrong"></commerce-context-heading>
+    <div class="container" if:true={hasError}>
+        <div if:true={devMode}>
+            <div if:true={error} class="row pt-2">
+                <pre>
+                    <code>
+                        <template for:each={error} for:item="errorLine">
+                            <span key={errorLine.index}>{errorLine.line}</span>
+                        </template>
+                    </code>
+                </pre>
+            </div>
+            <div if:true={stack} class="row pt-2">
+                <pre>
+                    <code>
+                        <template for:each={stack} for:item="stackLine">
+                            <span key={stackLine.index}>{stackLine.line}</span>
+                        </template>
+                    </code>
+                </pre>
+            </div>
+            <div if:false={error} class="row pt-4 justify-content-center">
+                <div class="col-12 col-sm-6" if:true={pagenotfound}>
+                    <p class="text-left">We can’t find the page you’re looking for.</p>
+                    <p class="text-left">Visit the home page or contact Customer Support.</p>
+                </div>
+                <div class="col-12 col-sm-6" if:true={servererror}>
+                    <p class="text-left">Something went wrong.</p>
+                    <p class="text-left">Visit the home page or contact Customer Support.</p>
+                </div>
+            </div>
+            <div class="row pt-2 justify-content-center">
+                <div class="col-12 col-sm-6 text-center">
+                    <p>
+                        <lwce-link href="/" class="btn btn-primary btn-block"> Homepage </lwce-link>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div if:false={devMode} class="row pt-4 justify-content-center">
+            <div class="col-12 col-sm-6" if:true={pagenotfound}>
+                <p class="text-left">We can’t find the page you’re looking for.</p>
+                <p class="text-left">Visit the home page or contact Customer Support.</p>
+            </div>
+            <div class="col-12 col-sm-6" if:true={servererror}>
+                <p class="text-left">Something went wrong.</p>
+                <p class="text-left">Visit the home page or contact Customer Support.</p>
+            </div>
+        </div>
+        <div if:false={devMode} class="row pt-2 justify-content-center">
+            <div class="col-12 col-sm-6 text-center" if:true={pagenotfound}>
+                <p>
+                    <lwce-link href="/" class="btn btn-primary btn-block"> Homepage </lwce-link>
+                </p>
+            </div>
+            <div class="col-12 col-sm-6 text-center" if:true={servererror}>
+                <p>
+                    <lwce-link href="/" class="btn btn-primary btn-block"> Homepage </lwce-link>
+                </p>
+            </div>
+        </div>
+        <div class="row pt-2">
+            <div class="col">
+                <p class="text-center">
+                    Need Help? Call
+                    <a class="help-phone-number" href="tel:1-800-555-0199"> 1-800-555-0199 </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</template>

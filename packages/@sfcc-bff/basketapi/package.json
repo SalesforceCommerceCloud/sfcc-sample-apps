@@ -1,0 +1,43 @@
+{
+  "license": "BSD-3-Clause",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "start:dev": "tsdx watch",
+    "build": "tsdx build",
+    "test:unit": "tsdx test --collect-coverage",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build",
+    "pub": "npm build; npm pack; npm publish -f",
+    "pack": "npm pack"
+  },
+  "dependencies": {
+    "@sfcc-bff/productapi": "1.0.0-alpha.2",
+    "@sfcc-core/core": "1.0.0-alpha.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "name": "@sfcc-bff/basketapi",
+  "version": "1.0.0-alpha.2",
+  "description": "sfcc backend for frontend api service",
+  "module": "dist/basketapi.esm.js",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "default": "./dist/basketapi.esm.js"
+    }
+  },
+  "devDependencies": {
+    "@types/jest": "^25.1.2",
+    "husky": "^4.2.3",
+    "tsdx": "^0.12.3",
+    "tslib": "^1.10.0",
+    "typescript": "^3.7.5"
+  }
+}

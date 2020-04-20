@@ -4,36 +4,75 @@
     SPDX-License-Identifier: BSD-3-Clause
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
-import { LightningElement, api, wire, track } from 'lwc';
-import { productDetailWireAdaptor } from 'commerce/data';
-import { canAddToCart } from './product.helper.js';
+import { LightningElement, wire } from 'lwc';
+import { useQuery, useMutation } from '@lwce/apollo-client';
+import { routeParams } from '@lwce/router';
+import { canAddToBasket } from './product.helper.js';
+import QUERY from './gqlQuery';
+import { dispatchErrorEvent } from 'commerce/helpers';
+import { ADD_TO_BASKET } from '../basket/gql.js';
 
 /**
  * A product detail component is an interactive component which fetches and displays details about a product.
  * Such information may include the product name and description, any images, any pricing or promotions and more.
  * The product detail component is interactive and will allow a user to select any variations and add the product to
- * the current storefront shopping cart.
+ * the current storefront shopping basket.
  */
 export default class ProductDetail extends LightningElement {
-    @api pid = '';
-    @track selectedColor;
-    @track product = {
+    activeImage = 0;
+    masterPid;
+    product = {
         images: [],
         productPromotions: [],
     };
-    masterPid;
-    activeImage;
-    // The wire adaptor to get product details for master and variations.
-    @wire(productDetailWireAdaptor, {
-        pid: '$pid',
-        selectedColor: '$selectedColor',
-    })
-    updateProduct(product) {
-        this.product = product;
-        this.masterPid = product.masterId;
-        this.setActiveImageCss(0);
+    selectedQty;
+    variables = {
+        productId: '',
+        selectedColor: '',
+    };
+    productId;
+    quantity;
+    addToBasketSucceed = false;
+    showToast = false;
+    headerQuantity;
+
+    @wire(routeParams) params(params) {
+        this.pid = params.pid;
     }
-    @track selectedQty;
+
+    set pid(val) {
+        this.variables = { ...this.variables, productId: val };
+    }
+    get pid() {
+        return this.variables.productId;
+    }
+
+    set selectedColor(val) {
+        this.variables = { ...this.variables, selectedColor: val };
+    }
+    get selectedColor() {
+        return this.variables.selectedColor;
+    }
+
+    @wire(useQuery, {
+        query: QUERY,
+        lazy: false,
+        variables: '$variables',
+    })
+    updateProduct(response) {
+        if (response.initialized) {
+            if (response.error) {
+                dispatchErrorEvent.call(this, response.error);
+            } else {
+                if (!response.loading) {
+                    this.activeImage = 0;
+                }
+
+                this.product = { ...this.product, ...response.data.product };
+                this.masterPid = response.data.product.masterId;
+            }
+        }
+    }
 
     /**
      * Handle the update product event
@@ -93,17 +132,50 @@ export default class ProductDetail extends LightningElement {
     }
 
     /**
-     * Checks if the product is ready to be added to cart
+     * Checks if the product is ready to be added to basket
      */
-    get readyToAddToCart() {
-        return canAddToCart(this.product, this.selectedQty);
+    get readyToAddToBasket() {
+        return canAddToBasket(this.product, this.selectedQty);
     }
 
+    @wire(useMutation, { mutation: ADD_TO_BASKET }) addToBasket;
+
     /**
-     * Add product to cart when user clicks `Add to Cart` button
+     * Add product to basket when user clicks `Add to Basket` button
      */
-    addToCartHandler() {
-        console.info('AddToCart button has been clicked!');
+    addToBasketHandler() {
+        if (this.readyToAddToBasket) {
+            this.productId = this.pid;
+            this.quantity = this.selectedQty;
+
+            const variables = {
+                productId: this.productId,
+                quantity: this.quantity,
+            };
+
+            this.addToBasket.mutate({ variables }).then(() => {
+                this.showToast = true;
+                if (this.addToBasket.error) {
+                    this.addToBasketSucceed = false;
+                } else {
+                    this.addToBasketSucceed = true;
+                    this.headerQuantity = this.addToBasket.data.addProductToBasket.totalProductsQuantity;
+                    this.dispatchEvent(
+                        new CustomEvent('headerbasketcount', {
+                            bubbles: true,
+                            composed: true,
+                            detail: {
+                                quantity: this.headerQuantity,
+                            },
+                        }),
+                    );
+                }
+            });
+        }
+    }
+
+    toastMessageDisplayed() {
+        this.showToast = false;
     }
 
     /**
@@ -113,34 +185,25 @@ export default class ProductDetail extends LightningElement {
     handleCarousel(event) {
         const { slide } = event.currentTarget.dataset;
         if (slide === 'prev') {
-            this.setActiveImageCss(
+            this.activeImage =
                 this.activeImage === 0
                     ? this.product.images.length - 1
-                    : this.activeImage - 1,
-            );
+                    : this.activeImage - 1;
         } else {
-            this.setActiveImageCss(
+            this.activeImage =
                 this.activeImage === this.product.images.length - 1
                     ? 0
-                    : this.activeImage + 1,
-            );
+                    : this.activeImage + 1;
         }
     }
 
-    /**
-     * Set the active image for the product detail carousel
-     * @param activeImage the url of the image to be displayed
-     */
-    setActiveImageCss(activeImage) {
-        this.product.cssClass = 'carousel-item';
-        this.activeImage = activeImage;
-        if (this.product && this.product.images) {
-            this.product.images.forEach((image, idx) => {
-                image.cssClass =
-                    idx === this.activeImage
-                        ? 'carousel-item active'
-                        : 'carousel-item';
-            });
-        }
+    get images() {
+        return this.product.images.map((image, index) => ({
+            ...image,
+            cssClass:
+                index === this.activeImage
+                    ? 'carousel-item active'
+                    : 'carousel-item',
+        }));
     }
 }

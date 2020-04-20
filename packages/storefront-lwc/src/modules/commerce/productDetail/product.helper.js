@@ -11,7 +11,7 @@ const inventoryAvailable = (inventory, quantity) => {
     return false;
 };
 
-export const canAddToCart = (product, quantity) => {
+export const canAddToBasket = (product, quantity) => {
     const inventory = product && product.inventory;
 
     if (!inventory) {

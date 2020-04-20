@@ -1,3 +1,6 @@
+orbs:
+  node: circleci/node@1.1
+
 jobs:
     build:
       working_directory: ~/build_only
@@ -7,10 +10,10 @@ jobs:
       steps:
         - checkout
         - run: yarn install
+        - run: yarn lint
         - run: yarn build
         - run: yarn test
+        - run: yarn clean:stats
         - store_test_results:
             path: ~/
-orbs:
-  node: circleci/node@1.1
 version: 2.1

@@ -1,14 +1,14 @@
-import { canAddToCart } from '../product.helper';
+import { canAddToBasket } from '../product.helper';
 
 describe('product helper', () => {
     it('should return false when the product is not yet loaded', () => {
-        expect(canAddToCart(null)).toBe(false);
-        expect(canAddToCart({})).toBe(false);
+        expect(canAddToBasket(null)).toBe(false);
+        expect(canAddToBasket({})).toBe(false);
     });
 
     it('should return false when the product is a master sku (no variant selected)', () => {
         expect(
-            canAddToCart(
+            canAddToBasket(
                 {
                     type: {
                         master: true,
@@ -21,7 +21,7 @@ describe('product helper', () => {
 
     it('should return true when the product is orderable and available', () => {
         expect(
-            canAddToCart(
+            canAddToBasket(
                 {
                     type: {
                         master: false,
@@ -38,7 +38,7 @@ describe('product helper', () => {
 
     it('should return false when the product is unorderable', () => {
         expect(
-            canAddToCart(
+            canAddToBasket(
                 {
                     type: {
                         master: false,
@@ -55,7 +55,7 @@ describe('product helper', () => {
 
     it('should return false when the product is orderable and with unavailable quantity', () => {
         expect(
-            canAddToCart(
+            canAddToBasket(
                 {
                     type: {
                         master: false,
@@ -72,7 +72,7 @@ describe('product helper', () => {
 
     it('should return true when the product is backorderable and with unavailable quantity', () => {
         expect(
-            canAddToCart(
+            canAddToBasket(
                 {
                     type: {
                         master: false,
@@ -90,7 +90,7 @@ describe('product helper', () => {
 
     it('should return true when the product is preorderable and with unavailable quantity', () => {
         expect(
-            canAddToCart(
+            canAddToBasket(
                 {
                     type: {
                         master: false,

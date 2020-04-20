@@ -23,17 +23,20 @@ To set up the sample application:
 2. Change into the `sfcc-sample-apps` folder:
 `cd sfcc-sample-apps`
 
-3. Copy the `api.example.mjs` file located at `/packages/storefront-lwc/scripts/`, save it as `api.mjs`, and make sure `api.mjs` is added to your `.gitignore` file.
+3. Copy the `api.example.js` file located at `/packages/storefront-lwc/app/`, save it as `api.js`, and make sure `api.js` is added to your `.gitignore` file.
 
-4. In the `api.mjs` file, provide values for the following variables (you can obtain these values from your Account Executive (AE) or Customer Support Manager (CSM)):
+4. In the `api.js` file, provide values for the following variables (you can obtain these values from your Account Executive (AE) or Customer Support Manager (CSM)):
 <table>
 <tr><th>Variable</th><th>Description</th></tr>
-<tr><td><code>COMMERCE_CLIENT_API_SITE_ID</code></td><td>A unique site ID (for example, RefArch or SiteGenesis).</td></tr>
-<tr><td><code>COMMERCE_CLIENT_CLIENT_ID</code></td><td>A unique ID used exclusively for API access. See <a href="https://documentation.b2c.commercecloud.salesforce.com/DOC1/topic/com.demandware.dochelp/AccountManager/AccountManagerAddAPIClientID.html">Add a Client API</a> for more information.</td></tr>
-<tr><td><code>COMMERCE_CLIENT_REALM_ID</code></td><td>A unique four-character ID (for example, bblx).</td></tr>
-<tr><td><code>COMMERCE_CLIENT_INSTANCE_ID</code></td><td>Instance ID within a realm (for example, 015).</td></tr>
-<tr><td><code>COMMERCE_CLIENT_SHORT_CODE</code></td><td>Region-specific merchant identifier (for example, staging-001).</td></tr>
+<tr><td><code>COMMERCE_CLIENT_API_SITE_ID</code></td><td>Unique site ID (for example, RefArch or SiteGenesis).</td></tr>
+<tr><td><code>COMMERCE_CLIENT_CLIENT_ID</code></td><td>Unique ID used exclusively for API access. See <a href="https://documentation.b2c.commercecloud.salesforce.com/DOC1/topic/com.demandware.dochelp/AccountManager/AccountManagerAddAPIClientID.html">Add a Client API</a> for more information.</td></tr>
+<tr><td><code>COMMERCE_CLIENT_REALM_ID</code></td><td>Unique four-character realm ID (for example, bblx).</td></tr>
+<tr><td><code>COMMERCE_CLIENT_INSTANCE_ID</code></td><td>Unique instance ID within a realm (for example, 015).</td></tr>
+<tr><td><code>COMMERCE_CLIENT_SHORT_CODE</code></td><td>Unique region-specific merchant ID (for example, staging-001).</td></tr>
+<tr><td><code>COMMERCE_SESSION_SECRET</code></td><td>Unique ID for session management (for example, thisisasecretkey).</td></tr>
+<tr><td><code>COMMERCE_CORS</code></td><td>Optionally enable <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">CORS</a> for GraphQL on the defined domains (for example, enable all domains with "\*").</td></tr>
 </table>
+Note: If the COMMERCE_SESSION_SECRET key is not unique per customer application, session information can be unintentionally shared between ecommerce sites. 
 
 5. Install dependencies:
 `yarn`
@@ -45,7 +48,7 @@ To set up the sample application:
 `yarn start:dev` (development mode) or
 `yarn start` (production mode)
 
-8. To access the sample application in development mode, open the browser to http://localhost:3000 (for production mode, open to http://localhost:3002).
+8. To access the application, open the browser to http://localhost:3000
 
 You can optionally test the sample application:
 `yarn test`
@@ -55,7 +58,7 @@ You can optionally test the sample application:
 We recommend Visual Studio Code inbuilt debugger to troubleshoot the code. The `.vscode` launch configuration is included in the repo. To debug using VSCode, see [VS Code Debugging](https://code.visualstudio.com/docs/editor/debugging).
 
 ## Configuration
-* You can change the logging levels by modifying the `COMMERCE_LOG_LEVEL` property in `api.mjs`. The supported log levels are:
+* You can change the logging levels by modifying the `COMMERCE_LOG_LEVEL` property in `api.js`. The supported log levels are:
     * `TRACE`
     * `DEBUG`
     * `INFO`
@@ -73,6 +76,14 @@ We recommend Visual Studio Code inbuilt debugger to troubleshoot the code. The `
 * [Lightning Web Components](https://lwc.dev/)
 * [Jest](https://jestjs.io/docs/en/getting-started)
 * [Visual Studio Code](https://code.visualstudio.com/docs)
+
+## Library of Components
+The sample app currently includes the following components:
+* [Home Page](https://github.com/SalesforceCommerceCloud/sfcc-sample-apps/tree/master/packages/storefront-lwc/src/modules/commerce/home)
+* [Product Detail](https://github.com/SalesforceCommerceCloud/sfcc-sample-apps/tree/master/packages/storefront-lwc/src/modules/commerce/productDetail)
+* [Product Search Results](https://github.com/SalesforceCommerceCloud/sfcc-sample-apps/tree/master/packages/storefront-lwc/src/modules/commerce/productSearchResults)
+* [Basket](https://github.com/SalesforceCommerceCloud/sfcc-sample-apps/tree/integration/packages/storefront-lwc/src/modules/commerce/basket)
+
 
 ## Contributing
 

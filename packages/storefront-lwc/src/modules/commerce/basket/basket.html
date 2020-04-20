@@ -1,0 +1,104 @@
+<!--
+    Copyright (c) 2020, salesforce.com, inc.
+    All rights reserved.
+    SPDX-License-Identifier: BSD-3-Clause
+    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+-->
+<template>
+    <commerce-context-heading header-text="Your Basket"></commerce-context-heading>
+    <div role="main" class="container" id="maincontent">
+        <div class="basket-error-messaging basket-error">
+        </div>
+        <template if:true={loading}>
+            <div class='row mt-4'>
+                <div class='col-12'>
+                    <p class='text-center'>Loading Basket...</p>
+                </div>
+            </div>
+        </template>
+
+        <template if:false={loading}>
+            <template if:false={hasProducts}>
+                <div class="row">
+                    <div class="col">
+                        <p class="text-center"> 0 Items </p>
+                    </div>
+                </div>
+                <div class="row pt-5">
+                    <div class="col text-empty-basket">
+                        <p class="text-center font-weight-bold"> Your Shopping Basket is Empty </p>
+                    </div>
+                </div>
+                <div class="row pt-3 justify-content-center">
+                    <div class="col-12 col-sm-6 text-center">
+                        <p>
+                            <lwce-link href="/" class="btn btn-primary btn-block"> Continue </lwce-link>
+                        </p>
+                    </div>
+                </div>
+                <div class="row pt-2">
+                    <div class="col">
+                        <p class="text-center">
+                            Need Help? Call
+                            <a class="help-phone-number" href="tel:1-800-555-0199"> 1-800-555-0199 </a>
+                        </p>
+                    </div>
+                </div>
+            </template>
+        </template>
+
+        <div class="header-title" if:true={hasProducts}>
+            <div class="row basket-header">
+                <div class="col-sm-4 hidden-xs-down">
+                    <lwce-link class="continue-shopping-link" href="/" title="Continue Shopping">
+                        Continue Shopping
+                    </lwce-link>
+                </div>
+                <div class="col-sm-3">
+                    <p class="number-of-items text-center">
+                        {basket.totalProductsQuantity} Items
+                    </p>
+                </div>
+                <div class="col-sm-5 text-right hidden-xs-down">
+                    <div>
+                        <span>Need Help? Call</span>
+                        <span><a class="help-phone-number" href="tel:1-800-555-0199">1-800-555-0199</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="basket basket-page">
+            <div class="row">
+                <div class="col-md-8">
+                    <template for:each={products} for:item="product">
+                        <commerce-product-line-item product={product} key={product.productId} onremovelineitem={updateBasket}>
+                        </commerce-product-line-item>
+                    </template>
+                </div>
+
+                <div class="col-md-4 totals" if:true={hasProducts}>
+                    <commerce-coupons allcoupons={basket.couponItems} onupdatebasket={updateBasket}></commerce-coupons>
+                    <commerce-shippingmethods
+                        onupdateshippingmethod={updateBasket}
+                        shipping-label="Shipping"
+                        basket={basket}
+                        shipping-methods={shippingMethods}
+                        selected-shipping-method-id={selectedShippingMethodId}
+                    ></commerce-shippingmethods>
+                    <commerce-basket-totals basket={basket}></commerce-basket-totals>
+                    <div class="row">
+                        <div class="col-12 checkout-continue">
+                            <div>
+                                <lwce-link href="/" class="btn btn-primary btn-block checkout-btn" role="button" aria-pressed="true">
+                                    Checkout
+                                </lwce-link>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

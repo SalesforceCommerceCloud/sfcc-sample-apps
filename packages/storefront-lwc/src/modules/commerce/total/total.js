@@ -11,8 +11,5 @@ export default class Total extends LightningElement {
     @api descriptionClass;
     @api total;
     @api totalClass;
-
-    constructor() {
-        super();
-    }
+    @api discounted = false;
 }

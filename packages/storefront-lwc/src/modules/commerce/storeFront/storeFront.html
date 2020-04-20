@@ -1,0 +1,26 @@
+<template>
+    <lwce-router>
+        <commerce-layout>
+            <commerce-header query={query} slot="header"></commerce-header>
+
+            <template if:false={hasError}>
+                <lwce-route path="/" exact>
+                    <commerce-home></commerce-home>
+                </lwce-route>
+                <lwce-route path="/search/:query">
+                    <commerce-product-search-results onquerychange={updateQuery}></commerce-product-search-results>
+                </lwce-route>
+                <lwce-route path="/basket">
+                    <commerce-basket></commerce-basket>
+                </lwce-route>
+                <lwce-route path="/product/:pid">
+                    <commerce-product-detail></commerce-product-detail>
+                </lwce-route>
+                <lwce-route default>
+                    <commerce-error-page pagenotfound></commerce-error-page>
+                </lwce-route>
+            </template>
+            <commerce-error-page if:true={hasError} error={error}></commerce-error-page>
+        </commerce-layout>
+    </lwce-router>
+</template>

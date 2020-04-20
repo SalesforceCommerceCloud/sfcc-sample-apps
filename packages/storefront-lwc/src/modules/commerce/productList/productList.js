@@ -8,6 +8,8 @@ import { LightningElement, api } from 'lwc';
 
 export default class ProductList extends LightningElement {
     @api products;
+    @api sort;
+    @api sortRuleValue;
 
     toggleRefinementBar() {
         this.dispatchEvent(new CustomEvent('togglerefinementbar'));

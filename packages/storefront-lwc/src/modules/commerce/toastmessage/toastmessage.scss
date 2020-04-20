@@ -1,0 +1,13 @@
+@mixin toast-message() {
+    transform: translate(-50%, -50%);
+    position: fixed;
+    top: 15%;
+    left: 50%;
+}
+
+.add-to-basket-toast-message {
+    .add-to-basket-message,
+    .add-to-basket-failed {
+        @include toast-message();
+    }
+}

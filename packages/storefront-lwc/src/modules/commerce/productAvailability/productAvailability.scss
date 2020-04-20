@@ -1,3 +1,11 @@
-.availability {
-  margin-top: 1.071em;
+.pdp .availability {
+    margin-top: 1.071em;
+}
+
+.basket .availability {
+    margin-top: 0;
+    font-size: 1rem;
+}
+.basket .availability-label {
+    display: none;
 }

@@ -1,0 +1,17 @@
+@import "../../../scss/_ux_variables";
+
+.remove-btn {
+    font-size: 1.625em;
+    position: absolute;
+    right: 0.5rem;
+    top: 0rem;
+    border: none;
+}
+
+.line-item-name {
+    font-weight: bold;
+}
+
+.product-info {
+    border-color: $medium-gray;
+}

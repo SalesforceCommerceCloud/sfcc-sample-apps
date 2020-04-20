@@ -1,0 +1,40 @@
+<!--
+    Copyright (c) 2020, salesforce.com, inc.
+    All rights reserved.
+    SPDX-License-Identifier: BSD-3-Clause
+    For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+-->
+<template>
+    <commerce-total
+        description="Shipping Cost"
+        total={shippingCost}
+        total-class="text-right"
+    ></commerce-total>
+    <commerce-total
+        if:true={hasShippingDiscount}
+        description="Shipping Discount"
+        description-class="shipping-discount"
+        total={shippingDiscount}
+        discounted={hasShippingDiscount}
+        total-class="text-right shipping-discount"
+    ></commerce-total>
+    <commerce-total
+        description="Sales Tax"
+        total={salesTax}
+        total-class="text-right"
+    ></commerce-total>
+    <commerce-total
+        if:true={hasOrderDiscount}
+        description="Order Discount"
+        description-class="order-discount"
+        total={orderDiscount}
+        discounted={hasOrderDiscount}
+        total-class="text-right order-discount"
+    ></commerce-total>
+    <commerce-total
+        description="Estimated Total"
+        description-class="grand-total"
+        total={totalEstimate}
+        total-class="text-right grand-total"
+    ></commerce-total>
+</template>

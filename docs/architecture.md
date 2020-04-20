@@ -30,8 +30,12 @@ Data source implementation for the Salesforce Commerce API. It includes the Grap
 #### storefront-lwc
 Front-end application, built with [lwc-services](https://www.npmjs.com/package/lwc-services).
 
+## Session Management
+
+To learn about session management in the sample app please see [session management](sessionManagement.md) 
+
 ## Customizing and Extending
-When customizing or extending the sample app, do not modify the packages within `@sfcc-bff` and `@sfcc-core`. These packages will be published and consumed via NPM. Instead, create a new custom package within the monorepo that registers itself with `@sfcc-core` and provides access to data from a third-party service.
+When customizing or extending the sample app, do not modify the packages within `@sfcc-bff` and `@sfcc-core`. These packages will be published and consumed via NPM. Instead, create a new custom package within the monorepo that registers itself with `@sfcc-core` and provides access to data from a third-party service. For more information, see [Component Extension](docs/componentExtension.md).
 
 ![Sample App Project Layout](project-layout.png)
 
@@ -40,7 +44,7 @@ The core-graphql module within `@sfcc-core` is responsible for getting all the r
 ## What's Not Included?
 This is a sample application, and is not intended to be a full reference architecture. There are multiple components missing, some of which will be added in the future. Specifically, the app does not currently include:
 
-1. **Authentication** - Required for a fully functional cart and checkout experience.
+1. **Authentication** - Required for a fully functional basket and checkout experience.
 2. **CMS Integration** - Required to customize the storefront experience per user.
 3. **Server-side Rendering** - Required for product listing search engine optimization.
 4. **Component Portability** - Work needs to be done to re-use components outside of the sample app context.

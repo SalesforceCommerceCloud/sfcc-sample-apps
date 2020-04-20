@@ -1,0 +1,11 @@
+@import "../../../scss/ux_variables";
+
+.coupon-card {
+    background-color: $white;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.1875rem;
+}
+
+.error {
+    color: $red;
+}

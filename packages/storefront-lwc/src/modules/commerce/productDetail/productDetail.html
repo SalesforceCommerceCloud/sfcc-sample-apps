@@ -23,7 +23,7 @@
             <div class="product-images col-12 col-sm-6">
                 <div class="carousel slide" data-interval="0">
                     <div class="carousel-inner" role="listbox">
-                        <template for:each={product.images} for:item="image">
+                        <template for:each={images} for:item="image">
                             <div class={image.cssClass} key={image.link}>
                                 <img src={image.link} class="d-block img-fluid" alt={image.atl}>
                             </div>
@@ -72,7 +72,7 @@
                 <commerce-variations onupdateproduct={updateProductDetails} variations={product.variations} variation-attributes={product.variationAttributes} inventory={product.inventory}></commerce-variations>
 
                 <!-- Product Availability -->
-                <commerce-product-availability inventory={product.inventory} type={product.type} quantity={selectedQty}></commerce-product-availability>
+                <commerce-product-availability inventory={product.inventory} type={product.type} quantity={selectedQty} context="pdp"></commerce-product-availability>
 
                 <!-- Promotions -->
                 <template if:true={product.productPromotions}>
@@ -93,26 +93,32 @@
                     </div>
                 </div>
 
-                <!-- Add to cart button -->
+                <!-- Add to basket button -->
                 <div class="row">
                     <div class="col-12">
                         <div class="row">
                             <div class="col-sm-12">
-                                <template if:false={readyToAddToCart}>
-                                    <button class="btn btn-primary btn-block" disabled onclick={addToCartHandler}>
+                                <template if:false={readyToAddToBasket}>
+                                    <button class="btn btn-primary btn-block" disabled onclick={addToBasketHandler}>
                                         <i class="fa fa-shopping-bag"></i>
-                                        Add to Cart
+                                        Add to basket
                                     </button>
                                 </template>
-                                <template if:true={readyToAddToCart}>
-                                    <button class="btn btn-primary btn-block" onclick={addToCartHandler}>
+                                <template if:true={readyToAddToBasket}>
+                                    <button class="btn btn-primary btn-block" onclick={addToBasketHandler}>
                                         <i class="fa fa-shopping-bag"></i>
-                                        Add to Cart
+                                        Add to basket
                                     </button>
                                 </template>
+                                <commerce-toastmessage
+                                    success={addToBasketSucceed}
+                                    show={showToast}
+                                    ontoastdisplayed={toastMessageDisplayed}
+                                    successmessage="Product added to cart successfully"
+                                    failmessage="Product could not be added to cart"
+                                ></commerce-toastmessage>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
