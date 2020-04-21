@@ -15,7 +15,7 @@
     "pack": "npm pack"
   },
   "dependencies": {
-    "@sfcc-core/core": "1.0.0-alpha.2"
+    "@sfcc-core/core": "1.0.0-alpha.3"
   },
   "husky": {
     "hooks": {
@@ -23,7 +23,7 @@
     }
   },
   "name": "@sfcc-core/apiconfig",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.3",
   "description": "sfcc backend for frontend api service",
   "module": "dist/apiconfig.esm.js",
   "exports": {

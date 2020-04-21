@@ -15,8 +15,8 @@
     "pack": "npm pack"
   },
   "dependencies": {
-    "@sfcc-core/apiconfig": "1.0.0-alpha.2",
-    "@sfcc-core/core": "1.0.0-alpha.2",
+    "@sfcc-core/apiconfig": "1.0.0-alpha.3",
+    "@sfcc-core/core": "1.0.0-alpha.3",
     "apollo-server": "^2.3.3",
     "graphql-passport": "^0.6.1",
     "graphql-tag": "^2.10.1",
@@ -28,7 +28,7 @@
     }
   },
   "name": "@sfcc-core/core-graphql",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.3",
   "description": "sfcc default core graphql",
   "module": "dist/core-graphql.esm.js",
   "exports": {

@@ -20,7 +20,7 @@
     }
   },
   "name": "@sfcc-core/core",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.3",
   "description": "sfcc core registry",
   "module": "dist/core.esm.js",
   "exports": {

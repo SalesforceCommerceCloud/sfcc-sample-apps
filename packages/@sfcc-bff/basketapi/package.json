@@ -15,8 +15,8 @@
     "pack": "npm pack"
   },
   "dependencies": {
-    "@sfcc-bff/productapi": "1.0.0-alpha.2",
-    "@sfcc-core/core": "1.0.0-alpha.2"
+    "@sfcc-bff/productapi": "1.0.0-alpha.3",
+    "@sfcc-core/core": "1.0.0-alpha.3"
   },
   "husky": {
     "hooks": {
@@ -24,7 +24,7 @@
     }
   },
   "name": "@sfcc-bff/basketapi",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.3",
   "description": "sfcc backend for frontend api service",
   "module": "dist/basketapi.esm.js",
   "exports": {
