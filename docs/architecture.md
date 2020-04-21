@@ -35,7 +35,7 @@ Front-end application, built with [lwc-services](https://www.npmjs.com/package/l
 To learn about session management in the sample app please see [session management](sessionManagement.md) 
 
 ## Customizing and Extending
-When customizing or extending the sample app, do not modify the packages within `@sfcc-bff` and `@sfcc-core`. These packages will be published and consumed via NPM. Instead, create a new custom package within the monorepo that registers itself with `@sfcc-core` and provides access to data from a third-party service. For more information, see [Component Extension](docs/componentExtension.md).
+When customizing or extending the sample app, do not modify the packages within `@sfcc-bff` and `@sfcc-core`. These packages will be published and consumed via NPM. Instead, create a new custom package within the monorepo that registers itself with `@sfcc-core` and provides access to data from a third-party service. For more information, see [Component Extension](componentExtension.md).
 
 ![Sample App Project Layout](project-layout.png)
 
