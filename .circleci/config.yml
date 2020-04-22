@@ -9,8 +9,12 @@ jobs:
         tag: '12.16'
       steps:
         - checkout
-        - run: pwd
-        - run: ls
+        - run: yarn install
+        - run: yarn lint
+        - run: yarn build
+        - run: yarn test
+        - run: cd packages/storefront-lwc && yarn test:unit:coverage
+        - run: yarn clean:stats
         - store_artifacts:
             path: coverage
         - store_test_results:
