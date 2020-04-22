@@ -12,9 +12,8 @@ jobs:
         - run: yarn install
         - run: yarn lint
         - run: yarn build
+        - run: yarn test
         - run: cd packages/storefront-lwc && yarn test:unit:coverage
-        - store_artifacts:
-          path: coverage
         - run: yarn clean:stats
         - store_test_results:
             path: ~/
