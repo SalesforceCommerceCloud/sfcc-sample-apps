@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<commerce-checkout> should initially show the shipping stage 1`] = `
+<commerce-checkout-shipping>
+  #shadow-root(open)
+    <div
+      class="card"
+    >
+      Shipping 
+    </div>
+</commerce-checkout-shipping>
+`;
+
+exports[`<commerce-checkout> should render a loading page 1`] = `
+<p
+  class="text-center loading"
+>
+  Loading Checkout...
+</p>
+`;

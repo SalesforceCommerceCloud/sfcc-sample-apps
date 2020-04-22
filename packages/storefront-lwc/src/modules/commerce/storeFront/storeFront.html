@@ -16,6 +16,9 @@
                 <lwce-route path="/product/:pid">
                     <commerce-product-detail></commerce-product-detail>
                 </lwce-route>
+                <lwce-route path="/checkout/:checkoutStage">
+                    <commerce-checkout></commerce-checkout>
+                </lwce-route>
                 <lwce-route default>
                     <commerce-error-page pagenotfound></commerce-error-page>
                 </lwce-route>
