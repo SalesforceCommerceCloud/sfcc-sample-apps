@@ -13,6 +13,7 @@ jobs:
         - run: yarn lint
         - run: yarn build
         - run: yarn test
+        - run: pwd 
         - run: yarn test:unit:coverage
         - run: yarn clean:stats
         - store_artifacts:
