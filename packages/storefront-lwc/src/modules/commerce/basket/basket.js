@@ -38,12 +38,6 @@ export default class Basket extends LightningElement {
         return this.products.length > 0;
     }
 
-    get shippingMethods() {
-        let shippingMethods = this.basket.shippingMethods
-            .applicableShippingMethods;
-        return this.filterStorePickupShippingMethods(shippingMethods);
-    }
-
     filterStorePickupShippingMethods(shippingMethods) {
         // Filter/Remove all Store Pickup Enabled Shipping Methods
         var filteredMethods = [];
@@ -53,10 +47,6 @@ export default class Basket extends LightningElement {
             }
         });
         return filteredMethods;
-    }
-
-    get selectedShippingMethodId() {
-        return this.basket.selectedShippingMethodId;
     }
 
     updateBasket(event) {
