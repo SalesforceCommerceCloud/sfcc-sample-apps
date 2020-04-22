@@ -12,9 +12,7 @@ jobs:
         - run: yarn install
         - run: yarn lint
         - run: yarn build
-        - run:
-          name: "Run Jest and Collect Coverage Reports"
-          command: cd packages/storefront-lwc && jest --collectCoverage=true
+        - run: cd packages/storefront-lwc && jest --collectCoverage=true
         - store_artifacts:
           path: coverage
         - run: yarn clean:stats
