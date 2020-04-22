@@ -12,7 +12,7 @@ jobs:
         - run: yarn install
         - run: yarn lint
         - run: yarn build
-        - run: cd packages/storefront-lwc && jest --collectCoverage=true
+        - run: cd packages/storefront-lwc && yarn test:unit:coverage
         - store_artifacts:
           path: coverage
         - run: yarn clean:stats
