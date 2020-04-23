@@ -139,7 +139,7 @@ describe('<commerce-product-detail>', () => {
         ).toBe(null); // null means the disabled attribute is not present
     });
 
-    fit('should add to basket', async () => {
+    it('should add to basket', async () => {
         mockQuery({
             product: {
                 ...mockProduct,

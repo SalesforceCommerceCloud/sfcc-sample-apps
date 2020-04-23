@@ -42,13 +42,15 @@
     "preset": "@lwc/jest-preset",
     "moduleNameMapper": {
       "^commerce/(.+)": "<rootDir>/src/modules/commerce/$1/$1",
-      "@lwce/apollo-client": "<rootDir>/__mocks__/apollo-client.js"
+      "@lwce/apollo-client": "<rootDir>/__mocks__/apollo-client.js",
+      "lwce/link": "<rootDir>/__mocks__/lwce-link/lwce-link"
     },
     "collectCoverageFrom": [
       "src/**/*.{js,ts}",
       "app/**/*.{js,ts}",
       "!app/api.example.js"
     ],
+    "coveragePathIgnorePatterns": ["node_modules", "testData"],
     "transformIgnorePatterns": []
   },
   "dependencies": {

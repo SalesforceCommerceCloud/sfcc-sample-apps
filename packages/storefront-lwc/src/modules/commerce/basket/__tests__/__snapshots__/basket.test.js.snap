@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<commerce-basket> should render a basket with an item 1`] = `
+<p
+  class="number-of-items text-center"
+>
+  1
+   Items
+</p>
+`;
+
+exports[`<commerce-basket> should render an empty basket 1`] = `
+<div
+  class="col text-empty-basket"
+>
+  <p
+    class="text-center font-weight-bold"
+  >
+     Your Shopping Basket is Empty 
+  </p>
+</div>
+`;
+
+exports[`<commerce-basket> should render basket loading 1`] = `
+<p
+  class="text-center loading"
+>
+  Loading Basket...
+</p>
+`;
+
+exports[`<commerce-basket> should update basket details 1`] = `
+<p
+  class="number-of-items text-center"
+>
+  2
+   Items
+</p>
+`;

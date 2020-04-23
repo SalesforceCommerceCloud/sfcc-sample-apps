@@ -1,0 +1,156 @@
+export const emptyBasketResponse = {
+    errors: [
+        {
+            message: 'No Basket has been created yet.',
+            locations: [{ line: 2, column: 3 }],
+            path: ['getBasket'],
+            extensions: {
+                code: 'INTERNAL_SERVER_ERROR',
+                exception: {
+                    stacktrace: ['Error: No Basket has been created yet.'],
+                },
+            },
+        },
+    ],
+    data: null,
+};
+export const basketWithItem = {
+    data: {
+        getBasket: {
+            basketId: 'cb60c056280a77d090d5a25c59',
+            customerId: 'bc5tfb0zfyMRyKrkXaxyha1Q3U',
+            getBasketMessage: '',
+            totalProductsQuantity: 1,
+            shipmentId: 'me',
+            shipmentTotal: 143.84,
+            selectedShippingMethodId: '001',
+            products: [
+                {
+                    productId: '701644031213M',
+                    itemId: '7f3b564f59e7cea7462a9e30a5',
+                    quantity: 1,
+                    productName: 'Floral Dress',
+                    price: 129,
+                    imageURL: 'https://PZ.jpg',
+                    inventory: {
+                        ats: 100,
+                        backorderable: false,
+                        id: 'inventory_m',
+                        orderable: true,
+                        preorderable: false,
+                        stockLevel: 100,
+                        __typename: 'Inventory',
+                    },
+                    itemTotalAfterDiscount: 129,
+                    itemTotalNonAdjusted: 129,
+                    variationAttributes: [
+                        {
+                            id: 'color',
+                            name: 'Color',
+                            selectedValue: {
+                                name: 'Hot Pink Combo',
+                                orderable: true,
+                                value: 'JJB52A0',
+                                __typename: 'SelectedVariationValue',
+                            },
+                            __typename: 'ProductVariationAttribute',
+                        },
+                        {
+                            id: 'size',
+                            name: 'Size',
+                            selectedValue: {
+                                name: '6',
+                                orderable: true,
+                                value: '006',
+                                __typename: 'SelectedVariationValue',
+                            },
+                            __typename: 'ProductVariationAttribute',
+                        },
+                    ],
+                    prices: { list: null, sale: 129, __typename: 'Prices' },
+                    productPromotions: null,
+                    __typename: 'ProductItem',
+                },
+            ],
+            orderTotal: 143.84,
+            orderLevelPriceAdjustment: {
+                itemText: '',
+                price: 0,
+                __typename: 'PriceAdjustment',
+            },
+            shippingLevelPriceAdjustment: {
+                itemText: '',
+                price: 0,
+                __typename: 'PriceAdjustment',
+            },
+            shippingTotal: 7.99,
+            shippingTotalTax: 0.4,
+            taxation: null,
+            taxTotal: 6.85,
+            shippingMethods: {
+                defaultShippingMethodId: '001',
+                applicableShippingMethods: [
+                    {
+                        id: '001',
+                        name: 'Ground',
+                        description: 'Order received within 7-10 business days',
+                        price: 7.99,
+                        c_estimatedArrivalTime: '7-10 Business Days',
+                        c_storePickupEnabled: null,
+                        __typename: 'ShippingMethod',
+                    },
+                    {
+                        id: '002',
+                        name: '2-Day Express',
+                        description: 'Order received in 2 business days',
+                        price: 11.99,
+                        c_estimatedArrivalTime: '2 Business Days',
+                        c_storePickupEnabled: null,
+                        __typename: 'ShippingMethod',
+                    },
+                    {
+                        id: '003',
+                        name: 'Overnight',
+                        description: 'Order received the next business day',
+                        price: 19.99,
+                        c_estimatedArrivalTime: 'Next Day',
+                        c_storePickupEnabled: null,
+                        __typename: 'ShippingMethod',
+                    },
+                    {
+                        id: '005',
+                        name: 'Store Pickup',
+                        description: 'Store Pickup',
+                        price: 0,
+                        c_estimatedArrivalTime: null,
+                        c_storePickupEnabled: true,
+                        __typename: 'ShippingMethod',
+                    },
+                    {
+                        id: '012',
+                        name: 'Express',
+                        description:
+                            'Orders shipped outside continental US received in 2-3 business days',
+                        price: 22.99,
+                        c_estimatedArrivalTime: '2-3 Business Days',
+                        c_storePickupEnabled: null,
+                        __typename: 'ShippingMethod',
+                    },
+                    {
+                        id: '021',
+                        name: 'USPS',
+                        description:
+                            'Order shipped by USPS received within 7-10 business days',
+                        price: 7.99,
+                        c_estimatedArrivalTime: '7-10 Business Days',
+                        c_storePickupEnabled: null,
+                        __typename: 'ShippingMethod',
+                    },
+                ],
+                __typename: 'ShippingMethods',
+            },
+            couponItems: [],
+            __typename: 'Basket',
+        },
+    },
+};

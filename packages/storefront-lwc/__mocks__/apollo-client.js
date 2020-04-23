@@ -21,7 +21,7 @@ export function mockMutation(resp) {
     mockedMutationResp = resp;
 }
 
-export function mockQuery(resp) {
+export function mockQuery(resp = {}) {
     mockedQueryResp = resp;
 }
 
@@ -35,16 +35,22 @@ export function getLastConnectedConfig() {
 
 register(useQuery, eventTarget => {
     function handleConnect() {
-        eventTarget.dispatchEvent(
-            new ValueChangedEvent({
-                client: {},
-                loading: false,
-                data: mockedQueryResp,
-                error: undefined,
-                initialized: true,
-                fetch: () => {},
-            }),
-        );
+        if (mockedQueryResp) {
+            eventTarget.dispatchEvent(
+                new ValueChangedEvent({
+                    client: {},
+                    loading: false,
+                    data: mockedQueryResp.data
+                        ? mockedQueryResp.data
+                        : mockedQueryResp,
+                    error: mockedQueryResp.errors
+                        ? mockedQueryResp.errors
+                        : null,
+                    initialized: true,
+                    fetch: () => {},
+                }),
+            );
+        }
     }
     function handleConfig(config) {
         lastConnectedQueryConfig = config;
@@ -58,19 +64,25 @@ register(useQuery, eventTarget => {
 
 register(useMutation, eventTarget => {
     function handleConnect() {
-        eventTarget.dispatchEvent(
-            new ValueChangedEvent({
-                client: {},
-                loading: false,
-                data: mockedMutationResp,
-                error: undefined,
-                initialized: true,
-                mutate: mutation => {
-                    lastMutation = mutation;
-                    return Promise.resolve();
-                },
-            }),
-        );
+        if (mockedMutationResp) {
+            eventTarget.dispatchEvent(
+                new ValueChangedEvent({
+                    client: {},
+                    loading: false,
+                    data: mockedMutationResp.data
+                        ? mockedMutationResp.data
+                        : mockedMutationResp,
+                    error: mockedMutationResp.errors
+                        ? mockedMutationResp.errors
+                        : null,
+                    initialized: true,
+                    mutate: mutation => {
+                        lastMutation = mutation;
+                        return Promise.resolve();
+                    },
+                }),
+            );
+        }
     }
     function handleConfig(config) {}
     function handleDisconnect() {}
