@@ -1,0 +1,28 @@
+<template>
+    <commerce-context-heading header-text="Checkout"></commerce-context-heading>
+    <div class="container">
+        <template if:true={loading}>
+            <div class='row mt-4'>
+                <div class='col-12'>
+                    <p class='text-center loading'>Loading Checkout...</p>
+                </div>
+            </div>
+        </template>
+        <div if:false={loading} class="row justify-content-md-center">
+            <div class="col-md-8" if:false={confirmationActive}>
+                <commerce-checkout-shipping shipping={checkoutDetails.shipping} onshippingupdate={updateShippingDetails}
+                    active={shippingActive}></commerce-checkout-shipping>
+                <commerce-checkout-payment payment={checkoutDetails.payment} onpaymentupdate={updatePaymentdetails}
+                    active={paymentActive}></commerce-checkout-payment>
+                <button onclick={nextStage} disabled={waitingForNextStage}
+                    class="btn btn-primary btn-block checkout-btn">
+                    <span if:true={processing}><i class="fa fa-circle-o-notch fa-spin"></i> Processing</span>
+                    <span if:false={processing}>{nextText}</span>
+                </button>
+            </div>
+            <div class="col-md-4">
+                <commerce-checkout-summary active={summaryActive}></commerce-checkout-summary>
+            </div>
+        </div>
+    </div>
+</template>
