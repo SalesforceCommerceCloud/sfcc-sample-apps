@@ -21,4 +21,3 @@ jobs:
         - run: yarn clean:stats
         - store_test_results:
             path: ~/
-
