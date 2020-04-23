@@ -27,6 +27,7 @@
     "prettier:verify": "prettier --list-different \"**/*.{css,html,js,json,md,ts,yaml,yml}\"",
     "test:unit": "jest",
     "test:unit:coverage": "jest --coverage",
+    "test:badges": "yarn test:unit:coverage && jest-coverage-badges",
     "test:unit:debug": "jest --debug",
     "test:unit:watch": "jest --watch",
     "watch:client": "rollup --config ./scripts/rollup.config.js --watch",
@@ -49,7 +50,10 @@
       "app/**/*.{js,ts}",
       "!app/api.example.js"
     ],
-    "transformIgnorePatterns": []
+    "transformIgnorePatterns": [],
+    "coverageReporters": [
+      "json-summary"
+    ]
   },
   "dependencies": {
     "@lwc/synthetic-shadow": "1.4.0",
@@ -76,6 +80,7 @@
     "graphql": "14.6.0",
     "graphql-passport": "^0.6.1",
     "graphql-tag": "^2.10.3",
+    "jest-coverage-badges": "^1.1.2",
     "lwc": "1.4.0",
     "passport": "^0.4.1"
   },
