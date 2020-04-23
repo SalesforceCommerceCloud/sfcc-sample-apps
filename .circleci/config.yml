@@ -18,9 +18,6 @@ jobs:
         - run: yarn test
         - run: cd packages/storefront-lwc && yarn test:unit:coverage
         - run: cd packages/storefront-lwc && ls
-        - codecov/upload:
-          file: coverage/*.json
-          flags: frontend
         - run: yarn clean:stats
         - store_test_results:
             path: ~/
