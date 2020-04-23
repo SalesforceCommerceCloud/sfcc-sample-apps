@@ -1,4 +1,4 @@
-# Commerce Storefront Sample Application &middot; [![CircleCI][circleci-image]][circleci-url]
+# Commerce Storefront Sample Application &middot; [![CircleCI][circleci-image]][circleci-url] [![CodeCoverage][jest-lines-coverage-badge-image]]
 
 Our storefront sample application shows how you can build amazing commerce experiences with the latest Commerce platform technologies. The application back end is built on the new Salesforce Commerce API (a RESTful headless API). The front end is built with Lightning Web Components (LWC). In between, it uses GraphQL and the Salesforce Commerce Node.js SDK. 
 
@@ -92,3 +92,4 @@ The sample app currently includes the following components:
 <!-- Markdown link & img dfn's -->
 [circleci-image]: https://circleci.com/gh/SalesforceCommerceCloud/sfcc-sample-apps.svg?style=shield&circle-token=f34a55a59d7dfc30402e719996edf10092780b66
 [circleci-url]: https://circleci.com/gh/SalesforceCommerceCloud/sfcc-sample-apps
+[jest-lines-coverage-badge-image]: /packages/storefront-lwc/coverage/badge-lines.svg

@@ -17,7 +17,7 @@ jobs:
         - run: yarn test
         - run: cd packages/storefront-lwc && ls
         - run: cd packages/storefront-lwc && yarn test:badges
-        - run: cd packages/storefront-lwc && ls
+        - run: cd packages/storefront-lwc/coverage && ls
         - run: yarn clean:stats
         - store_test_results:
             path: ~/
