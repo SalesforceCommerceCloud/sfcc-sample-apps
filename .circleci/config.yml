@@ -17,8 +17,8 @@ jobs:
         - run: yarn test
         - run: cd packages/storefront-lwc && yarn test:badges
         - store_artifacts:
-          - path: packages/storefront-lwc/coverage,
-          - destination: jest-badges
+            path: packages/storefront-lwc/coverage
+            destination: jest-badges
         - run: yarn clean:stats
         - store_test_results:
             path: ~/
