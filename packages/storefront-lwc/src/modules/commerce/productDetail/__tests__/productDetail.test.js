@@ -46,42 +46,6 @@ describe('<commerce-product-detail>', () => {
         ).toMatchSnapshot();
     });
 
-    it('should render carousel', async () => {
-        mockQuery({
-            product: mockProduct,
-        });
-        const element = createElement('commerce-product-detail', {
-            is: ProductDetail,
-        });
-        document.body.appendChild(element);
-
-        await tick();
-
-        // Initial carousel image
-        expect(
-            element.shadowRoot.querySelector('.carousel-item.active'),
-        ).toMatchSnapshot();
-
-        element.shadowRoot.querySelector('.carousel-control-next').click();
-
-        await tick();
-
-        // Next carousel image
-        expect(
-            element.shadowRoot.querySelector('.carousel-item.active'),
-        ).toMatchSnapshot();
-
-        element.shadowRoot.querySelector('.carousel-control-next').click();
-        await tick();
-        element.shadowRoot.querySelector('.carousel-control-next').click();
-        await tick();
-
-        // Back to the first carousel image
-        expect(
-            element.shadowRoot.querySelector('.carousel-item.active'),
-        ).toMatchSnapshot();
-    });
-
     it('should not add to basket when not ready', async () => {
         mockQuery({
             product: mockProduct,
