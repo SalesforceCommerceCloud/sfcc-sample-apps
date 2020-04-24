@@ -4,14 +4,11 @@ import { createElement } from 'lwc';
 
 import { registerWireService } from '@lwc/wire-service';
 import { register } from 'lwc';
+import { tick } from 'commerce/testHelpers';
 
 import { emptyBasketResponse, basketWithItem } from 'commerce/testData';
 
 registerWireService(register);
-
-function tick(time = null) {
-    return new Promise(resolve => setTimeout(resolve, time));
-}
 
 describe('<commerce-basket>', function() {
     afterEach(() => {
