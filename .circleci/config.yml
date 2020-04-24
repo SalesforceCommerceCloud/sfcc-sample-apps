@@ -16,9 +16,10 @@ jobs:
         - run: yarn build
         - run: yarn test
         - run: cd packages/storefront-lwc && yarn test:badges
+        - run: echo $CIRCLE_BRANCH
         - store_artifacts:
             path: packages/storefront-lwc/coverage
-            destination: jest-badges
+            destination: $CIRCLE_BRANCH/jest-badges
         - run: yarn clean:stats
         - store_test_results:
             path: ~/
