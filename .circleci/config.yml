@@ -17,6 +17,7 @@ jobs:
         - run: yarn test
         - run: cd packages/storefront-lwc && yarn test:badges
         - run: echo $CIRCLE_BRANCH
+        - run: echo $CIRCLE_BUILD_NUM
         - store_artifacts:
             path: packages/storefront-lwc/coverage
             destination: $CIRCLE_BRANCH/jest-badges
