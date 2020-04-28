@@ -15,18 +15,18 @@
 
     <div class="card">
         <!--Number of Products-->
-        <commerce-total description="Items" total={subTotal} total-class="text-right" class="pl-2 pr-2 pt-2"></commerce-total>
+        <commerce-total description="Items" total={subTotal} total-class="text-right" class="pl-3 pr-3 pt-2"></commerce-total>
 
         <!--Products-->
         <template for:each={products} for:item="product" class="check">
             <div key={product.productId} class="product-info">
                 <div class="line-item-name">
-                    <div class="p-2">
+                    <div class="pl-3 pr-3">
                         {product.productName}
                     </div>
                 </div>
 
-                <div class="row p-2">
+                <div class="row pl-3 pr-3">
                     <div class="col-12 d-flex flex-row">
                         <div class="line-item-image mr-3">
                             <!--Product image-->
@@ -48,7 +48,7 @@
                     <hr class="m-0">
                 </div>
     
-                <div class="row p-2">
+                <div class="row pl-3 pr-3">
                     <div class="col-4">
                         <p class="mb-0">Each</p>
                         <p class="mb-0">${product.price}</p>
@@ -63,7 +63,7 @@
                     </div>
                 </div>
 
-                <div class="m-0 pt-2">
+                <div class="m-0 pt-2 pb-2">
                     <hr class="m-0 dashed">
                 </div>
             
