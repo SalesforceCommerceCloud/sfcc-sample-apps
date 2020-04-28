@@ -1,3 +1,76 @@
 <template>
-    <div class="card">Summary <span if:true={active}>active</span></div>
+    <div class="card">
+        <p class="p-2 m-0"><strong>Order Summary</strong></p><span if:true={active}>active</span>
+        <div class="m-0 p-0">
+            <hr class="m-0">
+        </div>
+        <div class="p-2">
+            <commerce-total description="Sub Total" total={subTotal} total-class="text-right"></commerce-total>
+            <commerce-total description="Shipping" total={shippingCost} total-class="text-right"></commerce-total>
+            <commerce-total description="Sales Tax" total={salesTax} total-class="text-right"></commerce-total>
+            <commerce-total description="Total" description-class="grand-total" total={totalEstimate}
+                total-class="text-right grand-total"></commerce-total>
+        </div>
+    </div>
+
+    <div class="card">
+        <!--Number of Products-->
+        <commerce-total description="Items" total={subTotal} total-class="text-right" class="pl-2 pr-2 pt-2"></commerce-total>
+
+        <!--Products-->
+        <template for:each={products} for:item="product" class="check">
+            <div key={product.productId} class="product-info">
+                <div class="line-item-name">
+                    <div class="p-2">
+                        {product.productName}
+                    </div>
+                </div>
+
+                <div class="row p-2">
+                    <div class="col-12 d-flex flex-row">
+                        <div class="line-item-image mr-3">
+                            <!--Product image-->
+                            <commerce-product-image image-url={product.imageURL} product-name={product.productName}>
+                            </commerce-product-image>
+                        </div>
+                        <div class="line-item-variation-attributes d-flex flex-column">
+                            <!-- Product variations-->
+                            <commerce-variation-attributes variation-attributes={product.variationAttributes}>
+                            </commerce-variation-attributes>
+                            <!-- Product Availability -->
+                            <commerce-product-availability inventory={product.inventory} type={product.type}
+                                quantity={product.quantity} context="basket"></commerce-product-availability>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="m-0 pt-2">
+                    <hr class="m-0">
+                </div>
+    
+                <div class="row p-2">
+                    <div class="col-4">
+                        <p class="mb-0">Each</p>
+                        <p class="mb-0">${product.price}</p>
+                    </div>
+                    <div class="col-4">
+                        <p class="mb-0">Quantity</p>
+                        <p class="mb-0">{product.quantity}</p>
+                    </div>
+                    <div class="col-4">
+                        <p class="mb-0">Total</p>
+                        <p class="mb-0">${product.price}</p>
+                    </div>
+                </div>
+
+                <div class="m-0 pt-2">
+                    <hr class="m-0 dashed">
+                </div>
+            
+            </div>
+        </template>
+
+
+    </div>
+
 </template>
