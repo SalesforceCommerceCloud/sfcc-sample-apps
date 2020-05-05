@@ -13,9 +13,11 @@ export default class CheckoutSummary extends LightningElement {
     hasOrderDiscount = false;
     hasShippingDiscount = false;
     subTotal = 0.0;
+    itemNumber = 0;
 
     connectedCallback() {
         this.setTotals(this.basket);
+        this.itemNumber = this.basket.totalProductsQuantity;
     }
 
     get products() {

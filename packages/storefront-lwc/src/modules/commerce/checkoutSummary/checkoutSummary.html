@@ -15,14 +15,21 @@
 
     <div class="card">
         <!--Number of Products-->
-        <commerce-total description="Items" total={subTotal} total-class="text-right" class="pl-3 pr-3 pt-2"></commerce-total>
+        <div class="row pl-3 pr-3 pt-2">
+            <div class="col-9">
+                <p>{itemNumber} Item(s)</p>
+            </div>
+            <div class="col-3">
+                <p class="pull-right">${subTotal}</p>
+            </div> 
+        </div>
 
         <!--Products-->
-        <template for:each={products} for:item="product" class="check">
-            <div key={product.productId} class="product-info">
+        <template iterator:it={products}>
+            <div key={it.value.productId} class="product-info">
                 <div class="line-item-name">
                     <div class="pl-3 pr-3">
-                        {product.productName}
+                        {it.value.productName}
                     </div>
                 </div>
 
@@ -30,16 +37,16 @@
                     <div class="col-12 d-flex flex-row">
                         <div class="line-item-image mr-3">
                             <!--Product image-->
-                            <commerce-product-image image-url={product.imageURL} product-name={product.productName}>
+                            <commerce-product-image image-url={it.value.imageURL} product-name={it.value.productName}>
                             </commerce-product-image>
                         </div>
                         <div class="line-item-variation-attributes d-flex flex-column">
                             <!-- Product variations-->
-                            <commerce-variation-attributes variation-attributes={product.variationAttributes}>
+                            <commerce-variation-attributes variation-attributes={it.value.variationAttributes}>
                             </commerce-variation-attributes>
                             <!-- Product Availability -->
-                            <commerce-product-availability inventory={product.inventory} type={product.type}
-                                quantity={product.quantity} context="basket"></commerce-product-availability>
+                            <commerce-product-availability inventory={it.value.inventory} type={it.value.type}
+                                quantity={it.value.quantity} context="basket"></commerce-product-availability>
                         </div>
                     </div>
                 </div>
@@ -51,25 +58,24 @@
                 <div class="row pl-3 pr-3">
                     <div class="col-4">
                         <p class="mb-0">Each</p>
-                        <p class="mb-0">${product.price}</p>
+                        <p class="mb-0">${it.value.price}</p>
                     </div>
                     <div class="col-4">
                         <p class="mb-0">Quantity</p>
-                        <p class="mb-0">{product.quantity}</p>
+                        <p class="mb-0">{it.value.quantity}</p>
                     </div>
                     <div class="col-4">
                         <p class="mb-0">Total</p>
-                        <p class="mb-0">${product.price}</p>
+                        <p class="mb-0">${it.value.price}</p>
                     </div>
                 </div>
 
                 <div class="m-0 pt-2 pb-2">
-                    <hr class="m-0 dashed">
+                    <hr if:false={it.last} class="m-0 dashed">
                 </div>
-            
+                
             </div>
         </template>
-
 
     </div>
 
