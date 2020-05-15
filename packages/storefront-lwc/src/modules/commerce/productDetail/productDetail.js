@@ -19,7 +19,6 @@ import { ADD_TO_BASKET } from '../basket/gql.js';
  * the current storefront shopping basket.
  */
 export default class ProductDetail extends LightningElement {
-    activeImage = 0;
     masterPid;
     product = {
         images: [],
@@ -64,10 +63,6 @@ export default class ProductDetail extends LightningElement {
             if (response.error) {
                 dispatchErrorEvent.call(this, response.error);
             } else {
-                if (!response.loading) {
-                    this.activeImage = 0;
-                }
-
                 this.product = { ...this.product, ...response.data.product };
                 this.masterPid = response.data.product.masterId;
             }
@@ -176,34 +171,5 @@ export default class ProductDetail extends LightningElement {
 
     toastMessageDisplayed() {
         this.showToast = false;
-    }
-
-    /**
-     * The click handler for the product detail image carousel to cycle to the next or previous image, left or right.
-     * @param event the event object which includes the data from the button clicked, left or right.
-     */
-    handleCarousel(event) {
-        const { slide } = event.currentTarget.dataset;
-        if (slide === 'prev') {
-            this.activeImage =
-                this.activeImage === 0
-                    ? this.product.images.length - 1
-                    : this.activeImage - 1;
-        } else {
-            this.activeImage =
-                this.activeImage === this.product.images.length - 1
-                    ? 0
-                    : this.activeImage + 1;
-        }
-    }
-
-    get images() {
-        return this.product.images.map((image, index) => ({
-            ...image,
-            cssClass:
-                index === this.activeImage
-                    ? 'carousel-item active'
-                    : 'carousel-item',
-        }));
     }
 }

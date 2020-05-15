@@ -1,0 +1,24 @@
+<template>
+    <div class="product-images">
+        <div class="carousel slide" data-interval="0">
+            <div class="carousel-inner" role="listbox">
+                <template for:each={carouselImages} for:item="image">
+                    <div class={image.cssClass} key={image.link}>
+                        <img src={image.link} class="d-block img-fluid" alt={image.atl}>
+                    </div>
+                </template>
+            </div>
+
+            <a class="carousel-control-prev" href="javascript: void 0;" role="button" data-slide="prev"
+                onclick={handleCarousel}>
+                <span class="fa icon-prev" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="javascript: void 0;" role="button" data-slide="next"
+                onclick={handleCarousel}>
+                <span class="fa icon-next" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
+</template>
