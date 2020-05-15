@@ -5,12 +5,9 @@ import Checkout from 'commerce/checkout';
 import { registerWireService } from '@lwc/wire-service';
 import { register } from 'lwc';
 import { basketWithItem } from 'commerce/testData';
+import { tick } from 'commerce/testHelpers';
 
 registerWireService(register);
-
-function tick(time = null) {
-    return new Promise(resolve => setTimeout(resolve, time));
-}
 
 describe('<commerce-checkout>', function() {
     afterEach(() => {

@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<commerce-product-image-carousel> should forward in the carousel 1`] = `
+<div
+  class="carousel-item active"
+>
+  <img
+    class="d-block img-fluid"
+    src="https://image-1.jpg"
+  />
+</div>
+`;
+
+exports[`<commerce-product-image-carousel> should forward in the carousel 2`] = `
+<div
+  class="carousel-item active"
+>
+  <img
+    class="d-block img-fluid"
+    src="https://image-2.jpg"
+  />
+</div>
+`;
+
+exports[`<commerce-product-image-carousel> should forward in the carousel 3`] = `
+<div
+  class="carousel-item active"
+>
+  <img
+    class="d-block img-fluid"
+    src="https://image-1.jpg"
+  />
+</div>
+`;
+
+exports[`<commerce-product-image-carousel> should previous in the carousel 1`] = `
+<div
+  class="carousel-item active"
+>
+  <img
+    class="d-block img-fluid"
+    src="https://image-1.jpg"
+  />
+</div>
+`;
+
+exports[`<commerce-product-image-carousel> should previous in the carousel 2`] = `
+<div
+  class="carousel-item active"
+>
+  <img
+    class="d-block img-fluid"
+    src="https://image-3.jpg"
+  />
+</div>
+`;
+
+exports[`<commerce-product-image-carousel> should previous in the carousel 3`] = `
+<div
+  class="carousel-item active"
+>
+  <img
+    class="d-block img-fluid"
+    src="https://image-1.jpg"
+  />
+</div>
+`;
+
+exports[`<commerce-product-image-carousel> should render carousel 1`] = `
+<div
+  class="carousel-item active"
+>
+  <img
+    class="d-block img-fluid"
+    src="https://image-1.jpg"
+  />
+</div>
+`;

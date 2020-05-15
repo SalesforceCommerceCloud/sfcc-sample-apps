@@ -10,13 +10,6 @@
     }
 }
 
-.product-images {
-    @include mobile {
-        margin: 0;
-        padding: 0;
-    }
-}
-
 .fa-shopping-bag {
     margin-right: 0.625rem;
 }

@@ -6,15 +6,12 @@ import {
     getLastMutation,
 } from '@lwce/apollo-client';
 import ProductDetail from 'commerce/productDetail';
+import { tick } from 'commerce/testHelpers';
 
 import { registerWireService } from '@lwc/wire-service';
 import { register } from 'lwc';
 
 registerWireService(register);
-
-function tick(time = null) {
-    return new Promise(resolve => setTimeout(resolve, time));
-}
 
 describe('<commerce-product-detail>', () => {
     afterEach(() => {
@@ -43,42 +40,6 @@ describe('<commerce-product-detail>', () => {
 
         expect(
             element.shadowRoot.querySelector('.d-md-none .small-paragraph'),
-        ).toMatchSnapshot();
-    });
-
-    it('should render carousel', async () => {
-        mockQuery({
-            product: mockProduct,
-        });
-        const element = createElement('commerce-product-detail', {
-            is: ProductDetail,
-        });
-        document.body.appendChild(element);
-
-        await tick();
-
-        // Initial carousel image
-        expect(
-            element.shadowRoot.querySelector('.carousel-item.active'),
-        ).toMatchSnapshot();
-
-        element.shadowRoot.querySelector('.carousel-control-next').click();
-
-        await tick();
-
-        // Next carousel image
-        expect(
-            element.shadowRoot.querySelector('.carousel-item.active'),
-        ).toMatchSnapshot();
-
-        element.shadowRoot.querySelector('.carousel-control-next').click();
-        await tick();
-        element.shadowRoot.querySelector('.carousel-control-next').click();
-        await tick();
-
-        // Back to the first carousel image
-        expect(
-            element.shadowRoot.querySelector('.carousel-item.active'),
         ).toMatchSnapshot();
     });
 
