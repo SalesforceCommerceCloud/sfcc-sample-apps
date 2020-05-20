@@ -8,7 +8,6 @@ Authentication enables end users to perform actions like creating a basket.
 
 After successful authentication, the anonymous user ID is stored in the session corresponding to the generated cookie. 
 
-
 ## Session Management and Authentication Flow
 
 ![session management and authentication flow](SessionManagement.png)
@@ -37,7 +36,6 @@ this.apolloServer = new ApolloServer({
     }),
 });
 ```
-
 The request parameter is the same request object that express generates and is the actual web service call that contains the request headers, cookies, and so on. In the context function, the helper function `buildContext()` (which is provided by graphql-passport) helps build a context that is unique for each user, adding methods to the context to help authenticate using passport. After the `context` object is built, a resolver can ensure that the user is authenticated.
 
 The resolvers in Sample App need to retrieve the user from the context. To help with this operation, Sample App defines a function `getUserFromContext()`. This function calls the `context.authenticate()` function provided by graphql-passport. 
