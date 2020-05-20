@@ -1,0 +1,8 @@
+@import "../../../scss/ux_variables";
+
+.product-images {
+    @include mobile {
+        margin: 0;
+        padding: 0;
+    }
+}
