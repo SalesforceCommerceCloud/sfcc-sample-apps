@@ -76,8 +76,7 @@ function validateConfig(config) {
             CommerceSdk.helpers
                 .getShopperToken(clientConfig, { type: 'guest' })
                 .then(token => {
-                    const customerId = JSON.parse(token.decodedToken.sub)
-                        .customer_info.customer_id;
+                    const customerId = token.getCustomerInfo().customerId;
                     done(null, {
                         id: customerId,
                         token: token.getBearerHeader(),
