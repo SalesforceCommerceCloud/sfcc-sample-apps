@@ -54,7 +54,7 @@
     "transformIgnorePatterns": []
   },
   "dependencies": {
-    "@lwc/synthetic-shadow": "1.4.0",
+    "@lwc/synthetic-shadow": "1.6.0",
     "@lwce/apollo-client": "0.1.0",
     "@lwce/router": "^0.3.2",
     "@salesforce-ux/design-system": "^2.9.4",
