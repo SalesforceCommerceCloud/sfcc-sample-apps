@@ -77,7 +77,7 @@ function validateConfig(config) {
                 .getShopperToken(clientConfig, { type: 'guest' })
                 .then(token => {
                     const customerId = JSON.parse(token.decodedToken.sub)
-                        .customer_info.customer_id;
+                        .CustomerInfo.customerId;
                     done(null, {
                         id: customerId,
                         token: token.getBearerHeader(),
