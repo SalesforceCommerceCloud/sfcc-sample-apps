@@ -8,11 +8,6 @@ import {
 import ProductDetail from 'commerce/productDetail';
 import { tick } from 'commerce/testHelpers';
 
-import { registerWireService } from '@lwc/wire-service';
-import { register } from 'lwc';
-
-registerWireService(register);
-
 describe('<commerce-product-detail>', () => {
     afterEach(() => {
         // The jsdom instance is shared across test cases in a single file so reset the DOM

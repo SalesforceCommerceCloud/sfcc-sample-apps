@@ -2,13 +2,8 @@ import Basket from 'commerce/basket';
 import { mockQuery, reset } from '@lwce/apollo-client';
 import { createElement } from 'lwc';
 
-import { registerWireService } from '@lwc/wire-service';
-import { register } from 'lwc';
 import { tick } from 'commerce/testHelpers';
-
 import { emptyBasketResponse, basketWithItem } from 'commerce/testData';
-
-registerWireService(register);
 
 describe('<commerce-basket>', function() {
     afterEach(() => {
