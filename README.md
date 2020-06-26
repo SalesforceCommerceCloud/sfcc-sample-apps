@@ -1,12 +1,12 @@
 # Commerce Storefront Sample Application &middot; [![CircleCI][circleci-image]][circleci-url]
 
-Our storefront sample application shows how you can build amazing commerce experiences with the latest Commerce platform technologies. The application back end is built on the new Salesforce Commerce API (a RESTful headless API). The front end is built with Lightning Web Components (LWC). In between, it uses GraphQL and the Salesforce Commerce Node.js SDK. 
+Our storefront sample application shows how you can build amazing commerce experiences with the latest Commerce platform technologies. The sample application helps developers get started by proving out a clear path to successfully build a storefront using our latest platform technologies, such as the Salesforce Commerce API and the Salesforce Commerce Node.js SDK.
 
-Read more about the [architecture](docs/architecture.md).
+The sample application shows an example implementation of some basic storefront use cases. The implementation helps development teams quickly understand how to use our latest platform technologies and begin their own journey of building commerce experiences. It contains examples for the homepage, product list page, product detail page, and cart. While this sample application demonstrates some of the Salesforce and Commerce Cloud technologies, it’s provided as a purely educational and instructional demonstration and not as a fully functional deployable reference storefront. 
 
-The sample application shows you a recommended approach for building a storefront, but it is not a complete and fully functional storefront reference application. The sample application now includes a home page, product list page, product detail page, and basket. More great features are coming soon!
+The application back end is built on the new Salesforce Commerce API (a RESTful headless API). The front end is built with Lightning Web Components (LWC). In between, it uses GraphQL and the Salesforce Commerce Node.js SDK.  Read more about the sample application [architecture](docs/architecture.md).
 
-Note: sfcc-sample-apps is a monorepo with a sample application and Backend For Frontend (BFF) dependency modules. Typically, dependencies modules are published to a public npm server. However to develop an application, the modules are included together in a single repository.
+Have more questions? See the [Sample Application FAQ](https://developer.commercecloud.com/s/article/CommerceAPI-Sample-Application-FAQ).
 
 ## Prerequisites
 1. Download and install [Node.js v12](https://nodejs.org/en/download/).
@@ -25,18 +25,19 @@ To set up the sample application:
 
 3. Copy the `api.example.js` file located at `/packages/storefront-lwc/app/`, save it as `api.js`, and make sure `api.js` is added to your `.gitignore` file.
 
-4. In the `api.js` file, provide values for the following variables (you can obtain these values from your Account Executive (AE) or Customer Support Manager (CSM)):
+4. In the `api.js` file, provide values for the following variables:
 <table>
 <tr><th>Variable</th><th>Description</th></tr>
 <tr><td><code>COMMERCE_CLIENT_API_SITE_ID</code></td><td>Unique site ID (for example, RefArch or SiteGenesis).</td></tr>
-<tr><td><code>COMMERCE_CLIENT_CLIENT_ID</code></td><td>Unique ID used exclusively for API access. See <a href="https://documentation.b2c.commercecloud.salesforce.com/DOC1/topic/com.demandware.dochelp/AccountManager/AccountManagerAddAPIClientID.html">Add a Client API</a> for more information.</td></tr>
+<tr><td><code>COMMERCE_CLIENT_CLIENT_ID</code></td><td>Unique ID used exclusively for API access. See <a href="https://documentation.b2c.commercecloud.salesforce.com/DOC1/topic/com.demandware.dochelp/content/b2c_commerce/topics/account_manager/b2c_account_manager_add_api_client_id.html">Add a Client API</a> for more information.</td></tr>
 <tr><td><code>COMMERCE_CLIENT_REALM_ID</code></td><td>Unique four-character realm ID (for example, bblx).</td></tr>
-<tr><td><code>COMMERCE_CLIENT_INSTANCE_ID</code></td><td>Unique instance ID within a realm (for example, 015).</td></tr>
+<tr><td><code>COMMERCE_CLIENT_INSTANCE_ID</code></td><td>Unique instance ID within a realm (for example, 015 for an on-demand sandbox).</td></tr>
 <tr><td><code>COMMERCE_CLIENT_SHORT_CODE</code></td><td>Unique region-specific merchant ID (for example, staging-001).</td></tr>
 <tr><td><code>COMMERCE_SESSION_SECRET</code></td><td>Unique ID for session management (for example, thisisasecretkey).</td></tr>
 <tr><td><code>COMMERCE_CORS</code></td><td>Optionally enable <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">CORS</a> for GraphQL on the defined domains (for example, enable all domains with "\*").</td></tr>
 </table>
-Note: If the COMMERCE_SESSION_SECRET key is not unique per customer application, session information can be unintentionally shared between ecommerce sites. 
+
+Note: You can obtain these values from your Account Executive (AE) or Customer Support Manager (CSM), except for COMMERCE_SESSSION_SECRET, which is an arbitrary unique value that you create yourself. If the COMMERCE_SESSION_SECRET key is not unique per customer application, session information can be unintentionally shared between ecommerce sites. 
 
 5. Install dependencies:
 `yarn`
@@ -65,7 +66,7 @@ We recommend Visual Studio Code inbuilt debugger to troubleshoot the code. The `
     * `WARN`
     * `ERROR`
     * `SILENT`
-* You can also change the server listening port by changing the `port` property in `scff-sample-apps/packages/storefront-lwc/lwc-services.config.js`.
+* You can also change the server listening port by changing the `port` property in `sfcc-sample-apps/packages/storefront-lwc/scripts/runtime.js`.
 
 ### Learn More About Supporting Technologies
 * [NodeJS](https://nodejs.org/en/docs/)
