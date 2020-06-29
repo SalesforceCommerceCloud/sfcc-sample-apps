@@ -1,6 +1,6 @@
 {
   "name": "storefront-lwc",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.4",
   "description": "Sample Storefront Application with Lightning Web Components",
   "license": "BSD-3-Clause",
   "nodemonConfig": {
