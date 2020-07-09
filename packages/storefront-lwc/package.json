@@ -57,7 +57,7 @@
   "dependencies": {
     "@lwc/synthetic-shadow": "1.7.1",
     "@lwce/apollo-client": "0.2.0",
-    "@lwce/router": "^0.4.1",
+    "@lwce/router": "^0.4.4",
     "@salesforce-ux/design-system": "^2.9.4",
     "@sfcc-bff/productapi": "1.0.0-alpha.2",
     "@sfcc-core/apiconfig": "1.0.0-alpha.2",

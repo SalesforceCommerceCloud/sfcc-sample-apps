@@ -2505,10 +2505,10 @@
   dependencies:
     apollo-client "^2.6.4"
 
-"@lwce/router@^0.4.1":
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/@lwce/router/-/router-0.4.2.tgz#1a68497f0c986e822b1b76fa21ecc8a55d201729"
-  integrity sha512-k2PCNZujbwvdELtsoa0E1xjx8gADY8LI+j2wvV+rhFcygP+lDehpzLpRf1X3zuF2Y8/i5ibwJCMDN+g4upHYSQ==
+"@lwce/router@^0.4.4":
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/@lwce/router/-/router-0.4.4.tgz#7a34a26302f299ee05698c0526f1ac9269b2c503"
+  integrity sha512-Dws2mIMapFHJVHitlXrPpahc7ysJJ+4j6GeGvVo38NmCgM9RpkBX8ZrWKvE30dw5BYjrP5O76999gnswPS2Jbg==
   dependencies:
     history "^4.10.1"
     path-to-regexp "^6.1.0"
