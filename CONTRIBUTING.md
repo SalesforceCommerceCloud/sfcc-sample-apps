@@ -21,14 +21,14 @@ If this is your first pull request:
 
   2. Download the forked repository
 
-  3. Checkout the integration branch
+  3. Checkout the master branch
 
   4. Apply your code fix
 
-  5. Create a pull request against the integration branch
+  5. Create a pull request against the master branch
 
 ## Submitting a Pull Request
-  1. Create a branch off the integration branch.
+  1. Create a branch off the master branch.
 
        * To reduce merge conflicts, squash and rebase your branch before submitting your pull request.
    
@@ -44,7 +44,7 @@ If this is your first pull request:
    
        * Error logs
    
-  3. Grant sfcc-sample-apps team members access to your fork so we can run an automated test on your pull request prior to merging it into our integration branch.
+  3. Grant sfcc-sample-apps team members access to your fork so we can run an automated test on your pull request prior to merging it into our master branch.
 
        * From within your forked repository, find the 'Settings' link (see the site navigation on left of the page).
    

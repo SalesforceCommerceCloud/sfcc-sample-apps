@@ -83,10 +83,12 @@ The sample app currently includes the following components:
 * [Home Page](https://github.com/SalesforceCommerceCloud/sfcc-sample-apps/tree/master/packages/storefront-lwc/src/modules/commerce/home)
 * [Product Detail](https://github.com/SalesforceCommerceCloud/sfcc-sample-apps/tree/master/packages/storefront-lwc/src/modules/commerce/productDetail)
 * [Product Search Results](https://github.com/SalesforceCommerceCloud/sfcc-sample-apps/tree/master/packages/storefront-lwc/src/modules/commerce/productSearchResults)
-* [Basket](https://github.com/SalesforceCommerceCloud/sfcc-sample-apps/tree/integration/packages/storefront-lwc/src/modules/commerce/basket)
+* [Basket](https://github.com/SalesforceCommerceCloud/sfcc-sample-apps/tree/master/packages/storefront-lwc/src/modules/commerce/basket)
 
 
 ## Contributing
+
+Note: As of 06/30/20, the integration branch has been removed from the sfcc-sample-apps repository. We recommend that you delete your local integration branch, if you have one.
 
 * See [Contributing](CONTRIBUTING.md)
 
