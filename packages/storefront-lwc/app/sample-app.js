@@ -11,7 +11,6 @@ import { core, LOGGER_KEY } from '@sfcc-core/core';
 import '@sfcc-core/logger';
 import '@sfcc-core/apiconfig';
 import '@sfcc-core/core-graphql';
-
 //
 // SFRA Extensions/Services
 //
@@ -22,6 +21,7 @@ import '@sfcc-bff/basketapi';
 //
 import { CORE_GRAPHQL_KEY, EXPRESS_KEY } from '@sfcc-core/core-graphql';
 import { API_CONFIG_KEY } from '@sfcc-core/apiconfig';
+import { sdkLogger } from 'commerce-sdk';
 
 class SampleApp {
     /**
@@ -37,6 +37,11 @@ class SampleApp {
         this.logger = core.getService(LOGGER_KEY);
         if (this.apiConfig.config.COMMERCE_LOG_LEVEL) {
             this.logger.setLevel(this.apiConfig.config.COMMERCE_LOG_LEVEL);
+            if (
+                this.apiConfig.config.COMMERCE_LOG_LEVEL ==
+                sdkLogger.levels.DEBUG
+            )
+                sdkLogger.setLevel(sdkLogger.levels.DEBUG);
         }
     }
 
