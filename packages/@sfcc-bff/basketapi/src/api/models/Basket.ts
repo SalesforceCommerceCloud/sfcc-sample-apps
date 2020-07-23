@@ -4,11 +4,7 @@
     SPDX-License-Identifier: BSD-3-Clause
     For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 */
-import {
-    BasketT,
-    ProductItemT,
-    CouponItemT,
-} from 'commerce-sdk/dist/checkout/shopperBaskets/shopperBaskets.types';
+import { Checkout } from 'commerce-sdk';
 
 class Basket {
     customerId: string;
@@ -16,7 +12,7 @@ class Basket {
     addProductMessage: string;
     totalProductsQuantity: number;
     getBasketMessage: string;
-    products: ProductItemT[];
+    products: Checkout.ShopperBaskets.ProductItem[];
     orderTotal: number;
     orderLevelPriceAdjustment: { itemText: string; price: number };
     shippingLevelPriceAdjustment: { itemText: string; price: number };
@@ -27,9 +23,9 @@ class Basket {
     shippingTotal: number;
     shippingTotalTax: number;
     taxTotal: number;
-    couponItems: CouponItemT[];
+    couponItems: Checkout.ShopperBaskets.CouponItem[];
 
-    constructor(apiBasket: BasketT) {
+    constructor(apiBasket: Checkout.ShopperBaskets.Basket) {
         this.customerId =
             apiBasket.customerInfo && apiBasket.customerInfo.customerId
                 ? apiBasket.customerInfo.customerId
