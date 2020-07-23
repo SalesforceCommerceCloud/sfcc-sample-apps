@@ -13,7 +13,6 @@ import {
     requestWithTokenRefresh,
 } from '@sfcc-core/core-graphql';
 import CommerceSdk from 'commerce-sdk';
-import { BasketT } from 'commerce-sdk/dist/checkout/shopperBaskets/shopperBaskets.types';
 import { Config } from '@sfcc-core/core';
 import { getPrices } from '@sfcc-bff/productapi';
 
@@ -129,7 +128,7 @@ const getProductsDetails = async (
 };
 
 const getFullProductItems = async (
-    apiBasket: BasketT,
+    apiBasket: CommerceSdk.Checkout.ShopperBaskets.Basket,
     config: Config,
     context: AppContext,
 ) => {
