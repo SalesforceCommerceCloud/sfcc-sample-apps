@@ -1,5 +1,7 @@
 # Commerce Storefront Sample Application &middot; [![CircleCI][circleci-image]][circleci-url]
 
+**This repo has been archived and is no longer in development. Please see https://github.com/SalesforceCommerceCloud/pwa-kit for using Salesforce Commerce APIs to build a headless shopping experience**
+
 Our storefront sample application shows how you can build amazing commerce experiences with the latest Commerce platform technologies. The sample application helps developers get started by proving out a clear path to successfully build a storefront using our latest platform technologies, such as the Salesforce Commerce API and the Salesforce Commerce Node.js SDK.
 
 The sample application shows an example implementation of some basic storefront use cases. The implementation helps development teams quickly understand how to use our latest platform technologies and begin their own journey of building commerce experiences. It contains examples for the homepage, product list page, product detail page, and cart. While this sample application demonstrates some of the Salesforce and Commerce Cloud technologies, it’s provided as a purely educational and instructional demonstration and not as a fully functional deployable reference storefront. 
